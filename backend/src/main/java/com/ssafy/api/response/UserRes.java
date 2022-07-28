@@ -18,9 +18,9 @@ public class UserRes{
 	@ApiModelProperty(name="User ID")
 	String userId;
 	
-	public static UserRes of(User user) {
-		UserRes res = new UserRes();
-		res.setUserId(user.getUserId());
-		return res;
-	}
+//	public static UserRes of(User user) {
+//		UserRes res = new UserRes();
+//		res.setUserId(user.getUserId());
+//		return res;
+//	}
 }
