@@ -41,3 +41,6 @@ out/
 
 ### Generated ###
 generated/
+
+### properties ###
+.properties
