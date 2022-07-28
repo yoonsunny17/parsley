@@ -25,4 +25,7 @@ public class AuthRepository {
                 .getResultList();
     }
 
+    public List findbyEmail(String email) {
+        return null;
+    }
 }
