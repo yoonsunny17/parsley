@@ -16,41 +16,18 @@ import java.util.List;
 @Service
 public class UserService {
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
-	@Autowired
-	AuthRepository authRepository;
-
-	public User getUserByEmail(String email) {
-		// 디비에 유저 정보 조회 (userId 를 통한 조회).
-//		User user = userRepository.findUserByEmail(email).get();
-//		return user;
-		return null;
+	public User createUser() {
+		User user = new User();
+		user.setName("익명의사용자"); // 유저 이름 생성 로직 나중에 구현
+		LocalDateTime dateTime = LocalDateTime.now();
+		user.setRegDate(dateTime);
+//		user.setCurrentBookPoint(0L);
+		user.setCurrentSley(0L);
+		user.setIsWithdrawn(false);
+		userRepository.save(user);
+		return user;
 	}
-
-	public Boolean checkEmail(String email) {
-		List findByEmail = authRepository.findbyEmail(email);
-		if (findByEmail.size() != 0) {
-			return true;
-		}
-		return false;
-//		Boolean existsByEmail = authRepository.existsByEmail(email);
-//		return existsByEmail;
-	}
-
-	public User getUserByUserId(String userId) {
-		return null;
-	}
-
-//	public User createUser(String email) {
-//		User user = new User();
-//		user.setName("익명의사용자");
-//		LocalDateTime dateTime = LocalDateTime.now();
-//		user.setRegDate(dateTime);
-//		user.setCurrentBookPoint(0);
-//		user.setCurrentSley(0);
-//		user.setIsWithdrawn(false);
-//		return userRepository.save(user);
-//	}
 
 }
