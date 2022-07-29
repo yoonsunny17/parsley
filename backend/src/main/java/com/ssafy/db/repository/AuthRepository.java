@@ -24,8 +24,4 @@ public class AuthRepository {
                 .setParameter("email", email)
                 .getResultList();
     }
-
-    public List findbyEmail(String email) {
-        return null;
-    }
 }
