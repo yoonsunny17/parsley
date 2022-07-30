@@ -5,6 +5,7 @@ import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.KakaoService;
 import com.ssafy.common.util.JwtTokenUtil;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -166,5 +167,40 @@ public class UserController {
         response.addCookie(refreshCookie);
 
         return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<String> refreshUser(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        String accessToken = null;
+        String refreshToken = null;
+        if(cookies == null) {
+            return new ResponseEntity<String>("로그인 해주세요", HttpStatus.ACCEPTED);
+        }
+        for (Cookie c : cookies) {
+            if ("accessToken".equals(c.getName())) {
+                accessToken = c.getValue();
+            } else if ("refreshToken".equals(c.getName())) {
+                refreshToken = c.getValue(); // 이거 대신 logout 시켜주는 함수를 넣어야 우리 방식
+            }
+        }
+        try {
+            if (refreshToken != null && jwtService.isUsable(refreshToken)) {
+                // + cache server에 token 다시 갱신해주는 코드
+                Cookie accessCookie = new Cookie("accessToken", accessToken);
+                accessCookie.setMaxAge((int)System.currentTimeMillis() * 1800 * 1000);
+                accessCookie.setSecure(true);
+                accessCookie.setHttpOnly(true);
+                accessCookie.setPath("/");
+                response.addCookie(accessCookie);
+
+                return new ResponseEntity<String>(accessToken, HttpStatus.OK);
+            }
+        } catch(JwtException e) {
+            System.out.println(e.getMessage());
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.I_AM_A_TEAPOT);
     }
 }

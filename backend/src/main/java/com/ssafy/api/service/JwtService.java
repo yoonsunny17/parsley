@@ -1,7 +1,6 @@
 package com.ssafy.api.service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -45,5 +44,37 @@ public class JwtService {
         }
 
         return key;
+    }
+
+    public boolean isUsable(String token) {
+        try{
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(this.generateKey())
+                    .parseClaimsJws(token);
+        } catch(ExpiredJwtException e) {
+            // 유효기간 초과
+            System.out.println(e.getMessage());
+            throw e;
+        } catch(UnsupportedJwtException e) {
+            // 형식이 일치하지 않는 JWT
+            System.out.println(e.getMessage());
+            throw e;
+        } catch(MalformedJwtException e) {
+            // JWT가 올바르게 구성되지 않았을 경우
+            System.out.println(e.getMessage());
+            throw e;
+        } catch(SignatureException e) {
+            // 기존 서명을 확인하지 못한 경우
+            System.out.println(e.getMessage());
+            throw e;
+        } catch(IllegalArgumentException e) {
+            // claims가 비어있는 경우
+            System.out.println(e.getMessage());
+            throw e;
+        } catch(Exception e) {
+            throw e;
+        }
+
+        return true;
     }
 }
