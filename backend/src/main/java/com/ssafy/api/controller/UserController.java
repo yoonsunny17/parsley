@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-    @PostMapping("/kakao")
+    @PostMapping("/login")
     public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         // 인가 코드로 받은 토큰을 이용해 user의 정보 중 email을 반환
         String kakaoEmail = kakaoService.getKakaoEmail(code);
@@ -133,5 +134,37 @@ public class UserController {
         // + cache server에 token들을 저장하는 코드
 
         return new ResponseEntity<String>(accessToken, HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+
+        String accessToken = null;
+        String bearer = request.getHeader("Authorization");
+        if(bearer != null && !"".equals(bearer)) {
+            accessToken = bearer.split(" ")[1];
+        }
+        Cookie[] cookies = request.getCookies();
+        for (Cookie c : cookies) {
+            if ("accessToken".equals(c.getName())) {
+                accessToken = c.getValue();
+            }
+        }
+
+        if(accessToken != null && !"".equals(accessToken)) {
+            // + cache server에서 token들을 삭제하는 코드
+        }
+
+        Cookie accessCookie = new Cookie("accessToken", null);
+        accessCookie.setMaxAge(0);
+        accessCookie.setPath("/");
+        response.addCookie(accessCookie);
+
+        Cookie refreshCookie = new Cookie("refreshToken", null);
+        refreshCookie.setMaxAge(0);
+        refreshCookie.setPath("/");
+        response.addCookie(refreshCookie);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
