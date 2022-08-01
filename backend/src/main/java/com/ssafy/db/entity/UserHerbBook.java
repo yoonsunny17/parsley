@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class UserHerbBook {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_herb_book_id")
     private Long id;
 
