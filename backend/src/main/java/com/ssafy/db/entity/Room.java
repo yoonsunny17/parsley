@@ -24,7 +24,7 @@ public class Room {
     private User hostUser;
 
     @ManyToMany(mappedBy = "joinRoomList")
-    private List<User> memberList = new ArrayList<>();
+    private List<User> members = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Mode mode;
@@ -35,4 +35,8 @@ public class Room {
     private int maxPopulation;
     private boolean isPublic;
     private String password;
+
+    public Room() {
+
+    }
 }
