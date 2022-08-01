@@ -4,27 +4,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
-/**
- * 인증 Entity
- */
 @Getter
 @Setter
 @Entity
-public class Auth {
-
+public class DailyGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_id")
+    @Column(name = "daily_study__id")
     private Long id;
 
-    private String email;
-    private String uuid;
+    private LocalDateTime date;
+    private int targetTime;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Auth() {
+    public DailyGoal() {
     }
 }

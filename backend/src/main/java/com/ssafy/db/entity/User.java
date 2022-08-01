@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 유저 모델 정의.
@@ -27,13 +29,51 @@ public class User {
     private String description;
     private String profileImgUrl;
     private LocalDateTime dDay;
-    private Long currentSley;
-    private Boolean isWithdrawn;
+
+    private long currentSley;
+    private long currentBookPoint;
+    private boolean isWithdrawn;
+
+    @ManyToMany
+    @JoinTable(name = "user_room",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id"))
+    private List<Room> joinRooms = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "interest_room",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id"))
+    private List<Room> interestRooms = new ArrayList<>();
+
+
+    @OneToMany
+    @JoinColumn(name = "user_herb_book_id")
+    private List<UserHerbBook> userHerbBooks = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "sley_id")
+    private List<Sley> sleyHistory = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "daily_study_log_id")
+    private List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "herb_id")
+    private List<Herb> herbs = new ArrayList<>();
 
 
 //    TODO :단방향을 위한 삭제임!!
 //    @OneToOne(mappedBy = "user")
 //    private Auth auth;
 
+    public void addUserRoom(Room room) {
+        joinRooms.add(room);
+        room.getMembers().add(this);
+    }
 
+    public User() {
+
+    }
 }
