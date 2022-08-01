@@ -24,4 +24,7 @@ public class Sley {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Sley() {
+
+    }
 }
