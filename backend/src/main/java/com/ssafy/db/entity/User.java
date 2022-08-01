@@ -46,6 +46,24 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Room> interestRooms = new ArrayList<>();
 
+
+    @OneToMany
+    @JoinColumn(name = "user_herb_book_id")
+    private List<UserHerbBook> userHerbBooks = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "sley_id")
+    private List<Sley> sleyHistory = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "daily_study_log_id")
+    private List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "herb_id")
+    private List<Herb> herbs = new ArrayList<>();
+
+
 //    TODO :단방향을 위한 삭제임!!
 //    @OneToOne(mappedBy = "user")
 //    private Auth auth;
