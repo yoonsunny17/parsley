@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class DailyGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "daily_study__id")
+    @Column(name = "daily_goal_id")
     private Long id;
 
     private LocalDateTime date;

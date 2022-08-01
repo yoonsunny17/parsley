@@ -23,7 +23,7 @@ public class Room {
     @JoinColumn(name = "user_id")
     private User hostUser;
 
-    @ManyToMany(mappedBy = "joinRoomList")
+    @ManyToMany(mappedBy = "joinRooms")
     private List<User> members = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class DailyStudyLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "daily_study__id")
+    @Column(name = "daily_study_log_id")
     private Long id;
 
     private LocalDateTime time;
