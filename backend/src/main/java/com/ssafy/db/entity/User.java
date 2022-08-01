@@ -38,20 +38,24 @@ public class User {
     @JoinTable(name = "user_room",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
-    private List<Room> joinRoomList = new ArrayList<>();
+    private List<Room> joinRooms = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "interest_room",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
-    private List<Room> interestRoomList = new ArrayList<>();
+    private List<Room> interestRooms = new ArrayList<>();
 
 //    TODO :단방향을 위한 삭제임!!
 //    @OneToOne(mappedBy = "user")
 //    private Auth auth;
 
     public void addUserRoom(Room room) {
-        joinRoomList.add(room);
-        room.getMemberList().add(this);
+        joinRooms.add(room);
+        room.getMembers().add(this);
+    }
+
+    public User() {
+
     }
 }

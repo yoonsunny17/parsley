@@ -6,33 +6,26 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * 사용자가 심은 작물 모델 정의.
- */
-
 @Getter
 @Setter
 @Entity
-public class Herb {
-
+public class DailyStudyLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "herb_id")
+    @Column(name = "daily_study__id")
     private Long id;
 
-    private int position;
-    private boolean isCompleted;
-    private int growthTime;
-    private LocalDateTime startDate;
-
-    @Embedded
-    private Item item;
+    private LocalDateTime time;
+    private boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Herb() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
+    public DailyStudyLog() {
     }
 }

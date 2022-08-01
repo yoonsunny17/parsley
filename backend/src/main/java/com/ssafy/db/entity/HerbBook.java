@@ -26,4 +26,6 @@ public class HerbBook {
     @Enumerated(EnumType.STRING)
     private HerbType herbType;
 
+    public HerbBook() {
+    }
 }

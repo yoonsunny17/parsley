@@ -9,22 +9,19 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class Sley {
-
+public class DailyGoal {
     @Id
-    @GeneratedValue
-    @Column(name = "sley_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "daily_study__id")
     private Long id;
 
-    private long price;
     private LocalDateTime date;
-    private String content;
+    private int targetTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Sley() {
-
+    public DailyGoal() {
     }
 }

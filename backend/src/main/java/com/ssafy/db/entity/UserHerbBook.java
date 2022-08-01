@@ -30,4 +30,8 @@ public class UserHerbBook {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "herb_book_id")
     private HerbBook herbBook;
+
+    public UserHerbBook() {
+
+    }
 }
