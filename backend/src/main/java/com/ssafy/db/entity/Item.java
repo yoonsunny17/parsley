@@ -14,9 +14,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Embeddable
+@MappedSuperclass
 public abstract class Item {
-    @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Integer id;
 

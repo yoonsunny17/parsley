@@ -5,9 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
 @DiscriminatorValue("S")
 @Getter @Setter
+@Embeddable
 public class ItemSeed extends Item{
     private Integer herbRate;
 
