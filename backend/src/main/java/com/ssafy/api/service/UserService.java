@@ -25,7 +25,7 @@ public class UserService {
 		user.setRegDate(dateTime);
 //		user.setCurrentBookPoint(0L);
 		user.setCurrentSley(0L);
-		user.setIsWithdrawn(false);
+		user.setWithdrawn(false);
 		userRepository.save(user);
 		return user;
 	}
