@@ -22,9 +22,9 @@ public class DailyGoalRepository {
 //        return em.find(DailyGoal.class, userId);
 //    }
 
-    public DailyGoal findByUser(User user){
-        return em.createQuery("select g from DailyGoal g where g.user = :user and g.date = :today", DailyGoal.class)
-                .setParameter("user", user)
+    public DailyGoal findByUserId(Long userId){
+        return em.createQuery("select g from DailyGoal g where g.user.id = :userId and g.date = :today", DailyGoal.class)
+                .setParameter("userId", userId)
                 .setParameter("today", LocalDate.now()).getResultList().get(0);
     }
 }
