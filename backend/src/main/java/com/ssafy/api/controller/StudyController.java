@@ -30,25 +30,18 @@ public class StudyController {
     //TODO: 오늘의 목표 시간 조회
 
 
-    //TODO: 오늘의 목표 시간 등록
     @ApiResponses({
             @ApiResponse(code = 201, message = "오늘의 목표 시간 등록 성공")
     })
     @PostMapping("/goal/create")
-    public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(@RequestBody GoalCreatePostReq goalInfo) throws ParseException {
-        //TODO: user 정보 가져오기(userid)
-        System.out.println("-----------------");
+    public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(@RequestBody GoalCreatePostReq goalInfo) {
+        //TODO: user 정보 가져오기(userid로 user 찾기)
         User user = userService.createUser();
-        System.out.println("user -----------------");
 
 //        JSONObject sessionJSON = (JSONObject) new JSONParser().parse(targetTime);
 //        int target = Integer.parseInt((String)sessionJSON.get("targetTime"));
 
         DailyGoal dailyGoal = studyService.createDailyGoal(goalInfo, user);
-
-        System.out.println("=============");
-        System.out.println(dailyGoal.getId());
-        System.out.println(dailyGoal.getDate());
 
         return ResponseEntity.status(200)
                 .body(GoalCreatePostRes.of(200, "success", dailyGoal.getId()));
@@ -56,7 +49,17 @@ public class StudyController {
     }
 
 
-    //TODO: 오늘의 목표 시간 수정
+    //TODO: 오늘의 목표 시간 수정 -> GoalCreatePostReq, GoalCreatePostRes 이름 변경 필요
+    @PostMapping("/goal/update")
+    public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(@RequestBody GoalCreatePostReq goalInfo){
+        //TODO: user 정보 가져오기
+        Long userId = 3L;
+
+        DailyGoal dailyGoal = studyService.updateDailyGoal(goalInfo, userId);
+
+        return ResponseEntity.status(200)
+                .body(GoalCreatePostRes.of(200, "success", dailyGoal.getId()));
+    }
 
 
     //TODO: 주간/일간 공부량 조회
