@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ public class DailyGoal {
     @Column(name = "daily_goal_id")
     private Long id;
 
-    private LocalDateTime date;
+    private LocalDate date;
     private int targetTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
