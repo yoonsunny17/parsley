@@ -1,6 +1,8 @@
 package com.ssafy.config;
 
+import com.ssafy.common.interceptor.JwtInterceptor;
 import com.ssafy.common.util.JwtTokenUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,6 +19,23 @@ import javax.servlet.Filter;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    private static final String[] EXCLUDE_PATHS = {
+            "/user/login",
+            "/user/logout",
+            "/user/refresh",
+            "/error"
+    };
+
+    @Autowired
+    private JwtInterceptor jwtInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jwtInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(EXCLUDE_PATHS);
+    }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -72,7 +92,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean loggingFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean(requestLoggingFilter());
-        registration.addUrlPatterns("/api/*");
+        registration.addUrlPatterns("/*");
         return registration;
     }
 }

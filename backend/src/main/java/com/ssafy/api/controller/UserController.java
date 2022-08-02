@@ -37,7 +37,7 @@ import java.util.Map;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/user")
 public class UserController {
 
 //	@Autowired
