@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import EnterStudyRoom from "./components/pages/EnterStudyRoom";
 import StudyRoom from "./components/pages/StudyRoom";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="room" element={<StudyRoom />} />
+          <Route path="enterstudy" element={<EnterStudyRoom />} />
         </Routes>
       </BrowserRouter>
     </div>
