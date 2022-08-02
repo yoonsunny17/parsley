@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +25,10 @@ public class User {
     private Long id;
 
     private String name;
-    private LocalDateTime regDate;
+    private LocalDate regDate;
     private String description;
     private String profileImgUrl;
-    private LocalDateTime dDay;
+    private LocalDate dDay;
 
     private long currentSley;
     private long currentBookPoint;
