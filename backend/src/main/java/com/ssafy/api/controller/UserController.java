@@ -111,18 +111,12 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-//        TokenVO tokenVO = new TokenVO();
-//        tokenVO.setEmail(kakaoEmail);
-//        tokenVO.setRefreshToken(refreshToken);
-//        int tokenIdx = userService.addToken(tokenVO);
-//        userInfo.put("tokenIdx", Integer.toString(tokenIdx));
-
         User user = authService.getUserByEmail(kakaoEmail);
         Map<String, String> userInfo = new HashMap<>();
-        userInfo.put("userName", user.getName());
-        userInfo.put("description", user.getDescription());
-        userInfo.put("profileImg", user.getProfileImgUrl());
-        // + userInfo에 들어갈 정보 추가
+        userInfo.put("id", user.getId()+"");
+//        userInfo.put("description", user.getDescription());
+//        userInfo.put("profileImg", user.getProfileImgUrl());
+        // + userInfo에 들어갈 정보 고민해보기
 
         String accessToken = jwtService.createAccessToken("user", userInfo, "user");
         Cookie accessCookie = new Cookie("accessToken", accessToken);
@@ -181,12 +175,14 @@ public class UserController {
             if ("accessToken".equals(c.getName())) {
                 accessToken = c.getValue();
             } else if ("refreshToken".equals(c.getName())) {
-                refreshToken = c.getValue(); // 이거 대신 logout 시켜주는 함수를 넣어야 우리 방식
+                refreshToken = c.getValue();
             }
         }
         try {
             if (refreshToken != null && jwtService.isUsable(refreshToken)) {
                 // + cache server에 token 다시 갱신해주는 코드
+
+                accessToken = jwtService.createAccessToken("user", jwtService.getUserInfo(accessToken), "user");
                 Cookie accessCookie = new Cookie("accessToken", accessToken);
                 accessCookie.setMaxAge((int)System.currentTimeMillis() * 1800 * 1000);
                 accessCookie.setSecure(true);
@@ -201,6 +197,6 @@ public class UserController {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.ACCEPTED);
     }
 }
