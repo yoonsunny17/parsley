@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateStudyRoom from "./components/pages/CreateStudyRoom";
 import Home from "./components/pages/Home";
+import MyPage from "./components/pages/MyPage";
 import Drawer from "./UI/molecules/Drawer";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/room/create" element={<CreateStudyRoom />} />
+            <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </BrowserRouter>
       </div>

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "../atoms/Button";
-import MenuBtn from "../molecules/MenuBtn";
+import MenuBtn from "../atoms/MenuBtn";
 import SearchBar from "../molecules/SearchBar";
 
 function Navbar() {
@@ -16,7 +16,6 @@ function Navbar() {
         <SearchBar />
         <MenuBtn />
       </div>
-      
     </header>
   );
 }
