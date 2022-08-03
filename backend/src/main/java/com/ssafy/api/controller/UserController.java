@@ -202,7 +202,7 @@ public class UserController {
     }
 
     
-    @PostMapping("/withdraw")
+    @PostMapping("/delete")
     @ApiOperation(value = "유저 삭제", notes = "로그인한 회원을 삭제한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "삭제 성공"),
