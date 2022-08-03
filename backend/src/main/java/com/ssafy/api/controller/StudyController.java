@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.GoalCreatePostReq;
 import com.ssafy.api.response.GoalCreatePostRes;
+import com.ssafy.api.response.GoalGetRes;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.db.entity.DailyGoal;
@@ -27,8 +28,16 @@ public class StudyController {
     @Autowired
     private UserService userService;
 
-    //TODO: 오늘의 목표 시간 조회
+    @GetMapping("/goal")
+    public ResponseEntity<? extends GoalGetRes>  getDailyGoal(){
+        //TODO: user 정보 가져오기
+        Long userId = 3L;
 
+        int targetTime = studyService.getTargetTime(userId);
+
+        return ResponseEntity.status(200)
+                .body(GoalGetRes.of(200, "success", targetTime));
+    }
 
     @ApiResponses({
             @ApiResponse(code = 201, message = "오늘의 목표 시간 등록 성공")

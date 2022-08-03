@@ -22,6 +22,16 @@ public class StudyService {
     @Autowired
     private DailyStudyRepository dailyStudyRepository;
 
+    public int getTargetTime(Long userId){
+        DailyGoal dailyGoal = dailyGoalRepository.findByUserId(userId);
+
+        if(dailyGoal != null){
+            return dailyGoal.getTargetTime();
+        }else{
+            return 0;
+        }
+    }
+
     @Transactional
     public DailyGoal createDailyGoal(GoalCreatePostReq goalInfo, User user){
         DailyGoal dailyGoal = new DailyGoal();
