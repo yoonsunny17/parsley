@@ -19,11 +19,11 @@ public class Room {
     @Column(name = "room_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User hostUser;
 
-    @ManyToMany(mappedBy = "joinRooms")
+    @ManyToMany(mappedBy = "joinRooms", fetch = FetchType.EAGER)
     private List<User> members = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
