@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "../atoms/Button";
+import MenuBtn from "../molecules/MenuBtn";
 import SearchBar from "../molecules/SearchBar";
 
 function Navbar() {
@@ -8,15 +9,14 @@ function Navbar() {
       <Link to="/">
         <span className="logo font-logo text-3xl cursor-pointer">PARSLEY</span>
       </Link>
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-[25px]">
         <Link to="/study/create">
           <Button text={"스터디룸 생성"} />
         </Link>
         <SearchBar />
-        <button className="text-4xl">
-          <i className="bx bx-menu"></i>
-        </button>
+        <MenuBtn />
       </div>
+      
     </header>
   );
 }
