@@ -39,4 +39,10 @@ public class UserService {
 		User user = userRepository.findByUserId(userId);
 		return user;
 	}
+
+	@Transactional
+	public void deleteUser(User user) {
+		user.setWithdrawn(true);
+		userRepository.save(user);
+	}
 }

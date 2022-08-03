@@ -5,6 +5,7 @@ import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.KakaoService;
 import com.ssafy.common.util.JwtTokenUtil;
+import com.ssafy.db.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -198,5 +199,18 @@ public class UserController {
             System.out.println(e.getMessage());
         }
         return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.ACCEPTED);
+    }
+
+    
+    @PostMapping("/withdraw")
+    @ApiOperation(value = "유저 삭제", notes = "로그인한 회원을 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "삭제 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends UserRes> deleteUser() {
+        User user = userService.getUser();
+        userService.deleteUser(user);
+        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
     }
 }
