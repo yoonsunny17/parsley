@@ -62,6 +62,12 @@ public class RoomController {
         // User hostUserInfo = jwtService.
         Room room = roomService.createRoom(roomInfo);
 
+        if(room == null) {
+            return ResponseEntity.status(500).body(
+                    RoomCreatePostRes.of(500, "Fail to create", 0L)
+            );
+        }
+
         return ResponseEntity.status(200).body(
                 RoomCreatePostRes.of(200, "Success", room.getId()));
     }
