@@ -1,0 +1,67 @@
+package com.ssafy.api.controller;
+
+import com.ssafy.api.request.HerbAddPostReq;
+import com.ssafy.api.request.UserHerbBookAddPostReq;
+import com.ssafy.api.response.HerbAddPostRes;
+import com.ssafy.api.response.UserHerbBookAddPostRes;
+import com.ssafy.api.response.UserHerbBookGetRes;
+import com.ssafy.api.service.FarmService;
+import com.ssafy.api.service.UserService;
+import com.ssafy.db.entity.HerbBook;
+import com.ssafy.db.entity.HerbType;
+import com.ssafy.db.entity.User;
+import com.ssafy.db.entity.UserHerbBook;
+import com.ssafy.db.repository.UserRepository;
+import io.swagger.annotations.*;
+import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * 농장게임 관련 API 요청 처리를 위한 컨트롤러 정의.
+ */
+@Api(value = "농장게임 관리 API", tags = {"Farm"})
+@RestController
+@RequestMapping("/api/v1/farm")
+public class FarmController {
+
+    @Autowired
+    FarmService farmService;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
+
+    //TODO: 허브수집 내역 가져오기
+
+
+    @PostMapping("/herb")
+    @ApiOperation(value = "획득 작물 추가", notes = "user정보와 herbBookId를 이용하여 도감에 획득한 작물 추가")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "도감에 획득 작물 추가 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends UserHerbBookAddPostRes> add(
+            @RequestBody @ApiParam(value = "herbBookId", required = true) UserHerbBookAddPostReq herbBookInfo){
+        //TODO: User받아오기, 아래 코드 삭제
+        //user 가져옴
+//        User user = userRepository.findByUserId(2L);
+        User user = userService.createUser();
+        System.out.println(user.getName() + "테스트입니당 아이디: " + user.getId());
+        UserHerbBook userHerbBook = farmService.addUserHerbBook(user, herbBookInfo);
+        System.out.println("무엇이 문제인가?" + userHerbBook.getId());
+        return ResponseEntity.status(200).body(UserHerbBookAddPostRes.of(200, "Success", userHerbBook.getId()));
+    }
+
+    //TODO: 작물 조회
+
+
+    //TODO: 작물 추가
+
+    //TODO: 작물 수확하기기
+}
