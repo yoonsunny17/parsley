@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CreateStudyRoom from "./components/pages/CreateStudyRoom";
 import Home from "./components/pages/Home";
 import Drawer from "./UI/molecules/Drawer";
 
@@ -9,6 +10,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/room/create" element={<CreateStudyRoom />} />
           </Routes>
         </BrowserRouter>
       </div>
