@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.UserReq;
 import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +44,14 @@ public class UserService {
 	@Transactional
 	public void deleteUser(User user) {
 		user.setWithdrawn(true);
+		userRepository.save(user);
+	}
+
+	@Transactional
+	public void updateUser(User user, UserReq userInfo) {
+		user.setName(userInfo.getName());
+		user.setDescription(userInfo.getDescription());
+		user.setProfileImgUrl(userInfo.getProfileImgUrl());
 		userRepository.save(user);
 	}
 }

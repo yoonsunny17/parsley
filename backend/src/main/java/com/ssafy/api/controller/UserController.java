@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.UserReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.JwtService;
@@ -211,6 +212,18 @@ public class UserController {
     public ResponseEntity<? extends UserRes> deleteUser() {
         User user = userService.getUser();
         userService.deleteUser(user);
+        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
+    }
+
+    @PostMapping("/update")
+    @ApiOperation(value = "유저 수정", notes = "로그인한 회원 정보를 수정한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "회원 정보 수정 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends UserRes> updateUser(@RequestBody UserReq userInfo) {
+        User user = userService.getUser();
+        userService.updateUser(user, userInfo);
         return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
     }
 }
