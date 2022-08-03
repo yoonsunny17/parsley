@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 public class RoomService {
@@ -29,6 +31,12 @@ public class RoomService {
         return room;
     }
 
+    public List<Room> getRooms() {
+        return roomRepository.findRooms();
+    }
 
+    public Room getRoomByRoomId(Long roomId) {
+        return roomRepository.findByRoomId(roomId);
+    }
 }
 

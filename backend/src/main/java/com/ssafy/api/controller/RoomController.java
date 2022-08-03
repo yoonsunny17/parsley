@@ -36,6 +36,20 @@ public class RoomController {
         );
     }
 
+    @GetMapping("/{room_id}")
+    @ApiOperation(value = "방 하나 조회", notes = "방 ID 값으로 방 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "방 하나 조회 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends RoomGetRes> getRoom(@PathVariable("room_id") Long roomId) {
+        Room room = roomService.getRoomByRoomId(roomId);
+
+        return ResponseEntity.status(200).body(
+                RoomGetRes.of(200, "Success", room)
+        );
+    }
+
     @PostMapping("/create")
     @ApiOperation(value = "방 생성", notes = "생성된 방 id 값을 응답한다.")
     @ApiResponses({
