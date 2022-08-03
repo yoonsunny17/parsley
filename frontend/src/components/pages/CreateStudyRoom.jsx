@@ -10,7 +10,7 @@ function CreateStudyRoom() {
   };
 
   const [isOpen, setIsOpen] = useState([]);
-  const selectIsOpen = (event) => {
+  const SelectOpenMode = (event) => {
     setIsOpen(event.target.value);
   };
 
@@ -21,34 +21,34 @@ function CreateStudyRoom() {
   };
 
   // console.log(maxPopulation);
-  const fileInput = React.useRef(null);
-  const handleBtnClick = (e) => {
-    fileInput.current.click();
-  };
+  // const fileInput = React.useRef(null);
+  // const handleBtnClick = (e) => {
+  //   fileInput.current.click();
+  // };
 
-  const handleChange = async (e) => {
-    e.preventDefault();
-    e.persist();
-    const formData = new FormData();
-    formData.append("files", e.target.files[0]);
-    console.log(e.target.files[0]);
+  // const handleChange = async (e) => {
+  //   e.preventDefault();
+  //   e.persist();
+  //   const formData = new FormData();
+  //   formData.append("files", e.target.files[0]);
+  //   console.log(e.target.files[0]);
 
-    await axios({
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "*",
-      },
-      url: "http://localhost:3000/room/create",
-      method: "POST",
-      data: formData,
-    })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  //   await axios({
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //       "Access-Control-Allow-Origin": "*",
+  //     },
+  //     url: "http://localhost:3000/room/create",
+  //     method: "POST",
+  //     data: formData,
+  //   })
+  //     .then((response) => {
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   return (
     <div className="font-basic flex justify-start flex-col rounded-3xl shadow-md px-8 py-9">
@@ -191,7 +191,7 @@ function CreateStudyRoom() {
               id="isPublic"
               value="public"
               checked={isOpen === "public"}
-              onChange={openMode}
+              onChange={SelectOpenMode}
             />
             <label htmlFor="public" className="text-lg ml-2 mr-4">
               공개
@@ -202,7 +202,7 @@ function CreateStudyRoom() {
               id="private"
               value="private"
               checked={isOpen === "private"}
-              onChange={openMode}
+              onChange={SelectOpenMode}
             />
             <label htmlFor="private" className="text-lg ml-2">
               비공개
