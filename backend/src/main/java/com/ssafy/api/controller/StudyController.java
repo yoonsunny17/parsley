@@ -1,12 +1,16 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.GoalCreatePostReq;
+import com.ssafy.api.request.LogCreatePostReq;
 import com.ssafy.api.response.GoalCreatePostRes;
 import com.ssafy.api.response.GoalGetRes;
+import com.ssafy.api.response.LogCreatePostRes;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.db.entity.DailyGoal;
+import com.ssafy.db.entity.DailyStudyLog;
 import com.ssafy.db.entity.User;
+import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -24,9 +28,10 @@ public class StudyController {
 
     @Autowired
     private StudyService studyService;
-
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/goal")
     public ResponseEntity<? extends GoalGetRes>  getDailyGoal(){
@@ -58,7 +63,6 @@ public class StudyController {
     }
 
 
-    //TODO: 오늘의 목표 시간 수정 -> GoalCreatePostReq, GoalCreatePostRes 이름 변경 필요
     @PostMapping("/goal/update")
     public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(@RequestBody GoalCreatePostReq goalInfo){
         //TODO: user 정보 가져오기
@@ -74,5 +78,14 @@ public class StudyController {
     //TODO: 주간/일간 공부량 조회
 
 
-    //TODO: 공부 시간 로그 추가
+    @PostMapping("/log/add")
+    public ResponseEntity<? extends LogCreatePostRes> createStudyLog(@RequestBody LogCreatePostReq logInfo){
+        //TODO: user 정보 가져오기
+        Long userId = 3L;
+
+        DailyStudyLog dailyStudyLog = studyService.addDailyGoal(logInfo, userId);
+
+        return ResponseEntity.status(200)
+                .body(LogCreatePostRes.of(200, "success", dailyStudyLog.getId()));
+    }
 }
