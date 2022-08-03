@@ -76,7 +76,7 @@ public class JwtInterceptor implements HandlerInterceptor {
                         }
 
                         // cacheRefreshToken과의 String 비교
-                        if (!refreshToken.equals(cacheRefreshToken)) {
+                        if (refreshToken.equals(cacheRefreshToken)) {
                             response.sendError(444, "기존 토큰이 만료되었습니다. 해당 토큰을 가지고 새 토큰을 발급받습니다..");
                             return false;
                         }
@@ -91,7 +91,8 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 1. accessToken이나 refreshToken이 null이어서 로그인이 필요한 경우
         // 2. refreshToken이 유효하지 않은 경우
-        // 3. 기타 오류가 생긴 경우
+        // 3. refreshToken과 cacheRefreshToken이 다른 경우
+        // 4. 기타 오류가 생긴 경우
         // => 쿠키를 비우고 재로그인
 
         Cookie accessCookie = new Cookie("accessToken", null);
