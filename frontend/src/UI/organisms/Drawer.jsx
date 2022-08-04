@@ -1,5 +1,5 @@
-import { useState } from "react";
-import kakao_oauth from "../../Assets/kakao_login_large_narrow.png";
+import React, { useState } from "react";
+import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import Ddaywidget from "../molecules/Ddaywidget";
 import Studywidget from "../molecules/Studywidget";
 
