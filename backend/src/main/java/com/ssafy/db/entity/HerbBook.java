@@ -17,7 +17,7 @@ public class HerbBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "herb_book_id")
-    private Long id;
+    private Integer id;
 
     private String name;
     private long point;
