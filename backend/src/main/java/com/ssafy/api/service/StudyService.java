@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Service
@@ -65,6 +68,33 @@ public class StudyService {
 
     }
 
+    //현재 데이터 확인용으로 초단위로 가져옴 -> 추후 /60 해줄 예정
+    public List<Long> getWeeklyStudyTime(User user){
+        List<Long> week = new LinkedList<>();
+
+        int day = LocalDateTime.now().getDayOfWeek().getValue();
+
+
+        for(int i=day-1; i>=0; i--){
+            LocalDate targetDate = LocalDate.from(LocalDateTime.now().minusDays(i));
+
+            List<DailyStudyLog> dayLog = dailyStudyRepository.findWeeklyByUserId(user.getId(), targetDate);
+
+            Long time = 0L;
+
+            for(int j=0; j< dayLog.size(); j+=2){
+                LocalDateTime tLog = dayLog.get(j).getTime();
+                LocalDateTime fLog = dayLog.get(j+1).getTime();
+
+                Duration duration = Duration.between(tLog, fLog);
+
+                time += duration.getSeconds();
+            }
+            week.add(time);
+        }
+        return week;
+    }
+
     @Transactional
     public DailyStudyLog addDailyGoal(LogCreatePostReq logInfo, Long userId){
         DailyStudyLog dailyStudyLog = new DailyStudyLog();
@@ -76,6 +106,8 @@ public class StudyService {
         dailyStudyLog.setStatus(logInfo.isStatus());
         dailyStudyLog.setUser(user);
         dailyStudyLog.setRoom(room);
+
+        System.out.println("------------user " + user.getId());
 
         dailyStudyRepository.save(dailyStudyLog);
 

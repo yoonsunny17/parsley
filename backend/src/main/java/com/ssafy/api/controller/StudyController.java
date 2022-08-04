@@ -5,6 +5,7 @@ import com.ssafy.api.request.LogCreatePostReq;
 import com.ssafy.api.response.GoalCreatePostRes;
 import com.ssafy.api.response.GoalGetRes;
 import com.ssafy.api.response.LogCreatePostRes;
+import com.ssafy.api.response.WeeklyStudyGetRes;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.db.entity.DailyGoal;
@@ -14,12 +15,11 @@ import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(value = "학습 관리", tags = {"Study"})
 @RestController
@@ -50,10 +50,7 @@ public class StudyController {
     @PostMapping("/goal/create")
     public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(@RequestBody GoalCreatePostReq goalInfo) {
         //TODO: user 정보 가져오기(userid로 user 찾기)
-        User user = userService.createUser();
-
-//        JSONObject sessionJSON = (JSONObject) new JSONParser().parse(targetTime);
-//        int target = Integer.parseInt((String)sessionJSON.get("targetTime"));
+        User user = userRepository.findByUserId(2L);
 
         DailyGoal dailyGoal = studyService.createDailyGoal(goalInfo, user);
 
@@ -66,7 +63,7 @@ public class StudyController {
     @PostMapping("/goal/update")
     public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(@RequestBody GoalCreatePostReq goalInfo){
         //TODO: user 정보 가져오기
-        Long userId = 3L;
+        Long userId = 2L;
 
         DailyGoal dailyGoal = studyService.updateDailyGoal(goalInfo, userId);
 
@@ -75,8 +72,17 @@ public class StudyController {
     }
 
 
-    //TODO: 주간/일간 공부량 조회
+    @GetMapping("/weekly")
+    public ResponseEntity<? extends WeeklyStudyGetRes> getWeeklyStudyTime(){
+        //TODO: user 정보 가져오기
+        User user = userRepository.findByUserId(3L);
 
+        List<Long> week = studyService.getWeeklyStudyTime(user);
+
+        return ResponseEntity.status(200)
+                .body(WeeklyStudyGetRes.of(200, "success", week));
+
+    }
 
     @PostMapping("/log/add")
     public ResponseEntity<? extends LogCreatePostRes> createStudyLog(@RequestBody LogCreatePostReq logInfo){
