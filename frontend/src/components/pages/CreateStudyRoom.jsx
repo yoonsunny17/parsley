@@ -10,7 +10,7 @@ function CreateStudyRoom() {
   };
 
   const [isOpen, setIsOpen] = useState([]);
-  const selectIsOpen = (event) => {
+  const selectOpenMode = (event) => {
     setIsOpen(event.target.value);
   };
 
@@ -191,7 +191,7 @@ function CreateStudyRoom() {
               id="isPublic"
               value="public"
               checked={isOpen === "public"}
-              onChange={openMode}
+              onChange={selectOpenMode}
             />
             <label htmlFor="public" className="text-lg ml-2 mr-4">
               공개
@@ -202,7 +202,7 @@ function CreateStudyRoom() {
               id="private"
               value="private"
               checked={isOpen === "private"}
-              onChange={openMode}
+              onChange={selectOpenMode}
             />
             <label htmlFor="private" className="text-lg ml-2">
               비공개
