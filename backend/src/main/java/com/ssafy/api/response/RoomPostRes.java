@@ -8,13 +8,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("RoomCreatePostResponse")
-public class RoomCreatePostRes extends BaseResponseBody {
+@ApiModel("RoomPostResponse")
+public class RoomPostRes extends BaseResponseBody {
     @ApiModelProperty(name = "방 ID")
     Long roomId;
 
-    public static RoomCreatePostRes of(Integer statusCode, String message, Long roomId) {
-        RoomCreatePostRes res = new RoomCreatePostRes();
+    public static RoomPostRes of(Integer statusCode, String message, Long roomId) {
+        RoomPostRes res = new RoomPostRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setRoomId(roomId);

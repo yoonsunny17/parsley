@@ -20,6 +20,10 @@ public class RoomRepository {
         em.persist(room);
     }
 
+    public void update(Room room) {
+        em.merge(room);
+    }
+
     public Room findByRoomId(Long roomId) {
         return em.find(Room.class, roomId);
     }
