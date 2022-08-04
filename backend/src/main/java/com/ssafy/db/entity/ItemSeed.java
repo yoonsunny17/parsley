@@ -7,10 +7,12 @@ import javax.persistence.*;
 
 @DiscriminatorValue("S")
 @Getter @Setter
-@Embeddable
-public class ItemSeed extends Item{
-    private Integer herbRate;
+@Entity
+public class ItemSeed extends ItemAbstract {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_seed_id")
+    private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    private HerbType herbType;
+    private int growthTime;
 }
