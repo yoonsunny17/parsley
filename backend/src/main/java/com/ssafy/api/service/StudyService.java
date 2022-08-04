@@ -58,11 +58,10 @@ public class StudyService {
     }
 
     @Transactional
-    public DailyGoal updateDailyGoal(GoalCreatePostReq goalInfo, Long userId){
+    public DailyGoal updateDailyGoal(Long userId, GoalCreatePostReq goalInfo){
         DailyGoal dailyGoal = dailyGoalRepository.findByUserId(userId);
 
         dailyGoal.setTargetTime(goalInfo.getTargetTime());
-        dailyGoalRepository.save(dailyGoal);
 
         return dailyGoal;
 

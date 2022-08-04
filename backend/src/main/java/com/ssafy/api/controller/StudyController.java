@@ -65,7 +65,7 @@ public class StudyController {
         //TODO: user 정보 가져오기
         Long userId = 2L;
 
-        DailyGoal dailyGoal = studyService.updateDailyGoal(goalInfo, userId);
+        DailyGoal dailyGoal = studyService.updateDailyGoal(userId, goalInfo);
 
         return ResponseEntity.status(200)
                 .body(GoalCreatePostRes.of(200, "success", dailyGoal.getId()));
