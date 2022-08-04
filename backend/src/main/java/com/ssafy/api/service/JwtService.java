@@ -2,9 +2,14 @@ package com.ssafy.api.service;
 
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -76,5 +81,43 @@ public class JwtService {
         }
 
         return true;
+    }
+
+    public Map<String, Object> get(String key) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String jwt = request.getHeader("Authorization").split(" ")[1];
+        Jws<Claims> claims = null;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(SALT.getBytes("UTF-8"))
+                    .parseClaimsJws(jwt);
+        } catch (ExpiredJwtException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+//            throw new UnauthorizedException(); 의도가 무엇일까?
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, Object> value = (LinkedHashMap<String, Object>)claims.getBody().get(key);
+        return value;
+    }
+
+    public Map<String, Object> getUserInfo(String jwt) {
+        Jws<Claims> claims = null;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(SALT.getBytes("UTF-8"))
+                    .parseClaimsJws(jwt);
+        } catch (ExpiredJwtException e) {
+            return (Map<String, Object>)e.getClaims().get("user");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+//            throw new UnauthorizedException();
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, Object> value = (LinkedHashMap<String, Object>)claims.getBody().get("user");
+        return value;
     }
 }

@@ -1,30 +1,23 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.response.UserLoginPostRes;
+import com.ssafy.api.request.UserReq;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.KakaoService;
-import com.ssafy.common.util.JwtTokenUtil;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
-import com.ssafy.common.auth.SsafyUserDetails;
-import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -37,48 +30,8 @@ import java.util.Map;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/user")
 public class UserController {
-
-//	@Autowired
-//	UserService userService;
-//
-//	@PostMapping()
-//	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "성공"),
-//        @ApiResponse(code = 401, message = "인증 실패"),
-//        @ApiResponse(code = 404, message = "사용자 없음"),
-//        @ApiResponse(code = 500, message = "서버 오류")
-//    })
-//	public ResponseEntity<? extends BaseResponseBody> register(
-//			@RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
-//
-//		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-//		User user = userService.createUser(registerInfo);
-//
-//		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-//	}
-//
-//	@GetMapping("/me")
-//	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "성공"),
-//        @ApiResponse(code = 401, message = "인증 실패"),
-//        @ApiResponse(code = 404, message = "사용자 없음"),
-//        @ApiResponse(code = 500, message = "서버 오류")
-//    })
-//	public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
-//		/**
-//		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
-//		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
-//		 */
-//		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-//		String userId = userDetails.getUsername();
-//		User user = userService.getUserByUserId(userId);
-//
-//		return ResponseEntity.status(200).body(UserRes.of(user));
-//	}
 
     @Autowired
     private KakaoService kakaoService;
@@ -111,18 +64,12 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-//        TokenVO tokenVO = new TokenVO();
-//        tokenVO.setEmail(kakaoEmail);
-//        tokenVO.setRefreshToken(refreshToken);
-//        int tokenIdx = userService.addToken(tokenVO);
-//        userInfo.put("tokenIdx", Integer.toString(tokenIdx));
-
         User user = authService.getUserByEmail(kakaoEmail);
         Map<String, String> userInfo = new HashMap<>();
-        userInfo.put("userName", user.getName());
-        userInfo.put("description", user.getDescription());
-        userInfo.put("profileImg", user.getProfileImgUrl());
-        // + userInfo에 들어갈 정보 추가
+        userInfo.put("id", user.getId()+"");
+//        userInfo.put("description", user.getDescription());
+//        userInfo.put("profileImg", user.getProfileImgUrl());
+        // + userInfo에 들어갈 정보 고민해보기
 
         String accessToken = jwtService.createAccessToken("user", userInfo, "user");
         Cookie accessCookie = new Cookie("accessToken", accessToken);
@@ -181,12 +128,14 @@ public class UserController {
             if ("accessToken".equals(c.getName())) {
                 accessToken = c.getValue();
             } else if ("refreshToken".equals(c.getName())) {
-                refreshToken = c.getValue(); // 이거 대신 logout 시켜주는 함수를 넣어야 우리 방식
+                refreshToken = c.getValue();
             }
         }
         try {
             if (refreshToken != null && jwtService.isUsable(refreshToken)) {
                 // + cache server에 token 다시 갱신해주는 코드
+
+                accessToken = jwtService.createAccessToken("user", jwtService.getUserInfo(accessToken), "user");
                 Cookie accessCookie = new Cookie("accessToken", accessToken);
                 accessCookie.setMaxAge((int)System.currentTimeMillis() * 1800 * 1000);
                 accessCookie.setSecure(true);
@@ -201,6 +150,31 @@ public class UserController {
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.ACCEPTED);
+    }
+
+    
+    @PostMapping("/delete")
+    @ApiOperation(value = "유저 삭제", notes = "로그인한 회원을 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "삭제 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends UserRes> deleteUser() {
+        User user = userService.getUser();
+        userService.deleteUser(user);
+        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
+    }
+
+    @PostMapping("/update")
+    @ApiOperation(value = "유저 수정", notes = "로그인한 회원 정보를 수정한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "회원 정보 수정 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends UserRes> updateUser(@RequestBody UserReq userInfo) {
+        User user = userService.getUser();
+        userService.updateUser(user, userInfo);
+        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
     }
 }
