@@ -20,7 +20,6 @@ public class UserHerbBook {
     private Long id;
 
     private LocalDateTime obtainedDate;
-    private long count;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
