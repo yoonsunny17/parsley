@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 public class MyRoomService {
@@ -35,6 +37,10 @@ public class MyRoomService {
             user.getInterestRooms().add(room);
             return true;
         }
+    }
+
+    public List<Room> getMyRooms(User user){
+        return user.getJoinRooms();
     }
 
 
