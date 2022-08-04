@@ -3,6 +3,7 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
 import com.ssafy.api.response.HerbAddPostRes;
+import com.ssafy.api.response.HerbListRes;
 import com.ssafy.api.response.UserHerbBookAddPostRes;
 import com.ssafy.api.service.FarmService;
 import com.ssafy.api.service.UserService;
@@ -57,6 +58,14 @@ public class FarmController {
     }
 
     //TODO: 작물 조회
+    @GetMapping("/herb")
+    @ApiOperation(value = "작물 조회", notes = "user정보를 이용하여 작물 조회")
+    public ResponseEntity<?> getHerbs(){
+        //TODO: User받아오기, 아래 코드 삭제
+        User user = userRepository.findByUserId(2L);
+        HerbListRes herbs = farmService.getHerbs(user);
+        return ResponseEntity.status(200).body(HerbListRes.of(200, "Success", herbs.getHerbs()));
+    }
 
     //TODO: 작물 추가
     @PostMapping("/herb/add")

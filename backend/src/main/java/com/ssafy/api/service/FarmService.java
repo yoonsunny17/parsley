@@ -2,6 +2,8 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
+import com.ssafy.api.response.HerbListRes;
+import com.ssafy.api.response.HerbRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.HerbBookRepository;
 import com.ssafy.db.repository.HerbRepository;
@@ -13,10 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- *	농장게임 비즈니스 로직 처리를 위한 서비스 구현 정의.
+ * 농장게임 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
 
 @Service
@@ -35,13 +38,13 @@ public class FarmService {
     @Autowired
     private HerbRepository herbRepository;
 
-    public List<UserHerbBook> getUserHerbBooks(User user){
+    public List<UserHerbBook> getUserHerbBooks(User user) {
         List<UserHerbBook> userHerbBooks = userHerbBookRepository.findByUser(user);
         return userHerbBooks;
     }
 
     @Transactional
-    public UserHerbBook addUserHerbBook(User user, UserHerbBookAddPostReq herbBookInfo){
+    public UserHerbBook addUserHerbBook(User user, UserHerbBookAddPostReq herbBookInfo) {
         UserHerbBook userHerbBook = new UserHerbBook();
         HerbBook herbBook = herbBookRepository.findByHerbBookId(herbBookInfo.getHerbBookId());
         System.out.println(herbBook.getName());
@@ -54,9 +57,33 @@ public class FarmService {
         return userHerbBook;
     }
 
+    //작물 조회
+    public HerbListRes getHerbs(User user) {
+        HerbListRes herbListRes = new HerbListRes();
+
+        List<Herb> herbs = herbRepository.findByUserId(user);
+        List<HerbRes> list = new ArrayList<>();
+
+        for (Herb herb : herbs) {
+            HerbRes res = new HerbRes();
+            res.setPosition(herb.getPosition());
+            Item item = herb.getItem();
+            res.setItemSeedId(item.getItemSeed().getId());
+            res.setItemWaterId(item.getItemWater().getId());
+            res.setItemFertilizerId(item.getItemFertilizer().getId());
+
+            //TODO: 남은 시간 계산!!
+            res.setLeftTime(herb.getGrowthTime());
+            list.add(res);
+        }
+
+        herbListRes.setHerbs(list);
+        return herbListRes;
+    }
+
     //작물 추가
     @Transactional
-    public Herb addHerb(User user, HerbAddPostReq herbInfo){
+    public Herb addHerb(User user, HerbAddPostReq herbInfo) {
         Herb herb = new Herb();
 
         ItemSeed itemSeed = itemRepository.findByItemSeedId(herbInfo.getItemSeedId());
@@ -64,7 +91,7 @@ public class FarmService {
         ItemFertilizer itemFertilizer = itemRepository.findByItemFertilizerId(herbInfo.getItemFertilizerId());
         Item item = new Item(itemSeed, itemWater, itemFertilizer);
 
-        int growthTime = (int)(itemSeed.getGrowthTime() * (1-itemWater.getTimeRate()*1.0/100));
+        int growthTime = (int) (itemSeed.getGrowthTime() * (1 - itemWater.getTimeRate() * 1.0 / 100));
         System.out.println(growthTime);
         LocalDateTime date = LocalDateTime.now();
         herb.setStartDate(date);
