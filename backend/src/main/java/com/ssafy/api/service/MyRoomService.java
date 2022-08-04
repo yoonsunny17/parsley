@@ -43,5 +43,9 @@ public class MyRoomService {
         return user.getJoinRooms();
     }
 
+    public List<Room> getInterestRooms(User user){
+        return user.getInterestRooms();
+    }
+
 
 }

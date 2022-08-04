@@ -29,10 +29,9 @@ public class MyRoomController {
     @Autowired
     UserService userService;
 
-    //TODO: response 수정 필요
     @GetMapping("/room")
     public ResponseEntity<? extends UserRoomsGetRes> getMyRoom(){
-        User user = userService.getUser(2L);
+        User user = userService.getUser(1L);
 
         List<Room> myRooms = myRoomService.getMyRooms(user);
 
@@ -63,6 +62,19 @@ public class MyRoomController {
     //TODO: 나의 방 삭제
 
     //TODO: 관심 방 목록 조회
+    @GetMapping("/like")
+    public ResponseEntity<? extends UserRoomsGetRes> getInterestRoom(){
+        User user = userService.getUser(1L);
+
+        List<Room> myRooms = myRoomService.getInterestRooms(user);
+
+        if(myRooms == null){
+            return ResponseEntity.status(404)
+                    .body(UserRoomsGetRes.of(404, "Fail to add", null));
+        }
+        return ResponseEntity.status(200)
+                .body(UserRoomsGetRes.of(200, "Success", myRooms));
+    }
 
     @PostMapping("/like/add")
     public ResponseEntity<? extends MyRoomPostRes> addInterestRoom(@RequestBody MyRoomPostReq myRoomInfo){
