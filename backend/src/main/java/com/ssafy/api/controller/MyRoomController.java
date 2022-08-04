@@ -52,6 +52,22 @@ public class MyRoomController {
     //TODO: 관심 방 목록 조회
 
     //TODO: 관심 방 추가
+    @PostMapping("/like/add")
+    public ResponseEntity<? extends MyRoomPostRes> addInterestRoom(@RequestBody MyRoomPostReq myRoomInfo){
+
+        Long roomId = myRoomInfo.getRoomId();
+        Room room = roomService.getRoomByRoomId(roomId);
+        User user = userService.getUser(1L);
+
+        boolean isAdded = myRoomService.addInterestRoom(user, room);
+
+        if(!isAdded){
+            return ResponseEntity.status(404)
+                    .body(MyRoomPostRes.of(404, "Fail to add", false));
+        }
+        return ResponseEntity.status(200)
+                .body(MyRoomPostRes.of(200, "Success", true));
+    }
 
     //TODO: 관심 방 삭제
 }

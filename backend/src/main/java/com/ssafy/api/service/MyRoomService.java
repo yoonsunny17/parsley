@@ -27,5 +27,15 @@ public class MyRoomService {
         }
     }
 
+    @Transactional
+    public boolean addInterestRoom(User user, Room room){
+        if(user.getInterestRooms().contains(room)){
+            return false;
+        }else{
+            user.getInterestRooms().add(room);
+            return true;
+        }
+    }
+
 
 }
