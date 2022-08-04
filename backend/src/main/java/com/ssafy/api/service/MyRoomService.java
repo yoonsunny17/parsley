@@ -60,5 +60,16 @@ public class MyRoomService {
         }
     }
 
+    @Transactional
+    public boolean deleteInterestRoom(User user, Room room){
 
+        List<Room> rooms = user.getInterestRooms();
+
+        if(rooms.contains(room)){
+            rooms.remove(room);
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

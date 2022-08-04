@@ -109,4 +109,21 @@ public class MyRoomController {
     }
 
     //TODO: 관심 방 삭제
+    @PostMapping("/like/delete")
+    public ResponseEntity<? extends MyRoomPostRes> deleteInterestRoom(@RequestBody MyRoomPostReq myRoomInfo){
+        Long roomId = myRoomInfo.getRoomId();
+
+        Room room = roomService.getRoomByRoomId(roomId);
+        User user = userService.getUser(1L);
+
+        boolean isSuccess = myRoomService.deleteInterestRoom(user, room);
+
+        if(isSuccess){
+            return ResponseEntity.status(200)
+                    .body(MyRoomPostRes.of(200, "Success",true));
+        }else{
+            return ResponseEntity.status(404)
+                    .body(MyRoomPostRes.of(404, "Fail to delete", false));
+        }
+    }
 }
