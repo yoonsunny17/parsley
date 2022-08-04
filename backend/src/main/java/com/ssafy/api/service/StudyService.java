@@ -95,10 +95,9 @@ public class StudyService {
     }
 
     @Transactional
-    public DailyStudyLog addDailyGoal(Long userId, LogCreatePostReq logInfo){
+    public DailyStudyLog addDailyGoal(User user, LogCreatePostReq logInfo){
         DailyStudyLog dailyStudyLog = new DailyStudyLog();
 
-        User user = userRepository.findByUserId(userId);
         Room room = roomRepository.findByRoomId(logInfo.getRoomId());
 
         dailyStudyLog.setTime(LocalDateTime.now());
