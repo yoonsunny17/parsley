@@ -3,13 +3,16 @@ package com.ssafy.db.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @DiscriminatorValue("F")
 @Getter @Setter
-@Embeddable
-public class ItemFertilizer extends Item{
+@Entity
+public class ItemFertilizer extends ItemAbstract {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_fertilizer_id")
+    private Integer id;
+
     private Integer sleyRate;
 }
