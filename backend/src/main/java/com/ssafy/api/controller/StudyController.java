@@ -89,7 +89,7 @@ public class StudyController {
         //TODO: user 정보 가져오기
         Long userId = 3L;
 
-        DailyStudyLog dailyStudyLog = studyService.addDailyGoal(logInfo, userId);
+        DailyStudyLog dailyStudyLog = studyService.addDailyGoal(userId, logInfo);
 
         return ResponseEntity.status(200)
                 .body(LogCreatePostRes.of(200, "success", dailyStudyLog.getId()));

@@ -95,7 +95,7 @@ public class StudyService {
     }
 
     @Transactional
-    public DailyStudyLog addDailyGoal(LogCreatePostReq logInfo, Long userId){
+    public DailyStudyLog addDailyGoal(Long userId, LogCreatePostReq logInfo){
         DailyStudyLog dailyStudyLog = new DailyStudyLog();
 
         User user = userRepository.findByUserId(userId);
