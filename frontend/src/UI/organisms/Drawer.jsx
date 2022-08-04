@@ -2,16 +2,39 @@ import { useState } from "react";
 import kakao_oauth from "../../Assets/kakao_login_large_narrow.png";
 import Ddaywidget from "../molecules/Ddaywidget";
 import Studywidget from "../molecules/Studywidget";
+import axios from 'axios'
+
 
 function Drawer({ children }) {
   // kakao social login
   const REST_API_KEY = "c363c1414c4795051bf51aea0b37c03d";
   const REDIRECT_URI = "http://localhost:8080/user/login";
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+  
   const handleLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
+
+  // const instance = axios.create({
+  //   baseURL:'https://jsonplaceholder.typicode.com/posts/1',
+  //   headers: {
+  //     "Content-type": "application/json",
+  //   },
+  // });
+  axios.get('https://localhost:8080/')
+  .then(res => {
+    console.log(res)
+    if(res.request.status === 444){
+      axios.get('/user/refresh')
+    }else if( res.request.status === 445) {
+      alert("로그인이 필요합니다.")
+      window.location.href = `/`
+    }
+  })
+
+
+
+
 
   const [isLogin, setIsLogin] = useState(false);
   const onClick = () => setIsLogin((current) => !current);
