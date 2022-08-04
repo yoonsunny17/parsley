@@ -59,9 +59,24 @@ public class MyRoomController {
                 .body(MyRoomPostRes.of(200, "Success", true));
     }
 
-    //TODO: 나의 방 삭제
+    @PostMapping("/room/delete")
+    public ResponseEntity<? extends MyRoomPostRes> deleteMyRoom(@RequestBody MyRoomPostReq myRoomInfo){
+        Long roomId = myRoomInfo.getRoomId();
 
-    //TODO: 관심 방 목록 조회
+        Room room = roomService.getRoomByRoomId(roomId);
+        User user = userService.getUser(1L);
+
+        boolean isSuccess = myRoomService.deleteMyRoom(user, room);
+
+        if(isSuccess){
+            return ResponseEntity.status(200)
+                    .body(MyRoomPostRes.of(200, "Success",true));
+        }else{
+            return ResponseEntity.status(404)
+                    .body(MyRoomPostRes.of(404, "Fail to delete", false));
+        }
+    }
+
     @GetMapping("/like")
     public ResponseEntity<? extends UserRoomsGetRes> getInterestRoom(){
         User user = userService.getUser(1L);
