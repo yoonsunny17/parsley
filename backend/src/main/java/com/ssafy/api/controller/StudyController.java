@@ -52,7 +52,7 @@ public class StudyController {
         //TODO: user 정보 가져오기(userid로 user 찾기)
         User user = userRepository.findByUserId(2L);
 
-        DailyGoal dailyGoal = studyService.createDailyGoal(goalInfo, user);
+        DailyGoal dailyGoal = studyService.createDailyGoal(user, goalInfo);
 
         return ResponseEntity.status(200)
                 .body(GoalCreatePostRes.of(200, "success", dailyGoal.getId()));

@@ -45,7 +45,7 @@ public class StudyService {
     }
 
     @Transactional
-    public DailyGoal createDailyGoal(GoalCreatePostReq goalInfo, User user){
+    public DailyGoal createDailyGoal(User user, GoalCreatePostReq goalInfo){
         DailyGoal dailyGoal = new DailyGoal();
 
         dailyGoal.setDate(LocalDate.now());
