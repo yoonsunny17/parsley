@@ -44,7 +44,6 @@ public class UserService {
 	@Transactional
 	public void deleteUser(User user) {
 		user.setWithdrawn(true);
-		userRepository.save(user);
 	}
 
 	@Transactional
@@ -52,6 +51,5 @@ public class UserService {
 		user.setName(userInfo.getName());
 		user.setDescription(userInfo.getDescription());
 		user.setProfileImgUrl(userInfo.getProfileImgUrl());
-		userRepository.save(user);
 	}
 }

@@ -25,7 +25,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
             "/user/logout",
             "/user/refresh",
             "/error",
-            "/user/update"
     };
 
     @Autowired
