@@ -31,4 +31,8 @@ public class RoomRepository {
     public List<Room> findRooms() {
         return em.createQuery("select r from Room r", Room.class).getResultList();
     }
+
+    public void delete(Room room) {
+        em.remove(room);
+    }
 }

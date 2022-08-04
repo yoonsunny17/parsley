@@ -4,12 +4,15 @@ import com.ssafy.api.request.RoomCreatePostReq;
 import com.ssafy.api.request.RoomUpdatePostReq;
 import com.ssafy.db.entity.Mode;
 import com.ssafy.db.entity.Room;
+import com.ssafy.db.entity.RoomHashtag;
+import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,6 +35,14 @@ public class RoomService {
         return room;
     }
 
+    public List<Room> getRooms() {
+        return roomRepository.findRooms();
+    }
+
+    public Room getRoomByRoomId(Long roomId) {
+        return roomRepository.findByRoomId(roomId);
+    }
+
     @Transactional
     public Room updateRoom(Long roomId, RoomUpdatePostReq newRoomInfo) {
         Room room = roomRepository.findByRoomId(roomId);
@@ -48,12 +59,26 @@ public class RoomService {
         return room;
     }
 
-    public List<Room> getRooms() {
-        return roomRepository.findRooms();
-    }
+    @Transactional
+    public Room deleteRoom(Long roomId) {
+        Room room = roomRepository.findByRoomId(roomId);
 
-    public Room getRoomByRoomId(Long roomId) {
-        return roomRepository.findByRoomId(roomId);
+        if(room != null) {
+//            User hostUser = room.getHostUser();
+//            hostUser.deleteMyRoom(room);
+
+//            List<RoomHashtag> roomHashtags = room.getRoomHashtags();
+//            roomHashtags.forEach(new Consumer<RoomHashtag>() {
+//                @Override
+//                public void accept(RoomHashtag roomHashtag) {
+//                    roomHashtag.deleteRoom(room);
+//                }
+//            });
+
+            roomRepository.delete(room);
+        }
+
+        return room;
     }
 }
 
