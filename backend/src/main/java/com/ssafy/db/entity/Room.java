@@ -1,7 +1,9 @@
 package com.ssafy.db.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,18 +15,23 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@ToString
+@NoArgsConstructor
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User hostUser;
 
-    @ManyToMany(mappedBy = "joinRooms")
+    @ManyToMany(mappedBy = "joinRooms", fetch = FetchType.LAZY)
     private List<User> members = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+    private List<RoomHashtag> roomHashtags = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Mode mode;
@@ -35,8 +42,4 @@ public class Room {
     private int maxPopulation;
     private boolean isPublic;
     private String password;
-
-    public Room() {
-
-    }
 }
