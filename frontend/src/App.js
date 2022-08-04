@@ -7,15 +7,15 @@ import Drawer from "./UI/molecules/Drawer";
 function App() {
   return (
     <Drawer>
+      <BrowserRouter>
       <div className="App container mx-auto px-5 drawer drawer-end">
-        <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/room/create" element={<CreateStudyRoom />} />
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
-        </BrowserRouter>
       </div>
+      </BrowserRouter>
     </Drawer>
   );
 }

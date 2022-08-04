@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from 'react-router-dom'
 import kakao_oauth from '../../Assets/kakao_login_large_narrow.png'
 import Ddaywidget from "./Ddaywidget";
 import Studywidget from "./Studywidget";
@@ -13,16 +14,16 @@ function Drawer({children}) {
   const user = '유교보이'
 
   return (
-    <div class="drawer drawer-end">
-      <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content">
+    <div className="drawer drawer-end">
+      <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content">
           {children}
-        <label for="my-drawer-4" class="drawer-button ">
+        <label htmlFor="my-drawer-4" className="drawer-button ">
           <i className="bx bx-menu"></i>
         </label>
       </div>
-      <div class="drawer-side">
-        <label for="my-drawer-4" class="drawer-overlay "></label>
+      <div className="drawer-side">
+        <label htmlFor="my-drawer-4" className="drawer-overlay "></label>
         {isLogin ? 
           <div className="menu px-[24px] py-[36px] overflow-y-auto w-[380px] bg-base-100 text-base-content rounded-[30px_0_0_30px]">
             {/* <!-- Sidebar content here --> */}
@@ -37,7 +38,9 @@ function Drawer({children}) {
               </div>
             </div>
             <div className="mb-[25px]">
-              <button className="rounded-[50px] border-none text-font3 font-bold mr-[10px] px-[14px] py-[8px] bg-gradient-to-r from-[#628D54]  to-[#333]">마이페이지</button>
+              <Link to="/mypage">
+                <button className="rounded-[50px] border-none text-font3 font-bold mr-[10px] px-[14px] py-[8px] bg-gradient-to-r from-[#628D54]  to-[#333]">마이페이지</button>
+              </Link>
               <button onClick={onClick} className="rounded-[50px] border-none text-font3 font-bold mr-[10px] px-[14px] py-[8px] bg-gradient-to-r from-[#628D54]  to-[#333]">로그아웃</button>
             </div>
             {/* ========위젯========= */}
