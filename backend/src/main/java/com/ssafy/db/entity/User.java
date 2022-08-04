@@ -55,8 +55,7 @@ public class User {
     @JoinColumn(name = "sley_id")
     private List<Sley> sleyHistory = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "daily_study_log_id")
+    @OneToMany(mappedBy = "user")
     private List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
