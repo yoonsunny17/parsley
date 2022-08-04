@@ -18,9 +18,6 @@ function Drawer({children}) {
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
           {children}
-        <label htmlFor="my-drawer-4" className="drawer-button ">
-          <i className="bx bx-menu"></i>
-        </label>
       </div>
       <div className="drawer-side">
         <label htmlFor="my-drawer-4" className="drawer-overlay "></label>
@@ -59,7 +56,7 @@ function Drawer({children}) {
             </div>
           </div>
         }
-        
+
       </div>
     </div>
   )

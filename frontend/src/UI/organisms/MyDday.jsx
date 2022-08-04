@@ -9,8 +9,10 @@ function MyDday() {
   const onChange = () => {
     setShowMdoal((current) => !current);
   };
-  
 
+  const [inputValue, setInputValue] = useState('')
+
+  console.log(inputValue)
 
   const Dday = () => {
     if (document.querySelector("#targetDate").value === ""){
@@ -28,12 +30,7 @@ function MyDday() {
     const firstDate = moment().format("YYYY-MM-DD")
     let secondDate = moment(document.querySelector("#targetDate").value)
     let diff = secondDate.diff(firstDate, 'days')
-    // if (diff === 0) {
-    //   console.log("day")
-    //   diff = 'day'
-    // }
 
-    
     if ( diff > 0 ) {
       diff =  diff * -1
     } else if ( diff === 0 ) {
@@ -46,6 +43,8 @@ function MyDday() {
     console.log(dday)
   }
 
+
+
   return (
     <div className="rounded-2xl w-full md:w-[32%] shadow px-8 py-5">
       <div>
@@ -53,7 +52,7 @@ function MyDday() {
       </div>
       <div>
         <div className="my-6 text-2xl font-bold">
-          <h3 className="">두근두근 코테</h3>
+          <h3 className="">{inputValue}</h3>
           <h3 className="">D {dday}</h3>
         </div>
       </div>
@@ -79,11 +78,21 @@ function MyDday() {
                   <h3 className="font-basic text-3xl font-semibold">D-Day 설정</h3>
                 </div>
                 {/*body*/}
-                <div className="relative w-[480px] p-[30px] flex-auto">
-                  <input type="date" id="targetDate" />
+                <div className="relative w-[480px] p-[20px_100px] flex-auto">
+                  <label htmlFor="" className="mr-[20px] font-basic text-[16px] font-semibold">
+                    제목
+                  </label>
+                  <input onChange={(e)=>{setInputValue(e.target.value)}} type="text" className="border border-main rounded-[5px] p-[2px_8px] focus:border-sub1"/>
+
+                </div>
+                <div className="relative w-[480px] p-[20px_100px] flex-auto">
+                  <label htmlFor="" className="mr-[20px] font-basic text-[16px] font-semibold">
+                    날짜
+                  </label>
+                  <input type="date" id="targetDate" className="border border-main rounded-[5px] p-[2px_8px] focus:border-sub1" />
                   {/* <button onClick={ddaysave}>gdgd</button> */}
-                  <button id="resultBtn" onClick={Dday}>결과</button>
-                  <div id="resultDiv"></div>
+                  {/* <button id="resultBtn" onClick={Dday}>결과</button> */}
+                  {/* <div id="resultDiv"></div> */}
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6  gap-[10px]">

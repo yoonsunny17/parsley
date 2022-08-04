@@ -6,8 +6,8 @@ import Drawer from "./UI/molecules/Drawer";
 
 function App() {
   return (
+  <BrowserRouter>
     <Drawer>
-      <BrowserRouter>
       <div className="App container mx-auto px-5 drawer drawer-end">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -15,8 +15,8 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
       </div>
-      </BrowserRouter>
     </Drawer>
+  </BrowserRouter>
   );
 }
 
