@@ -1,20 +1,22 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthLogin from "./components/pages/AuthLogin";
 import CreateStudyRoom from "./components/pages/CreateStudyRoom";
 import Home from "./components/pages/Home";
-import Drawer from "./UI/molecules/Drawer";
+import Drawer from "./UI/organisms/Drawer";
 
 function App() {
   return (
-    <Drawer>
-      <div className="App container mx-auto px-5 drawer drawer-end">
-        <BrowserRouter>
+    <BrowserRouter>
+      <Drawer>
+        <div className="App container mx-auto px-5 drawer drawer-end">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/room/create" element={<CreateStudyRoom />} />
+            <Route path="/user/login" element={<AuthLogin />} />
           </Routes>
-        </BrowserRouter>
-      </div>
-    </Drawer>
+        </div>
+      </Drawer>
+    </BrowserRouter>
   );
 }
 
