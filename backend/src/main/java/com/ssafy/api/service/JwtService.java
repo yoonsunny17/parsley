@@ -16,8 +16,7 @@ public class JwtService {
 
     private static final String SALT = "parsley";
 
-
-    public <T> String createAccessToken(String key, T data, String subject){
+    public <T> String createAccessToken(String key, T data, String subject) {
         Date now = new Date();
         String jwt = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
@@ -40,7 +39,7 @@ public class JwtService {
         return jwt;
     }
 
-    private byte[] generateKey(){
+    private byte[] generateKey() {
         byte[] key = null;
         try {
             key = SALT.getBytes("UTF-8");
@@ -52,31 +51,31 @@ public class JwtService {
     }
 
     public boolean isUsable(String token) {
-        try{
+        try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(this.generateKey())
                     .parseClaimsJws(token);
-        } catch(ExpiredJwtException e) {
+        } catch (ExpiredJwtException e) {
             // 유효기간 초과
             System.out.println(e.getMessage());
             throw e;
-        } catch(UnsupportedJwtException e) {
+        } catch (UnsupportedJwtException e) {
             // 형식이 일치하지 않는 JWT
             System.out.println(e.getMessage());
             throw e;
-        } catch(MalformedJwtException e) {
+        } catch (MalformedJwtException e) {
             // JWT가 올바르게 구성되지 않았을 경우
             System.out.println(e.getMessage());
             throw e;
-        } catch(SignatureException e) {
+        } catch (SignatureException e) {
             // 기존 서명을 확인하지 못한 경우
             System.out.println(e.getMessage());
             throw e;
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // claims가 비어있는 경우
             System.out.println(e.getMessage());
             throw e;
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw e;
         }
 
@@ -93,13 +92,12 @@ public class JwtService {
                     .parseClaimsJws(jwt);
         } catch (ExpiredJwtException e) {
             throw e;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 //            throw new UnauthorizedException(); 의도가 무엇일까?
         }
         @SuppressWarnings("unchecked")
-        Map<String, Object> value = (LinkedHashMap<String, Object>)claims.getBody().get(key);
+        Map<String, Object> value = (LinkedHashMap<String, Object>) claims.getBody().get(key);
         return value;
     }
 
@@ -110,14 +108,17 @@ public class JwtService {
                     .setSigningKey(SALT.getBytes("UTF-8"))
                     .parseClaimsJws(jwt);
         } catch (ExpiredJwtException e) {
-            return (Map<String, Object>)e.getClaims().get("user");
-        }
-        catch (Exception e) {
+            return (Map<String, Object>) e.getClaims().get("user");
+        } catch (Exception e) {
             e.printStackTrace();
 //            throw new UnauthorizedException();
         }
         @SuppressWarnings("unchecked")
-        Map<String, Object> value = (LinkedHashMap<String, Object>)claims.getBody().get("user");
+        Map<String, Object> value = (LinkedHashMap<String, Object>) claims.getBody().get("user");
         return value;
+    }
+
+    public Long getUserId() {
+        return Long.parseLong((String) this.get("user").get("id"));
     }
 }

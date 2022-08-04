@@ -161,7 +161,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRes> deleteUser() {
-        User user = userService.getUser();
+        User user = userService.getUser(jwtService.getUserId());
         userService.deleteUser(user);
         return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
     }
@@ -173,7 +173,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRes> updateUser(@RequestBody UserReq userInfo) {
-        User user = userService.getUser();
+        User user = userService.getUser(jwtService.getUserId());
         userService.updateUser(user, userInfo);
         return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
     }

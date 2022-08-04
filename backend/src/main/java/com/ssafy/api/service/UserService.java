@@ -19,13 +19,10 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private JwtService jwtService;
-
 	@Transactional
 	public User createUser() {
 		User user = new User();
-		user.setName("익명의사용자"); // 유저 이름 생성 로직 나중에 구현
+		user.setName("익명의 사용자"); // 유저 이름 생성 로직 나중에 구현
 		LocalDate date = LocalDate.now();
 		user.setRegDate(date);
 		user.setCurrentBookPoint(0L);
@@ -35,10 +32,8 @@ public class UserService {
 		return user;
 	}
 
-	public User getUser() {
-		Long userId = Long.parseLong((String)jwtService.get("user").get("id"));
-		User user = userRepository.findByUserId(userId);
-		return user;
+	public User getUser(Long userId) {
+		return userRepository.findByUserId(userId);
 	}
 
 	@Transactional
