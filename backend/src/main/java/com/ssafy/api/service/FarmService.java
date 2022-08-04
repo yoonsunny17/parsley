@@ -2,6 +2,8 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
+import com.ssafy.api.response.HerbBookListRes;
+import com.ssafy.api.response.HerbBookRes;
 import com.ssafy.api.response.HerbListRes;
 import com.ssafy.api.response.HerbRes;
 import com.ssafy.db.entity.*;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.persistence.Tuple;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +58,24 @@ public class FarmService {
 
         userHerbBookRepository.save(userHerbBook);
         return userHerbBook;
+    }
+    //도감 작물 조회
+    public HerbBookListRes getHerbBooks(User user){
+        HerbBookListRes herbBookListRes = new HerbBookListRes();
+
+        List<Tuple> userHerbBooks = userHerbBookRepository.findByUserAndGroupBy(user);
+        List<HerbBookRes> list = new ArrayList<>();
+
+        for(Tuple userHerbBook : userHerbBooks){
+            HerbBookRes res = new HerbBookRes();
+            HerbBook herbBook = (HerbBook)userHerbBook.get(0);
+            res.setHerbBookId(herbBook.getId());
+            res.setCount(Integer.parseInt(String.valueOf(userHerbBook.get(1))));
+            list.add(res);
+        }
+
+        herbBookListRes.setHerbBooks(list);
+        return herbBookListRes;
     }
 
     //작물 조회
