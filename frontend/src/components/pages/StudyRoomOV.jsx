@@ -231,6 +231,7 @@ class StudyRoomOV extends Component {
 
     return (
       <div className="container">
+        {/* 스터디룸 입장 전 */}
         {this.state.session === undefined ? (
           <div id="join">
             <div id="img-div">
@@ -287,34 +288,31 @@ class StudyRoomOV extends Component {
           </div>
         ) : null}
 
+        {/* 스터디룸 입장 후 */}
         {this.state.session !== undefined ? (
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">{mySessionId}</h1>
-              <input
+              <button
+                onClick={this.leaveSession}
+                className="float-right mt-5 bg-red-400 px-3 py-2 text-white rounded-lg"
+              >
+                LEAVE SESSION
+              </button>
+              {/* <input
                 className="btn btn-large btn-danger"
                 type="button"
                 id="buttonLeaveSession"
                 onClick={this.leaveSession}
                 value="Leave session"
-              />
+              /> */}
             </div>
-
-            {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent
-                  streamManager={this.state.mainStreamManager}
-                />
-                <input
-                  className="btn btn-large btn-success"
-                  type="button"
-                  id="buttonSwitchCamera"
-                  onClick={this.switchCamera}
-                  value="Switch Camera"
-                />
-              </div>
-            ) : null}
-            <div id="video-container" className="col-md-6">
+            {/* // TODO: 위에 N명 이상 되면 넘어가는것 구현해야 함 */}
+            {/* 여러명 작게 보이는거 */}
+            <div
+              id="video-container"
+              className="flex col-md-6 relative float-left cursor-pointer"
+            >
               {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
@@ -335,11 +333,45 @@ class StudyRoomOV extends Component {
                 </div>
               ))}
             </div>
+
+            {/* 메인 화면 보이는 부분 */}
+            {this.state.mainStreamManager !== undefined ? (
+              <div id="main-video" className="">
+                <UserVideoComponent
+                  streamManager={this.state.mainStreamManager}
+                />
+                <button
+                  onClick={this.switchCamera}
+                  className="float-left mt-5 bg-sub1 px-3 py-2 text-white rounded-lg"
+                >
+                  SWITCH CAMERA
+                </button>
+                {/* <input
+                  className="btn btn-large btn-success"
+                  type="button"
+                  id="buttonSwitchCamera"
+                  onClick={this.switchCamera}
+                  value="Switch Camera"
+                /> */}
+              </div>
+            ) : null}
           </div>
         ) : null}
       </div>
     );
   }
+
+  /**
+   * --------------------------
+   * SERVER-SIDE RESPONSIBILITY
+   * --------------------------
+   * These methods retrieve the mandatory user token from OpenVidu Server.
+   * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
+   * the API REST, openvidu-java-client or openvidu-node-client):
+   *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
+   *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
+   *   3) The Connection.token must be consumed in Session.connect() method
+   */
 
   getToken() {
     return this.createSession(this.state.mySessionId).then((sessionId) =>
