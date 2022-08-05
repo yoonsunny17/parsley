@@ -10,14 +10,13 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserHerbBookAddPostRes")
 public class UserHerbBookAddPostRes extends BaseResponseBody {
-    @ApiModelProperty(name = "유저 도감 ID")
-    Long userHerbBookId;
+    @ApiModelProperty(name = "추가 슬리")
+    Long addSley;
 
-    public static UserHerbBookAddPostRes of(Integer statusCode, String message, Long userHerbBookId){
-        UserHerbBookAddPostRes res = new UserHerbBookAddPostRes();
+    public static UserHerbBookAddPostRes of(Integer statusCode, String message, UserHerbBookAddPostRes userHerbBookAddPostRes){
+        UserHerbBookAddPostRes res = userHerbBookAddPostRes;
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setUserHerbBookId(userHerbBookId);
         return res;
     }
 }

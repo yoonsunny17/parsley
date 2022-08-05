@@ -5,6 +5,7 @@ import com.ssafy.api.request.UserHerbBookAddPostReq;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.FarmService;
 import com.ssafy.api.service.UserService;
+import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Herb;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.UserHerbBook;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Api(value = "농장게임 관리 API", tags = {"Farm"})
 @RestController
-@RequestMapping("/farm")
+@RequestMapping("/api/v1/farm")
 public class FarmController {
 
     @Autowired
@@ -55,16 +56,15 @@ public class FarmController {
             @ApiResponse(code = 200, message = "도감에 획득 작물 추가 성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends UserHerbBookAddPostRes> addUserHerbBook(
+    public ResponseEntity<?> addUserHerbBook(
             @RequestBody @ApiParam(value = "herbBookId", required = true) UserHerbBookAddPostReq herbBookInfo){
         //TODO: User받아오기, 아래 코드 삭제
         //user 가져옴
-//        User user = userRepository.findByUserId(2L);
-        User user = userService.createUser();
-        System.out.println(user.getName() + "테스트입니당 아이디: " + user.getId());
-        UserHerbBook userHerbBook = farmService.addUserHerbBook(user, herbBookInfo);
-        System.out.println("무엇이 문제인가?" + userHerbBook.getId());
-        return ResponseEntity.status(200).body(UserHerbBookAddPostRes.of(200, "Success", userHerbBook.getId()));
+        User user = userRepository.findByUserId(2L);
+
+        UserHerbBookAddPostRes userHerbBookAddPostRes = farmService.addUserHerbBook(user, herbBookInfo);
+
+        return ResponseEntity.status(200).body(UserHerbBookAddPostRes.of(200, "Success", userHerbBookAddPostRes));
     }
 
     //TODO: 작물 조회
@@ -85,7 +85,8 @@ public class FarmController {
         System.out.println("제발제발");
         //TODO: User받아오기, 아래 코드 삭제
         //user
-        User user = userService.createUser();
+        User user = userRepository.findByUserId(2L);
+//        User user = userService.createUser();
 
         Herb herb = farmService.addHerb(user, herbInfo);
         return ResponseEntity.status(200).body(HerbAddPostRes.of(200, "Success", herb.getId()));

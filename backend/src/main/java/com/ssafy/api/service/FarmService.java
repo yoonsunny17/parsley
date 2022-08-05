@@ -2,21 +2,17 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
-import com.ssafy.api.response.HerbBookListRes;
-import com.ssafy.api.response.HerbBookRes;
-import com.ssafy.api.response.HerbListRes;
-import com.ssafy.api.response.HerbRes;
+import com.ssafy.api.response.*;
 import com.ssafy.db.entity.*;
-import com.ssafy.db.repository.HerbBookRepository;
-import com.ssafy.db.repository.HerbRepository;
-import com.ssafy.db.repository.ItemRepository;
-import com.ssafy.db.repository.UserHerbBookRepository;
+import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.Tuple;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,34 +37,60 @@ public class FarmService {
     @Autowired
     private HerbRepository herbRepository;
 
+    @Autowired
+    private HerbRateRepository herbRateRepository;
+
     public List<UserHerbBook> getUserHerbBooks(User user) {
         List<UserHerbBook> userHerbBooks = userHerbBookRepository.findByUser(user);
         return userHerbBooks;
     }
 
     @Transactional
-    public UserHerbBook addUserHerbBook(User user, UserHerbBookAddPostReq herbBookInfo) {
+    public UserHerbBookAddPostRes addUserHerbBook(User user, UserHerbBookAddPostReq herbInfo) {
+        //작물 수확 완료 처리
+        Herb herb = herbRepository.findById(herbInfo.getHerbId());
+        Item item = herb.getItem();
+        herb.setCompleted(true);
+
+        //허브타입 결정용 랜덤
+        int percentage = (int)(Math.random()*100+1);
+
+        //씨앗 id로 확률테이블 검색
+        HerbRate herbRate = herbRateRepository.findBySeedIdAndRate(item.getItemSeed(), percentage);
+
+        //도감에서 허브 타입 조회
+        List<HerbBook> herbBooks = herbBookRepository.findByHerbType(herbRate.getHerbType());
+        percentage = (int)(Math.random()*herbBooks.size());
+        HerbBook herbBook = herbBooks.get(percentage);
+
         UserHerbBook userHerbBook = new UserHerbBook();
-        HerbBook herbBook = herbBookRepository.findByHerbBookId(herbBookInfo.getHerbBookId());
-        System.out.println(herbBook.getName());
-        LocalDateTime date = LocalDateTime.now();
-        userHerbBook.setObtainedDate(date);
         userHerbBook.setUser(user);
         userHerbBook.setHerbBook(herbBook);
-
+        userHerbBook.setObtainedDate(LocalDateTime.now());
         userHerbBookRepository.save(userHerbBook);
-        return userHerbBook;
+
+        //비료에 따른 슬리 추가
+        long sley = herbBook.getPoint();
+        //추가 슬리
+        sley = (long)(sley * (100 + item.getItemFertilizer().getSleyRate() *1.0)/100);
+        UserHerbBookAddPostRes res = new UserHerbBookAddPostRes();
+        res.setAddSley(sley);
+        sley += user.getCurrentSley();
+        user.setCurrentSley(sley);
+
+        return res;
     }
+
     //도감 작물 조회
-    public HerbBookListRes getHerbBooks(User user){
+    public HerbBookListRes getHerbBooks(User user) {
         HerbBookListRes herbBookListRes = new HerbBookListRes();
 
         List<Tuple> userHerbBooks = userHerbBookRepository.findByUserAndGroupBy(user);
         List<HerbBookRes> list = new ArrayList<>();
 
-        for(Tuple userHerbBook : userHerbBooks){
+        for (Tuple userHerbBook : userHerbBooks) {
             HerbBookRes res = new HerbBookRes();
-            HerbBook herbBook = (HerbBook)userHerbBook.get(0);
+            HerbBook herbBook = (HerbBook) userHerbBook.get(0);
             res.setHerbBookId(herbBook.getId());
             res.setCount(Integer.parseInt(String.valueOf(userHerbBook.get(1))));
             list.add(res);
@@ -87,6 +109,7 @@ public class FarmService {
 
         for (Herb herb : herbs) {
             HerbRes res = new HerbRes();
+            res.setHerbId(herb.getId());
             res.setPosition(herb.getPosition());
             Item item = herb.getItem();
             res.setItemSeedId(item.getItemSeed().getId());

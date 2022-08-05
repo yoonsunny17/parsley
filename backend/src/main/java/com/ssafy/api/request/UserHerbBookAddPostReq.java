@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserLoginPostRequest")
 public class UserHerbBookAddPostReq {
-    @ApiModelProperty(name="유저 허브북 ID", example="1")
-    Long herbBookId;
+    @ApiModelProperty(name="허브 ID", example="1")
+    Long herbId;
 }
