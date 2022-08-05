@@ -23,4 +23,8 @@ public class HerbRepository {
                 .setParameter("user", user)
                 .getResultList();
     }
+
+    public Herb findById(Long herbId){
+        return em.find(Herb.class, herbId);
+    }
 }
