@@ -5,18 +5,13 @@ import com.ssafy.api.request.UserHerbBookAddPostReq;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.FarmService;
 import com.ssafy.api.service.UserService;
-import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Herb;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.entity.UserHerbBook;
 import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.*;
-import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 농장게임 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -35,16 +30,14 @@ public class FarmController {
     @Autowired
     UserService userService;
 
-    //TODO: 허브수집 내역 가져오기
     @GetMapping("/book")
     @ApiOperation(value = "작물 수집 내역", notes = "user정보를 이용하여 작물 수집 내역 가져오기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "수집 작물 조회 성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getUserHerbBook(){
+    public ResponseEntity<?> getUserHerbBook() {
         //TODO: User받아오기, 아래 코드 삭제
-        //user 가져옴
         User user = userRepository.findByUserId(2L);
         HerbBookListRes herbBooks = farmService.getHerbBooks(user);
         return ResponseEntity.status(200).body(HerbBookListRes.of(200, "Success", herbBooks.getHerbBooks()));
@@ -57,37 +50,28 @@ public class FarmController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> addUserHerbBook(
-            @RequestBody @ApiParam(value = "herbBookId", required = true) UserHerbBookAddPostReq herbBookInfo){
+            @RequestBody @ApiParam(value = "herbBookId", required = true) UserHerbBookAddPostReq herbBookInfo) {
         //TODO: User받아오기, 아래 코드 삭제
-        //user 가져옴
         User user = userRepository.findByUserId(2L);
-
         UserHerbBookAddPostRes userHerbBookAddPostRes = farmService.addUserHerbBook(user, herbBookInfo);
-
         return ResponseEntity.status(200).body(UserHerbBookAddPostRes.of(200, "Success", userHerbBookAddPostRes));
     }
 
-    //TODO: 작물 조회
     @GetMapping("/herb")
     @ApiOperation(value = "작물 조회", notes = "user정보를 이용하여 작물 조회")
-    public ResponseEntity<?> getHerbs(){
+    public ResponseEntity<?> getHerbs() {
         //TODO: User받아오기, 아래 코드 삭제
         User user = userRepository.findByUserId(2L);
         HerbListRes herbs = farmService.getHerbs(user);
         return ResponseEntity.status(200).body(HerbListRes.of(200, "Success", herbs.getHerbs()));
     }
 
-    //TODO: 작물 추가
     @PostMapping("/herb/add")
     @ApiOperation(value = "작물 추가", notes = "position, seedId, waterId, fertilizerId를 이용하여 농장에 작물 추가")
     public ResponseEntity<?> addHerb(@RequestBody @ApiParam(value = "position, seedId, waterId, fertilizerId", required = true)
-                                     HerbAddPostReq herbInfo){
-        System.out.println("제발제발");
+                                     HerbAddPostReq herbInfo) {
         //TODO: User받아오기, 아래 코드 삭제
-        //user
         User user = userRepository.findByUserId(2L);
-//        User user = userService.createUser();
-
         Herb herb = farmService.addHerb(user, herbInfo);
         return ResponseEntity.status(200).body(HerbAddPostRes.of(200, "Success", herb.getId()));
     }
