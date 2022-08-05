@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,22 +25,22 @@ public class User {
     private Long id;
 
     private String name;
-    private LocalDateTime regDate;
+    private LocalDate regDate;
     private String description;
     private String profileImgUrl;
-    private LocalDateTime dDay;
+    private LocalDate dDay;
 
     private long currentSley;
     private long currentBookPoint;
     private boolean isWithdrawn;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_room",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Room> joinRooms = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "interest_room",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
@@ -58,12 +58,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Herb> herbs = new ArrayList<>();
-
-
-//    TODO :단방향을 위한 삭제임!!
-//    @OneToOne(mappedBy = "user")
-//    private Auth auth;
-
+    
     public void addUserRoom(Room room) {
         joinRooms.add(room);
         room.getMembers().add(this);
