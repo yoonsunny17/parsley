@@ -12,6 +12,9 @@ import lombok.Setter;
 @Setter
 @ApiModel("HerbRes")
 public class HerbRes {
+	@ApiModelProperty(name = "허브 ID")
+	Long herbId;
+
 	@ApiModelProperty(name="작물 위치")
 	int position;
 
