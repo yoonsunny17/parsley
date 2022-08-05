@@ -47,20 +47,16 @@ public class User {
     private List<Room> interestRooms = new ArrayList<>();
 
 
-    @OneToMany
-    @JoinColumn(name = "user_herb_book_id")
+    @OneToMany(mappedBy = "user")
     private List<UserHerbBook> userHerbBooks = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "sley_id")
+    @OneToMany(mappedBy = "user")
     private List<Sley> sleyHistory = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "daily_study_log_id")
+    @OneToMany(mappedBy = "user")
     private List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "herb_id")
+    @OneToMany(mappedBy = "user")
     private List<Herb> herbs = new ArrayList<>();
 
 
