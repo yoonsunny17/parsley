@@ -10,20 +10,19 @@ function MyDday() {
     setShowMdoal((current) => !current);
   };
 
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState('D-Day 제목을 입력하세요')
 
-  console.log(inputValue)
 
-  const Dday = () => {
-    if (document.querySelector("#targetDate").value === ""){
-      document.querySelector("#resultDiv").textContent = ("invalid Date")
-    } else {
-        let firstDate = moment().format("YYYY-MM-DD")
-        let secondDate = moment(document.querySelector("#targetDate").value)
-        let diff = secondDate.diff(firstDate,'days')
-        document.querySelector("#resultDiv").textContent = ("D-day  " + diff)
-    }
-  }
+  // const Dday = () => {
+  //   if (document.querySelector("#targetDate").value === ""){
+  //     document.querySelector("#resultDiv").textContent = ("invalid Date")
+  //   } else {
+  //       let firstDate = moment().format("YYYY-MM-DD")
+  //       let secondDate = moment(document.querySelector("#targetDate").value)
+  //       let diff = secondDate.diff(firstDate,'days')
+  //       document.querySelector("#resultDiv").textContent = ("D-day  " + diff)
+  //   }
+  // }
 
   const [dday, setDday] = useState('')
   const ddaysave = () => {
@@ -40,7 +39,6 @@ function MyDday() {
     }
 
     setDday(diff)
-    console.log(dday)
   }
 
 
@@ -50,21 +48,22 @@ function MyDday() {
       <div>
         <div className="my-2 font-bold">{moment().format("YYYY. M. D (ddd)")}</div>
       </div>
+      
       <div>
         <div className="my-6 text-2xl font-bold">
           <h3 className="">{inputValue}</h3>
-          <h3 className="">D {dday}</h3>
+          <h3 className="">D {dday}</h3>   
         </div>
       </div>
-      <div className="flex items-end justify-end mt-16">
-        <button
-          onClick={onChange}
-          className="transition duration-0 rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 hover:duration-500 text-font3"
-        >
-          <span className="align-middle">
-            <i className="bx bx-cog mr-[2px]"></i>디데이 설정
-          </span>
-        </button>
+      <div className="flex justify-end mt-[65px]">
+          <button
+            onClick={onChange}
+            className="transition duration-0 rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 hover:duration-500 text-font3"
+          >
+            <span className="align-middle">
+              <i className="bx bx-cog mr-[2px]"></i>디데이 설정
+            </span>
+          </button>
       </div>
 
       {showModal ? (

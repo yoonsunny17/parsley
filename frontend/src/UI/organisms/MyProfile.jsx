@@ -2,14 +2,29 @@ import React, { useState } from "react";
 import Button from "../atoms/Button";
 
 function MyProfile() {
-  const username = "유교보이";
-  const email = "dev.1upright@gmail.com";
-  const message = "나는야 유교보이! 가보자고~";
+  const [username, setUserName] = useState("유교보이") ;
+  const changeName = (e) => {
+    setUserName(e.target.value)
+    console.log(e.target.value)
+  }
+  const [email, setEmail] = useState("dev.1upright@gmail.com");
+  const changeEmail = (e) => {
+      setEmail(e.target.value)
+  }
+  
+  const [message, setMessage] = useState("나는야 유교보이! 가보자고~");
+  const changeMessage = (e) => {
+    setMessage(e.target.value)
+  }
 
   const [edit, setEdit] = useState(false);
   const clickedEdit = () => {
     setEdit((current) => !current);
   };
+
+
+
+ 
 
   return (
     <div className="rounded-2xl w-full mb-4 md:w-2/3 md:mb-0 shadow px-8 py-5">
@@ -21,14 +36,32 @@ function MyProfile() {
         />
         <div>
           <div className="mt-2">
-            <p className="text-font2 text-xs">닉네임</p>
-            <h2 className="font-bold">{username}</h2>
+            <p className="text-font2 text-xs mb-[5px]">닉네임</p>
+            {edit ?  (
+              <h2 className="font-bold">{username}</h2> 
+            ) : (
+              <>
+                <input onKeyDown={changeName} type="text" className="border-[2px] border-main rounded-[10px] p-[1px_5px]" placeholder={username}  />
+              </>
+            )}
           </div>
           <div className="my-5">
             <p className="text-font2 text-xs">이메일</p>
-            <h2 className="font-bold">{email}</h2>
+            {edit ? (
+              <h2 className="font-bold">{email}</h2>
+            ) : (
+              <>
+                <input onKeyDown={changeEmail} type="text" className="border-[2px] border-main rounded-[10px] p-[1px_5px]" placeholder={email}  />
+              </>
+            )}
             <p className="mt-5 text-font2 text-xs">상태 메세지</p>
-            <h2 className="font-bold">{message}</h2>
+            {edit ? (
+              <h2 className="font-bold">{message}</h2>
+            ) : (
+              <>
+                <input onKeyDown={changeMessage} type="text" className="border-[2px] border-main rounded-[10px] p-[1px_5px]" placeholder={message}  />
+              </>
+            )}
           </div>
         </div>
       </div>

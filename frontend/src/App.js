@@ -8,7 +8,7 @@ function App() {
   return (
   <BrowserRouter>
     <Drawer>
-      <div className="App container mx-auto px-5 drawer drawer-end">
+      <div className="App container mx-auto px-5">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/room/create" element={<CreateStudyRoom />} />
