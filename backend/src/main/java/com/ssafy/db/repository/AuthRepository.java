@@ -1,6 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.ssafy.db.entity.Auth;
+import com.ssafy.db.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -23,5 +24,9 @@ public class AuthRepository {
         return em.createQuery("select a from Auth a where a.email = :email", Auth.class)
                 .setParameter("email", email)
                 .getResultList();
+    }
+
+    public Auth findByUser(User user) {
+        return em.find(Auth.class, user);
     }
 }

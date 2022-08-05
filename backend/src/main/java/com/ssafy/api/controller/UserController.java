@@ -46,6 +46,9 @@ public class UserController {
     @Autowired
     private CookieUtil cookieUtil;
 
+    @Autowired
+    private RedisService redisService;
+
     @GetMapping("/login")
     public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         System.out.println(code);
@@ -58,8 +61,8 @@ public class UserController {
             authService.createAuth(user, kakaoEmail);
         }
         String refreshToken = jwtService.createRefreshToken();
-        Cookie cookie = cookieUtil.addRefreshCookie(refreshToken);
-        response.addCookie(cookie);
+        Cookie refreshCookie = cookieUtil.addRefreshCookie(refreshToken);
+        response.addCookie(refreshCookie);
 
         User user = authService.getUserByEmail(kakaoEmail);
         Map<String, String> userInfo = new HashMap<>();
@@ -73,6 +76,7 @@ public class UserController {
         response.addCookie(accessCookie);
 
         // + cache server에 token들을 저장하는 코드
+        redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
 
         return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
     }
@@ -92,8 +96,12 @@ public class UserController {
             }
         }
 
+        Long userId = jwtService.getUserId();
+        String kakaoEmail = authService.getEmailbyUserId(userId);
+
         if (accessToken != null && !"".equals(accessToken)) {
-            // + cache server에서 token들을 삭제하는 코드
+            // cache server에서 token들 삭제
+            redisService.deleteTokens(kakaoEmail);
         }
 
         Cookie accessCookie = new Cookie("accessToken", null);
@@ -124,9 +132,14 @@ public class UserController {
                 refreshToken = c.getValue();
             }
         }
+
+        Long userId = jwtService.getUserId();
+        String kakaoEmail = authService.getEmailbyUserId(userId);
+
         try {
             if (refreshToken != null && jwtService.isUsable(refreshToken)) {
                 // + cache server에 token 다시 갱신해주는 코드
+                redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
 
                 accessToken = jwtService.createAccessToken("user", jwtService.getUserInfo(accessToken), "user");
                 Cookie accessCookie = cookieUtil.addAccessCookie(accessToken);

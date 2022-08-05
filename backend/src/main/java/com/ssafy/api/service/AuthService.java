@@ -15,7 +15,10 @@ public class AuthService {
     @Autowired
     private AuthRepository authRepository;
 
-    //
+    @Autowired
+    private UserService userService;
+
+    // auth table에 email에 해당하는 user가 있는지 확인
     public Boolean checkEmail(String email) {
         List<Auth> findByEmail = authRepository.findByEmail(email);
         if (findByEmail.size() != 0) {
@@ -38,5 +41,11 @@ public class AuthService {
         auth.setUuid(uuid);
         auth.setUser(user);
         authRepository.save(auth);
+    }
+
+    public String getEmailbyUserId(Long userId) {
+        User user = userService.getUser(userId);
+        Auth auth = authRepository.findByUser(user);
+        return auth.getEmail();
     }
 }
