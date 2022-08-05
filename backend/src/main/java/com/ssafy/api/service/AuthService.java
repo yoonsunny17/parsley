@@ -5,6 +5,7 @@ import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class AuthService {
         return auth.getUser();
     }
 
+    @Transactional
     public void createAuth(User user, String email) {
         Auth auth = new Auth();
         auth.setEmail(email);

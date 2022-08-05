@@ -45,8 +45,9 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
+        System.out.println(code);
         // 인가 코드로 받은 토큰을 이용해 user의 정보 중 email을 반환
         String kakaoEmail = kakaoService.getKakaoEmail(code);
 
@@ -81,11 +82,11 @@ public class UserController {
 
         // + cache server에 token들을 저장하는 코드
 
-        return new ResponseEntity<String>(accessToken, HttpStatus.OK);
+        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
 
         String accessToken = null;
         String bearer = request.getHeader("Authorization");
@@ -113,7 +114,7 @@ public class UserController {
         refreshCookie.setPath("/");
         response.addCookie(refreshCookie);
 
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return ResponseEntity.status(200).body(UserRes.of(200, "Success", 0L));
     }
 
     @GetMapping("/refresh")
