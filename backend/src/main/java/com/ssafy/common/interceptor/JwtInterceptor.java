@@ -1,6 +1,8 @@
 package com.ssafy.common.interceptor;
 
+import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.JwtService;
+import com.ssafy.api.service.RedisService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -17,6 +19,12 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -46,6 +54,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         String cacheAccessToken = null;
         String cacheRefreshToken = null;
         // + cache에서 가져와서 할당해줄거임
+        String kakaoEmail = authService.getEmailbyUserId(jwtService.getUserId());
+        String tokens = redisService.getTokens(kakaoEmail);
+        String[] tokensArray = tokens.split("\\s");
+        cacheAccessToken = tokensArray[0];
+        cacheRefreshToken = tokensArray[1];
 
         // cookie의 accessToken이 유효한지 확인
         if(bearer != null && !"".equals(bearer)) {
