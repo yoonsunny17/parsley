@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.Tuple;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +37,6 @@ public class FarmService {
 
     @Autowired
     private HerbRateRepository herbRateRepository;
-
-    public List<UserHerbBook> getUserHerbBooks(User user) {
-        List<UserHerbBook> userHerbBooks = userHerbBookRepository.findByUser(user);
-        return userHerbBooks;
-    }
 
     @Transactional
     public UserHerbBookAddPostRes addUserHerbBook(User user, UserHerbBookAddPostReq herbInfo) {
@@ -81,7 +74,6 @@ public class FarmService {
         return res;
     }
 
-    //도감 작물 조회
     public HerbBookListRes getHerbBooks(User user) {
         HerbBookListRes herbBookListRes = new HerbBookListRes();
 
@@ -100,7 +92,6 @@ public class FarmService {
         return herbBookListRes;
     }
 
-    //작물 조회
     public HerbListRes getHerbs(User user) {
         HerbListRes herbListRes = new HerbListRes();
 
@@ -125,7 +116,6 @@ public class FarmService {
         return herbListRes;
     }
 
-    //작물 추가
     @Transactional
     public Herb addHerb(User user, HerbAddPostReq herbInfo) {
         Herb herb = new Herb();
@@ -136,7 +126,6 @@ public class FarmService {
         Item item = new Item(itemSeed, itemWater, itemFertilizer);
 
         int growthTime = (int) (itemSeed.getGrowthTime() * (1 - itemWater.getTimeRate() * 1.0 / 100));
-        System.out.println(growthTime);
         LocalDateTime date = LocalDateTime.now();
         herb.setStartDate(date);
         herb.setCompleted(false);
