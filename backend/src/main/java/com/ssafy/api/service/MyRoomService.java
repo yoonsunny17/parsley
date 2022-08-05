@@ -4,6 +4,7 @@ import com.ssafy.api.request.MyRoomPostReq;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomRepository;
+import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +17,18 @@ public class MyRoomService {
 
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private JwtService jwtService;
 
 
     @Transactional
-    public boolean addMyRoom(User user, MyRoomPostReq myRoomInfo){
+    public boolean addMyRoom(Long userId, MyRoomPostReq myRoomInfo){
 
+        User user = userRepository.findByUserId(userId);
         Room room = roomRepository.findByRoomId(myRoomInfo.getRoomId());
 
         if(user.getJoinRooms().contains(room)){
@@ -32,8 +40,9 @@ public class MyRoomService {
     }
 
     @Transactional
-    public boolean addInterestRoom(User user, MyRoomPostReq myRoomInfo){
+    public boolean addInterestRoom(Long userId, MyRoomPostReq myRoomInfo){
 
+        User user = userRepository.findByUserId(userId);
         Room room = roomRepository.findByRoomId(myRoomInfo.getRoomId());
 
         if(user.getInterestRooms().contains(room)){
@@ -44,16 +53,20 @@ public class MyRoomService {
         }
     }
 
-    public List<Room> getMyRooms(User user){
+    public List<Room> getMyRooms(Long userId){
+        User user = userRepository.findByUserId(userId);
         return user.getJoinRooms();
     }
 
-    public List<Room> getInterestRooms(User user){
+    public List<Room> getInterestRooms(Long userId){
+        User user = userRepository.findByUserId(userId);
         return user.getInterestRooms();
     }
 
     @Transactional
-    public boolean deleteMyRoom(User user, MyRoomPostReq myRoomInfo){
+    public boolean deleteMyRoom(Long userId, MyRoomPostReq myRoomInfo){
+
+        User user = userRepository.findByUserId(userId);
 
         List<Room> rooms = user.getJoinRooms();
         Room room = roomRepository.findByRoomId(myRoomInfo.getRoomId());
@@ -67,7 +80,9 @@ public class MyRoomService {
     }
 
     @Transactional
-    public boolean deleteInterestRoom(User user, MyRoomPostReq myRoomInfo){
+    public boolean deleteInterestRoom(Long userId, MyRoomPostReq myRoomInfo){
+
+        User user = userRepository.findByUserId(userId);
 
         List<Room> rooms = user.getInterestRooms();
         Room room = roomRepository.findByRoomId(myRoomInfo.getRoomId());
