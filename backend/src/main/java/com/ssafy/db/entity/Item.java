@@ -1,25 +1,26 @@
 package com.ssafy.db.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
-/**
- *
- */
-
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "dtype")
-@Getter
-@Setter
 @Embeddable
-@MappedSuperclass
-public abstract class Item {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")
-    private Integer id;
+@Getter
+@AllArgsConstructor
+public class Item {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_seed_id")
+    private ItemSeed itemSeed;
 
-    private String name;
-    private Integer sley;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_water_id")
+    private ItemWater itemWater;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_fertilizer_id")
+    private ItemFertilizer itemFertilizer;
+
+    public Item() {
+    }
 }

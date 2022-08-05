@@ -7,25 +7,27 @@ import javax.persistence.*;
 
 
 /**
- * 허브 도감 목록
+ * 허브 확률
  */
 @Getter
 @Setter
 @Entity
-public class HerbBook {
+public class HerbRate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "herb_book_id")
+    @Column(name = "herb_rate_id")
     private Integer id;
-
-    private String name;
-    private long point;
-    private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     private HerbType herbType;
 
-    public HerbBook() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_seed_id")
+    private ItemSeed itemSeed;
+
+    private int herbRate;
+
+    public HerbRate() {
     }
 }

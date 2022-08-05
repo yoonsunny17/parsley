@@ -47,19 +47,16 @@ public class User {
     private List<Room> interestRooms = new ArrayList<>();
 
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_herb_book_id")
+    @OneToMany(mappedBy = "user")
     private List<UserHerbBook> userHerbBooks = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sley_id")
+    @OneToMany(mappedBy = "user")
     private List<Sley> sleyHistory = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "herb_id")
+    @OneToMany(mappedBy = "user")
     private List<Herb> herbs = new ArrayList<>();
     
     public void addUserRoom(Room room) {
