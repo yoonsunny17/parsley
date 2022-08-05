@@ -44,9 +44,6 @@ public class UserHerbBookRepository {
         TypedQuery<Tuple> t = em.createQuery(q);
         List<Tuple> resultList = t.getResultList();
 
-//        for(Tuple tuple : resultList){
-//            System.out.println(tuple.get(0) + "   " + tuple.get(1));
-//        }
         return resultList;
     }
 }
