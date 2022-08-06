@@ -4,11 +4,11 @@ import com.ssafy.db.entity.Mode;
 import com.ssafy.db.entity.Room;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @ApiModel("MyRoomResponse")
 public class MyRoomRes {
 
