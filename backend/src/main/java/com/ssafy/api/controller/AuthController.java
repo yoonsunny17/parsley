@@ -28,8 +28,8 @@ import java.util.Map;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/auth")
+public class AuthController {
 
     @Autowired
     private KakaoService kakaoService;
