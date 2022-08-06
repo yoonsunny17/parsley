@@ -12,8 +12,8 @@ class StudyRoomOV extends Component {
     super(props);
 
     this.state = {
-      mySessionId: "손꾸락방",
-      myUserName: "유교보이" + Math.floor(Math.random() * 100),
+      mySessionId: "PARSLEY",
+      myUserName: "U-GYO-BOY" + Math.floor(Math.random() * 100),
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
@@ -31,6 +31,7 @@ class StudyRoomOV extends Component {
 
   componentDidMount() {
     window.addEventListener("beforeunload", this.onbeforeunload);
+    this.joinSession();
   }
 
   componentWillUnmount() {
@@ -180,8 +181,8 @@ class StudyRoomOV extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mySessionId: "PARSLEY",
+      myUserName: "U-GYO-BOY" + Math.floor(Math.random() * 100),
       mainStreamManager: undefined,
       publisher: undefined,
     });
@@ -299,20 +300,23 @@ class StudyRoomOV extends Component {
               >
                 LEAVE SESSION
               </button>
-              {/* <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="Leave session"
-              /> */}
             </div>
-            {/* // TODO: 위에 N명 이상 되면 넘어가는것 구현해야 함 */}
-            {/* 여러명 작게 보이는거 */}
-            <div
-              id="video-container"
-              className="flex col-md-6 relative float-left cursor-pointer"
-            >
+
+            {this.state.mainStreamManager !== undefined ? (
+              <div id="main-video" className="col-md-6">
+                <UserVideoComponent
+                  streamManager={this.state.mainStreamManager}
+                />
+                <button
+                  onClick={this.switchCamera}
+                  className="float-left mt-5 bg-sub1 px-3 py-2 text-white rounded-lg"
+                >
+                  SWITCH CAMERA
+                </button>
+              </div>
+            ) : null}
+
+            <div id="video-container" className="col-md-6">
               {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
@@ -333,28 +337,6 @@ class StudyRoomOV extends Component {
                 </div>
               ))}
             </div>
-
-            {/* 메인 화면 보이는 부분 */}
-            {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="">
-                <UserVideoComponent
-                  streamManager={this.state.mainStreamManager}
-                />
-                <button
-                  onClick={this.switchCamera}
-                  className="float-left mt-5 bg-sub1 px-3 py-2 text-white rounded-lg"
-                >
-                  SWITCH CAMERA
-                </button>
-                {/* <input
-                  className="btn btn-large btn-success"
-                  type="button"
-                  id="buttonSwitchCamera"
-                  onClick={this.switchCamera}
-                  value="Switch Camera"
-                /> */}
-              </div>
-            ) : null}
           </div>
         ) : null}
       </div>
@@ -373,7 +355,8 @@ class StudyRoomOV extends Component {
    *   3) The Connection.token must be consumed in Session.connect() method
    */
 
-  getToken() {
+  getToken(sessionId) {
+    console.log(sessionId, "is connecting...");
     return this.createSession(this.state.mySessionId).then((sessionId) =>
       this.createToken(sessionId)
     );
@@ -391,7 +374,7 @@ class StudyRoomOV extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
+          console.log("CREATE SESSION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
