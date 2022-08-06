@@ -18,12 +18,12 @@ const Text = styled.p`
 
 class Message extends React.Component {
   render() {
-    const { username, text, boxClass } = this.props;
+    const { username, text, entireChatClass } = this.props;
 
     return (
       <MessageContainer>
         <Username>{username}</Username>
-        <Text className={boxClass}>{text}</Text>
+        <Text className={entireChatClass}>{text}</Text>
       </MessageContainer>
     );
   }

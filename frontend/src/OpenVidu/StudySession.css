@@ -1,3 +1,36 @@
 .stream-container {
   padding: 0;
 }
+
+.messagesChatClass {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  margin-bottom: 15px;
+  background-color: rgb(241, 241, 57);
+  min-height: 30px;
+}
+
+.messagesEntireChatClass {
+  display: flex;
+  justify-content: flex-end;
+  /* align-items: flex-end; */
+  width: 70%;
+  /* margin-right: 30%; */
+  word-wrap: break-word;
+}
+
+.messagesChatClassOpp {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-bottom: 15px;
+  background-color: white;
+  min-height: 30px;
+}
+
+.messagesEntireChatClassOpp {
+  width: 70%;
+  margin-right: 30%;
+  word-wrap: break-word;
+}

@@ -20,6 +20,8 @@ import { BiGroup } from "react-icons/bi";
 
 // atomic component
 import Button from "../UI/atoms/Button";
+// sweetalert
+import Swal from "sweetalert2";
 
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -94,8 +96,8 @@ class StudySession extends Component {
           {
             userName: this.state.myUserName,
             text: this.state.message,
-            boxClass: "messages__box--operator",
-            bigBoxClass: "messages__bigBox--operator",
+            chatClass: "messagesChatClass",
+            entireChatClass: "messagesEntireChatClass",
           },
         ],
       });
@@ -122,8 +124,8 @@ class StudySession extends Component {
             {
               userName: this.state.myUserName,
               text: this.state.message,
-              boxClass: "messages__box--operator",
-              bigBoxClass: "messages__bigBox--operator",
+              chatClass: "messagesChatClass",
+              entireChatClass: "messagesEntireChatClass",
             },
           ],
         });
@@ -242,6 +244,23 @@ class StudySession extends Component {
           this.setState({
             subscribers: subscribers,
           });
+        });
+
+        mySession.on("signal:chat", (event) => {
+          let chatdata = event.data.split(",");
+          if (chatdata[0] !== this.state.myUserName) {
+            this.setState({
+              messages: [
+                ...this.state.messages,
+                {
+                  userName: chatdata[0],
+                  text: chatdata[1],
+                  chatClass: "messagesChatClassOpp",
+                  entireChatClass: "messagesEntireChatClassOpp",
+                },
+              ],
+            });
+          }
         });
 
         // On every Stream destroyed...
@@ -503,42 +522,6 @@ class StudySession extends Component {
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <div className="rounded-2xl flex flex-col bg-font3 h-[400px] w-auto ease-in-out">
-                    <div className="p-2 text-xl h-10">
-                      {mySessionId} 채팅방
-                      {/* <IoCopy
-                        className="cursor-pointer"
-                        onClick={() =>
-                          navigator.clipboard.writeText(mySessionId)
-                        }
-                      /> */}
-                    </div>
-                    <div
-                      className="chatbox__messages mt-auto flex flex-col overflow-y-scroll"
-                      ref="chatoutput"
-                    >
-                      <Messages messages={messages} />
-                    </div>
-                    <div className="chatbox__footer">
-                      <input
-                        className="outline-hidden box-border"
-                        id="chat_message"
-                        type="text"
-                        placeholder="Write a message..."
-                        onChange={this.handleChatMessageChange}
-                        onKeyPress={this.sendMessageByEnter}
-                        value={this.state.message}
-                      />
-                      <button
-                        className="chatbox__send--footer rounded-tr-lg rounded-br-lg"
-                        onClick={this.sendMessageByClick}
-                      >
-                        SEND
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {/* tool bar; screen share, mic on/off, camera on/off, chat popper, exit */}
@@ -578,7 +561,6 @@ class StudySession extends Component {
                       />
                     </div>
                   )}
-
                   {/* video on/off */}
                   {this.state.videostate ? (
                     <div className="cursor-pointer">
@@ -609,10 +591,66 @@ class StudySession extends Component {
                       />
                     </div>
                   )}
-
                   {/* chat popper */}
-                  <div className="cursor-pointer">
+                  {/* // FIXME: 새 창으로 채팅방 띄우기 */}
+                  {/* 새창으로 넘어가지만 콘솔 오류가 뜸 ... signal을 못읽어서 message data가 안읽혀옴 */}
+                  {/* <BsChatDots
+                    className="cursor-pointer"
+                    onClick={() => window.open("/room/chat", "", "_blank")}
+                    size={btnSize}
+                  /> */}
+                  {/* 초반에 생각을 잘못 해서 모달로 구현함.. */}
+                  <label htmlFor="my-modal-3" className="cursor-pointer">
                     <BsChatDots size={btnSize} />
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="my-modal-3"
+                    className="modal-toggle"
+                  />
+                  <div className="modal">
+                    <div className="modal-box relative h-3/5">
+                      <label
+                        htmlFor="my-modal-3"
+                        className="cursor-pointer absolute right-4 top-3"
+                      >
+                        ✕
+                      </label>
+                      <div className="rounded-2xl flex flex-col bg-font3 w-auto h-full ease-in-out">
+                        <div className="flex text-start p-2 text-xl h-10">
+                          {mySessionId} 채팅방
+                          {/* <IoCopy
+                        className="cursor-pointer"
+                        onClick={() =>
+                          navigator.clipboard.writeText(mySessionId)
+                        }
+                      /> */}
+                        </div>
+                        <div
+                          className="chatbox__messages mt-auto flex flex-col overflow-y-scroll items-end"
+                          ref="chatoutput"
+                        >
+                          <Messages messages={messages} />
+                        </div>
+                        <div className="chatbox__footer">
+                          <input
+                            className="outline-hidden box-border w-52 h-8 input-border"
+                            id="chat_message"
+                            type="text"
+                            placeholder="Write a message..."
+                            onChange={this.handleChatMessageChange}
+                            onKeyPress={this.sendMessageByEnter}
+                            value={this.state.message}
+                          />
+                          <button
+                            className="chatbox__send--footer mt-3 rounded-tr-lg rounded-br-lg"
+                            onClick={this.sendMessageByClick}
+                          >
+                            SEND
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </footer>
