@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.response.AuthRes;
 import com.ssafy.api.service.*;
 import com.ssafy.common.util.CookieUtil;
 import io.jsonwebtoken.JwtException;
@@ -82,7 +83,7 @@ public class AuthController {
         // + cache server에 token들을 저장하는 코드
         redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
 
-        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
     }
 
     @GetMapping("/logout")
@@ -123,7 +124,7 @@ public class AuthController {
         refreshCookie.setPath("/");
         response.addCookie(refreshCookie);
 
-        return ResponseEntity.status(200).body(UserRes.of(200, "Success", 0L));
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
     }
 
     @GetMapping("/refresh")
@@ -159,13 +160,13 @@ public class AuthController {
                 // cache server에 token 다시 저장
                 redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
 
-                return ResponseEntity.status(200).body(UserRes.of(200, "Success", 1L));
+                return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
             }
         } catch (JwtException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return ResponseEntity.status(202).body(UserRes.of(202, "Accepted", 0L));
+        return ResponseEntity.status(202).body(AuthRes.of(202, "Accepted", false));
     }
 }
