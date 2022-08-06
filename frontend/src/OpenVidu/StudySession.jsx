@@ -76,7 +76,26 @@ class StudySession extends Component {
   //   });
   // };
 
-  // 채팅 자동 하단 스크롤
+  // Exit button 눌렀을 때; 정말 나가시겠습니까? alert 띄워주기
+  exitSessionAlert = () => {
+    Swal.fire({
+      title: "스터디룸을 떠나실건가요?",
+      showCancelButton: true,
+      confirmButtonText: "더 공부하자!",
+      cancelButtonText: "그만할래",
+    }).then((result) => {
+      if (result.isDismissed) {
+        Swal.fire({
+          icon: "success",
+          title: "파슬리가 응원할게요!",
+          text: "오늘도 화이팅 :)",
+        });
+        this.leaveSession();
+      }
+    });
+  };
+
+  // 채팅 길어지면 자동으로 내려가게 ... 스크롤 기능이용
   componentDidUpdate(previousProps, previousState) {
     if (this.refs.chatoutput != null) {
       this.refs.chatoutput.scrollTop = this.refs.chatoutput.scrollHeight;
@@ -480,10 +499,6 @@ class StudySession extends Component {
                       <div id="session-title" className="text-2xl">
                         {mySessionId}
                       </div>
-                      <Button
-                        text={"LEAVE SESSION"}
-                        onClick={this.leaveSession}
-                      />
                     </div>
                     {this.state.mainStreamManager !== undefined ? (
                       <div id="main-video" className="col-md-6">
@@ -651,6 +666,13 @@ class StudySession extends Component {
                         </div>
                       </div>
                     </div>
+                  </div>
+                  {/* exit */}
+                  <div className="cursor-pointer md:place-self-end">
+                    <MdExitToApp
+                      size={btnSize}
+                      onClick={this.exitSessionAlert}
+                    />
                   </div>
                 </div>
               </footer>
