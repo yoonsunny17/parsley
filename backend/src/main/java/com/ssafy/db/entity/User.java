@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
 public class User {
 
     @Id
@@ -64,5 +62,9 @@ public class User {
     public void addUserRoom(Room room) {
         joinRooms.add(room);
         room.getMembers().add(this);
+    }
+
+    public User() {
+
     }
 }
