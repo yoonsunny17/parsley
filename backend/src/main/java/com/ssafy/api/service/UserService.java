@@ -32,7 +32,7 @@ public class UserService {
 		return user;
 	}
 
-	public User getUser(Long userId) {
+	public User getUserByUserId(Long userId) {
 		return userRepository.findByUserId(userId);
 	}
 
