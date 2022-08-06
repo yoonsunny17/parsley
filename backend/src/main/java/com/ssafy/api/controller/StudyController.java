@@ -13,6 +13,7 @@ import com.ssafy.db.entity.DailyStudyLog;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,12 @@ public class StudyController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("/goal")
+    @ApiOperation(value = "오늘의 목표 시간 조회", notes = "사용자가 설정한 오늘의 목표시간을 조회한다. 목표시간이 설정되어있지 않으면 0 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "오늘의 목표 시간 조회 성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    @GetMapping("/goal")
     public ResponseEntity<? extends GoalGetRes>  getDailyGoal(){
         //TODO: user 정보 가져오기
         Long userId = 1L;
@@ -51,11 +53,12 @@ public class StudyController {
                 .body(GoalGetRes.of(200, "success", targetTime));
     }
 
+    @PostMapping("/goal/create")
+    @ApiOperation(value = "오늘의 목표 시간 등록", notes = "사용자가 설정한 목표시간을 저장한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "오늘의 목표 시간 등록 성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    @PostMapping("/goal/create")
     public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(@RequestBody @Valid GoalCreatePostReq goalInfo) {
         //TODO: user 정보 가져오기(userid로 user 찾기)
         User user = userRepository.findByUserId(1L);
@@ -72,11 +75,12 @@ public class StudyController {
 
     }
 
+    @PostMapping("/goal/update")
+    @ApiOperation(value = "오늘의 목표 시간 수정", notes = "오늘의 목표시간을 수정한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "오늘의 목표 시간 수정 성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    @PostMapping("/goal/update")
     public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(@RequestBody @Valid GoalCreatePostReq goalInfo){
         //TODO: user 정보 가져오기
         Long userId = 2L;
@@ -113,11 +117,12 @@ public class StudyController {
 
     }
 
+    @PostMapping("/log/add")
+    @ApiOperation(value = "공부 로그", notes = "공부를 시작할 떄는 status가 T, 공부가 끝날 때는 status가 F로 현재 시간에 대한 로그를 저장한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "공부 시작 / 공부 끝"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    @PostMapping("/log/add")
     public ResponseEntity<? extends LogCreatePostRes> createStudyLog(@RequestBody @Valid LogCreatePostReq logInfo){
         //TODO: user 정보 가져오기
         Long userId = 1L;
