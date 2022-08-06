@@ -16,7 +16,7 @@ import java.util.List;
 public class UserRoomsGetRes extends BaseResponseBody {
 
     @ApiModelProperty(name = "방 목록")
-    List<MyRoomRes> rooms = new ArrayList<>();
+    List<UserRoomRes> rooms = new ArrayList<>();
 
     public static UserRoomsGetRes of(Integer status, String message, List<Room> rooms){
         UserRoomsGetRes res = new UserRoomsGetRes();
@@ -30,8 +30,7 @@ public class UserRoomsGetRes extends BaseResponseBody {
 
     public void setRooms(List<Room> rooms){
         for(Room room : rooms){
-            this.rooms.add(MyRoomRes.of(room));
+            this.rooms.add(UserRoomRes.of(room));
         }
-        System.out.println("-----------------------------여기 오넹");
     }
 }
