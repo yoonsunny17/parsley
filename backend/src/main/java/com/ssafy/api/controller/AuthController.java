@@ -1,6 +1,5 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.UserReq;
 import com.ssafy.api.service.*;
 import com.ssafy.common.util.CookieUtil;
 import io.jsonwebtoken.JwtException;
@@ -24,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
+ * 사용자 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
 @Api(value = "사용자 인증 API", tags = {"Auth"})
 @RestController
@@ -50,6 +49,11 @@ public class AuthController {
     private RedisService redisService;
 
     @GetMapping("/login")
+    @ApiOperation(value = "로그인", notes = "카카오로 로그인한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그인 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         System.out.println(code);
         // 인가 코드로 받은 토큰을 이용해 user의 정보 중 email을 반환
@@ -82,6 +86,11 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
+    @ApiOperation(value = "로그아웃", notes = "로그아웃을 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그아웃 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
 
         String accessToken = null;
@@ -118,6 +127,11 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
+    @ApiOperation(value = "토큰 재발급", notes = "토큰을 재발급한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "토큰 재발급 성공"),
+            @ApiResponse(code = 202, message = "토큰 재발급 실패")
+    })
     public ResponseEntity<?> refreshUser(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         String accessToken = null;
