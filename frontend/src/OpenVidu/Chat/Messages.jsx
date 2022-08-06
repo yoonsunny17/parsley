@@ -9,13 +9,13 @@ class Messages extends Component {
     const { messages } = this.props;
     return messages.map((message, idx) => (
       <ChatContainer
-        className={`messages_item ${message.bigBoxClass}`}
+        className={`messages__item ${message.bigBoxClass}`}
         key={idx}
       >
         <Message
           text={message.text}
           username={message.userName}
-          boxClass={`messages_box ${message.boxClass}`}
+          boxClass={`messages__box ${message.boxClass}`}
         />
       </ChatContainer>
     ));
