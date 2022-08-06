@@ -6,10 +6,7 @@ import com.ssafy.api.response.UserRoomsGetRes;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.UserRoomService;
 import com.ssafy.db.entity.Room;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,10 +50,10 @@ public class UserRoomController {
     @ApiOperation(value = "나의 방 추가", notes = "사용자가 스터디룸에 처음 참여하면 true를 이미 참여했던 적이 있으면 false를 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "나의 방 추가 성공"),
-            @ApiResponse(code = 200, message = "나의 방 추가 실패"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "나의 방 추가 실패")
     })
-    public ResponseEntity<? extends MyRoomPostRes> addMyRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
+    public ResponseEntity<? extends MyRoomPostRes> addMyRoom(
+            @RequestBody @ApiParam(value = "나의 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
 //        Long userId = jwtService.getUserId();
         Long userId = 1L;
@@ -64,8 +61,8 @@ public class UserRoomController {
         boolean isAdded = userRoomService.addMyRoom(userId, myRoomInfo);
 
         if(!isAdded){
-            return ResponseEntity.status(404)
-                    .body(MyRoomPostRes.of(404, "Fail to add", false));
+            return ResponseEntity.status(500)
+                    .body(MyRoomPostRes.of(500, "Fail to add", false));
         }
         return ResponseEntity.status(200)
                 .body(MyRoomPostRes.of(200, "Success", true));
@@ -75,18 +72,18 @@ public class UserRoomController {
     @ApiOperation(value = "나의 방 삭제", notes = "사용자가 나의 방에서 스터디룸을 삭제에 성공하면 true를 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "나의 방 삭제 성공"),
-            @ApiResponse(code = 404, message = "나의 방 삭제 실패"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "나의 방 삭제 실패")
     })
-    public ResponseEntity<? extends MyRoomPostRes> deleteMyRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
+    public ResponseEntity<? extends MyRoomPostRes> deleteMyRoom(
+            @RequestBody @ApiParam(value = "나의 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
         Long userId = jwtService.getUserId();
 
         boolean isSuccess = userRoomService.deleteMyRoom(userId, myRoomInfo);
 
         if(!isSuccess){
-            return ResponseEntity.status(404)
-                    .body(MyRoomPostRes.of(404, "Fail to delete", false));
+            return ResponseEntity.status(500)
+                    .body(MyRoomPostRes.of(500, "Fail to delete", false));
         }else{
             return ResponseEntity.status(200)
                     .body(MyRoomPostRes.of(200, "Success",true));
@@ -117,18 +114,18 @@ public class UserRoomController {
     @ApiOperation(value = "관심 방 추가", notes = "사용자가 스터디룸에 관심 표시를 하면 true를 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "관심 방 추가 성공"),
-            @ApiResponse(code = 404, message = "관심 방 추가 실패"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "관심 방 추가 실패")
     })
-    public ResponseEntity<? extends MyRoomPostRes> addInterestRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
+    public ResponseEntity<? extends MyRoomPostRes> addInterestRoom(
+            @RequestBody @ApiParam(value = "관심 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
         Long userId = jwtService.getUserId();
 
         boolean isAdded = userRoomService.addInterestRoom(userId, myRoomInfo);
 
         if(!isAdded){
-            return ResponseEntity.status(404)
-                    .body(MyRoomPostRes.of(404, "Fail to add", false));
+            return ResponseEntity.status(500)
+                    .body(MyRoomPostRes.of(500, "Fail to add", false));
         }
         return ResponseEntity.status(200)
                 .body(MyRoomPostRes.of(200, "Success", true));
@@ -138,18 +135,18 @@ public class UserRoomController {
     @ApiOperation(value = "관심 방 삭제", notes = "사용자가 관심 목록에서 스터디룸을 삭제에 성공하면 true를 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "관심 방 삭제 성공"),
-            @ApiResponse(code = 404, message = "관심 방 삭제 실패"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "관심 방 삭제 실패")
     })
-    public ResponseEntity<? extends MyRoomPostRes> deleteInterestRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
+    public ResponseEntity<? extends MyRoomPostRes> deleteInterestRoom(
+            @RequestBody @ApiParam(value = "관심 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
         Long userId = jwtService.getUserId();
 
         boolean isSuccess = userRoomService.deleteInterestRoom(userId, myRoomInfo);
 
         if(!isSuccess){
-            return ResponseEntity.status(404)
-                    .body(MyRoomPostRes.of(404, "Fail to delete", false));
+            return ResponseEntity.status(500)
+                    .body(MyRoomPostRes.of(500, "Fail to delete", false));
         }else{
             return ResponseEntity.status(200)
                     .body(MyRoomPostRes.of(200, "Success",true));
