@@ -54,11 +54,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         String cacheAccessToken = null;
         String cacheRefreshToken = null;
         // + cache에서 가져와서 할당해줄거임
-        String kakaoEmail = authService.getEmailbyUserId(jwtService.getUserId());
-        String tokens = redisService.getTokens(kakaoEmail);
-        String[] tokensArray = tokens.split("\\s");
-        cacheAccessToken = tokensArray[0];
-        cacheRefreshToken = tokensArray[1];
+//        String kakaoEmail = authService.getEmailbyUserId(jwtService.getUserId());
+//        String tokens = redisService.getTokens(kakaoEmail);
+//        String[] tokensArray = tokens.split("\\s");
+//        cacheAccessToken = tokensArray[0];
+//        cacheRefreshToken = tokensArray[1];
 
         // cookie의 accessToken이 유효한지 확인
         if(bearer != null && !"".equals(bearer)) {
