@@ -4,7 +4,7 @@ import com.ssafy.api.request.MyRoomPostReq;
 import com.ssafy.api.response.MyRoomPostRes;
 import com.ssafy.api.response.UserRoomsGetRes;
 import com.ssafy.api.service.JwtService;
-import com.ssafy.api.service.MyRoomService;
+import com.ssafy.api.service.UserRoomService;
 import com.ssafy.db.entity.Room;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,11 +20,11 @@ import java.util.List;
 
 @Api(value = "사용자별 방 관리 API", tags = {"UserRoom"})
 @RestController
-@RequestMapping("/my")
-public class MyRoomController {
+@RequestMapping("/user")
+public class UserRoomController {
 
     @Autowired
-    private MyRoomService myRoomService;
+    private UserRoomService userRoomService;
     @Autowired
     private JwtService jwtService;
 
@@ -36,9 +36,10 @@ public class MyRoomController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRoomsGetRes> getMyRoom(){
-        Long userId = jwtService.getUserId();
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
 
-        List<Room> myRooms = myRoomService.getMyRooms(userId);
+        List<Room> myRooms = userRoomService.getMyRooms(userId);
 
         if(myRooms == null){
             return ResponseEntity.status(404)
@@ -57,9 +58,10 @@ public class MyRoomController {
     })
     public ResponseEntity<? extends MyRoomPostRes> addMyRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
 
-        Long userId = jwtService.getUserId();
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
 
-        boolean isAdded = myRoomService.addMyRoom(userId, myRoomInfo);
+        boolean isAdded = userRoomService.addMyRoom(userId, myRoomInfo);
 
         if(!isAdded){
             return ResponseEntity.status(404)
@@ -80,7 +82,7 @@ public class MyRoomController {
 
         Long userId = jwtService.getUserId();
 
-        boolean isSuccess = myRoomService.deleteMyRoom(userId, myRoomInfo);
+        boolean isSuccess = userRoomService.deleteMyRoom(userId, myRoomInfo);
 
         if(!isSuccess){
             return ResponseEntity.status(404)
@@ -101,7 +103,7 @@ public class MyRoomController {
     public ResponseEntity<? extends UserRoomsGetRes> getInterestRoom(){
         Long userId = jwtService.getUserId();
 
-        List<Room> myRooms = myRoomService.getInterestRooms(userId);
+        List<Room> myRooms = userRoomService.getInterestRooms(userId);
 
         if(myRooms == null){
             return ResponseEntity.status(404)
@@ -122,7 +124,7 @@ public class MyRoomController {
 
         Long userId = jwtService.getUserId();
 
-        boolean isAdded = myRoomService.addInterestRoom(userId, myRoomInfo);
+        boolean isAdded = userRoomService.addInterestRoom(userId, myRoomInfo);
 
         if(!isAdded){
             return ResponseEntity.status(404)
@@ -143,7 +145,7 @@ public class MyRoomController {
 
         Long userId = jwtService.getUserId();
 
-        boolean isSuccess = myRoomService.deleteInterestRoom(userId, myRoomInfo);
+        boolean isSuccess = userRoomService.deleteInterestRoom(userId, myRoomInfo);
 
         if(!isSuccess){
             return ResponseEntity.status(404)
