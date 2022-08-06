@@ -152,12 +152,12 @@ public class AuthController {
 
         try {
             if (refreshToken != null && jwtService.isUsable(refreshToken)) {
-                // + cache server에 token 다시 갱신해주는 코드
-                redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
-
                 accessToken = jwtService.createAccessToken("user", jwtService.getUserInfo(accessToken), "user");
                 Cookie accessCookie = cookieUtil.addAccessCookie(accessToken);
                 response.addCookie(accessCookie);
+
+                // cache server에 token 다시 저장
+                redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
 
                 return ResponseEntity.status(200).body(UserRes.of(200, "Success", 1L));
             }
