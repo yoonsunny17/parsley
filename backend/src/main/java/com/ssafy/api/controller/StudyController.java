@@ -45,7 +45,7 @@ public class StudyController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends GoalGetRes>  getDailyGoal(){
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         int targetTime = studyService.getTargetTime(userId);
 
