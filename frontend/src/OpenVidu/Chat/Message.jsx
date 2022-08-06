@@ -23,7 +23,7 @@ class Message extends React.Component {
     return (
       <MessageContainer>
         <Username>{username}</Username>
-        <Text className={boxClass} text={text} />
+        <Text className={boxClass}>{text}</Text>
       </MessageContainer>
     );
   }
