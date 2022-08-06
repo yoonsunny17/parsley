@@ -6,24 +6,25 @@ import UserVideoComponent from "./UserVideoComponent";
 
 // chat function
 import Messages from "./Chat/Messages";
+// mic on/off, video on/off, screen share, chat popper, exit, group members
 import {
-  IoMicSharp,
-  IoMicOffSharp,
-  IoVideocamOff,
-  IoVideocam,
-  IoCameraSharp,
-  IoExit,
-  IoMdCopy,
-  IoCopy,
-  IoGameController,
-  IoBeer,
-} from "react-icons/io5";
+  BsFillMicFill,
+  BsFillMicMuteFill,
+  BsCameraVideoFill,
+  BsCameraVideoOffFill,
+  BsChatDots,
+} from "react-icons/bs";
+import { TbScreenShare } from "react-icons/tb";
+import { MdExitToApp } from "react-icons/md";
+import { BiGroup } from "react-icons/bi";
 
 // atomic component
 import Button from "../UI/atoms/Button";
 
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+
+const btnSize = "20";
 
 class StudySession extends Component {
   constructor(props) {
@@ -151,6 +152,22 @@ class StudySession extends Component {
     // login user 정보 얻기 위한 api 요청해야 함
     //
     window.addEventListener("beforeunload", this.onbeforeunload);
+
+    const constraints = { audio: true, video: true };
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then(() => {
+        this.setState({
+          videoallowed: true,
+          audioallowed: true,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          videoallowed: false,
+          audioallowed: false,
+        });
+      });
   }
 
   componentWillUnmount() {
@@ -374,8 +391,10 @@ class StudySession extends Component {
           <div className="container p-24">
             <div className="flex flex-row">
               <div className="flex flex-col">
-                <div className="flex flex-col text-main text-lg">
-                  Study with PARSLEY!
+                <div className="flex flex-col text-main font-semibold text-xl mt-2">
+                  파슬리랑 공부할 사람?.. 이 페이지는 없어져야 한다 (방 참가
+                  버튼 있는 페이지로 대체되어야 함.. 그럼 input 넣는것도
+                  없어지것쥬)
                 </div>
                 <img
                   src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
@@ -392,10 +411,13 @@ class StudySession extends Component {
                       className="form-group"
                       onSubmit={this.joinSession}
                     >
-                      <div className="flex">
+                      <div
+                        className="flex font-semibold mr-3"
+                        htmlFor="userName"
+                      >
                         <label>Participant: </label>
                         <input
-                          className="form-control ml-2"
+                          className="form-control input-border rounded-lg"
                           type="text"
                           id="userName"
                           value={myUserName}
@@ -403,10 +425,13 @@ class StudySession extends Component {
                           required
                         />
                       </div>
-                      <div className="flex">
+                      <div
+                        className="flex font-semibold mr-3"
+                        htmlFor="sessionId"
+                      >
                         <label> Session: </label>
                         <input
-                          className="form-control ml-2"
+                          className="form-control input-border rounded-lg"
                           type="text"
                           id="sessionId"
                           value={mySessionId}
@@ -414,9 +439,9 @@ class StudySession extends Component {
                           required
                         />
                       </div>
-                      <p className="text-center">
+                      <div className="my-3">
                         <Button text={"JOIN"} />
-                      </p>
+                      </div>
                     </form>
                   </div>
                 </div>
@@ -428,7 +453,10 @@ class StudySession extends Component {
             <div className="container">
               <div className="flex flex-row">
                 <div className="flex flex-col">
-                  <div id="video-container" className="video-container">
+                  <div
+                    id="video-container"
+                    className="video-container flex flex-wrap mb-5 justify-center"
+                  >
                     <div id="session-header">
                       <div id="session-title" className="text-2xl">
                         {mySessionId}
@@ -444,7 +472,7 @@ class StudySession extends Component {
                           streamManager={this.state.mainStreamManager}
                         />
                         <input
-                          className="btn btn-large btn-success"
+                          className="btn btn-sm"
                           type="button"
                           id="buttonSwitchCamera"
                           onClick={this.switchCamera}
@@ -476,13 +504,25 @@ class StudySession extends Component {
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <div>
-                    <div className="chatbox__header">{mySessionId}</div>
-                    <div className="chatbox__messages" ref="chatoutput">
+                  <div className="rounded-2xl flex flex-col bg-font3 h-[400px] w-auto ease-in-out">
+                    <div className="p-2 text-xl h-10">
+                      {mySessionId} 채팅방
+                      {/* <IoCopy
+                        className="cursor-pointer"
+                        onClick={() =>
+                          navigator.clipboard.writeText(mySessionId)
+                        }
+                      /> */}
+                    </div>
+                    <div
+                      className="chatbox__messages mt-auto flex flex-col overflow-y-scroll"
+                      ref="chatoutput"
+                    >
                       <Messages messages={messages} />
                     </div>
                     <div className="chatbox__footer">
                       <input
+                        className="outline-hidden box-border"
                         id="chat_message"
                         type="text"
                         placeholder="Write a message..."
@@ -491,15 +531,91 @@ class StudySession extends Component {
                         value={this.state.message}
                       />
                       <button
-                        className="chatbox__send--footer"
+                        className="chatbox__send--footer rounded-tr-lg rounded-br-lg"
                         onClick={this.sendMessageByClick}
                       >
-                        Enter
+                        SEND
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* tool bar; screen share, mic on/off, camera on/off, chat popper, exit */}
+              <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+                <div className="grid-flow-col gap-6 md:place-self-center">
+                  <div className="cursor-pointer">
+                    <TbScreenShare size={btnSize} />
+                  </div>
+                  {/* mic on/off */}
+                  {/* // TODO: 마이크 음소거 기능이 먹통입니다!!!!!! */}
+                  {this.state.audiostate ? (
+                    <div className="cursor-pointer">
+                      <BsFillMicFill
+                        size={btnSize}
+                        onClick={() => {
+                          this.state.publisher.publishAudio(
+                            !this.state.audiostate
+                          );
+                          this.setState({
+                            audiostate: !this.state.audiostate,
+                          });
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <BsFillMicMuteFill
+                        size={btnSize}
+                        onClick={() => {
+                          this.state.publisher.publishAudio(
+                            !this.state.audiostate
+                          );
+                          this.setState({
+                            audiostate: !this.state.audiostate,
+                          });
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {/* video on/off */}
+                  {this.state.videostate ? (
+                    <div className="cursor-pointer">
+                      <BsCameraVideoFill
+                        size={btnSize}
+                        onClick={() => {
+                          this.state.publisher.publishVideo(
+                            !this.state.videostate
+                          );
+                          this.setState({
+                            videostate: !this.state.videostate,
+                          });
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <BsCameraVideoOffFill
+                        size={btnSize}
+                        onClick={() => {
+                          this.state.publisher.publishVideo(
+                            !this.state.videostate
+                          );
+                          this.setState({
+                            videostate: !this.state.videostate,
+                          });
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {/* chat popper */}
+                  <div className="cursor-pointer">
+                    <BsChatDots size={btnSize} />
+                  </div>
+                </div>
+              </footer>
             </div>
           </div>
         )}
