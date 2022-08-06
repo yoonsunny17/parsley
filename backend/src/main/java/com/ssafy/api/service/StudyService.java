@@ -113,8 +113,6 @@ public class StudyService {
         dailyStudyLog.setUser(user);
         dailyStudyLog.setRoom(room);
 
-        System.out.println("------------user " + user.getId());
-
         dailyStudyRepository.save(dailyStudyLog);
 
         return dailyStudyLog;
