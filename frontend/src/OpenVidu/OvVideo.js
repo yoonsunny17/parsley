@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 
-class OpenViduVideoComponent extends Component {
+export default class OpenViduVideoComponent extends Component {
   constructor(props) {
     super(props);
     this.videoRef = React.createRef();
-    this.state = {};
   }
 
   componentDidUpdate(props) {
@@ -20,8 +19,6 @@ class OpenViduVideoComponent extends Component {
   }
 
   render() {
-    return <video className="float-lfe" autoPlay={true} ref={this.videoRef} />;
+    return <video autoPlay={true} ref={this.videoRef} />;
   }
 }
-
-export default OpenViduVideoComponent;
