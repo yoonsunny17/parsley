@@ -16,7 +16,7 @@ const Text = styled.p`
   padding: 5px;
 `;
 
-class Message extends Component {
+class Message extends React.Component {
   render() {
     const { username, text, boxClass } = this.props;
 
