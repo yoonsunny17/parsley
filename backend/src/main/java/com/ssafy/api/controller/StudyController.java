@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -32,8 +33,6 @@ public class StudyController {
 
     @Autowired
     private StudyService studyService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private UserRepository userRepository;
 
@@ -57,7 +56,7 @@ public class StudyController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     @PostMapping("/goal/create")
-    public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(@RequestBody GoalCreatePostReq goalInfo) {
+    public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(@RequestBody @Valid GoalCreatePostReq goalInfo) {
         //TODO: user 정보 가져오기(userid로 user 찾기)
         User user = userRepository.findByUserId(1L);
 
@@ -78,7 +77,7 @@ public class StudyController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     @PostMapping("/goal/update")
-    public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(@RequestBody GoalCreatePostReq goalInfo){
+    public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(@RequestBody @Valid GoalCreatePostReq goalInfo){
         //TODO: user 정보 가져오기
         Long userId = 2L;
 
@@ -119,7 +118,7 @@ public class StudyController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     @PostMapping("/log/add")
-    public ResponseEntity<? extends LogCreatePostRes> createStudyLog(@RequestBody LogCreatePostReq logInfo){
+    public ResponseEntity<? extends LogCreatePostRes> createStudyLog(@RequestBody @Valid LogCreatePostReq logInfo){
         //TODO: user 정보 가져오기
         Long userId = 1L;
         User user = userRepository.findByUserId(userId);
