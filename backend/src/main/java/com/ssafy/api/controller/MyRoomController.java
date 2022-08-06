@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -54,7 +55,7 @@ public class MyRoomController {
             @ApiResponse(code = 200, message = "나의 방 추가 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends MyRoomPostRes> addMyRoom(@RequestBody MyRoomPostReq myRoomInfo){
+    public ResponseEntity<? extends MyRoomPostRes> addMyRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
 
         Long userId = jwtService.getUserId();
 
@@ -75,7 +76,7 @@ public class MyRoomController {
             @ApiResponse(code = 404, message = "나의 방 삭제 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends MyRoomPostRes> deleteMyRoom(@RequestBody MyRoomPostReq myRoomInfo){
+    public ResponseEntity<? extends MyRoomPostRes> deleteMyRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
 
         Long userId = jwtService.getUserId();
 
@@ -117,7 +118,7 @@ public class MyRoomController {
             @ApiResponse(code = 404, message = "관심 방 추가 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends MyRoomPostRes> addInterestRoom(@RequestBody MyRoomPostReq myRoomInfo){
+    public ResponseEntity<? extends MyRoomPostRes> addInterestRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
 
         Long userId = jwtService.getUserId();
 
@@ -138,7 +139,7 @@ public class MyRoomController {
             @ApiResponse(code = 404, message = "관심 방 삭제 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends MyRoomPostRes> deleteInterestRoom(@RequestBody MyRoomPostReq myRoomInfo){
+    public ResponseEntity<? extends MyRoomPostRes> deleteInterestRoom(@RequestBody @Valid MyRoomPostReq myRoomInfo){
 
         Long userId = jwtService.getUserId();
 
