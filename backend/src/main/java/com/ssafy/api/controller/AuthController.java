@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
-@Api(value = "유저 API", tags = {"User"})
+@Api(value = "사용자 인증 API", tags = {"Auth"})
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -153,30 +153,5 @@ public class AuthController {
             System.out.println(e.getMessage());
         }
         return ResponseEntity.status(202).body(UserRes.of(202, "Accepted", 0L));
-    }
-
-
-    @PostMapping("/delete")
-    @ApiOperation(value = "유저 삭제", notes = "로그인한 회원을 삭제한다.")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "삭제 성공"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<? extends UserRes> deleteUser() {
-        User user = userService.getUser(jwtService.getUserId());
-        userService.deleteUser(user);
-        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
-    }
-
-    @PostMapping("/update")
-    @ApiOperation(value = "유저 수정", notes = "로그인한 회원 정보를 수정한다.")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "회원 정보 수정 성공"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<? extends UserRes> updateUser(@RequestBody UserReq userInfo) {
-        User user = userService.getUser(jwtService.getUserId());
-        userService.updateUser(user, userInfo);
-        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
     }
 }
