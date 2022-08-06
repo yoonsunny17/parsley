@@ -13,6 +13,7 @@ import {
   BsCameraVideoFill,
   BsCameraVideoOffFill,
   BsChatDots,
+  BsThreeDots,
 } from "react-icons/bs";
 import { TbScreenShare } from "react-icons/tb";
 import { MdExitToApp } from "react-icons/md";
@@ -495,25 +496,21 @@ class StudySession extends Component {
                     id="video-container"
                     className="video-container flex flex-wrap mb-5 justify-center"
                   >
-                    <div id="session-header">
+                    {/* <div className="relative font-bold" id="session-header">
                       <div id="session-title" className="text-2xl">
                         {mySessionId}
                       </div>
-                    </div>
-                    {this.state.mainStreamManager !== undefined ? (
-                      <div id="main-video" className="col-md-6">
-                        <UserVideoComponent
-                          streamManager={this.state.mainStreamManager}
-                        />
-                        <input
-                          className="btn btn-sm"
-                          type="button"
-                          id="buttonSwitchCamera"
-                          onClick={this.switchCamera}
-                          value="Switch Camera"
-                        />
+                    </div> */}
+                    {/* // FIXME: studysession navbar 따로 구현해야할것같음 */}
+                    {/* studysession navbar */}
+                    <div className="navbar bg-base-100">
+                      <div className="flex-1 text-xl font-bold">PARSLEY</div>
+                      <div className="flex-none cursor-pointer">
+                        <BsThreeDots />
                       </div>
-                    ) : null}
+                    </div>
+                    {/* // TODO: 화면 넘어가는것을 CAROUSEL로 구현해야 할 것 같음 */}
+                    {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
                     {this.state.publisher !== undefined ? (
                       <div
                         className="stream-container col-md-6 col-xs-6"
@@ -526,6 +523,7 @@ class StudySession extends Component {
                         />
                       </div>
                     ) : null}
+                    {/* 제 3자; subscribers */}
                     {this.state.subscribers.map((sub, i) => (
                       <div
                         key={i}
@@ -535,6 +533,35 @@ class StudySession extends Component {
                         <UserVideoComponent streamManager={sub} />
                       </div>
                     ))}
+                    {/* 메인 화면; 화면 공유 되어지고있는 사람 */}
+                    {this.state.mainStreamManager !== undefined ? (
+                      <div id="main-video" className="col-md-6">
+                        <UserVideoComponent
+                          streamManager={this.state.mainStreamManager}
+                        />
+                      </div>
+                    ) : null}
+                    {/* {this.state.publisher !== undefined ? (
+                      <div
+                        className="stream-container col-md-6 col-xs-6"
+                        onClick={() =>
+                          this.handleMainVideoStream(this.state.publisher)
+                        }
+                      >
+                        <UserVideoComponent
+                          streamManager={this.state.publisher}
+                        />
+                      </div>
+                    ) : null} */}
+                    {/* {this.state.subscribers.map((sub, i) => (
+                      <div
+                        key={i}
+                        className="stream-container col-md-6 col-xs-6"
+                        onClick={() => this.handleMainVideoStream(sub)}
+                      >
+                        <UserVideoComponent streamManager={sub} />
+                      </div>
+                    ))} */}
                   </div>
                 </div>
               </div>

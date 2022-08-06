@@ -34,3 +34,9 @@
   margin-right: 30%;
   word-wrap: break-word;
 }
+
+/* 위에 작게 보이는 곳 */
+.stream-container {
+  width: calc(100% / 4);
+  padding-bottom: 30px;
+}
