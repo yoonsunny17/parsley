@@ -1,6 +1,7 @@
 package com.ssafy.db.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class DailyGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +23,4 @@ public class DailyGoal {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public DailyGoal() {
-    }
 }
