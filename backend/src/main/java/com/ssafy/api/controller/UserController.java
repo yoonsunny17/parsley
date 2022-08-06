@@ -46,10 +46,16 @@ public class UserController {
     @ApiOperation(value = "유저 수정", notes = "로그인한 회원 정보를 수정한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "회원 정보 수정 성공"),
+            @ApiResponse(code = 409, message = "중복된 닉네임"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRes> updateUser(@RequestBody UserReq userInfo) {
-        User user = userService.getUserByUserId(jwtService.getUserId());
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
+        User user = userService.getUserByUserId(userId);
+        if (userService.existsByName(userInfo.getName(), userId)) {
+            return ResponseEntity.status(409).body(UserRes.of(409, "Conflict", user.getId()));
+        }
         userService.updateUser(user, userInfo);
         return ResponseEntity.status(200).body(UserRes.of(201, "Success", user.getId()));
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -46,5 +47,13 @@ public class UserService {
 		user.setName(userInfo.getName());
 		user.setDescription(userInfo.getDescription());
 		user.setProfileImgUrl(userInfo.getProfileImgUrl());
+	}
+
+	public boolean existsByName(String name, Long userId) {
+		List<User> userList = userRepository.findByName(name);
+		if (userList.size() > 0 && userList.get(0).getId() != userId) {
+			return true;
+		}
+		return false;
 	}
 }
