@@ -1,6 +1,7 @@
 package com.ssafy.db.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Sley {
 
     @Id
@@ -23,8 +25,4 @@ public class Sley {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public Sley() {
-
-    }
 }
