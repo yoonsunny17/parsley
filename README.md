@@ -71,6 +71,8 @@
 <br/>
 
 ## 🖥 구현 기능 및 진행 상황
+현재 구현 진행 단계로 아직 main 브랜치에 merge하지 않았습니다.<br/>
+FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관련 코드는 backend 브랜치의 backend 폴더에 있는 코드를 참고해주세요:)
 
 ### 🎨 FrontEnd
 
