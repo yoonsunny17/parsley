@@ -82,6 +82,10 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <summary>메인 페이지</summary>
 <div markdown="1">
 
+사용자의 허브 도감, 농부왕 랭킹, 스터디룸 탭 조회 컴포넌트로 이루어져 있습니다.<br/>
+허브 도감 컴포넌트를 통해 사용자가 얻은 허브 도감 확인 및 대표 허브 프로필을 설정할 수 있습니다.<br/>
+전체/나의/관심 공부방 탭 전환을 통해 간편하게 스터디룸 조회를 가능하도록 하였습니다.<br/>
+
 * 메인 페이지
 
     ![image](/uploads/639b5b6e8fa4932b71e69ab3b5aa4d21/image.png)
@@ -101,6 +105,10 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <summary>농장 페이지</summary>
 <div markdown="1">
 
+슬리 포인트를 얻을 수 있는 허브 재배 및 수확을 통한 허브 도감을 확인할 수 있는 페이지 입니다.<br/>
+최대 8개의 허브를 동시에 키울 수 있으며, 비어있는 칸을 클릭하게 되면 허브 아이템을 선택할 수 있는 상점 모달창이 나타납니다.<br/>
+상점 모달창에서 씨앗/비료/물뿌리개 아이템을 사용자 마음대로 조합하여 구매가 가능합니다.<br/>
+
 * 농장 아이템 상점 모달
 
     ![image](/uploads/4c82233a783e8b8d317fa709721095b9/image.png)
@@ -111,6 +119,10 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <details>
 <summary>스터디룸 페이지</summary>
 <div markdown="1">
+
+스터디룸을 생성할 수 있는 페이지와, 스터디룸을 조회할 수 있는 목록 페이지입니다.<br/>
+스터디룸 생성 시 스터디룸을 홍보할 수 있는 해시태그 기능을 구현하였습니다.<br/>
+스터디룸 검색 목록 페이지는 손꾸락 모드/얼구리 모드로 나누어 가시성을 높였습니다.<br/>
 
 * 스터디룸 생성 페이지
 
@@ -129,6 +141,11 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <details>
 <summary>마이 페이지</summary>
 <div markdown="1">
+
+나의 프로필 및 학습 관리를 전체적으로 볼 수 있는 마이 페이지 입니다.<br/>
+중요한 일정을 위한 D-Day 설정과, 오늘의 스터디 목표 설정 기능을 구현하였습니다.<br/>
+또한, 사용자의 학습량 데이터를 통해 금주의 공부량 통계 데이터를 구현할 예정입니다.<br/>
+
 
 * 마이 페이지
 
@@ -154,6 +171,12 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <summary>스터디룸 기능</summary>
 <div markdown="1">
 
+webRTC(OpenVidu)를 기반으로 한 스터디룸 입니다.<br/>
+손꾸락 모드/얼구리 모드 두 가지 모드를 구현할 예정이며, 현재는 손꾸락 모드까지 구현하였습니다.<br/>
+마이크 on/off, 화면 on/off, 채팅창 등 기본적인 기능을 구현하였습니다.<br/>
+이후, 4분할 메인 화면 구현 모드 또한 개발할 예정입니다.</br>
+
+
 * 스터디룸 화면 공유
 
     ![openvidu_1](/uploads/973626302a71ed6aa598068a3bee295e/openvidu_1.gif)
@@ -177,6 +200,8 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <details>
 <summary>3D 허브 모델</summary>
 <div markdown="1">
+Three.js를 기반으로 3D 허브 모델을 구현하여 시각적 재미를 더했습니다.<br/>
+3D 모델을 확대하거나, 원하는 방향으로 회전시켜볼 수 있도록 하여 게임적 요소를 더했습니다.<br/>
 
     ![openvidu_7](/uploads/37273504fb3a7be47cca2afe0a665ef8/openvidu_7.gif)
 
