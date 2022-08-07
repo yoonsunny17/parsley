@@ -105,7 +105,12 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <summary>스터디룸 페이지</summary>
 <div markdown="1">
 
-여기에 넣어주세욤
+* 스터디룸 생성 페이지
+     ![image](/uploads/a9bfcb7755e3d7c4348d9646ab1bacdc/image.png)
+* 스터디룸 검색 목록 페이지
+     ![image](/uploads/161f66031ccf2ccfd49064b042580d33/image.png)
+     ![image](/uploads/d64bb6279519ae57ba11b1b2dfc65166/image.png) 
+
 
 </div>
 </details>
