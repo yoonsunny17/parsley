@@ -37,7 +37,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRes> deleteUser() {
-        User user = userService.getUserByUserId(jwtService.getUserId());
+//        User user = userService.getUserByUserId(jwtService.getUserId());
+        User user = userService.getUserByUserId(1L);
         userService.deleteUser(user);
         return ResponseEntity.status(200).body(UserRes.of(201, "Success", user.getId()));
     }
