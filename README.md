@@ -82,7 +82,12 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <summary>메인 페이지</summary>
 <div markdown="1">
 
-여기에 넣어주세욤
+* 메인 페이지
+    ![image](/uploads/9a73dacbeb68f83f0c48b3a4e40bb2b9/image.png)
+* 로그인 전 사이드바
+    ![image](/uploads/fafce2fa6c9637086dfd18a88387e8a5/image.png)
+* 로그인 후 사이드바
+    ![image](/uploads/bda678ae1a2986b87eed82d23b01d8af/image.png)
 
 </div>
 </details>
@@ -109,7 +114,14 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <summary>마이 페이지</summary>
 <div markdown="1">
 
-여기에 넣어주세욤
+* 마이 페이지
+    ![image](/uploads/3b923a1862d7860b84129710ece2a61f/image.png)
+* 프로필 수정 컴포넌트
+    ![image](/uploads/74be6f33a715d016775b50bd83f2cb03/image.png)
+* D-Day 설정 모달
+    ![image](/uploads/3fba97be98704f696aa37e01a52f050f/image.png)
+* 오늘의 스터디 목표 설정 모달
+    ![image](/uploads/5d656d51c71c3df684711371ca829edc/image.png)
 
 </div>
 </details>
