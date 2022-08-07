@@ -1,9 +1,9 @@
-# PARSLEY 
-### 여러분은 모두 PARSLEY 서비스 내의 PLAYERS 입니다.
+# PARSLEY🌿 
+#### 여러분은 모두 PARSLEY 서비스 내의 PLAYERS 입니다.
 
 <br/>
 
-## 팀원 소개 <a href="https://www.notion.so/a604-parsley/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
+## 😀 팀원 소개 <a href="https://www.notion.so/a604-parsley/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
 |![image](/uploads/0feb6879cc7eaa9cf9ae9b2b642de95a/image.png)|![image](/uploads/4ec38a01ff94aae71cb59af5537ff5d2/image.png)|![image](/uploads/f9f26f52ef993875f8de897a996bf20a/image.png)|![image](/uploads/94ee0f65fa1c3cf5da672607d19a52c4/image.png)|![image](/uploads/fe7fdcffda57f33fdeb57a745177c4c0/image.png)|![image](/uploads/eca0fac44096ffc6447ee79aa7d0a07a/image.png)|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |마유선|이동희|전윤선|정윤영|조혜은|한상우|
@@ -11,8 +11,8 @@
 
 <br/>
 
-## TOOL
-
+## 🛠 TOOL
+##### Communitcation
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
 <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
 <img src="https://img.shields.io/badge/mattermost-0058CC?style=for-the-badge&logo=mattermost&logoColor=white">
@@ -21,22 +21,16 @@
 
 <br/>
 
-<img src="https://img.shields.io/badge/intellij-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
+##### Development
 <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
-
-
-## 기술 스택
-
-<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
-<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
-<img src="https://img.shields.io/badge/aws-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white">
-<img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
-<img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/intellij-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
+<img src="https://img.shields.io/badge/mysql_workbench-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 
-<br/>
 
+## 🛠 기술 스택
+
+##### FrontEnd
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
 <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
@@ -44,14 +38,27 @@
 <img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white">
 <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
 <img src="https://img.shields.io/badge/three.js-000000?style=for-the-badge&logo=three.js&logoColor=white">
+<img src="https://img.shields.io/badge/webrtc-333333?style=for-the-badge&logo=webrtc&logoColor=white">
+
+<br/>
+
+
+##### BackEnd
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/aws-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white">
+<img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+<img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
 
 <br/>
 <br/>
 
-## 기획
+## 💡 기획
 ![image](/uploads/a9c6edf67c3f1bb43fdd84f41869e674/image.png)
 
-## 설계
+## ✏ 설계
 
 * [목업](https://www.notion.so/a604-parsley/eccbc66413734cf99c264947e7ec7904)
 
@@ -63,19 +70,55 @@
 
 <br/>
 
-## 구현 기능 및 진행 상황
+## 🖥 구현 기능 및 진행 상황
 
-### FrontEnd
+### 🎨 FrontEnd
 
-#### 컴포넌트 구현
+##### 컴포넌트 구현
 
-#### OpenVidu
+<details>
+<summary>메인 페이지</summary>
+<div markdown="1">
 
-#### Three.js
+여기에 넣어주세욤
 
-### BackEnd
+</div>
+</details>
 
-#### API
+<details>
+<summary>농장 페이지</summary>
+<div markdown="1">
+
+여기에 넣어주세욤
+
+</div>
+</details>
+
+<details>
+<summary>스터디룸 페이지</summary>
+<div markdown="1">
+
+여기에 넣어주세욤
+
+</div>
+</details>
+
+<details>
+<summary>마이 페이지</summary>
+<div markdown="1">
+
+여기에 넣어주세욤
+
+</div>
+</details>
+
+##### OpenVidu
+
+##### Three.js
+
+### 🧱 BackEnd
+
+##### API
 
 <details>
 <summary>회원 정보</summary>
@@ -232,7 +275,7 @@
 </div>
 </details>
 
-#### 서버 배포
+##### 서버
 
 <details>
 <summary>서버 배포</summary>
