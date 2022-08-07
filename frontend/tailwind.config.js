@@ -23,6 +23,7 @@ module.exports = {
                 extra5: "#3A3C46",
                 widget: "#25262D",
                 bg: "#FEFEFE",
+                heart: "#F35757",
             },
             fontFamily: {
                 logo: ["Titan One", "cursive"],
