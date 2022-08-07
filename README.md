@@ -3,7 +3,7 @@
 
 <br/>
 
-## 😀 팀원 소개 <a href="https://www.notion.so/a604-parsley/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
+## 😀 팀원 소개 <a href="https://a604-parsley.notion.site/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
 |![image](/uploads/0feb6879cc7eaa9cf9ae9b2b642de95a/image.png)|![image](/uploads/4ec38a01ff94aae71cb59af5537ff5d2/image.png)|![image](/uploads/f9f26f52ef993875f8de897a996bf20a/image.png)|![image](/uploads/94ee0f65fa1c3cf5da672607d19a52c4/image.png)|![image](/uploads/fe7fdcffda57f33fdeb57a745177c4c0/image.png)|![image](/uploads/eca0fac44096ffc6447ee79aa7d0a07a/image.png)|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |마유선|이동희|전윤선|정윤영|조혜은|한상우|
@@ -60,13 +60,13 @@
 
 ## ✏ 설계
 
-* [목업](https://www.notion.so/a604-parsley/eccbc66413734cf99c264947e7ec7904)
+* [목업](https://a604-parsley.notion.site/eccbc66413734cf99c264947e7ec7904)
 
-* [ER 다이어그램](https://www.notion.so/a604-parsley/ER-Diagram-ac1c1b88f7b44aa1a75591a35b422879)
+* [ER 다이어그램](https://a604-parsley.notion.site/ER-Diagram-ac1c1b88f7b44aa1a75591a35b422879)
 
-*  [Entity 설계](https://www.notion.so/a604-parsley/Entity-a56eb88b48a34b358529adf3cab73b1b)
+* [Entity 설계](https://a604-parsley.notion.site/Entity-a56eb88b48a34b358529adf3cab73b1b)
 
-* [API 명세](https://www.notion.so/a604-parsley/API-0b2794a89678471eac820288255f8929)
+* [API 명세](https://a604-parsley.notion.site/API-0b2794a89678471eac820288255f8929)
 
 <br/>
 
