@@ -2,11 +2,11 @@ package com.ssafy.api.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @ApiModel("RoomCreatePostRequest")
 public class RoomCreatePostReq {
     @ApiModelProperty(name = "방 이름", example = "coding_with_me")
