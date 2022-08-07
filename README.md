@@ -200,10 +200,14 @@ webRTC(OpenVidu)를 기반으로 한 스터디룸 입니다.<br/>
 <details>
 <summary>3D 허브 모델</summary>
 <div markdown="1">
+
 Three.js를 기반으로 3D 허브 모델을 구현하여 시각적 재미를 더했습니다.<br/>
 3D 모델을 확대하거나, 원하는 방향으로 회전시켜볼 수 있도록 하여 게임적 요소를 더했습니다.<br/>
+3D 허브 모델은 유료 모델을 구매하여 사용할 예정이며, 현재는 무료로 다운로드 가능한 샘플들을 가져와서 테스트 하며 개발중에 있습니다.</br>
 
-    ![openvidu_7](/uploads/37273504fb3a7be47cca2afe0a665ef8/openvidu_7.gif)
+![image](/uploads/c03f6149b5b081122a2c53ab35f4cf04/image.png)
+
+![image](/uploads/c6b129dd9b695be30df4339aeadbc647/image.png)
 
 </div>
 </details>
