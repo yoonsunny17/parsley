@@ -5,7 +5,7 @@ video {
   cursor: pointer;
 }
 .streamcomponent div {
-  position: absolute;
+  /* position: absolute; */
   background: #f8f8f8;
   padding-left: 5px;
   padding-right: 5px;
@@ -16,4 +16,14 @@ video {
 p {
   margin: 0;
   cursor: pointer;
+}
+
+#nameTag {
+  background: transparent;
+  /* display: flex; */
+  position: relative;
+  top: -35px;
+  left: 10px;
+  width: fit-content;
+  height: auto;
 }
