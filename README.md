@@ -84,15 +84,15 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 
 * 메인 페이지
 
-    ![image](/uploads/9a73dacbeb68f83f0c48b3a4e40bb2b9/image.png)
+    ![image](/uploads/639b5b6e8fa4932b71e69ab3b5aa4d21/image.png)
 
 * 로그인 전 사이드바
 
-    ![image](/uploads/fafce2fa6c9637086dfd18a88387e8a5/image.png)
+    ![image](/uploads/be0950fe9b24ec4d86bb4d63182cf646/image.png)
 
 * 로그인 후 사이드바
 
-    ![image](/uploads/bda678ae1a2986b87eed82d23b01d8af/image.png)
+    ![image](/uploads/a4dd4a1efe6aa6b1a235c222655a5b0b/image.png)
 
 </div>
 </details>
@@ -101,7 +101,9 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 <summary>농장 페이지</summary>
 <div markdown="1">
 
-여기에 넣어주세욤
+* 농장 아이템 상점 모달
+
+    ![image](/uploads/4c82233a783e8b8d317fa709721095b9/image.png)
 
 </div>
 </details>
