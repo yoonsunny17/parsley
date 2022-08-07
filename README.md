@@ -153,15 +153,39 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 
 ### 🧱 BackEnd
 
+##### Kakao Login API
+
+<details>
+<summary>회원가입 및 로그인</summary>
+<div markdown="1">
+
+* 시퀀스 다이어그램
+
+    ![image](/uploads/ef160b2c089df89bf6e280f310e5cabe/image.png)
+
+* 캐시 서버
+
+
+
+* 쿠키
+
+
+
+* Response    
+
+
+</div>
+</details>
+
 ##### API
+
+[배포한 서버의 swagger url](https://i7a604.p.ssafy.io/api/swagger-ui/index.html)
+
+현재 개발의 편의성을 위해 `userId = 1L`로 지정해놓은 상태입니다. 
 
 <details>
 <summary>회원 정보</summary>
 <div markdown="1">
-
-* 회원가입/로그인
-
-* 로그아웃
 
 * 회원 정보 수정
 
