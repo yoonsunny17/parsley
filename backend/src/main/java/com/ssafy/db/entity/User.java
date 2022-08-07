@@ -1,9 +1,12 @@
 package com.ssafy.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -17,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -34,37 +38,36 @@ public class User {
     private long currentBookPoint;
     private boolean isWithdrawn;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinTable(name = "user_room",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Room> joinRooms = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinTable(name = "interest_room",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Room> interestRooms = new ArrayList<>();
 
-
-    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserHerbBook> userHerbBooks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Sley> sleyHistory = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Herb> herbs = new ArrayList<>();
     
     public void addUserRoom(Room room) {
         joinRooms.add(room);
         room.getMembers().add(this);
-    }
-
-    public User() {
-
     }
 }

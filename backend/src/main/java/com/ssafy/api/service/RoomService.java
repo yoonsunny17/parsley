@@ -7,6 +7,7 @@ import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.RoomHashtag;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomRepository;
+import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,11 @@ public class RoomService {
     @Autowired
     RoomRepository roomRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Transactional
-    public Room createRoom(RoomCreatePostReq roomInfo) {
+    public Room createRoom(Long userId, RoomCreatePostReq roomInfo) {
         Room room = new Room();
         room.setName(roomInfo.getName());
         room.setMode(roomInfo.getMode() == 0 ? Mode.FINGER : Mode.FACE);
@@ -30,6 +34,9 @@ public class RoomService {
         room.setMaxPopulation(roomInfo.getMaxPopulation());
         room.setPublic(roomInfo.isPublic());
         room.setPassword(roomInfo.getPassword());
+
+        User user = userRepository.findByUserId(userId);
+        room.setHostUser(user);
 
         roomRepository.save(room);
         return room;

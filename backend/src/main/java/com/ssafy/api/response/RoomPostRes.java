@@ -3,21 +3,21 @@ package com.ssafy.api.response;
 import com.ssafy.common.model.response.BaseResponseBody;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @ApiModel("RoomPostResponse")
 public class RoomPostRes extends BaseResponseBody {
     @ApiModelProperty(name = "방 ID")
-    Long roomId;
+    boolean isCreated;
 
-    public static RoomPostRes of(Integer statusCode, String message, Long roomId) {
+    public static RoomPostRes of(Integer statusCode, String message, boolean isCreated) {
         RoomPostRes res = new RoomPostRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setRoomId(roomId);
+        res.setCreated(isCreated);
         return res;
     }
 }

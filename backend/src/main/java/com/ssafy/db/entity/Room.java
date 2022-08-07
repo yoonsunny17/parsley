@@ -1,5 +1,6 @@
 package com.ssafy.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class Room {
     @JoinColumn(name = "user_id")
     private User hostUser;
 
+    @JsonManagedReference
     @ManyToMany(mappedBy = "joinRooms", fetch = FetchType.LAZY)
     private List<User> members = new ArrayList<>();
 

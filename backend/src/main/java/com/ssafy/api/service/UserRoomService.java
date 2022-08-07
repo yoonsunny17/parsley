@@ -13,16 +13,12 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class MyRoomService {
+public class UserRoomService {
 
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private JwtService jwtService;
 
 
     @Transactional

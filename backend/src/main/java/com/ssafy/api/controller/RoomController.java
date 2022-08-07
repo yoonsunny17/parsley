@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "방 관리 API", tags = {"Room"})
@@ -20,10 +21,11 @@ public class RoomController {
     @Autowired
     RoomService roomService;
 
-    @GetMapping("/")
+    @GetMapping
     @ApiOperation(value = "방 목록 조회", notes = "방 목록들을 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "방 목록 조회 성공"),
+            @ApiResponse(code = 404, message = "방 목록 조회 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends RoomsGetRes> getRooms() {
@@ -38,15 +40,15 @@ public class RoomController {
     @ApiOperation(value = "방 하나 조회", notes = "방 ID 값으로 방 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "방 하나 조회 성공"),
-            @ApiResponse(code = 404, message = "방 없음"),
+            @ApiResponse(code = 404, message = "방 조회 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends RoomGetRes> getRoom(@PathVariable("room_id") Long roomId) {
+    public ResponseEntity<? extends RoomGetRes> getRoom(@PathVariable("room_id") @Valid Long roomId) {
         Room room = roomService.getRoomByRoomId(roomId);
 
-        if(room == null) {
+        if (room == null) {
             return ResponseEntity.status(404).body(
-                    RoomGetRes.of(404, "Room Not Found", room)
+                    RoomGetRes.of(404, "Room not found", null)
             );
         }
 
@@ -59,66 +61,64 @@ public class RoomController {
     @ApiOperation(value = "방 생성", notes = "생성된 방 id 값을 응답한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "방 생성 성공"),
-            @ApiResponse(code = 404, message = "방 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "방 생성 실패")
     })
     public ResponseEntity<? extends RoomPostRes> create(
-            @RequestBody @ApiParam(value = "방 생성 정보", required = true) RoomCreatePostReq roomInfo) {
+            @RequestBody @ApiParam(value = "방 생성 정보", required = true) @Valid RoomCreatePostReq roomInfo) {
         // TODO: user 정보 갖고 와서 넘겨주기
+        Long userId = 1L;
+        Room room = roomService.createRoom(userId, roomInfo);
 
-        Room room = roomService.createRoom(roomInfo);
-
-        if(room == null) {
-            return ResponseEntity.status(404).body(
-                    RoomPostRes.of(404, "Fail to create", 0L)
+        if (room == null) {
+            return ResponseEntity.status(500).body(
+                    RoomPostRes.of(500, "Fail to create", false)
             );
         }
 
         return ResponseEntity.status(201).body(
-                RoomPostRes.of(201, "Success", room.getId()));
+                RoomPostRes.of(201, "Success", true));
     }
 
     @PostMapping("/{room_id}/update")
     @ApiOperation(value = "방 수정", notes = "방 정보를 수정한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "방 수정 성공"),
-            @ApiResponse(code = 404, message = "방 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "방 수정 실패")
     })
     public ResponseEntity<? extends RoomPostRes> update(
             @PathVariable("room_id") Long roomId,
-            @RequestBody @ApiParam(value = "방 수정 정보", required = true) RoomUpdatePostReq roomInfo) {
+            @RequestBody @ApiParam(value = "방 수정 정보", required = true) @Valid RoomUpdatePostReq roomInfo) {
         // TODO: 현재 삭제하려는 User와 hostUser가 같은지 확인하는 로직 추가
 
         Room room = roomService.updateRoom(roomId, roomInfo);
-        if(room == null) {
-            return ResponseEntity.status(404).body(
-                    RoomPostRes.of(404, "Room Not Found", 0L)
+        if (room == null) {
+            return ResponseEntity.status(500).body(
+                    RoomPostRes.of(500, "Room not found", false)
             );
         }
 
         return ResponseEntity.status(201).body(
-                RoomPostRes.of(201, "Success", room.getId())
+                RoomPostRes.of(201, "Success", true)
         );
     }
 
-    @GetMapping("/{room_id}/delete")
+    @PostMapping("/{room_id}/delete")
     @ApiOperation(value = "방 삭제", notes = "방을 삭제한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "방 삭제 성공"),
-            @ApiResponse(code = 404, message = "방 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "방 삭제 실패")
     })
-    public ResponseEntity<? extends RoomPostRes> delete(@PathVariable("room_id") Long roomId) {
+    public ResponseEntity<? extends RoomPostRes> delete(@PathVariable("room_id") @Valid Long roomId) {
+        // TODO: 현재 삭제하려는 User와 hostUser가 같은지 확인하는 로직 추가
         Room room = roomService.deleteRoom(roomId);
-        if(room == null) {
-            return ResponseEntity.status(404).body(
-                    RoomPostRes.of(404, "Room Not Found", 0L)
+        if (room == null) {
+            return ResponseEntity.status(500).body(
+                    RoomPostRes.of(500, "Room not found", false)
             );
         }
 
         return ResponseEntity.status(201).body(
-                RoomPostRes.of(201, "Success", room.getId())
+                RoomPostRes.of(201, "Success", true)
         );
     }
 

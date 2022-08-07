@@ -4,19 +4,19 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Room;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @ApiModel("JoinRoomsGetResponse")
 public class UserRoomsGetRes extends BaseResponseBody {
 
     @ApiModelProperty(name = "방 목록")
-    List<MyRoomRes> rooms = new ArrayList<>();
+    List<UserRoomRes> rooms = new ArrayList<>();
 
     public static UserRoomsGetRes of(Integer status, String message, List<Room> rooms){
         UserRoomsGetRes res = new UserRoomsGetRes();
@@ -30,8 +30,7 @@ public class UserRoomsGetRes extends BaseResponseBody {
 
     public void setRooms(List<Room> rooms){
         for(Room room : rooms){
-            this.rooms.add(MyRoomRes.of(room));
+            this.rooms.add(UserRoomRes.of(room));
         }
-        System.out.println("-----------------------------여기 오넹");
     }
 }

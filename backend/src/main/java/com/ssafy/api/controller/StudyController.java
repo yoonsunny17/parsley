@@ -6,19 +6,18 @@ import com.ssafy.api.response.GoalCreatePostRes;
 import com.ssafy.api.response.GoalGetRes;
 import com.ssafy.api.response.LogCreatePostRes;
 import com.ssafy.api.response.WeeklyStudyGetRes;
+import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.StudyService;
-import com.ssafy.api.service.UserService;
 import com.ssafy.db.entity.DailyGoal;
 import com.ssafy.db.entity.DailyStudyLog;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,17 +32,17 @@ public class StudyController {
     @Autowired
     private StudyService studyService;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
+    private JwtService jwtService;
 
+    @GetMapping("/goal")
+    @ApiOperation(value = "오늘의 목표 시간 조회", notes = "사용자가 설정한 오늘의 목표시간을 조회한다. 목표시간이 설정되어있지 않으면 0 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "오늘의 목표 시간 조회 성공"),
+            @ApiResponse(code = 404, message = "오늘의 목표 시간 조회 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    @GetMapping("/goal")
     public ResponseEntity<? extends GoalGetRes>  getDailyGoal(){
-        //TODO: user 정보 가져오기
+//        Long userId = jwtService.getUserId();
         Long userId = 1L;
 
         int targetTime = studyService.getTargetTime(userId);
@@ -52,16 +51,18 @@ public class StudyController {
                 .body(GoalGetRes.of(200, "success", targetTime));
     }
 
+    @PostMapping("/goal/create")
+    @ApiOperation(value = "오늘의 목표 시간 등록", notes = "사용자가 설정한 목표시간을 저장한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "오늘의 목표 시간 등록 성공"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "오늘의 목표 시간 등록 실패")
     })
-    @PostMapping("/goal/create")
-    public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(@RequestBody GoalCreatePostReq goalInfo) {
-        //TODO: user 정보 가져오기(userid로 user 찾기)
-        User user = userRepository.findByUserId(1L);
+    public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(
+            @RequestBody @ApiParam(value = "목표 생성 정보", required = true) @Valid GoalCreatePostReq goalInfo) {
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
 
-        DailyGoal dailyGoal = studyService.createDailyGoal(user, goalInfo);
+        DailyGoal dailyGoal = studyService.createDailyGoal(userId, goalInfo);
 
         if(dailyGoal == null){
             return ResponseEntity.status(500)
@@ -73,14 +74,16 @@ public class StudyController {
 
     }
 
+    @PostMapping("/goal/update")
+    @ApiOperation(value = "오늘의 목표 시간 수정", notes = "오늘의 목표시간을 수정한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "오늘의 목표 시간 수정 성공"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "오늘의 목표 시간 수정 실패")
     })
-    @PostMapping("/goal/update")
-    public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(@RequestBody GoalCreatePostReq goalInfo){
-        //TODO: user 정보 가져오기
-        Long userId = 2L;
+    public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(
+            @RequestBody @ApiParam(value = "목표 수정 정보", required = true) @Valid GoalCreatePostReq goalInfo){
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
 
         DailyGoal dailyGoal = studyService.updateDailyGoal(userId, goalInfo);
 
@@ -93,20 +96,22 @@ public class StudyController {
                 .body(GoalCreatePostRes.of(200, "Success", dailyGoal.getId()));
     }
 
+    @GetMapping("/weekly")
+    @ApiOperation(value = "주간 공부량 조회", notes = "이번주 월요일부터 조회 날짜까지의 공부시간을 조회한다.(현재 테스트 편의성을 위한 초단위)")
     @ApiResponses({
             @ApiResponse(code = 201, message = "주간 공부량 조회 성공"),
+            @ApiResponse(code = 404, message = "주간 공부량 조회 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    @GetMapping("/weekly")
     public ResponseEntity<? extends WeeklyStudyGetRes> getWeeklyStudyTime(){
-        //TODO: user 정보 가져오기
-        User user = userRepository.findByUserId(3L);
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
 
-        List<Long> week = studyService.getWeeklyStudyTime(user);
+        List<Long> week = studyService.getWeeklyStudyTime(userId);
 
         if(week.isEmpty()){
-            return ResponseEntity.status(500)
-                    .body(WeeklyStudyGetRes.of(500, "Fail to Get Weekly List", null));
+            return ResponseEntity.status(404)
+                    .body(WeeklyStudyGetRes.of(404, "Fail to Get Weekly List", null));
         }
 
         return ResponseEntity.status(200)
@@ -114,18 +119,18 @@ public class StudyController {
 
     }
 
+    @PostMapping("/log/add")
+    @ApiOperation(value = "공부 로그", notes = "공부를 시작할 떄는 status가 T, 공부가 끝날 때는 status가 F로 현재 시간에 대한 로그를 저장한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "공부 시작 / 공부 끝"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 500, message = "공부 로그 등록 실패")
     })
-    @PostMapping("/log/add")
-    public ResponseEntity<? extends LogCreatePostRes> createStudyLog(@RequestBody LogCreatePostReq logInfo){
-        //TODO: user 정보 가져오기
+    public ResponseEntity<? extends LogCreatePostRes> createStudyLog(
+            @RequestBody @ApiParam(value = "로그 생성 정보", required = true) @Valid LogCreatePostReq logInfo){
+//        Long userId = jwtService.getUserId();
         Long userId = 1L;
-        User user = userRepository.findByUserId(userId);
-//        User user = userService.createUser();
 
-        DailyStudyLog dailyStudyLog = studyService.addDailyGoal(user, logInfo);
+        DailyStudyLog dailyStudyLog = studyService.addDailyGoal(userId, logInfo);
 
         if(dailyStudyLog == null){
             return ResponseEntity.status(500)

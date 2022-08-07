@@ -1,6 +1,7 @@
 package com.ssafy.db.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class HerbRate {
 
     @Id
@@ -27,7 +29,4 @@ public class HerbRate {
     private ItemSeed itemSeed;
 
     private int herbRate;
-
-    public HerbRate() {
-    }
 }

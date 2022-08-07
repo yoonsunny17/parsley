@@ -45,9 +45,11 @@ public class StudyService {
     }
 
     @Transactional
-    public DailyGoal createDailyGoal(User user, GoalCreatePostReq goalInfo){
-        DailyGoal dailyGoal = new DailyGoal();
+    public DailyGoal createDailyGoal(Long userId, GoalCreatePostReq goalInfo){
 
+        User user = userRepository.findByUserId(userId);
+
+        DailyGoal dailyGoal = new DailyGoal();
         dailyGoal.setDate(LocalDate.now());
         dailyGoal.setTargetTime(goalInfo.getTargetTime());
         dailyGoal.setUser(user);
@@ -68,7 +70,10 @@ public class StudyService {
     }
 
     //현재 데이터 확인용으로 초단위로 가져옴 -> 추후 /60 해줄 예정
-    public List<Long> getWeeklyStudyTime(User user){
+    public List<Long> getWeeklyStudyTime(Long userId){
+
+        User user = userRepository.findByUserId(userId);
+
         List<Long> week = new LinkedList<>();
 
         int day = LocalDateTime.now().getDayOfWeek().getValue();
@@ -95,7 +100,10 @@ public class StudyService {
     }
 
     @Transactional
-    public DailyStudyLog addDailyGoal(User user, LogCreatePostReq logInfo){
+    public DailyStudyLog addDailyGoal(Long userId, LogCreatePostReq logInfo){
+
+        User user = userRepository.findByUserId(userId);
+
         DailyStudyLog dailyStudyLog = new DailyStudyLog();
 
         Room room = roomRepository.findByRoomId(logInfo.getRoomId());
@@ -104,8 +112,6 @@ public class StudyService {
         dailyStudyLog.setStatus(logInfo.isStatus());
         dailyStudyLog.setUser(user);
         dailyStudyLog.setRoom(room);
-
-        System.out.println("------------user " + user.getId());
 
         dailyStudyRepository.save(dailyStudyLog);
 

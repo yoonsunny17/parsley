@@ -5,13 +5,13 @@ import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @ApiModel("RoomResponse")
 public class RoomRes {
     @ApiModelProperty(name = "방 ID", example = "123")

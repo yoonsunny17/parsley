@@ -4,13 +4,11 @@ import com.ssafy.db.entity.Mode;
 import com.ssafy.db.entity.Room;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @ApiModel("MyRoomResponse")
-public class MyRoomRes {
+public class UserRoomRes {
 
     @ApiModelProperty(name = "방 ID", example = "123")
     Long id;
@@ -30,12 +28,12 @@ public class MyRoomRes {
     @ApiModelProperty(name = "공개 여부", example = "1")
     boolean isPublic;
 
-    public static MyRoomRes of(Room room){
+    public static UserRoomRes of(Room room){
         if(room == null){
             return null;
         }
 
-        MyRoomRes res = new MyRoomRes();
+        UserRoomRes res = new UserRoomRes();
 
         res.setId(room.getId());
         res.setName(room.getName());

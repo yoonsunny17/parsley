@@ -38,8 +38,17 @@ public class FarmService {
     @Autowired
     private HerbRateRepository herbRateRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<Tuple> getHerbBooks(Long userId) {
+        List<Tuple> userHerbBooks = userHerbBookRepository.findByUserAndGroupBy(userId);
+
+        return userHerbBooks;
+    }
+
     @Transactional
-    public UserHerbBookAddPostRes addUserHerbBook(User user, UserHerbBookAddPostReq herbInfo) {
+    public UserHerbBookAddPostRes addUserHerbBook(Long userId, UserHerbBookAddPostReq herbInfo) {
         //작물 수확 완료 처리
         Herb herb = herbRepository.findById(herbInfo.getHerbId());
         Item item = herb.getItem();
@@ -57,47 +66,41 @@ public class FarmService {
         HerbBook herbBook = herbBooks.get(percentage);
 
         UserHerbBook userHerbBook = new UserHerbBook();
+        User user = userRepository.findByUserId(userId);
         userHerbBook.setUser(user);
         userHerbBook.setHerbBook(herbBook);
         userHerbBook.setObtainedDate(LocalDateTime.now());
         userHerbBookRepository.save(userHerbBook);
 
-        //비료에 따른 슬리 추가
-        long sley = herbBook.getPoint();
+        //비료에 따른 슬리 추가(씨앗 금액 기준으로)
+        long sley = item.getItemSeed().getSley();
+
         //추가 슬리
-        sley = (long)(sley * (100 + item.getItemFertilizer().getSleyRate() *1.0)/100);
+        sley = (long)(sley * (item.getItemFertilizer().getSleyRate() *1.0)/100);
         UserHerbBookAddPostRes res = new UserHerbBookAddPostRes();
         res.setAddSley(sley);
         sley += user.getCurrentSley();
         user.setCurrentSley(sley);
 
+        //도감 포인트
+        long point = herbBook.getPoint();
+        res.setAddPoint(point);
+        point += user.getCurrentBookPoint();
+        user.setCurrentBookPoint(point);
+
         return res;
     }
 
-    public HerbBookListRes getHerbBooks(User user) {
-        HerbBookListRes herbBookListRes = new HerbBookListRes();
 
-        List<Tuple> userHerbBooks = userHerbBookRepository.findByUserAndGroupBy(user);
-        List<HerbBookRes> list = new ArrayList<>();
 
-        for (Tuple userHerbBook : userHerbBooks) {
-            HerbBookRes res = new HerbBookRes();
-            HerbBook herbBook = (HerbBook) userHerbBook.get(0);
-            res.setHerbBookId(herbBook.getId());
-            res.setCount(Integer.parseInt(String.valueOf(userHerbBook.get(1))));
-            list.add(res);
-        }
-
-        herbBookListRes.setHerbBooks(list);
-        return herbBookListRes;
-    }
-
-    public HerbListRes getHerbs(User user) {
-        HerbListRes herbListRes = new HerbListRes();
-
-        List<Herb> herbs = herbRepository.findByUserId(user);
+    public HerbsRes getHerbs(Long userId) {
+        HerbsRes herbListRes = new HerbsRes();
+        User user = userRepository.findByUserId(userId);
+        List<Herb> herbs = herbRepository.findByUser(user);
         List<HerbRes> list = new ArrayList<>();
-
+        if(herbs == null){
+            return null;
+        }
         for (Herb herb : herbs) {
             HerbRes res = new HerbRes();
             res.setHerbId(herb.getId());
@@ -117,9 +120,9 @@ public class FarmService {
     }
 
     @Transactional
-    public Herb addHerb(User user, HerbAddPostReq herbInfo) {
+    public Herb addHerb(Long userId, HerbAddPostReq herbInfo) {
         Herb herb = new Herb();
-
+        User user = userRepository.findByUserId(userId);
         ItemSeed itemSeed = itemRepository.findByItemSeedId(herbInfo.getItemSeedId());
         ItemWater itemWater = itemRepository.findByItemWaterId(herbInfo.getItemWaterId());
         ItemFertilizer itemFertilizer = itemRepository.findByItemFertilizerId(herbInfo.getItemFertilizerId());

@@ -7,11 +7,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,23 +22,13 @@ public class UserHerbBookRepository {
         em.persist(userHerbBook);
     }
 
-    public List<UserHerbBook> findByUser(User user){
-        return em.createQuery("select u from UserHerbBook u where u.user = :user", UserHerbBook.class)
-                .setParameter("user", user)
-                .getResultList();
-    }
+    public List<Tuple> findByUserAndGroupBy(Long userId){
+        String sql = "select h.herb_book_id, count(u.herb_book_id)\n" +
+                "from herb_book h left join (select herb_book_id from user_herb_book where user_id = ?) u\n" +
+                "on u.herb_book_id = h.herb_book_id\n" +
+                "group by h.herb_book_id\n" +
+                "order by h.herb_book_id";
 
-    public List<Tuple> findByUserAndGroupBy(User user){
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Tuple> q = cb.createTupleQuery();
-        Root<UserHerbBook> c = q.from(UserHerbBook.class);
-        q.multiselect(c.get("herbBook"), cb.count(c));
-        q.where(cb.equal(c.get("user"), user));
-        q.groupBy(c.get("herbBook"));
-
-        TypedQuery<Tuple> t = em.createQuery(q);
-        List<Tuple> resultList = t.getResultList();
-
-        return resultList;
+        return em.createNativeQuery(sql, Tuple.class).setParameter(1, userId).getResultList();
     }
 }

@@ -44,7 +44,7 @@ public class AuthService {
     }
 
     public String getEmailbyUserId(Long userId) {
-        User user = userService.getUser(userId);
+        User user = userService.getUserByUserId(userId);
         Auth auth = authRepository.findByUser(user);
         return auth.getEmail();
     }
