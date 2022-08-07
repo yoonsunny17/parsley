@@ -27,7 +27,7 @@ import Swal from "sweetalert2";
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
-const footerBtn = "20";
+const footerBtn = "30";
 
 class StudySession extends Component {
   constructor(props) {
@@ -591,10 +591,8 @@ class StudySession extends Component {
           <div className="container p-24">
             <div className="flex flex-row">
               <div className="flex flex-col">
-                <div className="flex flex-col text-main font-semibold text-xl mt-2">
-                  파슬리랑 공부할 사람?.. 이 페이지는 없어져야 한다 (방 참가
-                  버튼 있는 페이지로 대체되어야 함.. 그럼 input 넣는것도
-                  없어지것쥬)
+                <div className="flex flex-col text-main font-semibold text-2xl mt-2">
+                  파슬리랑 공부할 사람?
                 </div>
                 <img
                   src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
@@ -786,7 +784,7 @@ class StudySession extends Component {
                       />
                     </div>
                   ) : (
-                    <div>
+                    <div className="cursor-pointer">
                       <BsCameraVideoOffFill
                         size={footerBtn}
                         onClick={() => {
