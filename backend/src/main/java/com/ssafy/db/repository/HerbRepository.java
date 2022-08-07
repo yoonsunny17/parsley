@@ -18,7 +18,7 @@ public class HerbRepository {
         em.persist(herb);
     }
 
-    public List<Herb> findByUserId(User user){
+    public List<Herb> findByUser(User user){
         return em.createQuery("select h from Herb h where h.user = : user and h.isCompleted = false", Herb.class)
                 .setParameter("user", user)
                 .getResultList();
