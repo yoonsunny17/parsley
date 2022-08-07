@@ -7,50 +7,51 @@
 @tailwind utilities;
 
 @layer base {
-  input,
-  label {
-    @apply inline-block;
-  }
+    input,
+    label {
+        @apply inline-block;
+    }
 }
 
 @layer components {
-  .input-border {
-    @apply border-2 hover:border-sub1 focus:outline-none focus:border-sub1;
-  }
-  .input-placehoder {
-    @apply placeholder:text-base placehoder:text-base placeholder:text-font2;
-  }
-  .color-delay {
-    @apply transition hover:duration-500;
-  }
+    .input-border {
+        @apply border-2 hover:border-sub1 focus:outline-none focus:border-sub1;
+    }
+    .input-placehoder {
+        @apply placeholder:text-base placehoder:text-base placeholder:text-font2;
+    }
+    .color-delay {
+        @apply transition hover:duration-500;
+    }
 }
 
 html,
 body,
 main {
-  height: 100vh;
+    height: 100vh;
 }
 
 main {
-  position: fixed;
-  overflow: hidden;
+    position: fixed;
+    overflow: hidden;
 }
 
 body {
-  margin: 0;
-  height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    height: 100vh;
+    background-color: #fefefe;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  height: 100%;
+    height: 100%;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
 }
