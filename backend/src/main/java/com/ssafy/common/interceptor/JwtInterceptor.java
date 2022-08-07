@@ -40,11 +40,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         String accessToken = null;
         String refreshToken = null;
         Cookie[] cookies = request.getCookies();
-        if(cookies != null) {
-            for(Cookie cookie : cookies) {
-                if("refreshToken".equals(cookie.getName())){
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("refreshToken".equals(cookie.getName())) {
                     refreshToken = cookie.getValue();
-                } else if("accessToken".equals(cookie.getName())){
+                } else if ("accessToken".equals(cookie.getName())) {
                     accessToken = cookie.getValue();
                 }
             }
@@ -53,21 +53,25 @@ public class JwtInterceptor implements HandlerInterceptor {
         // cache에서 토큰들을 가져옴
         String cacheAccessToken = null;
         String cacheRefreshToken = null;
-        // + cache에서 가져와서 할당해줄거임
-//        String kakaoEmail = authService.getEmailbyUserId(jwtService.getUserId());
-//        String tokens = redisService.getTokens(kakaoEmail);
-//        String[] tokensArray = tokens.split("\\s");
-//        cacheAccessToken = tokensArray[0];
-//        cacheRefreshToken = tokensArray[1];
+//        try {
+//            String kakaoEmail = authService.getEmailbyUserId(jwtService.getUserId());
+//            String tokens = redisService.getTokens(kakaoEmail);
+//            String[] tokensArray = tokens.split("\\s");
+//            cacheAccessToken = tokensArray[0];
+//            cacheRefreshToken = tokensArray[1];
+//        } catch (Exception e) {
+//            response.sendError(445, "로그인해주세요. (0)");
+//            return false;
+//        }
 
         // cookie의 accessToken이 유효한지 확인
-        if(bearer != null && !"".equals(bearer)) {
+        if (bearer != null && !"".equals(bearer)) {
             final String token = request.getHeader(HEADER_AUTH).split(" ")[1];
             try {
                 if (token != null && !"".equals(bearer) && jwtService.isUsable(token)) {
                     return true;
                 }
-            } catch(ExpiredJwtException e) {
+            } catch (ExpiredJwtException e) {
                 try {
                     // cacheAccessToken이 비었을 경우
                     if (cacheAccessToken == null) {
@@ -94,10 +98,10 @@ public class JwtInterceptor implements HandlerInterceptor {
                             return false;
                         }
                     }
-                } catch(Exception reLogin) {
+                } catch (Exception reLogin) {
                     System.out.println(reLogin.getMessage());
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }

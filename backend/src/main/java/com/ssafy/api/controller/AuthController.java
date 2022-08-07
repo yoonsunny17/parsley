@@ -1,6 +1,6 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.UserReq;
+import com.ssafy.api.response.AuthRes;
 import com.ssafy.api.service.*;
 import com.ssafy.common.util.CookieUtil;
 import io.jsonwebtoken.JwtException;
@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
+ * 사용자 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
-@Api(value = "유저 API", tags = {"User"})
+@Api(value = "사용자 인증 API", tags = {"Auth"})
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -50,6 +50,11 @@ public class AuthController {
     private RedisService redisService;
 
     @GetMapping("/login")
+    @ApiOperation(value = "로그인", notes = "카카오로 로그인한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그인 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         System.out.println(code);
         // 인가 코드로 받은 토큰을 이용해 user의 정보 중 email을 반환
@@ -78,10 +83,15 @@ public class AuthController {
         // + cache server에 token들을 저장하는 코드
         redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
 
-        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
     }
 
     @GetMapping("/logout")
+    @ApiOperation(value = "로그아웃", notes = "로그아웃을 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그아웃 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
 
         String accessToken = null;
@@ -114,10 +124,15 @@ public class AuthController {
         refreshCookie.setPath("/");
         response.addCookie(refreshCookie);
 
-        return ResponseEntity.status(200).body(UserRes.of(200, "Success", 0L));
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
     }
 
     @GetMapping("/refresh")
+    @ApiOperation(value = "토큰 재발급", notes = "토큰을 재발급한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "토큰 재발급 성공"),
+            @ApiResponse(code = 202, message = "토큰 재발급 실패")
+    })
     public ResponseEntity<?> refreshUser(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         String accessToken = null;
@@ -138,45 +153,20 @@ public class AuthController {
 
         try {
             if (refreshToken != null && jwtService.isUsable(refreshToken)) {
-                // + cache server에 token 다시 갱신해주는 코드
-                redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
-
                 accessToken = jwtService.createAccessToken("user", jwtService.getUserInfo(accessToken), "user");
                 Cookie accessCookie = cookieUtil.addAccessCookie(accessToken);
                 response.addCookie(accessCookie);
 
-                return ResponseEntity.status(200).body(UserRes.of(200, "Success", 1L));
+                // cache server에 token 다시 저장
+                redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
+
+                return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
             }
         } catch (JwtException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return ResponseEntity.status(202).body(UserRes.of(202, "Accepted", 0L));
-    }
-
-
-    @PostMapping("/delete")
-    @ApiOperation(value = "유저 삭제", notes = "로그인한 회원을 삭제한다.")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "삭제 성공"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<? extends UserRes> deleteUser() {
-        User user = userService.getUser(jwtService.getUserId());
-        userService.deleteUser(user);
-        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
-    }
-
-    @PostMapping("/update")
-    @ApiOperation(value = "유저 수정", notes = "로그인한 회원 정보를 수정한다.")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "회원 정보 수정 성공"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<? extends UserRes> updateUser(@RequestBody UserReq userInfo) {
-        User user = userService.getUser(jwtService.getUserId());
-        userService.updateUser(user, userInfo);
-        return ResponseEntity.status(200).body(UserRes.of(200, "Success", user.getId()));
+        return ResponseEntity.status(202).body(AuthRes.of(202, "Accepted", false));
     }
 }
