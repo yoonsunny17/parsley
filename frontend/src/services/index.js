@@ -9,9 +9,9 @@ export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_
 
 const mutex = new Mutex();
 const baseQuery = fetchBaseQuery({
-    baseUrl: BASE_URL,
-    credentials: "include",
-    prepareHeaders: (headers, { getState }) => {},
+  baseUrl: BASE_URL,
+  credentials: "include",
+  prepareHeaders: (headers, { getState }) => {},
 });
 
 // login 반환 받은 값을 header에 저장
