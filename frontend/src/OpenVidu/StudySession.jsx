@@ -509,7 +509,7 @@ class StudySession extends Component {
                         <BsThreeDots />
                       </div>
                     </div>
-                    {/* // TODO: 화면 넘어가는것을 CAROUSEL로 구현해야 할 것 같음 */}
+                    {/* // TODO: 화면 넘어가는것을 carousel?? pagination?? 구현해야 할 것 같음 */}
                     {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
                     {this.state.publisher !== undefined ? (
                       <div
@@ -535,7 +535,7 @@ class StudySession extends Component {
                     ))}
                     {/* 메인 화면; 화면 공유 되어지고있는 사람 */}
                     {this.state.mainStreamManager !== undefined ? (
-                      <div id="main-video" className="col-md-6">
+                      <div id="main-video" className="">
                         <UserVideoComponent
                           streamManager={this.state.mainStreamManager}
                         />
@@ -661,12 +661,6 @@ class StudySession extends Component {
                       <div className="rounded-2xl flex flex-col bg-font3 w-auto h-full ease-in-out">
                         <div className="flex text-start p-2 text-xl h-10">
                           {mySessionId} 채팅방
-                          {/* <IoCopy
-                        className="cursor-pointer"
-                        onClick={() =>
-                          navigator.clipboard.writeText(mySessionId)
-                        }
-                      /> */}
                         </div>
                         <div
                           className="chatbox__messages mt-auto flex flex-col overflow-y-scroll items-end"
