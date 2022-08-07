@@ -38,7 +38,8 @@
 /* 위에 작게 보이는 곳 */
 .stream-container {
   width: calc(100% / 4);
-  padding-bottom: 30px;
+  padding-top: 15px;
+  /* padding-bottom: 30px; */
 }
 
 .video-container {
