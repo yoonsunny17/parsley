@@ -2,13 +2,10 @@ package com.ssafy.api.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import org.checkerframework.checker.units.qual.A;
+import lombok.Data;
 
-@Getter
-@Setter
-@ApiModel("HerbAddPostReq")
+@Data
+@ApiModel("HerbAddPostRequest")
 public class HerbAddPostReq {
     @ApiModelProperty(name = "작물 위치", example = "1")
     int position;

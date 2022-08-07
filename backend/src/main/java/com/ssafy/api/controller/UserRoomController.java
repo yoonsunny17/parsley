@@ -29,7 +29,7 @@ public class UserRoomController {
     @ApiOperation(value = "나의 방 목록 조회", notes = "사용자가 참여했던 방 목록을 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "나의 방 목록 조회 성공"),
-            @ApiResponse(code = 400, message = "나의 방 목록 조회 실패"),
+            @ApiResponse(code = 404, message = "나의 방 목록 조회 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRoomsGetRes> getMyRoom(){

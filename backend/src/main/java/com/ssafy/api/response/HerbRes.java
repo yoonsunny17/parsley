@@ -2,15 +2,15 @@ package com.ssafy.api.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * 회원 본인 정보 조회 API ([GET] /api/v1/users/me) 요청에 대한 응답값 정의.
  */
-@Getter
-@Setter
-@ApiModel("HerbRes")
+@Data
+@ApiModel("HerbResponse")
 public class HerbRes {
 	@ApiModelProperty(name = "허브 ID")
 	Long herbId;
