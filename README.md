@@ -328,13 +328,35 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 
     * 조회
 
+        ![image](/uploads/722ac0833e272994fa586915e8df90be/image.png)
+
+        ![image](/uploads/cdd162896a1a7adc3aa307f6e3c9ded0/image.png)
+
     * 추가(수확)
+
+        ![image](/uploads/b7f5405e7fa6d479b24a0c6aee0f2ba9/image.png)
+
+        ![image](/uploads/d06022f1bab1484df5577e1051f4ffc1/image.png)
+
+        ![image](/uploads/d9e6a12dc6b251bda136ecc05e8f2358/image.png)
 
 * 작물
 
     * 조회
+
+        ![image](/uploads/b229596b7e6202dd77822c76523cbc0c/image.png)
+
+        ![image](/uploads/212b6e242b00b488b275ed53901bb291/image.png)
     
     * 추가
+        ![image](/uploads/9926cb751c0a617a0fc1d5c1cec3bf42/image.png)
+
+        ![image](/uploads/8b350f8d5d3657c57ec0b851e1e537db/image.png)
+
+        ![image](/uploads/342a30a5c101576115b05d450ac13d10/image.png)
+
+        ![image](/uploads/2111071b144c7737d6d637c239ea6a6e/image.png)
+
 
 </div>
 </details>
