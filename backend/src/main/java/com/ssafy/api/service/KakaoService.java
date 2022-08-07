@@ -25,7 +25,7 @@ public class KakaoService {
         tokenRequestBody.add("code", code);
         tokenRequestBody.add("client_id", "c363c1414c4795051bf51aea0b37c03d");
         tokenRequestBody.add("client_secret", "6VKJcXSj18I1tc7Gho56LaMnjnqwPtBl");
-        tokenRequestBody.add("redirect_uri", "http://localhost:8080/user/login");
+        tokenRequestBody.add("redirect_uri", "http://localhost:8080/auth/login");
 
         HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenRequestBody,
                 tokenRequestHeader);
