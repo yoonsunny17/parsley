@@ -163,23 +163,27 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 
     ![image](/uploads/ef160b2c089df89bf6e280f310e5cabe/image.png)
 
+
+* 로그인 화면 캡쳐
+
+    ![image](/uploads/aaa3607eea41c4efa84118321a3d1650/image.png)
+
+    ![image](/uploads/8ecd861e6fc2891b2352ac31f71cd6d2/image.png)
+
+* 쿠키 & Response
+
+    ![image](/uploads/0e2a123a28b571d7c6692e9313098f6f/image.png)
+
 * 캐시 서버
 
-
-
-* 쿠키
-
-
-
-* Response    
-
+    ![image](/uploads/9c0b244b05d6a08fde098fee48727d6e/image.png)
 
 </div>
 </details>
 
 ##### API
 
-[배포한 서버의 swagger url](https://i7a604.p.ssafy.io/api/swagger-ui/index.html)
+[배포한 서버의 Swagger URL](https://i7a604.p.ssafy.io/api/swagger-ui/index.html)
 
 현재 개발의 편의성을 위해 `userId = 1L`로 지정해놓은 상태입니다. 
 
