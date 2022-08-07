@@ -150,8 +150,38 @@ FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관�
 </details>
 
 ##### OpenVidu
+<details>
+<summary>스터디룸 기능</summary>
+<div markdown="1">
+
+* 스터디룸 화면 공유
+
+    ![openvidu_1](/uploads/973626302a71ed6aa598068a3bee295e/openvidu_1.gif)
+
+* 스터디룸 화면 카메라 on/off
+
+    ![openvidu_2](/uploads/3b6ca4c399f4775496969a8d0e59894f/openvidu_2.gif)
+
+* 스터디룸 팝업 채팅창
+
+    ![openvidu_4](/uploads/9979c155151ae1a828653453c437372b/openvidu_4.gif)
+
+* 스터디룸 나가기
+
+    ![openvidu_5](/uploads/5a427fdcc2d995d636919db0f9dad0d4/openvidu_5.gif)
+
+</div>
+</details>
 
 ##### Three.js
+<details>
+<summary>3D 허브 모델</summary>
+<div markdown="1">
+
+    ![openvidu_7](/uploads/37273504fb3a7be47cca2afe0a665ef8/openvidu_7.gif)
+
+</div>
+</details>
 
 ### 🧱 BackEnd
 
