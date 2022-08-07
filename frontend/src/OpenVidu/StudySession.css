@@ -40,3 +40,15 @@
   width: calc(100% / 4);
   padding-bottom: 30px;
 }
+
+.video-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#main-video {
+  width: 80%;
+  height: auto;
+}

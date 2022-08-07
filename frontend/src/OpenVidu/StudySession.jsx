@@ -27,7 +27,7 @@ import Swal from "sweetalert2";
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
-const btnSize = "20";
+const footerBtn = "20";
 
 class StudySession extends Component {
   constructor(props) {
@@ -49,9 +49,13 @@ class StudySession extends Component {
       videoallowed: true,
       audioallowed: true,
       host: {},
-      isHost: false,
+      isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
       width: window.innerWidth,
       height: window.innerHeight,
+      connectionUser: [],
+      connections: [],
+      connectionId: "",
+      leaved: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -67,6 +71,8 @@ class StudySession extends Component {
     this.sendMessageByEnter = this.sendMessageByEnter.bind(this);
     this.chattoggle = this.chattoggle.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
+    // screen share (화면공유)
+    this.screenShare = this.screenShare.bind(this);
   }
 
   // studysession function
@@ -170,6 +176,28 @@ class StudySession extends Component {
     });
   }
 
+  // screen share onclick mode
+  screenShare(e) {
+    navigator.mediaDevices
+      .getDisplayMedia({ audio: true, video: true })
+      .then(function (stream) {
+        //success
+        console.log(stream);
+        this.changeScreen(); // 화면 전환
+      })
+      .catch(function (e) {
+        //error;
+      });
+  }
+
+  changeScreen(stream) {
+    if (this.state.mainStreamManager !== stream) {
+      this.setState({
+        mainStreamManager: stream,
+      });
+    }
+  }
+
   componentDidMount() {
     // login user 정보 얻기 위한 api 요청해야 함
     //
@@ -240,17 +268,49 @@ class StudySession extends Component {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
+    // this.OVScreen = new OpenVidu();
 
     // --- 2) Init a session ---
 
     this.setState(
       {
         session: this.OV.initSession(),
+        // sessionScreen: this.OVScreen.initSession(),
       },
       () => {
         var mySession = this.state.session;
+        // var sessionScreen = this.state.sessionScreen;
 
         // --- 3) Specify the actions when events take place in the session ---
+
+        mySession.on("connectionCreated", (event) => {
+          console.log("========= connection =========");
+          console.log(event.connection);
+          var connection = event.connection;
+          var connections = this.state.connections;
+          var connectionUser = this.state.connectionUser;
+          connections.push(connection);
+
+          var userId = connection.connectionId;
+          var userName = JSON.parse(connection.data).clientData;
+          connectionUser.push({ userId, userName });
+
+          // 방장 확인
+          var host = this.state.connections[0];
+          console.log(host);
+
+          this.setState({
+            connections: connections,
+            connectionUser: connectionUser,
+            host: host,
+          });
+
+          if (this.state.connectionId === this.state.host.connectionId) {
+            this.setState({ isHost: true });
+          } else {
+            this.setState({ isHost: false });
+          }
+        });
 
         // On every new Stream received...
         mySession.on("streamCreated", (event) => {
@@ -265,6 +325,40 @@ class StudySession extends Component {
             subscribers: subscribers,
           });
         });
+
+        // mySession.on("streamCreated", (event) => {
+        //   // Subscribe to the Stream to receive it. Second parameter is undefined
+        //   // so OpenVidu doesn't create an HTML video by its own
+        //   if (event.stream.typeofVideo === "CAMERA") {
+        //     // var subscriber = mySession.subscribe(event.stream, undefined);
+        //     var subscriber = mySession.subscribe(
+        //       event.stream,
+        //       "container-cameras"
+        //     );
+        //     var subscribers = this.state.subscribers;
+        //     subscribers.push(subscriber);
+
+        //     // Update the state with the new subscribers
+        //     this.setState({
+        //       subscribers: subscribers,
+        //     });
+        //   }
+        // });
+
+        // sessionScreen.on("streamCreated", (event) => {
+        //   if (event.stream.typeofvideo === "SCREEN") {
+        //     var subscriberScreen = sessionScreen.subscribe(
+        //       event.stream,
+        //       "container-screens"
+        //     );
+        //     var subscribersScreen = this.state.subscribers;
+        //     subscribersScreen.push(subscriberScreen);
+
+        //     this.setState({
+        //       subscribersScreen: subscribersScreen,
+        //     });
+        //   }
+        // });
 
         mySession.on("signal:chat", (event) => {
           let chatdata = event.data.split(",");
@@ -313,9 +407,10 @@ class StudySession extends Component {
 
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
-              let publisher = this.OV.initPublisher(undefined, {
+              let publisher = this.OV.initPublisher("container-cameras", {
                 audioSource: undefined, // The source of audio. If undefined default microphone
-                videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
+                // videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
+                videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                 resolution: "640x480", // The resolution of your video
@@ -343,17 +438,83 @@ class StudySession extends Component {
               );
             });
         });
+
+        // this.getToken().then((tokenScreen) => {
+        //   sessionScreen
+        //     .connect(tokenScreen, { clientData: this.state.myUserName })
+        //     .then(async () => {
+        //       document.getElementById("buttonScreenShare").style.visibility =
+        //         "visible";
+        //       console.log("session screen connected");
+        //     })
+        //     .catch((error) => {
+        //       console.warn(
+        //         "There was an error connecting to the session for screen share:",
+        //         error.code,
+        //         error.message
+        //       );
+        //     });
+        // });
       }
     );
   }
+
+  // // screen share onclick mode
+  // screenShare(e) {
+  //   navigator.mediaDevices
+  //     .getDisplayMedia({ audio: true, video: true })
+  //     .then(function (stream) {
+  //       //success
+  //     })
+  //     .catch(function (e) {
+  //       //error;
+  //     });
+  // }
+  // pulishScreenShare() {
+  //   // --- 9.1) To create a publisherScreen it is very important that the property 'videoSource' is set to 'screen'
+  //   var publisherScreen = OVScreen.initPublisher("container-screens", {
+  //     videoSource: "screen",
+  //   });
+
+  //   // --- 9.2) If the user grants access to the screen share function, publish the screen stream
+  //   publisherScreen.once("accessAllowed", (event) => {
+  //     document.getElementById("buttonScreenShare").style.visibility = "hidden";
+  //     screensharing = true;
+  //     // It is very important to define what to do when the stream ends.
+  //     publisherScreen.stream
+  //       .getMediaStream()
+  //       .getVideoTracks()[0]
+  //       .addEventListener("ended", () => {
+  //         console.log('User pressed the "Stop sharing" button');
+  //         sessionScreen.unpublish(publisherScreen);
+  //         document.getElementById("buttonScreenShare").style.visibility =
+  //           "visible";
+  //         screensharing = false;
+  //       });
+  //     sessionScreen.publish(publisherScreen);
+  //   });
+
+  //   // publisherScreen.on("videoElementCreated", function (event) {
+  //   //   appendUserData(event.element, sessionScreen.connection);
+  //   //   event.element["muted"] = true;
+  //   // });
+
+  //   publisherScreen.once("accessDenied", (event) => {
+  //     console.error("Screen Share: Access Denied");
+  //   });
+  // }
 
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     const mySession = this.state.session;
+    const sessionScreen = this.state.sessionScreen;
 
     if (mySession) {
       mySession.disconnect();
+    }
+    if (sessionScreen) {
+      sessionScreen.disconnect();
     }
 
     // Empty all properties...
@@ -492,10 +653,7 @@ class StudySession extends Component {
             <div className="container">
               <div className="flex flex-row">
                 <div className="flex flex-col">
-                  <div
-                    id="video-container"
-                    className="video-container flex flex-wrap mb-5 justify-center"
-                  >
+                  <div id="video-container" className="video-container">
                     {/* <div className="relative font-bold" id="session-header">
                       <div id="session-title" className="text-2xl">
                         {mySessionId}
@@ -541,27 +699,6 @@ class StudySession extends Component {
                         />
                       </div>
                     ) : null}
-                    {/* {this.state.publisher !== undefined ? (
-                      <div
-                        className="stream-container col-md-6 col-xs-6"
-                        onClick={() =>
-                          this.handleMainVideoStream(this.state.publisher)
-                        }
-                      >
-                        <UserVideoComponent
-                          streamManager={this.state.publisher}
-                        />
-                      </div>
-                    ) : null} */}
-                    {/* {this.state.subscribers.map((sub, i) => (
-                      <div
-                        key={i}
-                        className="stream-container col-md-6 col-xs-6"
-                        onClick={() => this.handleMainVideoStream(sub)}
-                      >
-                        <UserVideoComponent streamManager={sub} />
-                      </div>
-                    ))} */}
                   </div>
                 </div>
               </div>
@@ -569,15 +706,45 @@ class StudySession extends Component {
               {/* tool bar; screen share, mic on/off, camera on/off, chat popper, exit */}
               <footer className="footer footer-center p-4 bg-base-300 text-base-content">
                 <div className="grid-flow-col gap-6 md:place-self-center">
-                  <div className="cursor-pointer">
-                    <TbScreenShare size={btnSize} />
+                  <div className="cursor-pointer" onClick={this.screenShare}>
+                    <TbScreenShare size={footerBtn} />
                   </div>
                   {/* mic on/off */}
                   {/* // TODO: 마이크 음소거 기능이 먹통입니다!!!!!! */}
                   {this.state.audiostate ? (
                     <div className="cursor-pointer">
                       <BsFillMicFill
-                        size={btnSize}
+                        size={footerBtn}
+                        onClick={() => {
+                          this.state.publisher.publishAudio(
+                            !this.state.audiostate
+                          );
+                          this.setState({
+                            audiostate: !this.state.audiostate,
+                          });
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="cursor-pointer">
+                      <BsFillMicMuteFill
+                        size={footerBtn}
+                        onClick={() => {
+                          this.state.publisher.publishAudio(
+                            !this.state.audiostate
+                          );
+                          this.setState({
+                            audiostate: !this.state.audiostate,
+                          });
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {/* {this.state.audiostate ? (
+                    <div className="cursor-pointer">
+                      <BsFillMicFill
+                        size={footerBtn}
                         onClick={() => {
                           this.state.publisher.publishAudio(
                             !this.state.audiostate
@@ -591,7 +758,7 @@ class StudySession extends Component {
                   ) : (
                     <div>
                       <BsFillMicMuteFill
-                        size={btnSize}
+                        size={footerBtn}
                         onClick={() => {
                           this.state.publisher.publishAudio(
                             !this.state.audiostate
@@ -602,12 +769,12 @@ class StudySession extends Component {
                         }}
                       />
                     </div>
-                  )}
+                  )} */}
                   {/* video on/off */}
                   {this.state.videostate ? (
                     <div className="cursor-pointer">
                       <BsCameraVideoFill
-                        size={btnSize}
+                        size={footerBtn}
                         onClick={() => {
                           this.state.publisher.publishVideo(
                             !this.state.videostate
@@ -621,7 +788,7 @@ class StudySession extends Component {
                   ) : (
                     <div>
                       <BsCameraVideoOffFill
-                        size={btnSize}
+                        size={footerBtn}
                         onClick={() => {
                           this.state.publisher.publishVideo(
                             !this.state.videostate
@@ -639,11 +806,11 @@ class StudySession extends Component {
                   {/* <BsChatDots
                     className="cursor-pointer"
                     onClick={() => window.open("/room/chat", "", "_blank")}
-                    size={btnSize}
+                    size={footerBtn}
                   /> */}
                   {/* 초반에 생각을 잘못 해서 모달로 구현함.. */}
                   <label htmlFor="my-modal-3" className="cursor-pointer">
-                    <BsChatDots size={btnSize} />
+                    <BsChatDots size={footerBtn} />
                   </label>
                   <input
                     type="checkbox"
@@ -691,7 +858,7 @@ class StudySession extends Component {
                   {/* exit */}
                   <div className="cursor-pointer md:place-self-end">
                     <MdExitToApp
-                      size={btnSize}
+                      size={footerBtn}
                       onClick={this.exitSessionAlert}
                     />
                   </div>
