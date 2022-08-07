@@ -40,7 +40,11 @@ function Studyrooms() {
                 )}
                 {tabContArr[activeIndex].studyRoomList.length > 0 &&
                     tabContArr[activeIndex].studyRoomList.map((info, idx) => {
-                        return <StudyRoomItem info={info} key={idx} />;
+                        return (
+                            <Link to="/room">
+                                <StudyRoomItem info={info} key={idx} />
+                            </Link>
+                        );
                     })}
             </div>
             <div className="px-6 mt-4 mb-8 md:px-10 w-full flex justify-end text-font1 hover:text-main font-semibold color-delay">

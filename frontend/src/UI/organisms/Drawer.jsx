@@ -4,28 +4,23 @@ import DdayWidget from "../molecules/DdayWidget";
 import StudyWidget from "../molecules/Studywidget";
 import Button from "../atoms/Button";
 import { KAKAO_AUTH_URL } from "../../services";
+// import { useKakaoLoginQuery } from "../../services/user";
 
 function Drawer({ children }) {
     const [isLogin, setIsLogin] = useState(true);
+
+    // const { data, isLoading } = useKakaoLoginQuery();
+
     const logoutHandler = () => setIsLogin((current) => !current);
 
     const userSley = 10000;
     const bookPoint = 9500;
     const user = "유교보이";
 
+    // TODO: access_token을 response로 받아서, Header에 저장 과정
     const loginHandler = () => {
         window.location.href = KAKAO_AUTH_URL;
     };
-
-    // axios.get("https://localhost:8080/").then((res) => {
-    //     console.log(res);
-    //     if (res.request.status === 444) {
-    //         axios.get("/user/refresh");
-    //     } else if (res.request.status === 445) {
-    //         alert("로그인이 필요합니다.");
-    //         window.location.href = `/`;
-    //     }
-    // });
 
     return (
         <div className="text-font1 drawer drawer-end">
