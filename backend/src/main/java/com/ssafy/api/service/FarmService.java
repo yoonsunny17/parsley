@@ -84,7 +84,7 @@ public class FarmService {
 
         //도감 포인트
         long point = herbBook.getPoint();
-
+        res.setAddPoint(point);
         point += user.getCurrentBookPoint();
         user.setCurrentBookPoint(point);
 

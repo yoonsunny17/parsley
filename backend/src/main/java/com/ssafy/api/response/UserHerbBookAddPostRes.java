@@ -14,7 +14,7 @@ public class UserHerbBookAddPostRes extends BaseResponseBody {
     Long addSley;
 
     @ApiModelProperty(name = "도감 포인트")
-    Long point;
+    Long addPoint;
 
     public static UserHerbBookAddPostRes of(Integer statusCode, String message, UserHerbBookAddPostRes userHerbBookAddPostRes){
         UserHerbBookAddPostRes res = userHerbBookAddPostRes;
