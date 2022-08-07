@@ -96,12 +96,13 @@ public class StudyController {
                 .body(GoalCreatePostRes.of(200, "Success", dailyGoal.getId()));
     }
 
+    @GetMapping("/weekly")
+    @ApiOperation(value = "주간 공부량 조회", notes = "이번주 월요일부터 조회 날짜까지의 공부시간을 조회한다.(현재 테스트 편의성을 위한 초단위)")
     @ApiResponses({
             @ApiResponse(code = 201, message = "주간 공부량 조회 성공"),
             @ApiResponse(code = 404, message = "주간 공부량 조회 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    @GetMapping("/weekly")
     public ResponseEntity<? extends WeeklyStudyGetRes> getWeeklyStudyTime(){
 //        Long userId = jwtService.getUserId();
         Long userId = 1L;
