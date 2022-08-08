@@ -12,7 +12,7 @@
 <br/>
 
 ## ⌛ 진행 상황
-* [진행 상황 체크리스트](https://www.notion.so/a604-parsley/EC2-HTTPS-832f7edc54a94fafa57f0ab720ff95b9)
+* [진행 상황 체크리스트](https://a604-parsley.notion.site/40a0d9ddcbe2423aa5a1270741be7827)
 
 <br/>
 
