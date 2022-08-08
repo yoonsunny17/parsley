@@ -3,11 +3,15 @@
 
 <br/>
 
-## 😀 팀원 소개 &nbsp; <a href="https://a604-parsley.notion.site/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
+## 😀 팀원 소개
+
+> 추가적인 내용은 팀 노션을 확인해주세요. &nbsp;  <a href="https://a604-parsley.notion.site/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
+
 |![image](/uploads/0feb6879cc7eaa9cf9ae9b2b642de95a/image.png)|![image](/uploads/4ec38a01ff94aae71cb59af5537ff5d2/image.png)|![image](/uploads/f9f26f52ef993875f8de897a996bf20a/image.png)|![image](/uploads/94ee0f65fa1c3cf5da672607d19a52c4/image.png)|![image](/uploads/fe7fdcffda57f33fdeb57a745177c4c0/image.png)|![image](/uploads/eca0fac44096ffc6447ee79aa7d0a07a/image.png)|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |마유선|이동희|전윤선|정윤영|조혜은|한상우|
 |BackEnd|FrontEnd|FrontEnd|BackEnd|BackEnd|BackEnd|
+
 
 <br/>
 
@@ -252,6 +256,13 @@ Three.js를 기반으로 3D 허브 모델을 구현하여 시각적 재미를 �
 > [배포한 서버의 Swagger URL](https://i7a604.p.ssafy.io/api/swagger-ui/index.html)
 
 > 현재 개발의 편의성을 위해 `userId = 1L`로 지정해놓은 상태입니다. 
+
+```sql
+-- local 확인용 user data
+insert user(current_book_point, current_sley, d_day, description, is_withdrawn, name, reg_date)
+values(100, 100, curdate(), "취뽀하쟈", false, "김싸피", curdate());
+```
+
 
 <details>
 <summary>회원 정보</summary>
