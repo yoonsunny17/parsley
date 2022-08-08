@@ -3,11 +3,16 @@
 
 <br/>
 
-## 😀 팀원 소개 <a href="https://a604-parsley.notion.site/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
+## 😀 팀원 소개 &nbsp; <a href="https://a604-parsley.notion.site/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
 |![image](/uploads/0feb6879cc7eaa9cf9ae9b2b642de95a/image.png)|![image](/uploads/4ec38a01ff94aae71cb59af5537ff5d2/image.png)|![image](/uploads/f9f26f52ef993875f8de897a996bf20a/image.png)|![image](/uploads/94ee0f65fa1c3cf5da672607d19a52c4/image.png)|![image](/uploads/fe7fdcffda57f33fdeb57a745177c4c0/image.png)|![image](/uploads/eca0fac44096ffc6447ee79aa7d0a07a/image.png)|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |마유선|이동희|전윤선|정윤영|조혜은|한상우|
 |BackEnd|FrontEnd|FrontEnd|BackEnd|BackEnd|BackEnd|
+
+<br/>
+
+## ⌛ 진행 상황
+* [진행 상황 체크리스트](https://www.notion.so/a604-parsley/EC2-HTTPS-832f7edc54a94fafa57f0ab720ff95b9)
 
 <br/>
 
@@ -244,9 +249,9 @@ Three.js를 기반으로 3D 허브 모델을 구현하여 시각적 재미를 �
 
 ##### API
 
-[배포한 서버의 Swagger URL](https://i7a604.p.ssafy.io/api/swagger-ui/index.html)
+> [배포한 서버의 Swagger URL](https://i7a604.p.ssafy.io/api/swagger-ui/index.html)
 
-현재 개발의 편의성을 위해 `userId = 1L`로 지정해놓은 상태입니다. 
+> 현재 개발의 편의성을 위해 `userId = 1L`로 지정해놓은 상태입니다. 
 
 <details>
 <summary>회원 정보</summary>
@@ -456,7 +461,26 @@ Three.js를 기반으로 3D 허브 모델을 구현하여 시각적 재미를 �
 <summary>서버 배포</summary>
 <div markdown="1">
 
-여기에 글 넣어주세욤
+* 아키텍처
+    ![image](/uploads/1a10a6741718f37de958f8130e4974c7/image.png)
+
+    * docker-compose를 작성해서, Nginx/Server/DB/Cache 컨테이너를 한 번에 실행하도록 함
+
+        * Nginx 컨테이너 구축 시, React App을 build하여 Nginx의 static 폴더에 배치
+
+         * JDK 기반 Server 컨테이너 구축 시, Spring Boot를 build한 후 실행
+
+    * HTTPS 적용
+
+        * http 80번 포트로 들어오면, https로 redirect 시켜줌
+
+        * `/` 로 들어오는 요청은 static 파일을 응답
+
+        * `/api` 로 들어오는 요청은 내부적으로 `/` 로 rewrite 시켜주고, 8080번 포트로 전달
+        
+            이후 server에서 처리한 응답을 반환
+
+* [EC2에 배포 및 HTTPS 적용](https://a604-parsley.notion.site/EC2-HTTPS-832f7edc54a94fafa57f0ab720ff95b9)
 
 </div>
 </details>
