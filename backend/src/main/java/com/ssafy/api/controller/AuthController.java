@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.api.response.UserRes;
 import com.ssafy.db.entity.User;
 
 import io.swagger.annotations.Api;
