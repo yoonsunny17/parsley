@@ -15,11 +15,6 @@
 
 <br/>
 
-## ⌛ 진행 상황
-* [진행 상황 체크리스트](https://a604-parsley.notion.site/40a0d9ddcbe2423aa5a1270741be7827)
-
-<br/>
-
 ## 🛠 TOOL
 ##### Communitcation
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
@@ -36,6 +31,9 @@
 <img src="https://img.shields.io/badge/mysql_workbench-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 
+
+<br/>
+<br/>
 
 ## 🛠 기술 스택
 
@@ -63,6 +61,7 @@
 
 <br/>
 <br/>
+<br/>
 
 ## 💡 기획
 ![image](/uploads/a9c6edf67c3f1bb43fdd84f41869e674/image.png)
@@ -80,9 +79,14 @@
 <br/>
 
 ## 🖥 구현 기능 및 진행 상황
-현재 구현 진행 단계로 아직 main 브랜치에 merge하지 않았습니다.<br/>
-FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에,<br/>
-BackEnd 관련 코드는 backend 브랜치의 backend 폴더에 있는 코드를 참고해주세요 :)
+
+>현재 구현 진행 단계로 아직 main 브랜치에 merge하지 않았습니다.<br/>
+>FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에,<br/>
+>BackEnd 관련 코드는 backend 브랜치의 backend 폴더에 있는 코드를 참고해주세요.😄
+
+
+<br/>
+
 
 ### 💽 배포 Server
 
@@ -123,6 +127,8 @@ BackEnd 관련 코드는 backend 브랜치의 backend 폴더에 있는 코드를
 
 </div>
 </details>
+
+<br/>
 
 
 ### 🎨 FrontEnd
@@ -262,6 +268,8 @@ Three.js를 기반으로 3D 허브 모델을 구현하여 시각적 재미를 �
 
 </div>
 </details>
+
+<br/>
 
 ### 🧱 BackEnd
 
@@ -507,3 +515,9 @@ values(100, 100, curdate(), "취뽀하쟈", false, "김싸피", curdate());
 
 </div>
 </details>
+
+
+<br/>
+
+## ⌛ 진행 상황
+* [진행 상황 체크리스트](https://a604-parsley.notion.site/40a0d9ddcbe2423aa5a1270741be7827)
