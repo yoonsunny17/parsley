@@ -81,7 +81,49 @@
 
 ## 🖥 구현 기능 및 진행 상황
 현재 구현 진행 단계로 아직 main 브랜치에 merge하지 않았습니다.<br/>
-FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에, BackEnd 관련 코드는 backend 브랜치의 backend 폴더에 있는 코드를 참고해주세요 :)
+FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에,<br/>
+BackEnd 관련 코드는 backend 브랜치의 backend 폴더에 있는 코드를 참고해주세요 :)
+
+### 💽 배포 Server
+
+> [배포 URL](https://i7a604.p.ssafy.io/)
+
+> [현재 배포된 서버에서 확인 가능한 내용](https://www.notion.so/a604-parsley/01de4e795921498ba959a31f9317fe31)
+>
+> 프론트와 백엔드의 연동이 안된 상황이라,
+>   - 프론트 개발한 부분 일부 페이지 간 라우팅만 확인 가능
+>   - 백엔드 개발한 부분은 postman을 통해 확인 가능
+
+<br/>
+
+<details>
+<summary>서버 배포</summary>
+<div markdown="1">
+
+* 아키텍처
+    ![image](/uploads/1a10a6741718f37de958f8130e4974c7/image.png)
+
+    * docker-compose를 작성해서, Nginx/Server/DB/Cache 컨테이너를 한 번에 실행하도록 함
+
+        * Nginx 컨테이너 구축 시, React App을 build하여 Nginx의 static 폴더에 배치
+
+         * JDK 기반 Server 컨테이너 구축 시, Spring Boot를 build한 후 실행
+
+    * HTTPS 적용
+
+        * http 80번 포트로 들어오면, https로 redirect 시켜줌
+
+        * `/` 로 들어오는 요청은 static 파일을 응답
+
+        * `/api` 로 들어오는 요청은 내부적으로 `/` 로 rewrite 시켜주고, 8080번 포트로 전달
+        
+            이후 server에서 처리한 응답을 반환
+
+* [EC2에 배포 및 HTTPS 적용](https://a604-parsley.notion.site/EC2-HTTPS-832f7edc54a94fafa57f0ab720ff95b9)
+
+</div>
+</details>
+
 
 ### 🎨 FrontEnd
 
@@ -462,36 +504,6 @@ values(100, 100, curdate(), "취뽀하쟈", false, "김싸피", curdate());
 
         ![image](/uploads/2111071b144c7737d6d637c239ea6a6e/image.png)
 
-
-</div>
-</details>
-
-##### 서버
-
-<details>
-<summary>서버 배포</summary>
-<div markdown="1">
-
-* 아키텍처
-    ![image](/uploads/1a10a6741718f37de958f8130e4974c7/image.png)
-
-    * docker-compose를 작성해서, Nginx/Server/DB/Cache 컨테이너를 한 번에 실행하도록 함
-
-        * Nginx 컨테이너 구축 시, React App을 build하여 Nginx의 static 폴더에 배치
-
-         * JDK 기반 Server 컨테이너 구축 시, Spring Boot를 build한 후 실행
-
-    * HTTPS 적용
-
-        * http 80번 포트로 들어오면, https로 redirect 시켜줌
-
-        * `/` 로 들어오는 요청은 static 파일을 응답
-
-        * `/api` 로 들어오는 요청은 내부적으로 `/` 로 rewrite 시켜주고, 8080번 포트로 전달
-        
-            이후 server에서 처리한 응답을 반환
-
-* [EC2에 배포 및 HTTPS 적용](https://a604-parsley.notion.site/EC2-HTTPS-832f7edc54a94fafa57f0ab720ff95b9)
 
 </div>
 </details>
