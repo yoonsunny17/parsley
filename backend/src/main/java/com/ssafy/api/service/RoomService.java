@@ -181,5 +181,13 @@ public class RoomService {
 
         return topHashtags;
     }
+
+    public List<Room> searchRooms(String search){
+
+        List<Room> rooms = roomRepository.findRoomsByWord(search);
+
+        return rooms;
+
+    }
 }
 

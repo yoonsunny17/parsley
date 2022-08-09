@@ -181,7 +181,24 @@ public class RoomController {
     }
 
     // TODO: 방 검색
-    public ResponseEntity<? extends RoomGetRes> searchRooms(@RequestParam("search_word") String search){
-        return null;
+    @GetMapping("/search")
+    @ApiOperation(value = "방 검색 목록 조회", notes = "방 검색 목록들을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "방 검색 목록 조회 성공"),
+            @ApiResponse(code = 404, message = "방 검색 목록 조회 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends RoomsGetRes> searchRooms(@RequestParam("search_word") String search){
+        List<Room> rooms = roomService.searchRooms(search);
+
+        if(rooms == null){
+            return ResponseEntity.status(404).body(
+                    RoomsGetRes.of(404, "Fail", null)
+            );
+        }else{
+            return ResponseEntity.status(200).body(
+                    RoomsGetRes.of(200, "Success", rooms)
+            );
+        }
     }
 }

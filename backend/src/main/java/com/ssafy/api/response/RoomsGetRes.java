@@ -21,7 +21,9 @@ public class RoomsGetRes extends BaseResponseBody {
         RoomsGetRes res = new RoomsGetRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setRoomsInfo(roomsInfo);
+        if(roomsInfo != null){
+            res.setRoomsInfo(roomsInfo);
+        }
         return res;
     }
 
