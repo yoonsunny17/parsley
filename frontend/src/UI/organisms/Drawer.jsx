@@ -3,8 +3,8 @@ import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import DdayWidget from "../molecules/DdayWidget";
 import StudyWidget from "../molecules/Studywidget";
 import Button from "../atoms/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { logout, setToken, setUserId } from "../../modules/userReducer";
+import { useSelector } from "react-redux";
+import { useLazyLogoutQuery } from "../../services/user";
 
 function Drawer({ children }) {
     const REDIRECT_URI = "http://localhost:3000/login";
@@ -12,12 +12,9 @@ function Drawer({ children }) {
     const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
 
     const isLogin = useSelector((state) => state.user.isLogin);
-    const dispatch = useDispatch();
-    const logoutHandler = () => {
-        dispatch(logout());
-        dispatch(setToken(null));
-        dispatch(setUserId(null));
-    };
+    const [trigger] = useLazyLogoutQuery();
+
+    const logoutHandler = () => trigger();
 
     const userSley = 10000;
     const bookPoint = 9500;

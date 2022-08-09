@@ -9,11 +9,9 @@ export const baseQuery = fetchBaseQuery({
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
         const token = getState().user.token;
-
         if (token) {
             headers.set("Authorization", `Bearer ${token}`);
         }
-
         return headers;
     },
 });
@@ -24,7 +22,6 @@ export const baseQuery = fetchBaseQuery({
 // };
 
 // TODO: 로그인 연동
-// 프론트가 쿠키를 읽어서, header에 저장을 한다.
 // Bearer token ${accessToken}
 // 444 에러 -> /auth/refresh 요청을 하고, 원래 하려고 했던 걸 재요청
 // 445 에러 -> 재로그인해라
