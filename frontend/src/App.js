@@ -1,10 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AuthLogin from "./UI/pages/AuthLogin";
 import CreateStudyRoom from "./UI/pages/CreateStudyRoom";
 import EnterStudyRoom from "./UI/pages/EnterStudyRoom";
 import Home from "./UI/pages/Home";
-import StudyRoomOV from "./UI/pages/StudyRoomOV";
-// import StudyRoom from "./components/pages/StudyRoom";
 import Drawer from "./UI/organisms/Drawer";
 import SearchStudyRooms from "./UI/pages/SearchStudyRooms";
 import KakaoLogin from "./UI/pages/KakaoLogin";

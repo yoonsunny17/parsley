@@ -18,8 +18,6 @@ export const baseQuery = fetchBaseQuery({
     },
 });
 
-// login 반환 받은 값을 header에 저장
-
 // const baseQueryWithReAuth = async () => {
 //     await mutex.waitForUnlock();
 //     let result = await baseQuery();

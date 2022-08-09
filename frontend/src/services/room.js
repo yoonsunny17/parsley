@@ -1,9 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { BASE_URL } from ".";
+import { createApi } from "@reduxjs/toolkit/dist/query/react";
+import { baseQuery } from ".";
 
 export const roomApi = createApi({
     reducerPath: "roomApi",
-    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+    baseQuery: baseQuery,
     endpoints: (builder) => ({
         getAllRooms: builder.query({
             query: () => `/room`,
