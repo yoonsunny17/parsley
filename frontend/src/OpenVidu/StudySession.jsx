@@ -685,8 +685,7 @@ class StudySession extends Component {
                       {/* 하단의 메인 화면; 화면 공유 되어지고있는 사람 */}
                       {/* 화면 4분할 기능 추가 */}
                       {/* 4분할 되어 4개의 화면이 공유되어지는 경우 */}
-                      {/* +++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-                      <div id="main-video">
+                      {/* <div id="main-video-divided">
                         <div
                           className="w-[45%]"
                           onClick={() => {
@@ -708,16 +707,42 @@ class StudySession extends Component {
                             <UserVideoComponent streamManager={sub} />
                           </div>
                         ))}
-                        {/* 4분할 되지 않고 하나의 화면만 공유되는 경우 */}
-                        {/* 클릭했을 때 다시 4분할로 돌아가도록 */}
+                      </div>{" "} */}
+                      {/* 4분할 되지 않고 하나의 화면만 공유되는 경우 */}
+                      {/* 클릭했을 때 다시 4분할로 돌아가도록 */}
+                      <div id="main-video-onescreen">
                         {/* // TODO: isDivided ? (4분할인 경우) : (분할되지 않은 경우, onclick으로 되돌아가게) */}
                         {this.state.isDivided === false ? (
-                          <div>
-                            <UserVideoComponent
-                              streamManager={this.state.mainStreamManager}
-                            />
+                          <UserVideoComponent
+                            streamManager={this.state.mainStreamManager}
+                          />
+                        ) : (
+                          <div id="main-video-divided">
+                            <div
+                              className="w-[45%]"
+                              onClick={() => {
+                                this.handleMainVideoStream(
+                                  this.state.publisher
+                                );
+                              }}
+                            >
+                              <UserVideoComponent
+                                streamManager={this.state.publisher}
+                              />
+                            </div>
+                            {this.state.subscribers.map((sub, i) => (
+                              <div
+                                className="w-[45%]"
+                                key={i}
+                                onClick={() => {
+                                  this.handleMainVideoStream(sub);
+                                }}
+                              >
+                                <UserVideoComponent streamManager={sub} />
+                              </div>
+                            ))}
                           </div>
-                        ) : null}
+                        )}
                         {/* <div
                         // onClick={() => {
                         //   this.setState({ isDivided: !this.state.isDivided });
