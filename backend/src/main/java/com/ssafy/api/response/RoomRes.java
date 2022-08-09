@@ -1,14 +1,13 @@
 package com.ssafy.api.response;
 
-import com.ssafy.db.entity.Mode;
-import com.ssafy.db.entity.Room;
-import com.ssafy.db.entity.User;
+import com.ssafy.db.entity.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -41,6 +40,9 @@ public class RoomRes {
     @ApiModelProperty(name = "공개 여부", example = "1")
     boolean isPublic;
 
+    @ApiModelProperty(name = "해시태그", example = "코딩테스트")
+    List<String> hashtags;
+
     public static RoomRes of(Room room) {
         if(room == null) return null;
 
@@ -54,6 +56,13 @@ public class RoomRes {
         res.setDescription(room.getDescription());
         res.setMaxPopulation(room.getMaxPopulation());
         res.setPublic(room.isPublic());
+
+        List<String> hashtags = new ArrayList<>();
+        for(RoomHashtag roomHashtag : room.getRoomHashtags()){
+            hashtags.add(roomHashtag.getHashtag().getTag());
+        }
+        res.setHashtags(hashtags);
+
         return res;
     }
 }

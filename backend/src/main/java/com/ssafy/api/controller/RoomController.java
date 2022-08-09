@@ -55,7 +55,8 @@ public class RoomController {
 
         Room room = roomService.getRoomByRoomId(roomId);
 
-        Long userId = jwtService.getUserId();
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
         User user = userService.getUserByUserId(userId);
 
         if (room == null) {
@@ -143,10 +144,13 @@ public class RoomController {
             @ApiResponse(code = 500, message = "방 삭제 실패")
     })
     public ResponseEntity<? extends RoomPostRes> delete(@PathVariable("room_id") @Valid Long roomId) {
-        Room room = roomService.deleteRoom(roomId);
+
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
+        Room room = roomService.deleteRoom(userId, roomId);
         if (room == null) {
             return ResponseEntity.status(500).body(
-                    RoomPostRes.of(500, "Room not found", false)
+                    RoomPostRes.of(500, "Unable to delete room", false)
             );
         }
 
