@@ -27,10 +27,12 @@ public class UserRoomService {
         User user = userRepository.findByUserId(userId);
         Room room = roomRepository.findByRoomId(myRoomInfo.getRoomId());
 
-        if(user.getJoinRooms().contains(room)){
+        if(room.getMembers().size() == room.getMaxPopulation()){
             return false;
         }else{
-            user.addUserRoom(room);
+            if(!user.getJoinRooms().contains(room)){
+                user.addUserRoom(room);
+            }
             return true;
         }
     }
