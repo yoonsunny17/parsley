@@ -1,17 +1,18 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.RoomCreatePostReq;
+import com.ssafy.api.request.RoomPasswordPostReq;
 import com.ssafy.api.request.RoomUpdatePostReq;
-import com.ssafy.db.entity.Mode;
-import com.ssafy.db.entity.Room;
-import com.ssafy.db.entity.RoomHashtag;
-import com.ssafy.db.entity.User;
+import com.ssafy.db.entity.*;
+import com.ssafy.db.repository.HashtagRepository;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -20,9 +21,10 @@ import java.util.function.Consumer;
 public class RoomService {
     @Autowired
     RoomRepository roomRepository;
-
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    HashtagRepository hashtagRepository;
 
     @Transactional
     public Room createRoom(Long userId, RoomCreatePostReq roomInfo) {
@@ -39,6 +41,26 @@ public class RoomService {
         room.setHostUser(user);
 
         roomRepository.save(room);
+
+        //TODO: 해시태그 리스트에 이번 방에서 쓰인 해시태그 정보 넣기 -> 있으면 cnt++ 없으면 새로 생성
+        for(String tag : roomInfo.getHashtags()){
+            Hashtag hashtag = hashtagRepository.findBytag(tag);
+
+            if(hashtag == null){        //이전에 사용한 적 없는 태그
+                hashtag = new Hashtag();
+                hashtag.setTag(tag);
+                hashtag.setUseCount(1L);
+                hashtagRepository.saveHashtag(hashtag);
+            }else{
+                hashtag.setUseCount(hashtag.getUseCount()+1L);
+            }
+            //TODO: roomHashtag에 데이터 넣어주기
+            RoomHashtag roomHashtag = new RoomHashtag();
+            roomHashtag.setRoom(room);
+            roomHashtag.setHashtag(hashtag);
+            hashtagRepository.saveRoomHashtag(roomHashtag);
+        }
+
         return room;
     }
 
@@ -50,9 +72,31 @@ public class RoomService {
         return roomRepository.findByRoomId(roomId);
     }
 
+    public boolean isHostUser(Long userId, Long roomId){
+        Room room = roomRepository.findByRoomId(roomId);
+        User user = userRepository.findByUserId(userId);
+
+        if(room.getHostUser().equals(user)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean isCorrectPwd(RoomPasswordPostReq passwordInfo){
+        Room room = roomRepository.findByRoomId(passwordInfo.getRoomId());
+
+        if(room.getPassword().equals(passwordInfo.getPassword())){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     @Transactional
     public Room updateRoom(Long roomId, RoomUpdatePostReq newRoomInfo) {
         Room room = roomRepository.findByRoomId(roomId);
+
         if(room != null) {
             room.setName(newRoomInfo.getName());
             room.setMode(newRoomInfo.getMode() == 0 ? Mode.FINGER : Mode.FACE);
@@ -61,6 +105,28 @@ public class RoomService {
             room.setMaxPopulation(newRoomInfo.getMaxPopulation());
             room.setPublic(newRoomInfo.isPublic());
             room.setPassword(newRoomInfo.getPassword());
+
+            List<RoomHashtag> hashtags = new ArrayList<>();
+
+            for(String tag : newRoomInfo.getHashtags()){
+                Hashtag hashtag = hashtagRepository.findBytag(tag);
+
+                if(hashtag == null){        //이전에 사용한 적 없는 태그
+                    hashtag = new Hashtag();
+                    hashtag.setTag(tag);
+                    hashtag.setUseCount(1L);
+                    hashtagRepository.saveHashtag(hashtag);
+                }else{
+                    if(room.getRoomHashtags().contains(hashtag)){   //해당 방에서 사용한적이 있을 때
+                        continue;
+                    }
+                    hashtag.setUseCount(hashtag.getUseCount()+1L);
+                }
+                RoomHashtag roomHashtag = new RoomHashtag();
+                roomHashtag.setRoom(room);
+                roomHashtag.setHashtag(hashtag);
+                hashtagRepository.saveRoomHashtag(roomHashtag);
+            }
         }
 
         return room;
@@ -86,6 +152,20 @@ public class RoomService {
         }
 
         return room;
+    }
+
+    public List<String> getHashtags(){
+
+        Iterator<Hashtag> hashtags = hashtagRepository.findAll().iterator();
+
+        List<String> topHashtags = new ArrayList<>();
+        int cnt = 0;
+        while(hashtags.hasNext() && cnt < 5){
+            topHashtags.add(hashtags.next().getTag());
+            cnt++;
+        }
+
+        return topHashtags;
     }
 }
 

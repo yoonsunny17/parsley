@@ -1,10 +1,13 @@
 package com.ssafy.api.request;
 
+import com.ssafy.db.entity.Hashtag;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Data
 @ApiModel("RoomCreatePostRequest")
@@ -29,4 +32,7 @@ public class RoomCreatePostReq {
 
     @ApiModelProperty(name = "비밀번호", example = "1234", notes = "NULL 가능")
     String password;
+
+    @ApiModelProperty(name = "해시태그", example = "코딩테스트")
+    List<String> hashtags;
 }

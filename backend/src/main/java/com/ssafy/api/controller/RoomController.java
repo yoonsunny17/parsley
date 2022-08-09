@@ -1,10 +1,14 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.RoomCreatePostReq;
+import com.ssafy.api.request.RoomPasswordPostReq;
 import com.ssafy.api.request.RoomUpdatePostReq;
 import com.ssafy.api.response.*;
+import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.RoomService;
+import com.ssafy.api.service.UserService;
 import com.ssafy.db.entity.Room;
+import com.ssafy.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,10 @@ public class RoomController {
 
     @Autowired
     RoomService roomService;
+    @Autowired
+    JwtService jwtService;
+    @Autowired
+    UserService userService;
 
     @GetMapping
     @ApiOperation(value = "방 목록 조회", notes = "방 목록들을 조회한다.")
@@ -44,16 +52,27 @@ public class RoomController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends RoomGetRes> getRoom(@PathVariable("room_id") @Valid Long roomId) {
+
         Room room = roomService.getRoomByRoomId(roomId);
+
+        Long userId = jwtService.getUserId();
+        User user = userService.getUserByUserId(userId);
 
         if (room == null) {
             return ResponseEntity.status(404).body(
-                    RoomGetRes.of(404, "Room not found", null)
+                    RoomGetRes.of(404, "Room not found", null, false, false)
             );
+        }
+        //수정, 삭제 가능 여부
+        boolean isPossible = roomService.isHostUser(userId, roomId);
+        //비밀번호 모달 필요 여부
+        boolean isNecessary = true;
+        if(!room.isPublic() && !room.getMembers().contains(user)){
+            isNecessary = false;
         }
 
         return ResponseEntity.status(200).body(
-                RoomGetRes.of(200, "Success", room)
+                RoomGetRes.of(200, "Success", room, isNecessary, isPossible)
         );
     }
 
@@ -63,10 +82,10 @@ public class RoomController {
             @ApiResponse(code = 201, message = "방 생성 성공"),
             @ApiResponse(code = 500, message = "방 생성 실패")
     })
-    public ResponseEntity<? extends RoomPostRes> create(
+    public ResponseEntity<? extends RoomPostRes> createPost(
             @RequestBody @ApiParam(value = "방 생성 정보", required = true) @Valid RoomCreatePostReq roomInfo) {
-        // TODO: user 정보 갖고 와서 넘겨주기
         Long userId = 1L;
+//        Long userId = jwtService.getUserId();
         Room room = roomService.createRoom(userId, roomInfo);
 
         if (room == null) {
@@ -79,6 +98,23 @@ public class RoomController {
                 RoomPostRes.of(201, "Success", true));
     }
 
+
+    // TODO: 매핑 이름 바꿔주기
+    @GetMapping("/create")
+    @ApiOperation(value = "방 생성", notes = "인기 해시태그 5개를 가져온다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "방 생성 성공"),
+            @ApiResponse(code = 500, message = "방 생성 실패")
+    })
+    public ResponseEntity<? extends HashtagGetRes> getTopHashtag(){
+
+        List<String> hashtags = roomService.getHashtags();
+
+        return ResponseEntity.status(200).body(
+                HashtagGetRes.of(200, "Success", hashtags)
+        );
+    }
+
     @PostMapping("/{room_id}/update")
     @ApiOperation(value = "방 수정", notes = "방 정보를 수정한다.")
     @ApiResponses({
@@ -88,8 +124,6 @@ public class RoomController {
     public ResponseEntity<? extends RoomPostRes> update(
             @PathVariable("room_id") Long roomId,
             @RequestBody @ApiParam(value = "방 수정 정보", required = true) @Valid RoomUpdatePostReq roomInfo) {
-        // TODO: 현재 삭제하려는 User와 hostUser가 같은지 확인하는 로직 추가
-
         Room room = roomService.updateRoom(roomId, roomInfo);
         if (room == null) {
             return ResponseEntity.status(500).body(
@@ -109,7 +143,6 @@ public class RoomController {
             @ApiResponse(code = 500, message = "방 삭제 실패")
     })
     public ResponseEntity<? extends RoomPostRes> delete(@PathVariable("room_id") @Valid Long roomId) {
-        // TODO: 현재 삭제하려는 User와 hostUser가 같은지 확인하는 로직 추가
         Room room = roomService.deleteRoom(roomId);
         if (room == null) {
             return ResponseEntity.status(500).body(
@@ -122,10 +155,30 @@ public class RoomController {
         );
     }
 
-    // TODO: 비공개방 API
+    @PostMapping("/{room_id}/check")
+    @ApiOperation(value = "비밀번호 확인", notes = "비밀번호 일치 여부를 확인한다.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "비밀번호 일치"),
+            @ApiResponse(code = 204, message = "비밀번호 불일치"),     //TODO: 서버 코드
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends RoomPostRes> checkPassword(@RequestBody @ApiParam(value = "비밀번호", required = true) @Valid RoomPasswordPostReq passwordInfo){
+
+        boolean isTrue = roomService.isCorrectPwd(passwordInfo);
+
+        if(!isTrue){
+            return ResponseEntity.status(204).body(
+                    RoomPostRes.of(204, "Passwords do not match", false)
+            );
+        }else{
+            return ResponseEntity.status(201).body(
+                    RoomPostRes.of(201, "Passwords match", true)
+            );
+        }
+    }
 
     // TODO: 방 검색
-
-    // TODO: 해시태그 관리 - Room Entity에 해시태그 추가, create 시 해시태그 데이터 추가
-
+    public ResponseEntity<? extends RoomGetRes> searchRooms(@RequestParam("search_word") String search){
+        return null;
+    }
 }
