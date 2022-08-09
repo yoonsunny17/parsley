@@ -1,15 +1,27 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import persistReducer from "redux-persist/es/persistReducer";
 // import { setupListeners } from "@reduxjs/toolkit/dist/query";
+import storage from "redux-persist/lib/storage";
 import { roomApi } from "../services/room";
 import { userApi } from "../services/user";
 import userReducer from "./userReducer";
 
-export const store = configureStore({
-    reducer: {
-        user: userReducer,
-        [roomApi.reducerPath]: roomApi.reducer,
-        [userApi.reducerPath]: userApi.reducer,
+const reducers = combineReducers({
+    user: userReducer,
+    [roomApi.reducerPath]: roomApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+});
+
+const persistedReducer = persistReducer(
+    {
+        key: "root",
+        storage,
     },
+    reducers
+);
+
+export const store = configureStore({
+    reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({}).concat([
             roomApi.middleware,
