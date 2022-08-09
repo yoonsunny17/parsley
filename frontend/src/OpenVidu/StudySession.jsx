@@ -419,7 +419,8 @@ class StudySession extends Component {
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
               let publisher = this.OV.initPublisher("container-cameras", {
-                audioSource: undefined, // The source of audio. If undefined default microphone
+                // audioSource: undefined, // The source of audio. If undefined default microphone
+                audioSource: "container-cameras", // The source of audio. If undefined default microphone
                 // videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
