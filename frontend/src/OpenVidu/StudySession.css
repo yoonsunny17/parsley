@@ -53,3 +53,9 @@
   width: 80%;
   height: auto;
 }
+
+.main-video-division {
+  display: flex;
+  width: calc(96% / 2);
+  margin: 1%;
+}
