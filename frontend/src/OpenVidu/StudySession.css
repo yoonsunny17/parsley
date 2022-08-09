@@ -49,8 +49,18 @@
   flex-wrap: wrap;
 }
 
-#main-video {
+#main-video-divided {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 80%;
+  height: auto;
+}
+
+#main-video-onescreen {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   height: auto;
 }
 
