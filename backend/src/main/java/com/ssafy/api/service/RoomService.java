@@ -104,13 +104,16 @@ public class RoomService {
             room.setPublic(newRoomInfo.isPublic());
             room.setPassword(newRoomInfo.getPassword());
 
-            List<RoomHashtag> hashtags = room.getRoomHashtags();
+            List<Hashtag> hashtags = hashtagRepository.findHashtags(room);      //기존 해시태그
 
-            for(RoomHashtag hashtag : room.getRoomHashtags()){
-                hashtagRepository.delete(hashtag);
+            for(RoomHashtag roomHashtag : room.getRoomHashtags()){
+                hashtagRepository.delete(roomHashtag);
             }
 
+            List<RoomHashtag> newHashtags = new ArrayList<>();
+
             for(String tag : newRoomInfo.getHashtags()){
+
                 Hashtag hashtag = hashtagRepository.findBytag(tag);
 
                 if(hashtag == null){        //이전에 사용한 적 없는 태그
@@ -121,11 +124,18 @@ public class RoomService {
                 }else if(!hashtags.contains(hashtag)) {   //해당 방에서 사용한 적이 없을 때
                     hashtag.setUseCount(hashtag.getUseCount() + 1L);
                 }
+
                 RoomHashtag roomHashtag = new RoomHashtag();
+
                 roomHashtag.setRoom(room);
                 roomHashtag.setHashtag(hashtag);
                 hashtagRepository.saveRoomHashtag(roomHashtag);
+
+                newHashtags.add(roomHashtag);
             }
+
+
+            room.setRoomHashtags(newHashtags);
         }
         return room;
     }

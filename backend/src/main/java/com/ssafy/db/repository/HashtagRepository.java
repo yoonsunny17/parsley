@@ -23,8 +23,9 @@ public class HashtagRepository {
         em.persist(roomHashtag);
     }
 
-    public List<Hashtag> findHashtags(){
-        return em.createQuery("select h from Hashtag  h", Hashtag.class).getResultList();
+    public List<Hashtag> findHashtags(Room room){
+        return em.createQuery("select r.hashtag from RoomHashtag  r where r.room = :room", Hashtag.class)
+                .setParameter("room", room).getResultList();
     }
 
     public Hashtag findBytag(String tag){
