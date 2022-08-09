@@ -41,6 +41,9 @@ public class FarmService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    NotificationRepository notificationRepository;
+
     public List<Tuple> getHerbBooks(Long userId) {
         List<Tuple> userHerbBooks = userHerbBookRepository.findByUserAndGroupBy(userId);
 
@@ -77,6 +80,9 @@ public class FarmService {
 
         //추가 슬리
         sley = (long)(sley * (item.getItemFertilizer().getSleyRate() *1.0)/100);
+        StringBuilder content = new StringBuilder();
+        content.append("작물 수확(").append(herbBook.getName()).append(")");
+        addNotificationLog((int)sley, content.toString(), user, NotificationType.SLEY);
         UserHerbBookAddPostRes res = new UserHerbBookAddPostRes();
         res.setAddSley(sley);
         sley += user.getCurrentSley();
@@ -84,6 +90,7 @@ public class FarmService {
 
         //도감 포인트
         long point = herbBook.getPoint();
+        addNotificationLog((int)point, content.toString(), user, NotificationType.POINT);
         res.setAddPoint(point);
         point += user.getCurrentBookPoint();
         user.setCurrentBookPoint(point);
@@ -137,7 +144,25 @@ public class FarmService {
         herb.setUser(user);
         herb.setPosition(herbInfo.getPosition());
 
+        int sum = itemSeed.getSley() + itemWater.getSley() + itemFertilizer.getSley();
+        StringBuilder content = new StringBuilder();
+        content.append("작물 심기(").append(itemSeed.getName()).append(", ")
+                .append(itemWater.getName()).append(", ").append(itemFertilizer.getName()).append(")");
+        addNotificationLog(sum*-1, content.toString() , user, NotificationType.SLEY);
+
         herbRepository.save(herb);
         return herb;
+    }
+
+    private void addNotificationLog(int value, String content, User user, NotificationType type){
+        Notification notification = new Notification();
+        LocalDateTime date = LocalDateTime.now();
+        notification.setDate(date);
+        notification.setValue(value);
+        notification.setContent(content);
+        notification.setUser(user);
+        notification.setNotificationType(type);
+
+        notificationRepository.save(notification);
     }
 }
