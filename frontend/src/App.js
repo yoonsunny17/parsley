@@ -7,6 +7,7 @@ import StudyRoomOV from "./UI/pages/StudyRoomOV";
 // import StudyRoom from "./components/pages/StudyRoom";
 import Drawer from "./UI/organisms/Drawer";
 import SearchStudyRooms from "./UI/pages/SearchStudyRooms";
+import KakaoLogin from "./UI/pages/KakaoLogin";
 
 function App() {
     return (
@@ -19,7 +20,7 @@ function App() {
                             path="/room/create"
                             element={<CreateStudyRoom />}
                         />
-                        <Route path="/user/login" element={<AuthLogin />} />
+                        <Route path="/login" element={<KakaoLogin />} />
                         <Route path="/room" element={<EnterStudyRoom />} />
                         <Route path="/search" element={<SearchStudyRooms />} />
                     </Routes>

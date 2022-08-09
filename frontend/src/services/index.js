@@ -2,16 +2,20 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import { Mutex } from "async-mutex";
 
 export const BASE_URL = process.env.REACT_APP_API_URL;
-const REDIRECT_URI = BASE_URL + "/auth/login";
-const REST_API_KEY = process.env.REACT_APP_API_KEY;
-
-export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
 
 const mutex = new Mutex();
-const baseQuery = fetchBaseQuery({
+export const baseQuery = fetchBaseQuery({
     baseUrl: BASE_URL,
     credentials: "include",
-    prepareHeaders: (headers, { getState }) => {},
+    prepareHeaders: (headers, { getState }) => {
+        const token = getState().user.token;
+
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`);
+        }
+
+        return headers;
+    },
 });
 
 // login 반환 받은 값을 header에 저장

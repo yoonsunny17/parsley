@@ -3,13 +3,13 @@ import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import DdayWidget from "../molecules/DdayWidget";
 import StudyWidget from "../molecules/Studywidget";
 import Button from "../atoms/Button";
-import { KAKAO_AUTH_URL } from "../../services";
-// import { useKakaoLoginQuery } from "../../services/user";
 
 function Drawer({ children }) {
-    const [isLogin, setIsLogin] = useState(true);
+    const REDIRECT_URI = "http://localhost:3000/login";
+    const REST_API_KEY = process.env.REACT_APP_API_KEY;
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
 
-    // const { data, isLoading } = useKakaoLoginQuery();
+    const [isLogin, setIsLogin] = useState(true);
 
     const logoutHandler = () => setIsLogin((current) => !current);
 
@@ -17,7 +17,6 @@ function Drawer({ children }) {
     const bookPoint = 9500;
     const user = "유교보이";
 
-    // TODO: access_token을 response로 받아서, Header에 저장 과정
     const loginHandler = () => {
         window.location.href = KAKAO_AUTH_URL;
     };

@@ -6,7 +6,7 @@ export const userApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
     endpoints: (builder) => ({
         kakaoLogin: builder.query({
-            query: () => `/auth/login`,
+            query: (code) => `/auth/login?code=${code}`,
         }),
         logout: builder.query({
             query: () => `/auth/logout`,
