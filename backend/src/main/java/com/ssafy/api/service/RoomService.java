@@ -42,7 +42,6 @@ public class RoomService {
 
         roomRepository.save(room);
 
-        //TODO: 해시태그 리스트에 이번 방에서 쓰인 해시태그 정보 넣기 -> 있으면 cnt++ 없으면 새로 생성
         for(String tag : roomInfo.getHashtags()){
             Hashtag hashtag = hashtagRepository.findBytag(tag);
 
@@ -54,7 +53,6 @@ public class RoomService {
             }else{
                 hashtag.setUseCount(hashtag.getUseCount()+1L);
             }
-            //TODO: roomHashtag에 데이터 넣어주기
             RoomHashtag roomHashtag = new RoomHashtag();
             roomHashtag.setRoom(room);
             roomHashtag.setHashtag(hashtag);
@@ -106,7 +104,11 @@ public class RoomService {
             room.setPublic(newRoomInfo.isPublic());
             room.setPassword(newRoomInfo.getPassword());
 
-            List<RoomHashtag> hashtags = new ArrayList<>();
+            List<RoomHashtag> hashtags = room.getRoomHashtags();
+
+            for(RoomHashtag hashtag : room.getRoomHashtags()){
+                hashtagRepository.delete(hashtag);
+            }
 
             for(String tag : newRoomInfo.getHashtags()){
                 Hashtag hashtag = hashtagRepository.findBytag(tag);
@@ -116,11 +118,8 @@ public class RoomService {
                     hashtag.setTag(tag);
                     hashtag.setUseCount(1L);
                     hashtagRepository.saveHashtag(hashtag);
-                }else{
-                    if(room.getRoomHashtags().contains(hashtag)){   //해당 방에서 사용한적이 있을 때
-                        continue;
-                    }
-                    hashtag.setUseCount(hashtag.getUseCount()+1L);
+                }else if(!hashtags.contains(hashtag)) {   //해당 방에서 사용한 적이 없을 때
+                    hashtag.setUseCount(hashtag.getUseCount() + 1L);
                 }
                 RoomHashtag roomHashtag = new RoomHashtag();
                 roomHashtag.setRoom(room);
@@ -128,7 +127,6 @@ public class RoomService {
                 hashtagRepository.saveRoomHashtag(roomHashtag);
             }
         }
-
         return room;
     }
 

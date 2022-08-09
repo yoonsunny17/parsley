@@ -1,6 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.ssafy.db.entity.Hashtag;
+import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.RoomHashtag;
 import org.springframework.stereotype.Repository;
 
@@ -40,4 +41,7 @@ public class HashtagRepository {
         return em.createQuery("select h from Hashtag h order by h.useCount desc").getResultList();
     }
 
+    public void delete(RoomHashtag roomHashtag) {
+        em.remove(roomHashtag);
+    }
 }
