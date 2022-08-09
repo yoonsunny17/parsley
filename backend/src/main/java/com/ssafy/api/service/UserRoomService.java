@@ -46,7 +46,8 @@ public class UserRoomService {
         if(user.getInterestRooms().contains(room)){
             return false;
         }else{
-            user.getInterestRooms().add(room);
+//            user.getInterestRooms().add(room);
+            user.addUserLike(room);
             return true;
         }
     }

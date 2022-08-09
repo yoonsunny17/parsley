@@ -77,7 +77,8 @@ public class UserRoomController {
     public ResponseEntity<? extends MyRoomPostRes> deleteMyRoom(
             @RequestBody @ApiParam(value = "나의 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
-        Long userId = jwtService.getUserId();
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
 
         boolean isSuccess = userRoomService.deleteMyRoom(userId, myRoomInfo);
 

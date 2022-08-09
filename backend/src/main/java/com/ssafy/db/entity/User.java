@@ -39,14 +39,14 @@ public class User {
     private boolean isWithdrawn;
 
     @JsonBackReference
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_room",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Room> joinRooms = new ArrayList<>();
 
     @JsonBackReference
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "interest_room",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
@@ -69,5 +69,10 @@ public class User {
     public void addUserRoom(Room room) {
         joinRooms.add(room);
         room.getMembers().add(this);
+    }
+
+    public void addUserLike(Room room) {
+        interestRooms.add(room);
+        room.getLikes().add(this);
     }
 }

@@ -100,7 +100,6 @@ public class RoomController {
     }
 
 
-    // TODO: 매핑 이름 바꿔주기
     @GetMapping("/create")
     @ApiOperation(value = "방 생성", notes = "인기 해시태그 5개를 가져온다.")
     @ApiResponses({
@@ -147,8 +146,8 @@ public class RoomController {
 
 //        Long userId = jwtService.getUserId();
         Long userId = 1L;
-        Room room = roomService.deleteRoom(userId, roomId);
-        if (room == null) {
+        boolean isSuccess = roomService.deleteRoom(userId, roomId);
+        if (!isSuccess) {
             return ResponseEntity.status(500).body(
                     RoomPostRes.of(500, "Unable to delete room", false)
             );

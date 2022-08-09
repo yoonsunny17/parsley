@@ -141,25 +141,31 @@ public class RoomService {
     }
 
     @Transactional
-    public Room deleteRoom(Long roomId) {
+    public boolean deleteRoom(Long userId, Long roomId) {
+
+        User user = userRepository.findByUserId(userId);
         Room room = roomRepository.findByRoomId(roomId);
 
         if(room != null) {
-//            User hostUser = room.getHostUser();
-//            hostUser.deleteMyRoom(room);
 
-//            List<RoomHashtag> roomHashtags = room.getRoomHashtags();
-//            roomHashtags.forEach(new Consumer<RoomHashtag>() {
-//                @Override
-//                public void accept(RoomHashtag roomHashtag) {
-//                    roomHashtag.deleteRoom(room);
-//                }
-//            });
+            User hostUser = room.getHostUser();
+
+            //유저랑 호스트 유저 일치하는지 한 번 더 확인
+            if(!user.equals(hostUser)){
+                return false;
+            }
+
+            for(User member : room.getMembers()){
+                member.getJoinRooms().remove(room);
+            }
+
+            for(User member : room.getLikes()){
+                member.getInterestRooms().remove(room);
+            }
 
             roomRepository.delete(room);
         }
-
-        return room;
+        return true;
     }
 
     public List<String> getHashtags(){
