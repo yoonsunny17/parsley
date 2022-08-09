@@ -29,7 +29,7 @@ function MyProfile() {
  
 
   return (
-    <div className="rounded-2xl w-full mb-4 md:w-2/3 md:mb-0 shadow px-8 py-5 flex relative">
+    <div className="rounded-2xl w-full mb-4 md:w-2/3 md:mb-0 shadow px-8 py-8 flex relative">
       <div className="flex">
         <img
           className="inline-block h-32 w-32 rounded-full ring-4 ring-main mt-4 ml-2 mr-10"
