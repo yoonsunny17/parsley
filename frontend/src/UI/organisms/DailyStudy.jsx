@@ -46,12 +46,18 @@ const data = [
     amt: 2100
   }
 ];
+var sortingField = "hour"
+const sortData = data.slice()
+sortData.sort(function(a,b) {
+  return a[sortingField] - b[sortingField]
+})
 
+console.log(sortData)
 function DailyStudy() {
   return (
     <div className="flex flex-col shadow-sm rounded-[10px] px-4 py-3 w-full mb-2 lg:w-2/3 lg:mb-0 border-[2px] border-sub1">
       <div className="font-semibold text-[20px]">요일별 공부량</div>
-      <div className="font-normal text-[24px]"><span className="font-bold">{data[2].name}요일</span>에 가장 열심히 공부했네요!</div>
+      <div className="font-normal text-[24px]"><span className="font-bold">{sortData[6].name}요일</span>에 가장 열심히 공부했네요!</div>
       <div className="mt-[30px] text-center">
         <BarChart
           width={900}
