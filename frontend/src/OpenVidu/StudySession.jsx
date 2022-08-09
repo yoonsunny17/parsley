@@ -56,6 +56,8 @@ class StudySession extends Component {
       connections: [],
       connectionId: "",
       leaved: false,
+      mode: "", // 손꾸락모드: finger, 얼구리모드: face FIXME: frontend branch의 CreateStudyRoom 의 mode 이름 바꾸기
+      isDivided: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -73,6 +75,8 @@ class StudySession extends Component {
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     // screen share (화면공유)
     this.screenShare = this.screenShare.bind(this);
+    // 4분할 화면 전환
+    this.changeDividedMainScreen = this.changeDividedMainScreen.bind(this);
   }
 
   // studysession function
@@ -251,6 +255,13 @@ class StudySession extends Component {
         mainStreamManager: stream,
       });
     }
+  }
+
+  changeDividedMainScreen() {
+    // if (this.state.isDivided) {
+    //   this.setState({ isDivided: !this.state.isDivided });
+    //   console.log(this.state.isDivided);
+    // }
   }
 
   deleteSubscriber(streamManager) {
@@ -459,51 +470,6 @@ class StudySession extends Component {
     );
   }
 
-  // // screen share onclick mode
-  // screenShare(e) {
-  //   navigator.mediaDevices
-  //     .getDisplayMedia({ audio: true, video: true })
-  //     .then(function (stream) {
-  //       //success
-  //     })
-  //     .catch(function (e) {
-  //       //error;
-  //     });
-  // }
-  // pulishScreenShare() {
-  //   // --- 9.1) To create a publisherScreen it is very important that the property 'videoSource' is set to 'screen'
-  //   var publisherScreen = OVScreen.initPublisher("container-screens", {
-  //     videoSource: "screen",
-  //   });
-
-  //   // --- 9.2) If the user grants access to the screen share function, publish the screen stream
-  //   publisherScreen.once("accessAllowed", (event) => {
-  //     document.getElementById("buttonScreenShare").style.visibility = "hidden";
-  //     screensharing = true;
-  //     // It is very important to define what to do when the stream ends.
-  //     publisherScreen.stream
-  //       .getMediaStream()
-  //       .getVideoTracks()[0]
-  //       .addEventListener("ended", () => {
-  //         console.log('User pressed the "Stop sharing" button');
-  //         sessionScreen.unpublish(publisherScreen);
-  //         document.getElementById("buttonScreenShare").style.visibility =
-  //           "visible";
-  //         screensharing = false;
-  //       });
-  //     sessionScreen.publish(publisherScreen);
-  //   });
-
-  //   // publisherScreen.on("videoElementCreated", function (event) {
-  //   //   appendUserData(event.element, sessionScreen.connection);
-  //   //   event.element["muted"] = true;
-  //   // });
-
-  //   publisherScreen.once("accessDenied", (event) => {
-  //     console.error("Screen Share: Access Denied");
-  //   });
-  // }
-
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
@@ -651,59 +617,143 @@ class StudySession extends Component {
             <div className="container">
               <div className="flex flex-row">
                 <div className="flex flex-col">
-                  <div id="video-container" className="video-container">
-                    {/* <div className="relative font-bold" id="session-header">
-                      <div id="session-title" className="text-2xl">
-                        {mySessionId}
-                      </div>
-                    </div> */}
-                    {/* // FIXME: studysession navbar 따로 구현해야할것같음 */}
-                    {/* studysession navbar */}
-                    <div className="navbar bg-base-100">
-                      <div className="flex-1 text-xl font-bold">PARSLEY</div>
-                      <div className="flex-none cursor-pointer">
-                        <BsThreeDots />
-                      </div>
+                  {/* // FIXME: navbar 일단 제외 */}
+                  {/* <div className="navbar bg-base-100">
+                    <div className="flex-1 text-xl font-bold">PARSLEY</div>
+                    <div className="flex-none cursor-pointer">
+                      <BsThreeDots />
                     </div>
-                    {/* // TODO: 화면 넘어가는것을 carousel?? pagination?? 구현해야 할 것 같음 */}
-                    {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
-                    {this.state.publisher !== undefined ? (
-                      <div
-                        className="stream-container col-md-6 col-xs-6"
-                        onClick={() =>
-                          this.handleMainVideoStream(this.state.publisher)
-                        }
-                      >
-                        <UserVideoComponent
-                          streamManager={this.state.publisher}
-                        />
-                      </div>
-                    ) : null}
-                    {/* 제 3자; subscribers */}
-                    {this.state.subscribers.map((sub, i) => (
-                      <div
-                        key={i}
-                        className="stream-container col-md-6 col-xs-6"
-                        onClick={() => this.handleMainVideoStream(sub)}
-                      >
-                        <UserVideoComponent streamManager={sub} />
-                      </div>
-                    ))}
-                    {/* 메인 화면; 화면 공유 되어지고있는 사람 */}
-                    {this.state.mainStreamManager !== undefined ? (
-                      <div id="main-video" className="">
-                        <UserVideoComponent
-                          streamManager={this.state.mainStreamManager}
-                        />
-                      </div>
-                    ) : null}
-                  </div>
+                  </div> */}
+                  {/* 손꾸락 모드인 경우 vs 얼구리 모드인 경우 */}
+
+                  {this.state.mode === "finger" ? (
+                    <div id="video-container" className="video-container">
+                      {/* // TODO: 화면 넘어가는것을 carousel?? pagination?? 구현해야 할 것 같음 */}
+                      {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
+                      {this.state.publisher !== undefined ? (
+                        <div
+                          // className="stream-container col-md-6 col-xs-6"
+                          className="w-[calc-96% / 2] m-[1%] col-md-6 col-xs-6"
+                          onClick={() =>
+                            this.handleMainVideoStream(this.state.publisher)
+                          }
+                        >
+                          <UserVideoComponent
+                            streamManager={this.state.publisher}
+                          />
+                        </div>
+                      ) : null}
+                      {/* 제 3자; subscribers */}
+                      {this.state.subscribers.map((sub, i) => (
+                        <div
+                          key={i}
+                          // className="stream-container col-md-6 col-xs-6"
+                          className="w-[calc-96% / 2] m-[1%] col-md-6 col-xs-6"
+                          onClick={() => this.handleMainVideoStream(sub)}
+                        >
+                          <UserVideoComponent streamManager={sub} />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    // 얼구리 모드
+                    <div id="video-container" className="video-container">
+                      {/* 상단의 작은 화면들 */}
+                      {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
+                      {this.state.publisher !== undefined ? (
+                        <div
+                          className="stream-container col-md-6 col-xs-6"
+                          onClick={() =>
+                            this.handleMainVideoStream(this.state.publisher)
+                          }
+                        >
+                          <UserVideoComponent
+                            streamManager={this.state.publisher}
+                          />
+                        </div>
+                      ) : null}
+                      {/* 제 3자; subscribers */}
+                      {this.state.subscribers.map((sub, i) => (
+                        <div
+                          key={i}
+                          className="stream-container col-md-6 col-xs-6"
+                          onClick={() => this.handleMainVideoStream(sub)}
+                        >
+                          <UserVideoComponent streamManager={sub} />
+                        </div>
+                      ))}
+                      {/* 하단의 메인 화면; 화면 공유 되어지고있는 사람 */}
+                      {/* 화면 4분할 기능 추가 */}
+                      {/* 4분할 되어 4개의 화면이 공유되어지는 경우 */}
+                      {/* +++++++++++++++++++++++++++++++++++++++++++++++++++ */}
+                      <div id="main-video">
+                        <div
+                          className="w-[45%]"
+                          onClick={() => {
+                            this.handleMainVideoStream(this.state.publisher);
+                          }}
+                        >
+                          <UserVideoComponent
+                            streamManager={this.state.publisher}
+                          />
+                        </div>
+                        {this.state.subscribers.map((sub, i) => (
+                          <div
+                            className="w-[45%]"
+                            key={i}
+                            onClick={() => {
+                              this.handleMainVideoStream(sub);
+                            }}
+                          >
+                            <UserVideoComponent streamManager={sub} />
+                          </div>
+                        ))}
+                        {/* 4분할 되지 않고 하나의 화면만 공유되는 경우 */}
+                        {/* 클릭했을 때 다시 4분할로 돌아가도록 */}
+                        {/* // TODO: isDivided ? (4분할인 경우) : (분할되지 않은 경우, onclick으로 되돌아가게) */}
+                        {this.state.isDivided === false ? (
+                          <div>
+                            <UserVideoComponent
+                              streamManager={this.state.mainStreamManager}
+                            />
+                          </div>
+                        ) : null}
+                        {/* <div
+                        // onClick={() => {
+                        //   this.setState({ isDivided: !this.state.isDivided });
+                        //   console.log(this.state.isDivided);
+                        // }}
+                        >
+                          <UserVideoComponent
+                            streamManager={this.state.mainStreamManager}
+                          />
+                        </div> */}
+                      </div>{" "}
+                      ,
+                      {/* {this.state.mainStreamManager !== undefined ? (
+                        <div id="main-video" className="">
+                          <UserVideoComponent
+                            streamManager={this.state.mainStreamManager}
+                          />
+                        </div>
+                      ) : null} */}
+                    </div>
+                  )}
                 </div>
               </div>
 
               {/* tool bar; screen share, mic on/off, camera on/off, chat popper, exit */}
               <footer className="footer footer-center p-4 bg-base-300 text-base-content">
                 <div className="grid-flow-col gap-6 md:place-self-center">
+                  {/* divided test */}
+                  <button
+                    onClick={() => {
+                      this.setState({ isDivided: !this.state.isDivided });
+                      console.log(this.state.isDivided);
+                    }}
+                  >
+                    divide
+                  </button>
                   <div className="cursor-pointer" onClick={this.screenShare}>
                     <TbScreenShare size={footerBtn} />
                   </div>
