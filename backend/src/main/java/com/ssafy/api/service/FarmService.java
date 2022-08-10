@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.Tuple;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,8 @@ public class FarmService {
         point += user.getCurrentBookPoint();
         user.setCurrentBookPoint(point);
 
+        //TODO: 남은 시간이 +일때 +시간만큼 추가 슬리 지급
+
         return res;
     }
 
@@ -103,12 +106,15 @@ public class FarmService {
     public HerbsRes getHerbs(Long userId) {
         HerbsRes herbListRes = new HerbsRes();
         User user = userRepository.findByUserId(userId);
-        List<Herb> herbs = herbRepository.findByUser(user);
+
+        List<Herb> herbs = user.getHerbs();
+
         List<HerbRes> list = new ArrayList<>();
         if(herbs == null){
             return null;
         }
         for (Herb herb : herbs) {
+            if(herb.isCompleted()) continue;
             HerbRes res = new HerbRes();
             res.setHerbId(herb.getId());
             res.setPosition(herb.getPosition());
@@ -117,8 +123,10 @@ public class FarmService {
             res.setItemWaterId(item.getItemWater().getId());
             res.setItemFertilizerId(item.getItemFertilizer().getId());
 
-            //TODO: 남은 시간 계산!!
-            res.setLeftTime(herb.getGrowthTime());
+            //TODO: 남은 시간 계산!!(일단은 초단위)
+            int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime()*60, user.getDailyStudyLogs());
+            res.setLeftTime(leftTime);
+
             list.add(res);
         }
 
@@ -165,4 +173,27 @@ public class FarmService {
 
         notificationRepository.save(notification);
     }
+
+    private long studyTime(LocalDateTime herbDate, long growthTime, List<DailyStudyLog> studyLogs){
+
+        int size = studyLogs.size();
+        long time = 0;
+        Duration duration = null;
+        for (int i = 0; i < size; i+=2) {
+            if(studyLogs.get(i).getTime().isBefore(herbDate)) continue;
+            LocalDateTime tLog = studyLogs.get(i).getTime();
+            LocalDateTime fLog = studyLogs.get(i+1).getTime();
+
+            duration = Duration.between(tLog, fLog);
+            time += duration.getSeconds();
+        }
+
+        //growthtime보다 study타임이 2배가 되는 경우
+        if(growthTime * 2 == time){
+            return growthTime;
+        }
+
+        return time - growthTime;
+    }
+
 }
