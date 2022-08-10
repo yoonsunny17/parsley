@@ -67,6 +67,7 @@ const tabHerbArr = [
   {
     title: "농장 페이지 허브 도감",
     herbCollectionList: [
+      // 일반 등급 허브 도감 16개
       {
         name: "파슬리",
         imgUrl: "/herbs/normal_parsley.png",
@@ -106,7 +107,7 @@ const tabHerbArr = [
         name: "민트",
         imgUrl: "/herbs/normal_mint.png",
         grade: "일반",
-        description: "민트가 치약맛이 아니라 치약이 민트맛인거라구욧!",
+        description: "민초파 모여라~",
         isOpened: true,
       },
       {
@@ -182,6 +183,127 @@ const tabHerbArr = [
         grade: "일반",
         description: "타임이 노화 방지에 좋대요.. 얼른 구하러 가야겠다!",
         isOpened: true,
+      },
+      // 희귀 등급 허브 도감 8개
+      {
+        name: "프로틴 중독 파슬리",
+        imgUrl: "/herbs/rare_muscle.png",
+        grade: "희귀",
+        description:
+          "근육으로 똘똘 뭉친 파슬리이다... 먹으면 막강해질지도... ?",
+        isOpened: true,
+      },
+      {
+        name: "바지 아니고 바질",
+        imgUrl: "/herbs/rare_basil.png",
+        grade: "희귀",
+        description: "발음을 조심해 주세요! 바지아니고 바 질 !",
+        isOpened: true,
+      },
+      {
+        name: "비둘기가 좋아하는 캣잎",
+        imgUrl: "/herbs/rare_dove.png",
+        grade: "희귀",
+        description:
+          "구구...구구구..999...9구...99...gugugu..이 캣잎은 이제 제껍니다...gugu",
+        isOpened: true,
+      },
+      {
+        name: "향기나는 자스민",
+        imgUrl: "/herbs/rare_jasmine.png",
+        grade: "희귀",
+        description: "그대 모습은~ 보라빛처럼~ 살며시 다가왔지~",
+        isOpened: true,
+      },
+      {
+        name: "더 오레오레가노",
+        imgUrl: "/herbs/rare_oregano.png",
+        grade: "희귀",
+        description:
+          "이 오레가노 오일이 더 오레오레가나 아니면 저 오레가노 오일이 더 오레오레가노??",
+        isOpened: true,
+      },
+      {
+        name: "쟤가 제라늄?",
+        imgUrl: "/herbs/rare_geranium.png",
+        grade: "희귀",
+        description: "쟤가 제라늄? 아니라늄? 그럼 말라늄~!",
+        isOpened: true,
+      },
+      {
+        name: "치약맛 민트",
+        imgUrl: "/herbs/rare_toothpaste.png",
+        grade: "희귀",
+        description: "민트가 치약맛이 아니라 치약이 민트맛인거라구욧!",
+        isOpened: true,
+      },
+      {
+        name: "살이 쭉쭉 빠지는 히비스커스",
+        imgUrl: "/herbs/rare_hibiscus.png",
+        grade: "희귀",
+        description:
+          "너무 많이 빠진다고 놀라지 마세요! 단, 요요는 보장할 수 없습니다.",
+        isOpened: true,
+      },
+      // 영웅 등급 허브 도감 4개
+      {
+        name: "근육돼지 파슬리",
+        imgUrl: "/herbs/hero_pig.png",
+        grade: "hero",
+        description: "3대 500 치는 파슬리이다. 약간 반할지도?",
+        isOpened: false,
+      },
+      {
+        name: "고양이가 좋아하는 깻잎",
+        imgUrl: "/herbs/hero_catleaf.png",
+        grade: "hero",
+        description: "고양이도 깻잎 좋아한다옹!",
+        isOpened: false,
+      },
+      {
+        name: "알라딘 여친 자스민",
+        imgUrl: "/herbs/hero_aladdin.png",
+        grade: "hero",
+        description: "비나이다..비나이다.. 저도 짝이 생기게 해주세요..",
+        isOpened: false,
+      },
+      {
+        name: "이야 진짜 겁나 오레오레오레오레가노",
+        imgUrl: "/herbs/hero_oregano.png",
+        grade: "hero",
+        description: "지금은 새벽 4시 13분 ...5레5 우유에 찍어서 먹고싶당..",
+        isOpened: false,
+      },
+      // 전설 등급 허브 도감 3개
+      {
+        name: "고수",
+        imgUrl: "/herbs/legend_gosu.png",
+        grade: "전설",
+        description: "너무 눈이 부셔서 이목구비가 보이질 않아 ...",
+        isOpened: false,
+      },
+      {
+        name: "유교보이",
+        imgUrl: "/herbs/legend_ugyoboy.png",
+        grade: "전설",
+        description: "아~ 파슬리~ 가보자고~",
+        isOpened: false,
+      },
+      {
+        name: "자스민마",
+        imgUrl: "/herbs/legend_jasminema.png",
+        grade: "전설",
+        description: "PARSLEY 여신 쟈스민ma!",
+        isOpened: false,
+      },
+      // 미스테리 등급 허브 도감 1개
+      {
+        name: "썩슬리",
+        imgUrl: "/herbs/mystery_rottensley.png",
+        grade: "미스테리",
+        description:
+          "킼...ㅋ키킼...킼... 용감한 녀석... 감히 이몸을 깨우다니...겁도없군 킼ㅋ...",
+        isOpened: false,
       },
     ],
   },
