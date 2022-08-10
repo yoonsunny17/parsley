@@ -418,9 +418,9 @@ class StudySession extends Component {
 
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
-              let publisher = this.OV.initPublisher("container-cameras", {
-                // audioSource: undefined, // The source of audio. If undefined default microphone
-                audioSource: "container-cameras", // The source of audio. If undefined default microphone
+              let publisher = this.OV.initPublisher(undefined, {
+                // audioSource: "container-cameras", // The source of audio. If undefined default microphone
+                audioSource: undefined, // The source of audio. If undefined default microphone
                 // videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
@@ -493,6 +493,23 @@ class StudySession extends Component {
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       mainStreamManager: undefined,
       publisher: undefined,
+      subscribers: [],
+      messages: [],
+      message: "",
+      sessionData: [],
+      audiostate: true,
+      screenstate: true,
+      videostate: true,
+      videoallowed: true,
+      audioallowed: true,
+      host: {},
+      isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
+      connectionUser: [],
+      connections: [],
+      connectionId: "",
+      leaved: false,
+      mode: "", // 손꾸락모드: finger, 얼구리모드: face FIXME: frontend branch의 CreateStudyRoom 의 mode 이름 바꾸기
+      isDivided: false,
     });
   }
 
