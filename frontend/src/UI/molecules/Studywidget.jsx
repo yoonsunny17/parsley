@@ -1,6 +1,6 @@
 import Button from "../atoms/Button";
 
-function Studywidget() {
+function StudyWidget() {
     return (
         <div className="flex flex-col justify-between w-100 h-72 min-h-fit rounded-3xl p-6 shadow">
             <div className="">
@@ -23,4 +23,4 @@ function Studywidget() {
     );
 }
 
-export default Studywidget;
+export default StudyWidget;

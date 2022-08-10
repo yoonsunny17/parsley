@@ -1,7 +1,7 @@
 import React from "react";
 import Collections from "../organisms/Collections";
 import Ranking from "../organisms/Ranking";
-import Studyrooms from "../organisms/StudyRooms";
+import StudyRooms from "../organisms/StudyRooms";
 import Navbar from "../organisms/Navbar";
 
 function Home() {
@@ -13,7 +13,7 @@ function Home() {
                     <Collections />
                     <Ranking />
                 </div>
-                <Studyrooms />
+                <StudyRooms />
             </div>
         </div>
     );

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import StudyRoomItem from "../molecules/StudyRoomItem";
 
-function Studyrooms() {
+function StudyRooms() {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const tabClickHandler = (index) => {
@@ -41,7 +41,7 @@ function Studyrooms() {
                 {tabContArr[activeIndex].studyRoomList.length > 0 &&
                     tabContArr[activeIndex].studyRoomList.map((info, idx) => {
                         return (
-                            <Link to="/room">
+                            <Link to="/room" key={`room-${idx}`}>
                                 <StudyRoomItem info={info} key={idx} />
                             </Link>
                         );
@@ -147,4 +147,4 @@ const tabContArr = [
     { title: "관심 공부방", studyRoomList: [] },
 ];
 
-export default Studyrooms;
+export default StudyRooms;
