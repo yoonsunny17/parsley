@@ -85,7 +85,7 @@ public class RoomController {
             @ApiResponse(code = 500, message = "방 생성 실패")
     })
     public ResponseEntity<? extends RoomPostRes> createPost(
-            @RequestPart @ApiParam(value = "방 생성 정보", required = true) @Valid RoomCreatePostReq roomInfo,
+            @RequestPart(value = "roomInfo") @ApiParam(value = "방 생성 정보", required = true) @Valid RoomCreatePostReq roomInfo,
             @RequestPart(value = "imgUrl") @ApiParam(value = "방 이미지", required = true) @Valid MultipartFile multipartFile) {
 
         Long userId = 1L;
@@ -127,7 +127,7 @@ public class RoomController {
     })
     public ResponseEntity<? extends RoomPostRes> update(
             @PathVariable("room_id") Long roomId,
-            @RequestPart @ApiParam(value = "방 수정 정보", required = true) @Valid RoomUpdatePostReq roomInfo,
+            @RequestPart(value = "roomInfo") @ApiParam(value = "방 수정 정보", required = true) @Valid RoomUpdatePostReq roomInfo,
             @RequestPart(value = "imgUrl") @ApiParam(value = "방 이미지", required = true) @Valid MultipartFile multipartFile) {
         Room room = roomService.updateRoom(roomId, roomInfo, multipartFile);
         if (room == null) {
