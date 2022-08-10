@@ -1,6 +1,8 @@
 import React from "react";
 
-function CollectionItem({ info: { name, imageUrl, isOpened } }) {
+function CollectionItem({
+  info: { name, imageUrl, grade, description, isOpened },
+}) {
   return (
     <img
       src={imageUrl}

@@ -3,6 +3,7 @@ import HerbItemAvatar from "../atoms/HerbItemAvatar";
 import CollectionItem from "../molecules/CollectionItem";
 // import CollectionItem from "../molecules/CollectionItem";
 import FarmCollectionAvartar from "../atoms/FarmCollectionAvartar";
+import FarmCollectionAvartarInfo from "../molecules/FarmCollectionAvartarInfo";
 
 function FarmCollection() {
   const username = "유교보이";
@@ -54,7 +55,7 @@ function FarmCollection() {
         <div className="grid grid-cols-4 lg:grid-cols-5 justify-items-center gap-y-3">
           {tabHerbArr[myHerb].herbCollectionList.map((info, idx) => {
             // return <CollectionItem info={info} key={idx} />;
-            return <FarmCollectionAvartar info={info} key={idx} />;
+            return <FarmCollectionAvartarInfo info={info} key={idx} />;
           })}
         </div>
       </div>
@@ -67,29 +68,46 @@ const tabHerbArr = [
     title: "농장 페이지 허브 도감",
     herbCollectionList: [
       {
-        name: "멍멍!",
-        imgUrl: "/herbs/rosemary.png",
+        name: "파슬리",
+        imgUrl: "/herbs/parsley.png",
+        grade: "일반",
         description: "오오",
+        isOpened: true,
       },
       {
-        name: "멍멍!",
-        imgUrl: "/herbs/arugula.png",
+        name: "바질",
+        imgUrl: "/herbs/basil.png",
+        grade: "일반",
+        description: "바지리다아앙",
+        isOpened: true,
       },
       {
-        name: "멍멍!",
-        imgUrl: "/herbs/barberry.png",
+        name: "자스민",
+        imgUrl: "/herbs/jasmine.png",
+        grade: "일반",
+        description: "자스민 티 마시면 잠이 잘와요",
+        isOpened: false,
       },
       {
-        name: "멍멍!",
-        imgUrl: "/herbs/cress.png",
+        name: "캣잎",
+        imgUrl: "/herbs/spinach.png",
+        grade: "일반",
+        description: "나는 깻잎이 아니애오옹",
+        isOpened: true,
       },
       {
-        name: "멍멍!",
-        imgUrl: "/herbs/anise.png",
+        name: "오레가노",
+        imgUrl: "/herbs/oregano.png",
+        grade: "일반",
+        description: "이거 먹으면 집중력이 오레가노? 킥킥 ..",
+        isOpened: false,
       },
       {
-        name: "멍멍!",
-        imgUrl: "/herbs/clove.png",
+        name: "민트",
+        imgUrl: "/herbs/mint.png",
+        grade: "일반",
+        description: "민트가 치약맛이 아니라 치약이 민트맛인거에욧",
+        isOpened: true,
       },
     ],
   },
