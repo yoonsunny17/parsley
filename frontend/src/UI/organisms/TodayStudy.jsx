@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment"
 import 'moment/locale/ko'
 
 
-function TodayStudy() {
+
+function TodayStudy(args) {
   const ResizedComponent = () => {
     const handleResize = () => {
       console.log(
@@ -19,7 +20,7 @@ function TodayStudy() {
     }, []);
   };
 
-  const [percent, setPercent] = useState(70)
+  const [percent, setPercent] = useState(0)
 
 
   const radialProgress = document.querySelector("#radialProgress")
@@ -35,6 +36,23 @@ function TodayStudy() {
     e.preventDefault();
     console.log('The button was clicked')
   }
+
+  const [hour, setHour] = useState('')
+  const [min, SetMin] = useState('')
+  const [sec,setSec] = useState('')
+
+  const changeHour = (e) => {
+    setHour(e.target.value)
+  }
+
+  const changeMin = (e) => {
+    SetMin(e.target.value)
+  }
+
+  const changeSec = (e) => {
+    setSec(e.target.value)
+  }
+
 
   return (
     <div className="rounded-2xl mb-4 shadow px-8 py-5 w-full md:w-[32%] md:mb-0">
@@ -56,16 +74,17 @@ function TodayStudy() {
                   <h3 className="font-basic text-[14px] font-semibold">오늘의 목표를 설정해 주세요</h3>
                 </div>
                 {/*body*/}
-                <form>
+                <form onSubmit={handleClick}>
                   {/* prevent default! */}
                   <div className="relative w-[480px] p-[20px_100px] flex gap-[30px] justify-center items-center">
-                  <input className="w-[60px] h-[60px] rounded-[15px] border-[2px] border-sub1 text-center" type="text" placeholder="0" /> <span className="font-bold">시간</span>
-                  <input className="w-[60px] h-[60px] rounded-[15px] border-[2px] border-sub1 text-center" type="text" placeholder="0" /> <span className="font-bold">분</span>
+                    <input  className="w-[60px] h-[60px] rounded-[15px] border-[2px] border-sub1 text-center" type="number" placeholder="0" value={hour} onChange={changeHour} /> <span className="font-bold">:</span>
+                    <input  className="w-[60px] h-[60px] rounded-[15px] border-[2px] border-sub1 text-center" type="number" placeholder="0" value={min} onChange={changeMin} /> <span className="font-bold">:</span>
+                    <input  className="w-[60px] h-[60px] rounded-[15px] border-[2px] border-sub1 text-center" type="number" placeholder="0" value={sec} onChange={changeSec} /> <span className="font-bold"></span>
                   </div>
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6  gap-[20px]">
                     <button onClick={onChange} className="bg-main text-font3 rounded-[50px] p-[3px_17px]">취소</button>
-                    <button type="submit" onClick={handleClick} className="bg-main text-font3 rounded-[50px] p-[3px_17px]">적용</button>
+                    <button type="submit" className="bg-main text-font3 rounded-[50px] p-[3px_17px]">적용</button>
                   </div>
                 </form>
               </div>
@@ -90,7 +109,7 @@ function TodayStudy() {
         {/* <div>
           브라우저 화면 사이즈 x: {window.innerWidth}, y:{window.innerHeight}
         </div> */}
-        <div>타이머 넣을까 말까 고민중</div>
+        <div>{hour}시간 {min}분 {sec}초</div>
       </div>
     </div>
   );

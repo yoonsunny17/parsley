@@ -58,9 +58,9 @@ function DailyStudy() {
     <div className="flex flex-col shadow-sm rounded-[10px] px-4 py-3 w-full mb-2 lg:w-2/3 lg:mb-0 border-[2px] border-sub1">
       <div className="font-semibold text-[20px]">요일별 공부량</div>
       <div className="font-normal text-[24px]"><span className="font-bold">{sortData[6].name}요일</span>에 가장 열심히 공부했네요!</div>
-      <div className="mt-[30px] text-center">
+      <div className="flex justify-center mt-[30px] text-center">
         <BarChart
-          width={900}
+          width={700}
           height={300}
           data={data}
           margin={{
@@ -75,7 +75,7 @@ function DailyStudy() {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="hour" fill="#6366F1" />
+          <Bar dataKey="hour" fill="#8EC281" />
         </BarChart>
       </div>
     

@@ -15,27 +15,29 @@ function TodayStudyTime() {
 	return (
 		<div className="rounded-2xl shadow px-8 py-5 w-full md:w-2/3 p-[28px_30px]">
 			<div className="font-basic text-[24px] font-bold mb-[40px] ">오늘의 공부량</div>
-      <div className="flex justify-center ml-[-76px] gap-[136px] text-[14px] font-bold">
-        <div>0h</div>
-        <div>6h</div>
-        <div>12h</div>
-        <div>18h</div>
-      </div>
-      <div>
-        <div className="flex items-center justify-center">
-          <div className="flex flex-col gap-[110px] mr-[20px] text-[14px] font-bold">
-            <div>10m</div>
-            <div>60m</div>
-          </div>
-          {MINUTE.map((v) => (
-            <div className="flex flex-col">
-              {v.map((v) => (
-                <div className="w-[18px] h-[18px] rounded-[4px] border-[0.5px] border-font2 bg-[#D9D9D9] relative m-[4px] overflow-hidden">
-                  <div className={`absolute left-0 top-0 bg-sub1 w-full h-full ${NOW_TIME - v >= 10 ? 'opacity-100' : NOW_TIME-v >= 5 ? 'opacity-50' : 'opacity-0'}`} />
-                </div> 
-              ))}
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex justify-center ml-[-76px] gap-[136px] text-[14px] font-bold">
+          <div>0h</div>
+          <div>6h</div>
+          <div>12h</div>
+          <div>18h</div>
+        </div>
+        <div>
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col gap-[110px] mr-[20px] text-[14px] font-bold">
+              <div>10m</div>
+              <div>60m</div>
             </div>
-          ))}
+            {MINUTE.map((v) => (
+              <div className="flex flex-col">
+                {v.map((v) => (
+                  <div className="w-[18px] h-[18px] rounded-[4px] border-[0.5px] border-font2 bg-[#D9D9D9] relative m-[4px] overflow-hidden">
+                    <div className={`absolute left-0 top-0 bg-sub1 w-full h-full ${NOW_TIME - v >= 10 ? 'opacity-100' : NOW_TIME-v >= 5 ? 'opacity-50' : 'opacity-0'}`} />
+                  </div> 
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 		</div>
