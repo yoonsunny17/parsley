@@ -47,7 +47,7 @@ public class UserRoomController {
     }
 
     @PostMapping("/room/add")
-    @ApiOperation(value = "나의 방 추가", notes = "사용자가 스터디룸에 처음 참여하면 true를 이미 참여했던 적이 있으면 false를 반환한다.")
+    @ApiOperation(value = "나의 방 추가", notes = "사용자가 스터디룸에 참여 가능하면 true를 참여 불가능 하면 false를 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "나의 방 추가 성공"),
             @ApiResponse(code = 500, message = "나의 방 추가 실패")
@@ -77,7 +77,8 @@ public class UserRoomController {
     public ResponseEntity<? extends MyRoomPostRes> deleteMyRoom(
             @RequestBody @ApiParam(value = "나의 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
-        Long userId = jwtService.getUserId();
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
 
         boolean isSuccess = userRoomService.deleteMyRoom(userId, myRoomInfo);
 

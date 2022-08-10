@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Data
 @ApiModel("RoomUpdatePostRequest")
 public class RoomUpdatePostReq {
@@ -29,4 +31,7 @@ public class RoomUpdatePostReq {
 
     @ApiModelProperty(name = "비밀번호", example = "1234")
     String password;
+
+    @ApiModelProperty(name = "해시태그", example = "코딩테스트")
+    List<String> hashtags;
 }

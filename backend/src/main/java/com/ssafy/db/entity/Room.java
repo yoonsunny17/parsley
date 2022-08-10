@@ -29,10 +29,14 @@ public class Room {
     private User hostUser;
 
     @JsonManagedReference
-    @ManyToMany(mappedBy = "joinRooms", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "joinRooms", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @ManyToMany(mappedBy = "interestRooms", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<User> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     private List<RoomHashtag> roomHashtags = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -44,4 +48,5 @@ public class Room {
     private int maxPopulation;
     private boolean isPublic;
     private String password;
+
 }

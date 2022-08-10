@@ -35,4 +35,8 @@ public class RoomRepository {
     public void delete(Room room) {
         em.remove(room);
     }
+
+    public List<Room> findRoomsByWord(String search){
+        return em.createQuery("select r from Room r where r.name like :search", Room.class).setParameter("search", "%" + search + "%").getResultList();
+    }
 }

@@ -15,7 +15,7 @@ public class Hashtag {
     private Long id;
 
     private String tag;
-    private long userCount;
+    private long useCount;
 
     public Hashtag() {
     }
