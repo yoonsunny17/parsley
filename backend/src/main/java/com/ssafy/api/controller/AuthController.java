@@ -54,7 +54,7 @@ public class AuthController {
             @ApiResponse(code = 200, message = "로그인 성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
+    public ResponseEntity<? extends AuthRes> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         System.out.println(code);
         // 인가 코드로 받은 토큰을 이용해 user의 정보 중 email을 반환
         String kakaoEmail = kakaoService.getKakaoEmail(code);
@@ -82,7 +82,7 @@ public class AuthController {
         // + cache server에 token들을 저장하는 코드
         redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
 
-        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", accessToken, true));
     }
 
     @GetMapping("/logout")
@@ -91,7 +91,7 @@ public class AuthController {
             @ApiResponse(code = 200, message = "로그아웃 성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<? extends AuthRes> logout(HttpServletRequest request, HttpServletResponse response) {
 
         String accessToken = null;
         String bearer = request.getHeader("Authorization");
@@ -123,7 +123,7 @@ public class AuthController {
         refreshCookie.setPath("/");
         response.addCookie(refreshCookie);
 
-        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", null, true));
     }
 
     @GetMapping("/refresh")
@@ -159,13 +159,13 @@ public class AuthController {
                 // cache server에 token 다시 저장
                 redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
 
-                return ResponseEntity.status(200).body(AuthRes.of(200, "Success", true));
+                return ResponseEntity.status(200).body(AuthRes.of(200, "Success", accessToken, true));
             }
         } catch (JwtException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return ResponseEntity.status(202).body(AuthRes.of(202, "Accepted", false));
+        return ResponseEntity.status(202).body(AuthRes.of(202, "Accepted", null, false));
     }
 }
