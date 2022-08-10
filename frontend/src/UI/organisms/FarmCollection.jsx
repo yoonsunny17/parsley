@@ -49,10 +49,10 @@ function FarmCollection() {
       </div>
       {/* // TODO: 농장페이지 도감 컴포넌트 */}
       <div className="text-sm font-semibold my-8">
-        파슬리 [ {isOpened} / 32 ]
+        파슬리 [[isOpened] / 32 ]
       </div>
       <div className="">
-        <div className="grid grid-cols-4 lg:grid-cols-5 justify-items-center gap-y-3">
+        <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
           {tabHerbArr[myHerb].herbCollectionList.map((info, idx) => {
             // return <CollectionItem info={info} key={idx} />;
             return <FarmCollectionAvartarInfo info={info} key={idx} />;

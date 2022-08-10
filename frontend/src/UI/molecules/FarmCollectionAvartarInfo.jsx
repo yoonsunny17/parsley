@@ -27,8 +27,8 @@ function FarmCollectionAvartarInfo({
         />
       ) : (
         <img
-          className="cursor-pointer inline-block mt-3 mb-3 mr-3 h-12 w-12 rounded-full ring-2 ring-sub1"
-          src={imgUrl}
+          className="cursor-pointer inline-block mt-3 mb-3 mr-3 h-12 w-12 rounded-full ring-2 ring-font2"
+          src="/herbs/isNotOpened.png"
           alt="avatar"
           onClick={() => {
             Swal.fire({
@@ -36,7 +36,7 @@ function FarmCollectionAvartarInfo({
               icon: "error",
               title: "Oops...",
               text: "아직 획득하지 못했어요!",
-              imageAlt: "공부해서 허브 도감을 채워보세요:)",
+              footer: "슬리를 획득하여 허브 도감을 채워보세요:)",
             });
           }}
         />
