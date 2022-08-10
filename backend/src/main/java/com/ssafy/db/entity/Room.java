@@ -36,7 +36,7 @@ public class Room {
     @ManyToMany(mappedBy = "interestRooms", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     private List<RoomHashtag> roomHashtags = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

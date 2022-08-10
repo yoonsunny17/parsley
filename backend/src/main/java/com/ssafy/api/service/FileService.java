@@ -44,6 +44,7 @@ public class FileService {
         return UUID.randomUUID().toString().concat("_" + fileName);
     }
 
+    @Transactional
     public void deleteFile(String fileName){
         amazonS3Client.deleteObject(bucketName, fileName);
     }

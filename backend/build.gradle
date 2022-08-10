@@ -158,6 +158,9 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 }
 
 test {

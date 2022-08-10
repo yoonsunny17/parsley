@@ -7,6 +7,7 @@ import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.HashtagRepository;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.UserRepository;
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,14 +99,23 @@ public class RoomService {
     }
 
     @Transactional
-    public Room updateRoom(Long roomId, RoomUpdatePostReq newRoomInfo) {
+    public Room updateRoom(Long roomId, RoomUpdatePostReq newRoomInfo, MultipartFile multipartFile) {
         Room room = roomRepository.findByRoomId(roomId);
 
         if(room != null) {
             room.setName(newRoomInfo.getName());
             room.setMode(newRoomInfo.getMode() == 0 ? Mode.FINGER : Mode.FACE);
             room.setDescription(newRoomInfo.getDescription());
-            room.setImageUrl(newRoomInfo.getImageUrl());
+
+
+            String oldImgUrl = room.getImageUrl();
+            String fileName = oldImgUrl.substring(oldImgUrl.lastIndexOf("/") + 1);
+            fileService.deleteFile(fileName);
+
+
+            String newImgUrl = fileService.uploadFile(multipartFile);
+            room.setImageUrl(newImgUrl);
+
             room.setMaxPopulation(newRoomInfo.getMaxPopulation());
             room.setPublic(newRoomInfo.isPublic());
             room.setPassword(newRoomInfo.getPassword());
