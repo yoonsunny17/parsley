@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class RoomCreatePostReq {
     @ApiModelProperty(name = "방 이름", example = "coding_with_me")
     String name;
 
-    @ApiModelProperty(name = "방 커버 이미지 URL", example = "https://images.unsplash.com/photo-1622653533660-a1538fe8424c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80")
-    String imageUrl;
+//    @ApiModelProperty(name = "방 커버 이미지 URL", example = "https://images.unsplash.com/photo-1622653533660-a1538fe8424c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80")
+//    MultipartFile imageUrl;
 
     @ApiModelProperty(name = "방 모드", example = "1")
     int mode; // 0: Finger, 1: Face
@@ -35,4 +36,5 @@ public class RoomCreatePostReq {
 
     @ApiModelProperty(name = "해시태그", example = "코딩테스트")
     List<String> hashtags;
+
 }

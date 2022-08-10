@@ -10,6 +10,7 @@ import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,13 +26,18 @@ public class RoomService {
     UserRepository userRepository;
     @Autowired
     HashtagRepository hashtagRepository;
+    @Autowired
+    FileService fileService;
 
     @Transactional
-    public Room createRoom(Long userId, RoomCreatePostReq roomInfo) {
+    public Room createRoom(Long userId, RoomCreatePostReq roomInfo, MultipartFile multipartFile) {
         Room room = new Room();
         room.setName(roomInfo.getName());
         room.setMode(roomInfo.getMode() == 0 ? Mode.FINGER : Mode.FACE);
-        room.setImageUrl(roomInfo.getImageUrl());
+
+        String imgUrl = fileService.uploadFile(multipartFile);
+        room.setImageUrl(imgUrl);
+
         room.setDescription(roomInfo.getDescription());
         room.setMaxPopulation(roomInfo.getMaxPopulation());
         room.setPublic(roomInfo.isPublic());

@@ -13,6 +13,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -84,10 +85,13 @@ public class RoomController {
             @ApiResponse(code = 500, message = "방 생성 실패")
     })
     public ResponseEntity<? extends RoomPostRes> createPost(
-            @RequestBody @ApiParam(value = "방 생성 정보", required = true) @Valid RoomCreatePostReq roomInfo) {
+            @RequestPart(value = "roomCreatePostReq") @ApiParam(value = "방 생성 정보", required = true) @Valid RoomCreatePostReq roomInfo,
+            @RequestPart(value = "imgUrl") @ApiParam(value = "방 이미지", required = true) @Valid MultipartFile multipartFile) {
+
         Long userId = 1L;
 //        Long userId = jwtService.getUserId();
-        Room room = roomService.createRoom(userId, roomInfo);
+        Room room = roomService.createRoom(userId, roomInfo, multipartFile);
+
 
         if (room == null) {
             return ResponseEntity.status(500).body(
@@ -123,7 +127,8 @@ public class RoomController {
     })
     public ResponseEntity<? extends RoomPostRes> update(
             @PathVariable("room_id") Long roomId,
-            @RequestBody @ApiParam(value = "방 수정 정보", required = true) @Valid RoomUpdatePostReq roomInfo) {
+            @RequestBody @ApiParam(value = "방 수정 정보", required = true) @Valid RoomUpdatePostReq roomInfo,
+            @RequestPart(value = "imgUrl") @ApiParam(value = "방 이미지", required = true) @Valid MultipartFile multipartFile) {
         Room room = roomService.updateRoom(roomId, roomInfo);
         if (room == null) {
             return ResponseEntity.status(500).body(
