@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
-    private static final String HEADER_AUTH = "auth-token";
+    private static final String HEADER_AUTH = "Authorization";
 
     @Autowired
     private JwtService jwtService;
@@ -40,38 +40,45 @@ public class JwtInterceptor implements HandlerInterceptor {
         String accessToken = null;
         String refreshToken = null;
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("refreshToken".equals(cookie.getName())) {
-                    refreshToken = cookie.getValue();
-                } else if ("accessToken".equals(cookie.getName())) {
-                    accessToken = cookie.getValue();
-                }
+
+        if(cookies == null) {
+            return true;
+        }
+
+        for (Cookie cookie : cookies) {
+            if ("refreshToken".equals(cookie.getName())) {
+                refreshToken = cookie.getValue();
+            } else if ("accessToken".equals(cookie.getName())) {
+                accessToken = cookie.getValue();
             }
         }
 
         // cache에서 토큰들을 가져옴
         String cacheAccessToken = null;
         String cacheRefreshToken = null;
-//        try {
-//            String kakaoEmail = authService.getEmailbyUserId(jwtService.getUserId());
-//            String tokens = redisService.getTokens(kakaoEmail);
-//            String[] tokensArray = tokens.split("\\s");
-//            cacheAccessToken = tokensArray[0];
-//            cacheRefreshToken = tokensArray[1];
-//        } catch (Exception e) {
-//            response.sendError(445, "로그인해주세요. (0)");
-//            return false;
-//        }
 
-        // cookie의 accessToken이 유효한지 확인
         if (bearer != null && !"".equals(bearer)) {
+            // header의 accessToken이 유효한지 확 인
             final String token = request.getHeader(HEADER_AUTH).split(" ")[1];
             try {
                 if (token != null && !"".equals(bearer) && jwtService.isUsable(token)) {
                     return true;
                 }
             } catch (ExpiredJwtException e) {
+                // accessToken이 만료된 경우, cache에서 갖고 오기
+                try {
+                    String kakaoEmail = authService.getEmailbyUserId(
+                            Long.parseLong((String)jwtService.getUserInfo(refreshToken).get("id"))
+                    );
+                    String tokens = redisService.getTokens(kakaoEmail);
+                    String[] tokensArray = tokens.split("\\s");
+                    cacheAccessToken = tokensArray[0];
+                    cacheRefreshToken = tokensArray[1];
+                } catch (Exception ex) {
+                    response.sendError(445, "로그인해주세요. (0)");
+                    return false;
+                }
+
                 try {
                     // cacheAccessToken이 비었을 경우
                     if (cacheAccessToken == null) {

@@ -22,19 +22,22 @@ public class JwtService {
                 .setHeaderParam("typ", "JWT")
                 .setIssuedAt(now)
                 .setSubject(subject)
-                .setExpiration(new Date(System.currentTimeMillis() + 60))
+                .setExpiration(new Date(System.currentTimeMillis() + 5000))
                 .claim(key, data)
-                .signWith(SignatureAlgorithm.HS256, this.generateKey())
+                .signWith(SignatureAlgorithm.HS512, this.generateKey())
                 .compact();
         return jwt;
     }
 
-    public String createRefreshToken() {
+    public <T> String createRefreshToken(String key, T data, String subject) {
         Date now = new Date();
         String jwt = Jwts.builder()
+                .setHeaderParam("typ", "JWT")
                 .setIssuedAt(now)
+                .setSubject(subject)
                 .setExpiration(new Date(System.currentTimeMillis() + 86400 * 7))
-                .signWith(SignatureAlgorithm.HS256, this.generateKey())
+                .claim(key, data)
+                .signWith(SignatureAlgorithm.HS512, this.generateKey())
                 .compact();
         return jwt;
     }

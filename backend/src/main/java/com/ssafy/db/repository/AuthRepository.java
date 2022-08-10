@@ -20,13 +20,15 @@ public class AuthRepository {
         em.persist(auth);
     }
 
-    public List<Auth> findByEmail(String email){
+    public List<Auth> findByEmail(String email) {
         return em.createQuery("select a from Auth a where a.email = :email", Auth.class)
                 .setParameter("email", email)
                 .getResultList();
     }
 
-    public Auth findByUser(User user) {
-        return em.find(Auth.class, user);
+    public List<Auth> findByUser(User user) {
+        return em.createQuery("select a from Auth a where a.user = :user", Auth.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 }

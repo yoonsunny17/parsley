@@ -55,7 +55,7 @@ public class AuthController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends AuthRes> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
-        System.out.println(code);
+//        System.out.println(code);
         // 인가 코드로 받은 토큰을 이용해 user의 정보 중 email을 반환
         String kakaoEmail = kakaoService.getKakaoEmail(code);
 
@@ -64,20 +64,19 @@ public class AuthController {
             User user = userService.createUser();
             authService.createAuth(user, kakaoEmail);
         }
-        String refreshToken = jwtService.createRefreshToken();
-        Cookie refreshCookie = cookieUtil.addRefreshCookie(refreshToken);
-        response.addCookie(refreshCookie);
+
 
         User user = authService.getUserByEmail(kakaoEmail);
         Map<String, String> userInfo = new HashMap<>();
         userInfo.put("id", user.getId() + "");
-//        userInfo.put("description", user.getDescription());
-//        userInfo.put("profileImg", user.getProfileImgUrl());
-        // + userInfo에 들어갈 정보 고민해보기
 
         String accessToken = jwtService.createAccessToken("user", userInfo, "user");
         Cookie accessCookie = cookieUtil.addAccessCookie(accessToken);
         response.addCookie(accessCookie);
+
+        String refreshToken = jwtService.createRefreshToken("user", userInfo, "user");
+        Cookie refreshCookie = cookieUtil.addRefreshCookie(refreshToken);
+        response.addCookie(refreshCookie);
 
         // + cache server에 token들을 저장하는 코드
         redisService.saveTokens(kakaoEmail, refreshToken, accessToken);

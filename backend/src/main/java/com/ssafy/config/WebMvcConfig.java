@@ -21,11 +21,9 @@ import javax.servlet.Filter;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private static final String[] EXCLUDE_PATHS = {
-            "/user/login",
-            "/user/logout",
-            "/user/refresh",
+            "/auth/login",
+            "/auth/refresh",
             "/error",
-            "/**",
     };
 
     @Autowired
