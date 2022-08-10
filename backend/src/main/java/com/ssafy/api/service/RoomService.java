@@ -157,7 +157,7 @@ public class RoomService {
     }
 
     @Transactional
-    public boolean deleteRoom(Long userId, Long roomId) {
+    public boolean deleteRoom(Long userId, Long roomId, RoomPasswordPostReq passwordInfo) {
 
         User user = userRepository.findByUserId(userId);
         Room room = roomRepository.findByRoomId(roomId);
@@ -166,18 +166,30 @@ public class RoomService {
 
             User hostUser = room.getHostUser();
 
-            //유저랑 호스트 유저 일치하는지 한 번 더 확인
+            //유저랑 호스트 유저 일치하는지
             if(!user.equals(hostUser)){
                 return false;
             }
 
+            //비밀번호 일치여부 확인
+            if(!room.isPublic() && !room.getPassword().equals(passwordInfo.getPassword())){
+                return false;
+            }
+
+            //멤버 삭제
             for(User member : room.getMembers()){
                 member.getJoinRooms().remove(room);
             }
 
+            //좋아요 멤버 삭제
             for(User member : room.getLikes()){
                 member.getInterestRooms().remove(room);
             }
+
+            //s3의 사진 삭제
+            String imgUrl = room.getImageUrl();
+            String fileName = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
+            fileService.deleteFile(fileName);
 
             roomRepository.delete(room);
         }

@@ -147,11 +147,12 @@ public class RoomController {
             @ApiResponse(code = 201, message = "방 삭제 성공"),
             @ApiResponse(code = 500, message = "방 삭제 실패")
     })
-    public ResponseEntity<? extends RoomPostRes> delete(@PathVariable("room_id") @Valid Long roomId) {
+    public ResponseEntity<? extends RoomPostRes> delete(@PathVariable("room_id") @Valid Long roomId,
+                                                        @RequestBody @ApiParam(value = "비밀번호", required = true) @Valid RoomPasswordPostReq passwordInfo) {
 
 //        Long userId = jwtService.getUserId();
         Long userId = 1L;
-        boolean isSuccess = roomService.deleteRoom(userId, roomId);
+        boolean isSuccess = roomService.deleteRoom(userId, roomId, passwordInfo);
         if (!isSuccess) {
             return ResponseEntity.status(500).body(
                     RoomPostRes.of(500, "Unable to delete room", false)
