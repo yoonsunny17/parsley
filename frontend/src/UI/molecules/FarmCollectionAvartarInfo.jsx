@@ -15,10 +15,10 @@ function FarmCollectionAvartarInfo({
           alt="avatar"
           onClick={() => {
             Swal.fire({
-              width: 300,
+              width: 350,
               title: [name, grade],
               text: [description],
-              imageUrl: [imgUrl],
+              imageUrl: [imgUrl], // 시간 되면 여기 사진 다른걸로 바꾸기
               imageWidth: 50,
               imageHeight: 50,
               imageAlt: "Herb Collection Image",
@@ -32,6 +32,7 @@ function FarmCollectionAvartarInfo({
           alt="avatar"
           onClick={() => {
             Swal.fire({
+              width: 350,
               icon: "error",
               title: "Oops...",
               text: "아직 획득하지 못했어요!",
