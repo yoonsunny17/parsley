@@ -1,12 +1,11 @@
 import React, { Suspense, useRef } from "react";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-// import { DirectionalLightHelper } from "three";
 
 function HerbComponent1(props) {
   const { nodes, materials } = useGLTF("nature_forest/scene.gltf");
   return (
-    <div className="h-[200px] w-[200px]">
+    <div className="h-[200px] w-[180px]">
       <Canvas>
         <Suspense fallback={null}>
           <ambientLight color={0xfff8dd} intensity={0.6} />
@@ -45,7 +44,7 @@ function HerbComponent1(props) {
               <group rotation={[Math.PI / 2, 0, 0]}>
                 {/* // TODO : 여기부터 넣으면 됨 */}
                 <group
-                  position={[0, -2, -4.5]}
+                  position={[0, -1.5, -4.5]}
                   rotation={[-Math.PI / 3, 0, 3.5]}
                   scale={1}
                 >

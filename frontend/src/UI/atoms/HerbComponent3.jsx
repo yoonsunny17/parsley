@@ -5,7 +5,7 @@ import { Canvas } from "@react-three/fiber";
 function HerbComponent3(props) {
   const { nodes, materials } = useGLTF("nature_forest/scene.gltf");
   return (
-    <div className="h-[200px] w-[200px]">
+    <div className="h-[200px] w-[180px]">
       <Canvas>
         <Suspense fallback={null}>
           <ambientLight color={0xfff8dd} intensity={0.6} />
