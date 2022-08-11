@@ -11,7 +11,7 @@ function FarmCollection() {
   const grade = "희귀";
   const description =
     "근육으로 똘똘 뭉친 파슬리이다... 먹으면 막강해질지도... ?";
-  const isOpened = "6";
+  const isOpened = "16";
 
   const [myHerb, setMyHerb] = useState(0);
   const tabHerbHandler = (idx) => {
@@ -31,7 +31,7 @@ function FarmCollection() {
 
   return (
     // <div className="px-[30px] py-[35px] w-[30%] bg-white rounded-[30px] drop-shadow-[4px_4px_20px_rgba(0,0,0,0.1)]"></div>
-    <div className="w-full md:w-[32%] rounded-2xl bg-white drop-shadow px-8 py-5">
+    <div className="w-full md:w-[32%] rounded-2xl bg-white drop-shadow px-4 py-5 lg:px-8 lg:py-5">
       <div className="font-basic text-lg font-bold mb-2">
         {username}님의 도감
       </div>
@@ -49,10 +49,10 @@ function FarmCollection() {
       </div>
       {/* // TODO: 농장페이지 도감 컴포넌트 */}
       <div className="text-sm font-semibold my-8">
-        파슬리 [[isOpened] / 32 ]
+        파슬리 [ {isOpened} / 32 ]
       </div>
       <div className="">
-        <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
+        <div className="grid grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
           {tabHerbArr[myHerb].herbCollectionList.map((info, idx) => {
             // return <CollectionItem info={info} key={idx} />;
             return <FarmCollectionAvartarInfo info={info} key={idx} />;

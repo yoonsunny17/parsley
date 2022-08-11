@@ -1,3 +1,4 @@
+// 농장 상점 모달에서 아이템 선택 시 우측에 선택한 구매 목록 리스트
 import HerbItemAvatar from "../atoms/HerbItemAvatar";
 
 // TODO: 클릭하면 강조되어야 하고, 구매 내역에 작성되어야 함
@@ -11,10 +12,10 @@ function SelectItemList() {
   // return <div className="shadow w-auto h-auto">구매 목록</div>;
   return (
     <div className="shadow rounded-xl lg:w-[300px] h-auto my-3 ml-10 py-3">
-      <p className="text-base font-semibold text-center">구매 목록</p>
-      <div className="mt-4 flex flex-col ">
+      <p className="text-lg mt-4 font-semibold text-center">구매 목록</p>
+      <div className="mt-6 flex flex-col ">
         {/* 씨앗 선택 내역 */}
-        <div className="flex items-center justify-around">
+        <div className="flex mb-3 items-center justify-around">
           <div className="flex flex-row items-center">
             <HerbItemAvatar
               imgUrl={
@@ -28,7 +29,7 @@ function SelectItemList() {
         </div>
 
         {/* 비료 선택 내역 */}
-        <div className="flex items-center justify-around">
+        <div className="flex mb-3 items-center justify-around">
           <div className="flex flex-row items-center">
             <HerbItemAvatar
               imgUrl={

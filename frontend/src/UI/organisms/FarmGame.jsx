@@ -32,20 +32,20 @@ function FarmGame() {
         {/* xPosition = 1, yPosition = 1 */}
         <div>
           <span className="badge my-4 ">(1, 1)</span>
-          <div className="shadow rounded-xl w-full h-[250px] mb-2">
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
             {isEmpty ? <HerbItemsStoreModal /> : null}
             {/* <HerbItemsStoreModal /> */}
           </div>
         </div>
         <div>
           <span className="badge my-4 ">(1, 2)</span>
-          <div className="shadow rounded-xl w-full h-[250px] mb-2">
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
             <BabyHerb />
           </div>
         </div>
         <div>
           <span className="badge my-4 ">(1, 3)</span>
-          <div className="shadow rounded-xl w-full h-[250px] mb-2">
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
             {/* <EmptyHerb /> */}
             {/* <SelectHerbItems /> */}
             <FlowerPot />
@@ -54,26 +54,26 @@ function FarmGame() {
         <div>
           <span className="badge my-4">(1, 4)</span>
 
-          <div className="shadow rounded-xl w-full h-[250px] mb-2"></div>
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center"></div>
         </div>
         <div>
           <span className="badge my-4">(2, 1)</span>
 
-          <div className="shadow rounded-xl w-full h-[250px] mb-2"></div>
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center"></div>
         </div>
         <div>
           <span className="badge my-4">(2, 2)</span>
 
-          <div className="shadow rounded-xl w-full h-[250px] mb-2"></div>
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center"></div>
         </div>
         <div>
           <span className="badge my-4">(2, 3)</span>
 
-          <div className="shadow rounded-xl w-full h-[250px] mb-2"></div>
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center"></div>
         </div>
         <div>
           <span className="badge my-4">(2, 4)</span>
-          <div className="shadow rounded-xl w-full h-[250px] mb-2"></div>
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center"></div>
         </div>
       </div>
     </div>
