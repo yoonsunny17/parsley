@@ -77,10 +77,29 @@ public class FarmService {
         userHerbBookRepository.save(userHerbBook);
 
         //비료에 따른 슬리 추가(씨앗 금액 기준으로)
-        long sley = item.getItemSeed().getSley();
-
+        long sley = 0;
+        switch (herbBook.getHerbType()){
+            case COMMON:
+                sley = 100;
+                break;
+            case RARE:
+                sley = 300;
+                break;
+            case EPIC:
+                sley = 500;
+                break;
+            case LEGENDARY:
+                sley = 700;
+                break;
+            case MYSTERY:
+                sley = 1000;
+                break;
+        }
         //추가 슬리
-        sley = (long)(sley * (item.getItemFertilizer().getSleyRate() *1.0)/100);
+        int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime()*60, user.getDailyStudyLogs());
+        double maxAdd = (1+leftTime*1.0/herb.getGrowthTime() >= 2.0 ? 2.0 : 1+(leftTime*1.0)/herb.getGrowthTime());
+
+        sley = (long)(sley * (item.getItemFertilizer().getSleyRate() *1.0)/100 * maxAdd);
         StringBuilder content = new StringBuilder();
         content.append("작물 수확(").append(herbBook.getName()).append(")");
         addNotificationLog((int)sley, content.toString(), user, NotificationType.SLEY);
@@ -95,8 +114,6 @@ public class FarmService {
         res.setAddPoint(point);
         point += user.getCurrentBookPoint();
         user.setCurrentBookPoint(point);
-
-        //TODO: 남은 시간이 +일때 +시간만큼 추가 슬리 지급
 
         return res;
     }
@@ -123,7 +140,6 @@ public class FarmService {
             res.setItemWaterId(item.getItemWater().getId());
             res.setItemFertilizerId(item.getItemFertilizer().getId());
 
-            //TODO: 남은 시간 계산!!(일단은 초단위)
             int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime()*60, user.getDailyStudyLogs());
             res.setLeftTime(leftTime);
 
@@ -175,7 +191,6 @@ public class FarmService {
     }
 
     private long studyTime(LocalDateTime herbDate, long growthTime, List<DailyStudyLog> studyLogs){
-
         int size = studyLogs.size();
         long time = 0;
         Duration duration = null;
@@ -186,11 +201,6 @@ public class FarmService {
 
             duration = Duration.between(tLog, fLog);
             time += duration.getSeconds();
-        }
-
-        //growthtime보다 study타임이 2배가 되는 경우
-        if(growthTime * 2 == time){
-            return growthTime;
         }
 
         return time - growthTime;
