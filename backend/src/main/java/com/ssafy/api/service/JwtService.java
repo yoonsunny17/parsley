@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -14,7 +15,9 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    private static final String SALT = "parsley";
+//    private static final String SALT = "parsley";
+    @Value("${SALT}")
+    private String SALT;
 
     public <T> String createAccessToken(String key, T data, String subject) {
         Date now = new Date();
