@@ -13,25 +13,33 @@ function Ranking() {
       <ul className="list-none">
         <li className="flex items-center justify-around mb-8">
           <i className='bx bx-medal text-[#D5A11E] text-[48px]'></i>
-          <div className="w-[50px] h-[50px] rounded-[50%] bg-main"></div>
+          <div className="flex justify-center items-center w-[50px] h-[50px] rounded-[50%] bg-main">
+            <div className="w-[40px] h-[40px] rounded-[50%] bg-white"></div>
+          </div>
           <span>슬리파슬리</span>
           <span>{point}점</span>
         </li>
         <li className="flex items-center justify-around mb-8">
           <i className='bx bx-medal text-[#A3A3A3] text-[48px]'></i>
-          <div className="w-[50px] h-[50px] rounded-[50%] bg-main"></div>
+          <div className="flex justify-center items-center w-[50px] h-[50px] rounded-[50%] bg-main">
+            <div className="w-[40px] h-[40px] rounded-[50%] bg-white"></div>
+          </div>
           <span>슬리파슬리</span>
           <span>{point}점</span>
         </li>
         <li className="flex items-center justify-around mb-8">
           <i className='bx bx-medal text-[#CD7F32] text-[48px]'></i>
-          <div className="w-[50px] h-[50px] rounded-[50%] bg-main"></div>
+          <div className="flex justify-center items-center w-[50px] h-[50px] rounded-[50%] bg-main">
+            <div className="w-[40px] h-[40px] rounded-[50%] bg-white"></div>
+          </div>
           <span>슬리파슬리</span>
           <span>{point}점</span>
         </li>
         <li className="flex items-center justify-around mb-8 ">
           {rank}등
-          <div className="ml-[15px] w-[50px] h-[50px] rounded-[50%] bg-main"></div>
+          <div className="flex justify-center items-center ml-[15px] w-[50px] h-[50px] rounded-[50%] bg-main">
+            <div className="w-[40px] h-[40px] rounded-[50%] bg-white"></div>
+          </div>
           <span>슬리파슬리</span>
           <span>{point}점</span>
         </li>
