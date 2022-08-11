@@ -1,9 +1,7 @@
 package com.ssafy.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,17 +52,17 @@ public class User implements Serializable {
     private List<Room> interestRooms = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<UserHerbBook> userHerbBooks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Sley> sleyHistory = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    private List<Notification> notificationHistory = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<Herb> herbs = new ArrayList<>();
     
     public void addUserRoom(Room room) {
