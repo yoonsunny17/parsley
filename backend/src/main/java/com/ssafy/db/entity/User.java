@@ -51,17 +51,17 @@ public class User {
     private List<Room> interestRooms = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<UserHerbBook> userHerbBooks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<Notification> notificationHistory = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<Herb> herbs = new ArrayList<>();
     
     public void addUserRoom(Room room) {
