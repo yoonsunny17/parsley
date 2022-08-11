@@ -1,31 +1,70 @@
 import React, { useState } from "react";
 import HerbStoreItemCard from "../atoms/HerbStoreItemCard";
 import SelectItemList from "./SelectItemList";
+import HerbItemAvatar from "../atoms/HerbItemAvatar";
 
 // TODO: 아이템 선택(카드 컴포넌트) 했을 때 선택한 것 보이도록 스타일링 해줘야함 (border styling)
 // FIXME: 아래 심으러 가기 (닫기 버튼) 없애고 위에 X 로 버튼 대체하기, 모달 전체적인 크기 줄이기
 
-function HerbItemsStoreModal() {
+function HerbItemsStoreModal(props) {
   // seed radio select btn
   const [seed, setSeed] = useState("");
+  const [seedSley, setSeedSley] = useState(0);
   const selectSeedItem = (e) => {
+    console.log(e.target.id);
     console.log(e.target.value);
-    setSeed(e.target.value);
+    setSeed(e.target.id);
+    setSeedSley(e.target.value);
   };
 
   // fertilizer radio select btn
   const [fertilizer, setFertilizer] = useState("");
+  const [fertilizerSley, setFertilizerSley] = useState(0);
   const selectFertilizerItem = (e) => {
+    console.log(e.target.id);
     console.log(e.target.value);
-    setFertilizer(e.target.value);
+    setFertilizer(e.target.id);
+    setFertilizerSley(e.target.value);
   };
 
   // water radio select btn
   const [water, setWater] = useState("");
+  const [waterSley, setWaterSley] = useState(0);
   const selectWaterItem = (e) => {
+    console.log(e.target.id);
     console.log(e.target.value);
-    setWater(e.target.value);
+    setWater(e.target.id);
+    setWaterSley(e.target.value);
   };
+
+  // 선택된 아이템
+  const selectedItemsArr = [];
+  selectedItemsArr.push(seed, fertilizer, water);
+  console.log(selectedItemsArr);
+
+  // 선택된 아이템 가격
+  const selectedItemsSleyArr = [];
+  selectedItemsSleyArr.push(seedSley, fertilizerSley, waterSley);
+
+  // convert string to int
+  var seedPrice = parseInt(seedSley);
+  var fertilizerPrice = parseInt(fertilizerSley);
+  var waterPrice = parseInt(waterSley);
+  const selectedItemsPriceArr = [];
+  selectedItemsPriceArr.push(seedPrice, fertilizerPrice, waterPrice);
+  console.log(selectedItemsPriceArr);
+
+  const totalSley = selectedItemsPriceArr.reduce((stack, el) => {
+    return stack + el;
+  }, 0);
+
+  console.log(totalSley);
+
+  // resetBtn
+  const handleReset = () => {};
+
+  // 자식컴포넌트에서 부모컴포넌트로 data보내기
+  // const sendHerbItemsData = () => {};
 
   return (
     <div>
@@ -64,9 +103,10 @@ function HerbItemsStoreModal() {
                   {seedOptions.map((option) => (
                     <label key={option.name}>
                       <input
+                        id={option.name}
                         className="hidden"
                         type="radio"
-                        value={option.name}
+                        value={option.price}
                         checked={seed === `${option.name}`}
                         onChange={selectSeedItem}
                       />
@@ -87,9 +127,10 @@ function HerbItemsStoreModal() {
                   {fertilizerOptions.map((option) => (
                     <label key={option.name}>
                       <input
+                        id={option.name}
                         className="hidden"
                         type="radio"
-                        value={option.name}
+                        value={option.price}
                         checked={fertilizer === `${option.name}`}
                         onChange={selectFertilizerItem}
                       />
@@ -109,9 +150,10 @@ function HerbItemsStoreModal() {
                   {waterOptions.map((option) => (
                     <label key={option.name}>
                       <input
+                        id={option.name}
                         className="hidden"
                         type="radio"
-                        value={option.name}
+                        value={option.price}
                         checked={water === `${option.name}`}
                         onChange={selectWaterItem}
                       />
@@ -125,8 +167,79 @@ function HerbItemsStoreModal() {
                 </div>
               </div>
             </div>
-            <div>
+            {/* <div>
               <SelectItemList />
+            </div> */}
+            <div className="shadow rounded-xl lg:w-[300px] h-auto my-3 ml-10 py-3">
+              <p className="text-lg mt-4 font-semibold text-center">
+                구매 목록
+              </p>
+              <div className="mt-6 flex flex-col ">
+                {/* 씨앗 선택 내역 */}
+                <div className="flex mb-3 items-center justify-around">
+                  <div className="flex flex-row items-center">
+                    <HerbItemAvatar
+                      imgUrl={
+                        "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+                      }
+                    />
+                    <p>{selectedItemsArr[0]}</p>
+                  </div>
+
+                  <span className="flex badge">
+                    {selectedItemsPriceArr[0]} 슬리
+                  </span>
+                </div>
+
+                {/* 비료 선택 내역 */}
+                <div className="flex mb-3 items-center justify-around">
+                  <div className="flex flex-row items-center">
+                    <HerbItemAvatar
+                      imgUrl={
+                        "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                      }
+                    />
+                    <p>{selectedItemsArr[1]}</p>
+                  </div>
+                  <span className="flex badge">
+                    {selectedItemsPriceArr[1]} 슬리
+                  </span>
+                </div>
+
+                {/* 물뿌리개 선택 내역 */}
+                <div className="flex items-center justify-around">
+                  <div className="flex flex-row items-center">
+                    <HerbItemAvatar
+                      imgUrl={
+                        "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1476&q=80"
+                      }
+                    />
+                    {/* <p>{selectedwater} 물뿌리개</p> */}
+                    <p>{selectedItemsArr[2]}</p>
+                  </div>
+                  <span className="flex badge">
+                    {selectedItemsPriceArr[2]} 슬리
+                  </span>
+                </div>
+              </div>
+              <div className="m-10 font-semibold text-center text-xl">
+                총 {totalSley} 슬리 입니다
+                <p className="text-base font-normal py-3">
+                  이제 심으러 가볼까요?
+                </p>
+              </div>
+              <div className="flex items-center justify-evenly">
+                <button
+                  onClick={handleReset}
+                  className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
+                >
+                  초기화 <i class="bx bx-revision"></i>
+                </button>
+
+                <button className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3">
+                  선택 완료
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -138,35 +251,35 @@ function HerbItemsStoreModal() {
 const seedOptions = [
   {
     name: "일반 씨앗",
-    price: "0",
+    price: 0,
     grade: "normal",
     imgUrl:
       "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
   },
   {
     name: "희귀 씨앗",
-    price: "100",
+    price: 100,
     grade: "rare",
     imgUrl:
       "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
   },
   {
     name: "영웅 씨앗",
-    price: "200",
+    price: 200,
     grade: "hero",
     imgUrl:
       "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
   },
   {
     name: "전설 씨앗",
-    price: "350",
+    price: 350,
     grade: "legend",
     imgUrl:
       "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
   },
   {
     name: "미스테리 씨앗",
-    price: "500",
+    price: 500,
     grade: "mystery",
     imgUrl:
       "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
@@ -176,25 +289,25 @@ const seedOptions = [
 const fertilizerOptions = [
   {
     name: "일반 비료",
-    price: "150",
+    price: 150,
     imgUrl:
       "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
   },
   {
     name: "고급 비료",
-    price: "200",
+    price: 200,
     imgUrl:
       "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
   },
   {
     name: "프로틴 비료",
-    price: "300",
+    price: 300,
     imgUrl:
       "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
   },
   {
     name: "최상급 비료",
-    price: "500",
+    price: 500,
     imgUrl:
       "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
   },
@@ -203,13 +316,13 @@ const fertilizerOptions = [
 const waterOptions = [
   {
     name: "일반 물뿌리개",
-    price: "250",
+    price: 250,
     imgUrl:
       "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1476&q=80",
   },
   {
     name: "고급 물뿌리개",
-    price: "500",
+    price: 500,
     imgUrl:
       "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1476&q=80",
   },
