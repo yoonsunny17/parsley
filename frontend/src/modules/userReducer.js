@@ -13,10 +13,10 @@ const reducers = {
     logout: (state) => {
         state.isLogin = false;
     },
-    setToken: (state, { token }) => {
+    setToken: (state, { payload: token }) => {
         state.token = token;
     },
-    setUserId: (state, { id }) => {
+    setUserId: (state, { payload: id }) => {
         state.userId = id;
     },
 };

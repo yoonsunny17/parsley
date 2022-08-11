@@ -23,7 +23,7 @@ const persistedReducer = persistReducer(
 export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({}).concat([
+        getDefaultMiddleware({ serializableCheck: false }).concat([
             roomApi.middleware,
             userApi.middleware,
         ]),

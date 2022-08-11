@@ -5,12 +5,9 @@ import StudyWidget from "../molecules/Studywidget";
 import Button from "../atoms/Button";
 import { useSelector } from "react-redux";
 import { useLazyLogoutQuery } from "../../services/user";
+import { KAKAO_AUTH_URL } from "../../services";
 
 function Drawer({ children }) {
-    const REDIRECT_URI = "http://localhost:3000/login";
-    const REST_API_KEY = process.env.REACT_APP_API_KEY;
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
-
     const isLogin = useSelector((state) => state.user.isLogin);
     const [trigger] = useLazyLogoutQuery();
 
