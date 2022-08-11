@@ -7,7 +7,6 @@ import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.HashtagRepository;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.UserRepository;
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Service
 @Transactional(readOnly = true)
