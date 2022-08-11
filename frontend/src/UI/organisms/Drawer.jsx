@@ -3,6 +3,7 @@ import Button from "../atoms/Button";
 import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import DdayWidget from "../molecules/DdayWidget";
 import StudyWidget from "../molecules/StudyWidget";
+import { Link } from "react-router-dom";
 
 function Drawer({ children }) {
     // kakao social login
@@ -47,7 +48,9 @@ function Drawer({ children }) {
                             </div>
                         </div>
                         <div className="mb-6 flex justify-start gap-3">
-                            <Button text={"마이페이지"} />
+                            <Link to="/me">
+                                <Button text={"마이페이지"} />
+                            </Link>
                             <Button text={"로그아웃"} onClick={logoutHandler} />
                         </div>
 
@@ -61,23 +64,14 @@ function Drawer({ children }) {
                 {/* 로그인하지 않은 사용자인 경우 */}
                 {!isLogin && (
                     <div className="p-10 pt-24 overflow-y-auto w-[380px] bg-bg rounded-tl-3xl rounded-bl-3xl">
-                        <div className="text-center text-3xl font-bold text-font1 mb-6 font-basic">
-                            로그인
-                        </div>
+                        <div className="text-center text-3xl font-bold text-font1 mb-6 font-basic">로그인</div>
                         <div className="text-center text-lg font-normal text-font5 mb-16">
                             파슬리와 함께 공부하면서 <br />
                             허브 도감을 채워보세요!
                         </div>
                         <div className="flex justify-center">
-                            <button
-                                className="w-48 h-12"
-                                onClick={loginHandler}
-                            >
-                                <img
-                                    src={kakao_oauth}
-                                    alt="카카오 로그인"
-                                    className="kakao object-fill"
-                                />
+                            <button className="w-48 h-12" onClick={loginHandler}>
+                                <img src={kakao_oauth} alt="카카오 로그인" className="kakao object-fill" />
                             </button>
                         </div>
                     </div>
