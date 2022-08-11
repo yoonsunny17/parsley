@@ -4,6 +4,7 @@ import CreateStudyRoom from "./UI/pages/CreateStudyRoom";
 import Home from "./UI/pages/Home";
 import Drawer from "./UI/organisms/Drawer";
 import StudySession from "./OpenVidu/StudySession";
+import MyPage from "./UI/pages/MyPage";
 
 function App() {
     return (
@@ -12,10 +13,7 @@ function App() {
                 <div className="App container mx-auto px-5">
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route
-                            path="/room/create"
-                            element={<CreateStudyRoom />}
-                        />
+                        <Route path="/room/create" element={<CreateStudyRoom />} />
                         <Route path="/user/login" element={<AuthLogin />} />
                         {/* <Route path="/studyroom" element={<StudyRoom />} /> */}
                         {/* <Route
@@ -23,6 +21,7 @@ function App() {
                             element={<FingerStudyRoom />}
                         /> */}
                         <Route path="/room" element={<StudySession />} />
+                        <Route path="/me" element={<MyPage />} />
                     </Routes>
                 </div>
             </Drawer>
