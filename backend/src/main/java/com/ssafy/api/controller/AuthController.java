@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiResponses;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +56,7 @@ public class AuthController {
             @ApiResponse(code = 202, message = "이메일 수신을 동의해주세요."),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends AuthRes> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
+    public ResponseEntity<? extends AuthRes> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws IOException {
 //        System.out.println(code);
         // 인가 코드로 받은 토큰을 이용해 user의 정보 중 email을 반환
         String kakaoEmail = null;
