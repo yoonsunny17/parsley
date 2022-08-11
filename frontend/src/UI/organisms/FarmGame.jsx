@@ -2,13 +2,13 @@
 // TODO: window.innerwidth 좁아지면 접어야 할 것 같음 너무 길어짐 근데 3d model이 접어도 되는지 모르겠다
 
 import HerbItemsStoreModal from "./HerbItemsStoreModal";
-import BabyHerb from "../atoms/BabyHerb";
-import FlowerPot from "../atoms/FlowerPot";
-// import EmptyHerb from "../atoms/EmptyHerb";
-// import HerbItemCard from "../molecules/HerbItemCard";
-import { useState } from "react";
+import HerbComponent1 from "../atoms/HerbComponent1";
+import HerbComponent2 from "../atoms/HerbComponent2";
+import HerbComponent3 from "../atoms/HerbComponent3";
 
-function FarmGame() {
+import React, { useState } from "react";
+
+function FarmGame(props) {
   const day = 32;
   const sley = 1000;
 
@@ -33,33 +33,34 @@ function FarmGame() {
         <div>
           <span className="badge my-4 ">(1, 1)</span>
           <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
-            {isEmpty ? <HerbItemsStoreModal /> : null}
+            {isEmpty ? <HerbItemsStoreModal /> : <HerbComponent1 />}
             {/* <HerbItemsStoreModal /> */}
           </div>
         </div>
         <div>
           <span className="badge my-4 ">(1, 2)</span>
           <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
-            <BabyHerb />
+            <HerbComponent1 />
           </div>
         </div>
         <div>
           <span className="badge my-4 ">(1, 3)</span>
           <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
-            {/* <EmptyHerb /> */}
-            {/* <SelectHerbItems /> */}
-            <FlowerPot />
+            <HerbComponent2 />
           </div>
         </div>
         <div>
           <span className="badge my-4">(1, 4)</span>
-
-          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center"></div>
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
+            <HerbComponent3 />
+          </div>
         </div>
         <div>
           <span className="badge my-4">(2, 1)</span>
 
-          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center"></div>
+          <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
+            const
+          </div>
         </div>
         <div>
           <span className="badge my-4">(2, 2)</span>

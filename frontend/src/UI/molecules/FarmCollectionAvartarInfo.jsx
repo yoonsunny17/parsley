@@ -27,7 +27,7 @@ function FarmCollectionAvartarInfo({
         />
       ) : (
         <img
-          className="cursor-pointer inline-block mt-3 mb-3 mr-3 h-12 w-12 rounded-full ring-2 ring-font2"
+          className="cursor-pointer inline-block mt-3 mb-3 mr-3 h-12 w-12 rounded-full ring-2 ring-extra1"
           src="/herbs/isNotOpened.png"
           alt="avatar"
           onClick={() => {

@@ -7,13 +7,36 @@ import HerbItemAvatar from "../atoms/HerbItemAvatar";
 // FIXME: 아래 심으러 가기 (닫기 버튼) 없애고 위에 X 로 버튼 대체하기, 모달 전체적인 크기 줄이기
 
 function HerbItemsStoreModal(props) {
+  // const [selectedItems, setSelectedItems] = useState({
+  //   selectedItemName: "",
+  //   selectedItemprice: "",
+  // });
+
+  // const checkItems = (e) => {
+  //   const { name, value } = e.target;
+  //   console.log(name, value);
+  //   setSelectedItems({
+  //     ...selectedItems,
+  //     [name]: value,
+  //   });
+  //   console.log(selectedItems);
+  // };
+
+  // resetBtn
+  // const handleReset = () => {
+  //   setSelectedItems({
+  //     selectedItemName: "",
+  //     selectedItemprice: "",
+  //   });
+  // };
+
   // seed radio select btn
   const [seed, setSeed] = useState("");
   const [seedSley, setSeedSley] = useState(0);
   const selectSeedItem = (e) => {
-    console.log(e.target.id);
-    console.log(e.target.value);
-    setSeed(e.target.id);
+    // console.log(e.target.id);
+    // console.log(e.target.value);
+    setSeed(e.target.name);
     setSeedSley(e.target.value);
   };
 
@@ -21,9 +44,9 @@ function HerbItemsStoreModal(props) {
   const [fertilizer, setFertilizer] = useState("");
   const [fertilizerSley, setFertilizerSley] = useState(0);
   const selectFertilizerItem = (e) => {
-    console.log(e.target.id);
-    console.log(e.target.value);
-    setFertilizer(e.target.id);
+    // console.log(e.target.name);
+    // console.log(e.target.value);
+    setFertilizer(e.target.name);
     setFertilizerSley(e.target.value);
   };
 
@@ -31,9 +54,9 @@ function HerbItemsStoreModal(props) {
   const [water, setWater] = useState("");
   const [waterSley, setWaterSley] = useState(0);
   const selectWaterItem = (e) => {
-    console.log(e.target.id);
-    console.log(e.target.value);
-    setWater(e.target.id);
+    // console.log(e.target.id);
+    // console.log(e.target.value);
+    setWater(e.target.name);
     setWaterSley(e.target.value);
   };
 
@@ -58,10 +81,7 @@ function HerbItemsStoreModal(props) {
     return stack + el;
   }, 0);
 
-  console.log(totalSley);
-
-  // resetBtn
-  const handleReset = () => {};
+  // console.log(totalSley);
 
   // 자식컴포넌트에서 부모컴포넌트로 data보내기
   // const sendHerbItemsData = () => {};
@@ -103,12 +123,13 @@ function HerbItemsStoreModal(props) {
                   {seedOptions.map((option) => (
                     <label key={option.name}>
                       <input
-                        id={option.name}
+                        name={option.name}
                         className="hidden"
                         type="radio"
                         value={option.price}
                         checked={seed === `${option.name}`}
                         onChange={selectSeedItem}
+                        // onClick={checkItems}
                       />
                       <HerbStoreItemCard
                         title={option.name}
@@ -127,12 +148,13 @@ function HerbItemsStoreModal(props) {
                   {fertilizerOptions.map((option) => (
                     <label key={option.name}>
                       <input
-                        id={option.name}
+                        name={option.name}
                         className="hidden"
                         type="radio"
                         value={option.price}
                         checked={fertilizer === `${option.name}`}
                         onChange={selectFertilizerItem}
+                        // onClick={checkItems}
                       />
                       <HerbStoreItemCard
                         title={option.name}
@@ -150,12 +172,13 @@ function HerbItemsStoreModal(props) {
                   {waterOptions.map((option) => (
                     <label key={option.name}>
                       <input
-                        id={option.name}
+                        name={option.name}
                         className="hidden"
                         type="radio"
                         value={option.price}
                         checked={water === `${option.name}`}
                         onChange={selectWaterItem}
+                        // onClick={checkItems}
                       />
                       <HerbStoreItemCard
                         title={option.name}
@@ -230,14 +253,19 @@ function HerbItemsStoreModal(props) {
               </div>
               <div className="flex items-center justify-evenly">
                 <button
-                  onClick={handleReset}
+                  // onClick={handleReset}
                   className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
                 >
                   초기화 <i class="bx bx-revision"></i>
                 </button>
-
-                <button className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3">
-                  선택 완료
+                <button className=" color-delay rounded-full text-sm font-semibold bg-main hover:bg-sub2 text-font3">
+                  <label
+                    htmlFor="my-modal-3"
+                    className="cursor-pointer px-4 py-2"
+                    // onClick={handleChange}
+                  >
+                    선택 완료{/* <i class="bx bx-x bx-sm"></i> */}
+                  </label>
                 </button>
               </div>
             </div>
