@@ -66,6 +66,8 @@ public class RoomService {
             hashtagRepository.saveRoomHashtag(roomHashtag);
         }
 
+        user.addUserRoom(room);
+
         return room;
     }
 
