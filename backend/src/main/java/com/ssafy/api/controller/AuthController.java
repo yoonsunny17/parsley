@@ -93,6 +93,7 @@ public class AuthController {
     public ResponseEntity<? extends AuthRes> logout(HttpServletRequest request, HttpServletResponse response) {
 
         String accessToken = null;
+        String refreshToken = null;
         String bearer = request.getHeader("Authorization");
         if (bearer != null && !"".equals(bearer)) {
             accessToken = bearer.split(" ")[1];
@@ -101,10 +102,12 @@ public class AuthController {
         for (Cookie c : cookies) {
             if ("accessToken".equals(c.getName())) {
                 accessToken = c.getValue();
+            } else if ("refreshToken".equals(c.getName())) {
+                refreshToken = c.getValue();
             }
         }
 
-        Long userId = jwtService.getUserId();
+        Long userId = Long.parseLong((String) jwtService.getUserInfo(refreshToken).get("id"));
         String kakaoEmail = authService.getEmailbyUserId(userId);
 
         if (accessToken != null && !"".equals(accessToken)) {
@@ -146,7 +149,7 @@ public class AuthController {
             }
         }
 
-        Long userId = jwtService.getUserId();
+        Long userId = Long.parseLong((String) jwtService.getUserInfo(refreshToken).get("id"));
         String kakaoEmail = authService.getEmailbyUserId(userId);
 
         try {
