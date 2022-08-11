@@ -53,7 +53,8 @@ public class AuthController {
     @ApiOperation(value = "로그인", notes = "카카오로 로그인한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "로그인 성공"),
-            @ApiResponse(code = 202, message = "이메일 수신을 동의해주세요."),
+            @ApiResponse(code = 202, message = "유저 생성 실패"),
+            @ApiResponse(code = 409, message = "이메일 수신을 동의해주세요."),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends AuthRes> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws IOException {
@@ -63,13 +64,17 @@ public class AuthController {
         try {
             kakaoEmail = kakaoService.getKakaoEmail(code);
         } catch (Exception e) {
-            return ResponseEntity.status(202).body(AuthRes.of(202, "Accepted", null, false));
+            return ResponseEntity.status(409).body(AuthRes.of(409, "Conflict", null, false));
         }
 
         // db에 user가 있는지 email을 통해 확인 후 없으면 저장
         if (!authService.checkEmail(kakaoEmail)) {
-            User user = userService.createUser();
-            authService.createAuth(user, kakaoEmail);
+            try {
+                User user = userService.createUser();
+                authService.createAuth(user, kakaoEmail);
+            } catch (IOException e) {
+                return ResponseEntity.status(202).body(AuthRes.of(202, "Accepted", null, false));
+            }
         }
 
         User user = authService.getUserByEmail(kakaoEmail);
