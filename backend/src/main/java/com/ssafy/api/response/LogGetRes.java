@@ -14,7 +14,7 @@ import java.util.List;
 public class LogGetRes extends BaseResponseBody {
 
     @ApiModelProperty(name = "daily study Log List")
-    List<DailyStudyLog> dailyStudyLogs = new ArrayList<>();
+    List<LogRes> dailyStudyLogs = new ArrayList<>();
 
     public static LogGetRes of(Integer status, String message, List<DailyStudyLog> dailyStudyLogs){
         LogGetRes res = new LogGetRes();
@@ -24,5 +24,11 @@ public class LogGetRes extends BaseResponseBody {
         res.setDailyStudyLogs(dailyStudyLogs);
 
         return res;
+    }
+
+    public void setDailyStudyLogs(List<DailyStudyLog> dailyStudyLogs){
+        for(int i=0; i<dailyStudyLogs.size(); i+=2){
+            this.dailyStudyLogs.add(LogRes.of(dailyStudyLogs.get(i).getTime(), dailyStudyLogs.get(i+1).getTime()));
+        }
     }
 }
