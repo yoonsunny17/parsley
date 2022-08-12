@@ -1,6 +1,7 @@
 package com.ssafy.db.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Hashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +18,4 @@ public class Hashtag {
 
     private String tag;
     private long useCount;
-
-    public Hashtag() {
-    }
 }
