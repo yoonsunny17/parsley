@@ -29,4 +29,8 @@ public class HerbRes {
 
 	@ApiModelProperty(name = "남은 시간")
 	int leftTime;
+
+	@ApiModelProperty(name = "성장 시간")
+	int growthTime;
+
 }

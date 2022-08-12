@@ -141,6 +141,7 @@ public class FarmService {
             res.setItemSeedId(item.getItemSeed().getId());
             res.setItemWaterId(item.getItemWater().getId());
             res.setItemFertilizerId(item.getItemFertilizer().getId());
+            res.setGrowthTime(herb.getGrowthTime());
 
             int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime(), user.getDailyStudyLogs());
             res.setLeftTime(leftTime);
