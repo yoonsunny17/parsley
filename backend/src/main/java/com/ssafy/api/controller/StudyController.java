@@ -108,18 +108,19 @@ public class StudyController {
         Long userId = 1L;
 
         List<Long> week = studyService.getWeeklyStudyTime(userId);
+        Long last_week = studyService.getLastWeekTime(userId);
 
         if(week == null){
             return ResponseEntity.status(404)
-                    .body(WeeklyStudyGetRes.of(404, "Please finish study", null));
+                    .body(WeeklyStudyGetRes.of(404, "Please finish study", null, last_week));
         }
         if(week.isEmpty()){
             return ResponseEntity.status(500)
-                    .body(WeeklyStudyGetRes.of(500, "Fail to Get Weekly List", null));
+                    .body(WeeklyStudyGetRes.of(500, "Fail to Get Weekly List", null, last_week));
         }
 
         return ResponseEntity.status(200)
-                .body(WeeklyStudyGetRes.of(200, "Success", week));
+                .body(WeeklyStudyGetRes.of(200, "Success", week, last_week));
 
     }
 

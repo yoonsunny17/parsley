@@ -81,11 +81,9 @@ public class StudyService {
 
         for(int i=day-1; i>=0; i--){
             LocalDate targetDate = LocalDate.from(LocalDateTime.now().minusDays(i));
-
             List<DailyStudyLog> dayLog = dailyStudyRepository.findWeeklyByUserId(user.getId(), targetDate);
 
             Long time = 0L;
-
             if(dayLog.size()%2 == 1){
                 return null;
             }
@@ -93,14 +91,35 @@ public class StudyService {
             for(int j=0; j< dayLog.size(); j+=2){
                 LocalDateTime tLog = dayLog.get(j).getTime();
                 LocalDateTime fLog = dayLog.get(j+1).getTime();
-
                 Duration duration = Duration.between(tLog, fLog);
-
                 time += duration.getSeconds();
             }
             week.add(time);
         }
         return week;
+    }
+
+    public Long getLastWeekTime(Long userId){
+        User user = userRepository.findByUserId(userId);
+
+        Long totalTime = 0L;
+
+        int day = LocalDateTime.now().getDayOfWeek().getValue();
+
+        for(int i=day-1; i>=day-7; i--){
+            LocalDate targetDate = LocalDate.from(LocalDateTime.now().minusDays(i).minusWeeks(1));
+            List<DailyStudyLog> dayLog = dailyStudyRepository.findWeeklyByUserId(user.getId(), targetDate);
+
+            Long time = 0L;
+            for(int j=0; j< dayLog.size(); j+=2){
+                LocalDateTime tLog = dayLog.get(j).getTime();
+                LocalDateTime fLog = dayLog.get(j+1).getTime();
+                Duration duration = Duration.between(tLog, fLog);
+                time += duration.getSeconds();
+            }
+            totalTime += time;
+        }
+        return totalTime;
     }
 
     @Transactional
