@@ -168,7 +168,7 @@ public class RoomController {
     @ApiOperation(value = "비밀번호 확인", notes = "비밀번호 일치 여부를 확인한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "비밀번호 일치"),
-            @ApiResponse(code = 202, message = "비밀번호 불일치"),     //TODO: 서버 코드
+            @ApiResponse(code = 202, message = "비밀번호 불일치"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends RoomPostRes> checkPassword(@PathVariable("room_id") @Valid Long roomId,

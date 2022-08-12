@@ -56,7 +56,6 @@ public class FarmController {
         //TODO: User받아오기, 아래 코드 삭제
         Long userId = 1L;
         //TODO: response를 controller에서 처리할 것인가 controller에서 처리할 것인가
-        //TODO: lefttime이 0이상일때 나중에 처리!!
         UserHerbBookAddPostRes userHerbBookAddPostRes = farmService.addUserHerbBook(userId, herbBookInfo);
         if(userHerbBookAddPostRes == null){
             return ResponseEntity.status(500).body(UserHerbBookAddPostRes.of(500, "Fail to add user herb book", null));
