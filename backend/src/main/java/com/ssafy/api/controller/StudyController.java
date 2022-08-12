@@ -2,10 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.GoalCreatePostReq;
 import com.ssafy.api.request.LogCreatePostReq;
-import com.ssafy.api.response.GoalCreatePostRes;
-import com.ssafy.api.response.GoalGetRes;
-import com.ssafy.api.response.LogCreatePostRes;
-import com.ssafy.api.response.WeeklyStudyGetRes;
+import com.ssafy.api.response.*;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.db.entity.DailyGoal;
@@ -144,5 +141,27 @@ public class StudyController {
 
         return ResponseEntity.status(200)
                 .body(LogCreatePostRes.of(200, "Success", dailyStudyLog.getId()));
+    }
+
+    @GetMapping("/log")
+    @ApiOperation(value = "공부 로그", notes = "오늘 공부 로그를 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "공부 로그 조회 성공"),
+            @ApiResponse(code = 500, message = "공부 로그 조회 실패")
+    })
+    public ResponseEntity<? extends LogGetRes> getDailyStudyLog(){
+
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
+
+        List<DailyStudyLog> dailyStudyLogs = studyService.getDailyLogs(userId);
+
+        if(dailyStudyLogs.isEmpty()){
+            return ResponseEntity.status(500)
+                    .body(LogGetRes.of(500, "Fail to Get Log", null));
+        }
+
+        return ResponseEntity.status(200)
+                .body(LogGetRes.of(200, "Success", dailyStudyLogs));
     }
 }

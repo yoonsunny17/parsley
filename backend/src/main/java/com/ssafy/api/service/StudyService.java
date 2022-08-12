@@ -140,4 +140,14 @@ public class StudyService {
 
         return dailyStudyLog;
     }
+
+    public List<DailyStudyLog> getDailyLogs(Long userId){
+
+        User user = userRepository.findByUserId(userId);
+
+        LocalDate targetDate = LocalDate.from(LocalDateTime.now());
+        List<DailyStudyLog> dailyStudyLogs = dailyStudyRepository.findWeeklyByUserId(userId, targetDate);
+
+        return dailyStudyLogs;
+    }
 }
