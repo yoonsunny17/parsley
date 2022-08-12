@@ -1,36 +1,36 @@
 import { useState } from "react";
 
-function HashTags() {
+function HashTags(props) {
   const [hashTag, setHashTag] = useState("");
   const [hashTagList, setHashTagList] = useState([]);
 
-  const onChangeHashTag = (event) => {
-    // console.log(event.target.value);
-
-    if (event.target.value.length !== 0 && event.key === "Enter") {
-      saveHashTag();
-    }
-  };
-
-  const saveHashTag = (e) => {
-    const updatedHashTagList = [...hashTagList];
-    updatedHashTagList.push("# " + hashTag);
+  const saveHashTag = () => {
+    const updatedHashTagList = [...hashTagList, `# ${hashTag}`];
     setHashTagList(updatedHashTagList);
     console.log(updatedHashTagList);
     setHashTag("");
   };
 
   const deleteHashTag = (event) => {
-    console.log(event.target.innerText);
     const removeHashTag = event.target.innerText;
     const filteredHashTagList = hashTagList.filter(
       (hashTag) => hashTag !== removeHashTag
     );
     setHashTagList(filteredHashTagList);
+    props.setRoom((prev) => ({
+      ...prev,
+      hastTags: filteredHashTagList,
+    }));
+  };
+
+  const handleChange = (event) => {
+    if (event.target.value.length !== 0 && event.key === "Enter") {
+      saveHashTag();
+    }
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       <div className="flex content-center items-center flex-wrap border-2 h-auto w-fit px-3 input-border rounded-md bg-extra4 ">
         {hashTagList.map((hashTag, idx) => {
           return (
@@ -43,6 +43,7 @@ function HashTags() {
             </div>
           );
         })}
+
         <input
           className="inline-flex cursor-text focus:outline-none text-md pl-1 w-fit h-8 rounded-md bg-extra4 input-placeholder"
           type="text"
@@ -50,7 +51,7 @@ function HashTags() {
           tabIndex={2}
           value={hashTag}
           onChange={(event) => setHashTag(event.target.value)}
-          onKeyPress={onChangeHashTag}
+          onKeyPress={handleChange}
         />
       </div>
     </div>
