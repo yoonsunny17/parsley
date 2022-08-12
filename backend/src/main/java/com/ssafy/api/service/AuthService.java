@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -37,7 +38,7 @@ public class AuthService {
     public void createAuth(User user, String email) {
         Auth auth = new Auth();
         auth.setEmail(email);
-        String uuid = "parsley" + email; // uuid 생성 로직 나중에 구현
+        String uuid = UUID.randomUUID().toString();
         auth.setUuid(uuid);
         auth.setUser(user);
         authRepository.save(auth);

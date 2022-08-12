@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserReq;
+import com.ssafy.common.util.UserUtil;
 import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,6 +9,7 @@ import com.ssafy.db.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,11 +22,15 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private UserUtil userUtil;
 	@Transactional
-	public User createUser() {
-		User user = new User();
-		user.setName("익명의 사용자"); // 유저 이름 생성 로직 나중에 구현
+	public User createUser() throws IOException {
+		String newName = userUtil.createName();
 		LocalDate date = LocalDate.now();
+
+		User user = new User();
+		user.setName(newName);
 		user.setRegDate(date);
 		user.setCurrentBookPoint(0L);
 		user.setCurrentSley(0L);
