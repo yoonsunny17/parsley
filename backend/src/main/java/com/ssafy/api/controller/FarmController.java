@@ -5,7 +5,7 @@ import com.ssafy.api.request.UserHerbBookAddPostReq;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.FarmService;
 import com.ssafy.api.service.UserService;
-import com.ssafy.db.entity.Herb;
+import com.ssafy.common.model.response.BaseResponseBody;
 
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +96,11 @@ public class FarmController {
         //TODO: User받아오기, 아래 코드 삭제
         Long userId = 1L;
 
-        Herb herb = farmService.addHerb(userId, herbInfo);
-        return ResponseEntity.status(200).body(HerbAddPostRes.of(200, "Success", herb.getId()));
+        boolean herb = farmService.addHerb(userId, herbInfo);
+        if(!herb){
+            return ResponseEntity.status(202).body(BaseResponseBody.of(202, "슬리가 부족합니다."));
+        }
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 }
