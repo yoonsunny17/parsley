@@ -7,6 +7,22 @@ import HerbItemAvatar from "../atoms/HerbItemAvatar";
 // FIXME: 아래 심으러 가기 (닫기 버튼) 없애고 위에 X 로 버튼 대체하기, 모달 전체적인 크기 줄이기
 
 function HerbItemsStoreModal(props) {
+  // initialization
+  const data = {
+    seed: "",
+    fertilizer: "",
+    water: "",
+  };
+
+  const [selectedItem, setSelectedItem] = useState(data);
+  const handleChange = ({ target }) => {
+    setSelectedItem((prev) => ({
+      ...prev,
+      [target.name]: target.value,
+      price: seedOptions.price,
+    }));
+    console.log(selectedItem);
+  };
   // const [selectedItems, setSelectedItems] = useState({
   //   selectedItemName: "",
   //   selectedItemprice: "",
@@ -63,7 +79,7 @@ function HerbItemsStoreModal(props) {
   // 선택된 아이템
   const selectedItemsArr = [];
   selectedItemsArr.push(seed, fertilizer, water);
-  console.log(selectedItemsArr);
+  // console.log(selectedItemsArr);
 
   // 선택된 아이템 가격
   const selectedItemsSleyArr = [];
@@ -75,16 +91,16 @@ function HerbItemsStoreModal(props) {
   var waterPrice = parseInt(waterSley);
   const selectedItemsPriceArr = [];
   selectedItemsPriceArr.push(seedPrice, fertilizerPrice, waterPrice);
-  console.log(selectedItemsPriceArr);
+  // console.log(selectedItemsPriceArr);
 
   const totalSley = selectedItemsPriceArr.reduce((stack, el) => {
     return stack + el;
   }, 0);
 
-  // console.log(totalSley);
+  // // console.log(totalSley);
 
-  // 자식컴포넌트에서 부모컴포넌트로 data보내기
-  // const sendHerbItemsData = () => {};
+  // // 자식컴포넌트에서 부모컴포넌트로 data보내기
+  // // const sendHerbItemsData = () => {};
 
   return (
     <div>
@@ -128,8 +144,9 @@ function HerbItemsStoreModal(props) {
                         type="radio"
                         value={option.price}
                         checked={seed === `${option.name}`}
-                        onChange={selectSeedItem}
+                        // onChange={selectSeedItem}
                         // onClick={checkItems}
+                        onClick={handleChange}
                       />
                       <HerbStoreItemCard
                         title={option.name}
@@ -155,6 +172,7 @@ function HerbItemsStoreModal(props) {
                         checked={fertilizer === `${option.name}`}
                         onChange={selectFertilizerItem}
                         // onClick={checkItems}
+                        onClick={handleChange}
                       />
                       <HerbStoreItemCard
                         title={option.name}
@@ -179,6 +197,7 @@ function HerbItemsStoreModal(props) {
                         checked={water === `${option.name}`}
                         onChange={selectWaterItem}
                         // onClick={checkItems}
+                        onClick={handleChange}
                       />
                       <HerbStoreItemCard
                         title={option.name}

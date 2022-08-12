@@ -28,11 +28,11 @@ function HerbComponent2(props) {
             groundColor={0x080820}
             intensity={0.1}
           />
-          <OrbitControls
+          {/* <OrbitControls
             enablePan={true}
-            enableZoom={true}
-            enableRotate={true}
-          />
+            // enableZoom={true}
+            // enableRotate={true}
+          /> */}
           <group {...props} dispose={null}>
             <group rotation={[-Math.PI / 2, 0, 0]}>
               <group rotation={[Math.PI / 2, 0, 0]}>
