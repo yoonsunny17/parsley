@@ -124,6 +124,8 @@ public class FarmService {
         HerbsRes herbListRes = new HerbsRes();
         User user = userRepository.findByUserId(userId);
 
+
+
         List<Herb> herbs = user.getHerbs();
 
         List<HerbRes> list = new ArrayList<>();
@@ -140,7 +142,7 @@ public class FarmService {
             res.setItemWaterId(item.getItemWater().getId());
             res.setItemFertilizerId(item.getItemFertilizer().getId());
 
-            int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime()*60, user.getDailyStudyLogs());
+            int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime(), user.getDailyStudyLogs());
             res.setLeftTime(leftTime);
 
             list.add(res);
@@ -151,7 +153,7 @@ public class FarmService {
     }
 
     @Transactional
-    public Herb addHerb(Long userId, HerbAddPostReq herbInfo) {
+    public boolean addHerb(Long userId, HerbAddPostReq herbInfo) {
         Herb herb = new Herb();
         User user = userRepository.findByUserId(userId);
         ItemSeed itemSeed = itemRepository.findByItemSeedId(herbInfo.getItemSeedId());
@@ -159,7 +161,12 @@ public class FarmService {
         ItemFertilizer itemFertilizer = itemRepository.findByItemFertilizerId(herbInfo.getItemFertilizerId());
         Item item = new Item(itemSeed, itemWater, itemFertilizer);
 
-        int growthTime = (int) (itemSeed.getGrowthTime() * (1 - itemWater.getTimeRate() * 1.0 / 100));
+        int sum = itemSeed.getSley() + itemWater.getSley() + itemFertilizer.getSley();
+        if(user.getCurrentSley() < sum){
+            return false;
+        }
+
+        int growthTime = (int) (itemSeed.getGrowthTime() * (1 - itemWater.getTimeRate() * 1.0 / 100)* 60) ;
         LocalDateTime date = LocalDateTime.now();
         herb.setStartDate(date);
         herb.setCompleted(false);
@@ -168,14 +175,14 @@ public class FarmService {
         herb.setUser(user);
         herb.setPosition(herbInfo.getPosition());
 
-        int sum = itemSeed.getSley() + itemWater.getSley() + itemFertilizer.getSley();
+
         StringBuilder content = new StringBuilder();
         content.append("작물 심기(").append(itemSeed.getName()).append(", ")
                 .append(itemWater.getName()).append(", ").append(itemFertilizer.getName()).append(")");
         addNotificationLog(sum*-1, content.toString() , user, NotificationType.SLEY);
 
         herbRepository.save(herb);
-        return herb;
+        return true;
     }
 
     private void addNotificationLog(int value, String content, User user, NotificationType type){
