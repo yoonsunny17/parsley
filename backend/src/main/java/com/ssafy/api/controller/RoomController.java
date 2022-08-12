@@ -168,16 +168,17 @@ public class RoomController {
     @ApiOperation(value = "비밀번호 확인", notes = "비밀번호 일치 여부를 확인한다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "비밀번호 일치"),
-            @ApiResponse(code = 204, message = "비밀번호 불일치"),     //TODO: 서버 코드
+            @ApiResponse(code = 202, message = "비밀번호 불일치"),     //TODO: 서버 코드
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends RoomPostRes> checkPassword(@RequestBody @ApiParam(value = "비밀번호", required = true) @Valid RoomPasswordPostReq passwordInfo){
+    public ResponseEntity<? extends RoomPostRes> checkPassword(@PathVariable("room_id") @Valid Long roomId,
+                                                               @RequestBody @ApiParam(value = "비밀번호", required = true) @Valid RoomPasswordPostReq passwordInfo){
 
-        boolean isTrue = roomService.isCorrectPwd(passwordInfo);
+        boolean isTrue = roomService.isCorrectPwd(passwordInfo, roomId);
 
         if(!isTrue){
-            return ResponseEntity.status(204).body(
-                    RoomPostRes.of(204, "Passwords do not match", false)
+            return ResponseEntity.status(202).body(
+                    RoomPostRes.of(202, "Passwords do not match", false)
             );
         }else{
             return ResponseEntity.status(201).body(
@@ -186,7 +187,6 @@ public class RoomController {
         }
     }
 
-    // TODO: 방 검색
     @GetMapping("/search")
     @ApiOperation(value = "방 검색 목록 조회", notes = "방 검색 목록들을 조회한다.")
     @ApiResponses({

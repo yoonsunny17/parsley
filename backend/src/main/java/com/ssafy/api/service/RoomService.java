@@ -88,8 +88,8 @@ public class RoomService {
         }
     }
 
-    public boolean isCorrectPwd(RoomPasswordPostReq passwordInfo){
-        Room room = roomRepository.findByRoomId(passwordInfo.getRoomId());
+    public boolean isCorrectPwd(RoomPasswordPostReq passwordInfo, Long roomId){
+        Room room = roomRepository.findByRoomId(roomId);
 
         if(room.getPassword().equals(passwordInfo.getPassword())){
             return true;
@@ -179,6 +179,12 @@ public class RoomService {
             //멤버 삭제
             for(User member : room.getMembers()){
                 member.getJoinRooms().remove(room);
+                //스터디로그 연결 해제
+                for(DailyStudyLog log : member.getDailyStudyLogs()){
+                    if(log.getRoom() == room){
+                        log.setRoom(null);
+                    }
+                }
             }
 
             //좋아요 멤버 삭제
