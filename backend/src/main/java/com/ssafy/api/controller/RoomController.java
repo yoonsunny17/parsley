@@ -187,7 +187,6 @@ public class RoomController {
         }
     }
 
-    // TODO: 방 검색
     @GetMapping("/search")
     @ApiOperation(value = "방 검색 목록 조회", notes = "방 검색 목록들을 조회한다.")
     @ApiResponses({
