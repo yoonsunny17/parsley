@@ -1,59 +1,170 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.response.AuthRes;
+import com.ssafy.api.service.*;
+import com.ssafy.common.util.CookieUtil;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.api.request.UserLoginPostReq;
-import com.ssafy.api.response.UserLoginPostRes;
-import com.ssafy.api.service.UserService;
-import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepositorySupport;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
+ * 사용자 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
-@Api(value = "인증 API", tags = {"Auth."})
+@Api(value = "사용자 인증 API", tags = {"Auth"})
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 public class AuthController {
-	@Autowired
-	UserService userService;
-	
-	@Autowired
-	PasswordEncoder passwordEncoder;
-	
-	@PostMapping("/login")
-	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.") 
+
+    @Autowired
+    private KakaoService kakaoService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private CookieUtil cookieUtil;
+
+    @Autowired
+    private RedisService redisService;
+
+    @GetMapping("/login")
+    @ApiOperation(value = "로그인", notes = "카카오로 로그인한다.")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "로그인 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq loginInfo) {
-		String userId = loginInfo.getId();
-		String password = loginInfo.getPassword();
-		
-		User user = userService.getUserByUserId(userId);
-		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
-		if(passwordEncoder.matches(password, user.getPassword())) {
-			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
-		}
-		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
-	}
+    public ResponseEntity<? extends AuthRes> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
+//        System.out.println(code);
+        // 인가 코드로 받은 토큰을 이용해 user의 정보 중 email을 반환
+        String kakaoEmail = kakaoService.getKakaoEmail(code);
+
+        // db에 user가 있는지 email을 통해 확인 후 없으면 저장
+        if (!authService.checkEmail(kakaoEmail)) {
+            User user = userService.createUser();
+            authService.createAuth(user, kakaoEmail);
+        }
+
+
+        User user = authService.getUserByEmail(kakaoEmail);
+        Map<String, String> userInfo = new HashMap<>();
+        userInfo.put("id", user.getId() + "");
+
+        String accessToken = jwtService.createAccessToken("user", userInfo, "user");
+        Cookie accessCookie = cookieUtil.addAccessCookie(accessToken);
+        response.addCookie(accessCookie);
+
+        String refreshToken = jwtService.createRefreshToken("user", userInfo, "user");
+        Cookie refreshCookie = cookieUtil.addRefreshCookie(refreshToken);
+        response.addCookie(refreshCookie);
+
+        // + cache server에 token들을 저장하는 코드
+        redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
+
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", accessToken, true));
+    }
+
+    @GetMapping("/logout")
+    @ApiOperation(value = "로그아웃", notes = "로그아웃을 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그아웃 성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends AuthRes> logout(HttpServletRequest request, HttpServletResponse response) {
+
+        String accessToken = null;
+        String bearer = request.getHeader("Authorization");
+        if (bearer != null && !"".equals(bearer)) {
+            accessToken = bearer.split(" ")[1];
+        }
+        Cookie[] cookies = request.getCookies();
+        for (Cookie c : cookies) {
+            if ("accessToken".equals(c.getName())) {
+                accessToken = c.getValue();
+            }
+        }
+
+        Long userId = jwtService.getUserId();
+        String kakaoEmail = authService.getEmailbyUserId(userId);
+
+        if (accessToken != null && !"".equals(accessToken)) {
+            // cache server에서 token들 삭제
+            redisService.deleteTokens(kakaoEmail);
+        }
+
+        Cookie accessCookie = new Cookie("accessToken", null);
+        accessCookie.setMaxAge(0);
+        accessCookie.setPath("/");
+        response.addCookie(accessCookie);
+
+        Cookie refreshCookie = new Cookie("refreshToken", null);
+        refreshCookie.setMaxAge(0);
+        refreshCookie.setPath("/");
+        response.addCookie(refreshCookie);
+
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", null, true));
+    }
+
+    @GetMapping("/refresh")
+    @ApiOperation(value = "토큰 재발급", notes = "토큰을 재발급한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "토큰 재발급 성공"),
+            @ApiResponse(code = 202, message = "토큰 재발급 실패")
+    })
+    public ResponseEntity<?> refreshUser(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        String accessToken = null;
+        String refreshToken = null;
+        if (cookies == null) {
+            return new ResponseEntity<String>("로그인 해주세요", HttpStatus.ACCEPTED);
+        }
+        for (Cookie c : cookies) {
+            if ("accessToken".equals(c.getName())) {
+                accessToken = c.getValue();
+            } else if ("refreshToken".equals(c.getName())) {
+                refreshToken = c.getValue();
+            }
+        }
+
+        Long userId = jwtService.getUserId();
+        String kakaoEmail = authService.getEmailbyUserId(userId);
+
+        try {
+            if (refreshToken != null && jwtService.isUsable(refreshToken)) {
+                accessToken = jwtService.createAccessToken("user", jwtService.getUserInfo(accessToken), "user");
+                Cookie accessCookie = cookieUtil.addAccessCookie(accessToken);
+                response.addCookie(accessCookie);
+
+                // cache server에 token 다시 저장
+                redisService.saveTokens(kakaoEmail, refreshToken, accessToken);
+
+                return ResponseEntity.status(200).body(AuthRes.of(200, "Success", accessToken, true));
+            }
+        } catch (JwtException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.status(202).body(AuthRes.of(202, "Accepted", null, false));
+    }
 }

@@ -1,7 +1,6 @@
 package com.ssafy.common.auth;
 
-import java.util.Optional;
-
+import com.ssafy.api.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.ssafy.api.service.UserService;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepository;
 
 
 /**
@@ -19,11 +17,11 @@ import com.ssafy.db.repository.UserRepository;
 @Component
 public class SsafyUserDetailService implements UserDetailsService{
 	@Autowired
-	UserService userService;
+	private AuthService authService;
 	
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    		User user = userService.getUserByUserId(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    		User user = authService.getUserByEmail(email);
     		if(user != null) {
     			SsafyUserDetails userDetails = new SsafyUserDetails(user);
     			return userDetails;

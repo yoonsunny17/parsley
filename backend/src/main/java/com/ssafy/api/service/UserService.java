@@ -1,12 +1,59 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.api.request.UserReq;
+import com.ssafy.db.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ssafy.db.entity.User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
- *	유저 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
+ *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
-public interface UserService {
-	User createUser(UserRegisterPostReq userRegisterInfo);
-	User getUserByUserId(String userId);
+@Service
+@Transactional(readOnly = true)
+public class UserService {
+	@Autowired
+	private UserRepository userRepository;
+
+	@Transactional
+	public User createUser() {
+		User user = new User();
+		user.setName("익명의 사용자"); // 유저 이름 생성 로직 나중에 구현
+		LocalDate date = LocalDate.now();
+		user.setRegDate(date);
+		user.setCurrentBookPoint(0L);
+		user.setCurrentSley(0L);
+		user.setWithdrawn(false);
+		userRepository.save(user);
+		return user;
+	}
+
+	public User getUserByUserId(Long userId) {
+		return userRepository.findByUserId(userId);
+	}
+
+	@Transactional
+	public void deleteUser(User user) {
+		user.setWithdrawn(true);
+	}
+
+	@Transactional
+	public void updateUser(User user, UserReq userInfo) {
+		user.setName(userInfo.getName());
+		user.setDescription(userInfo.getDescription());
+		user.setProfileImgUrl(userInfo.getProfileImgUrl());
+	}
+
+	public boolean existsByName(String name, Long userId) {
+		List<User> userList = userRepository.findByName(name);
+		if (userList.size() > 0 && userList.get(0).getId() != userId) {
+			return true;
+		}
+		return false;
+	}
 }
