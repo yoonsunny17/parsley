@@ -86,6 +86,10 @@ public class StudyService {
 
             Long time = 0L;
 
+            if(dayLog.size()%2 == 1){
+                return null;
+            }
+
             for(int j=0; j< dayLog.size(); j+=2){
                 LocalDateTime tLog = dayLog.get(j).getTime();
                 LocalDateTime fLog = dayLog.get(j+1).getTime();
