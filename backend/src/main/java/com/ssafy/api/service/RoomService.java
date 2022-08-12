@@ -88,8 +88,8 @@ public class RoomService {
         }
     }
 
-    public boolean isCorrectPwd(RoomPasswordPostReq passwordInfo){
-        Room room = roomRepository.findByRoomId(passwordInfo.getRoomId());
+    public boolean isCorrectPwd(RoomPasswordPostReq passwordInfo, Long roomId){
+        Room room = roomRepository.findByRoomId(roomId);
 
         if(room.getPassword().equals(passwordInfo.getPassword())){
             return true;
