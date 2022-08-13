@@ -66,13 +66,12 @@ public class RankController {
             myRank = RankNongbuInfoRes.of("guest", null, null);
         } else { // 로그인한 경우
             Long ranking = rankService.getMyRankByUserId(userId);
-            Double score = rankService.getMyScoreByUserId(userId);
             User user = userService.getUserByUserId(userId);
 
             if (ranking != null) {
                 ranking = ranking <= 1000 ? ranking : -1;
             }
-            myRank = RankNongbuInfoRes.of(user.getName(), score, ranking);
+            myRank = RankNongbuInfoRes.of(user.getName(), (double) user.getCurrentBookPoint(), ranking);
         }
 
         return ResponseEntity.status(200).body(

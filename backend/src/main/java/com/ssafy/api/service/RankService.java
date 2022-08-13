@@ -29,9 +29,9 @@ public class RankService {
     public void saveHerbBookRank() {
         List<User> topUsers = userRepository.findTopUsersByCurrentBookPoint();
 
-        for (User u : topUsers) {
+        for (User user : topUsers) {
             redisTemplate.opsForZSet().add(
-                    ZSET_KEY, MEMBER_PREFIX + Long.toString(u.getId()), u.getCurrentBookPoint());
+                    ZSET_KEY, MEMBER_PREFIX + Long.toString(user.getId()), user.getCurrentBookPoint());
         }
     }
 
@@ -55,17 +55,16 @@ public class RankService {
         return rank; // 없는 경우
     }
 
-    public Double getMyScoreByUserId(Long userId) {
-        return redisTemplate.opsForZSet().score(ZSET_KEY, MEMBER_PREFIX + Long.toString(userId));
+    public Double getLastRankScore() {
+        Long rankSize = getRankSize();
+        Set<ZSetOperations.TypedTuple<Object>> set =
+                redisTemplate.opsForZSet().reverseRangeWithScores(ZSET_KEY, rankSize - 1, rankSize - 1);
+
+        return set.isEmpty() ? null : set.iterator().next().getScore();
     }
 
-    // 1000등의 point 가져오기
-    public Long getLastRankScore() {
-        Set<ZSetOperations.TypedTuple<Object>> set = redisTemplate.opsForZSet().rangeWithScores(ZSET_KEY, 999, 999);
-        Iterator<ZSetOperations.TypedTuple<Object>> it = set.iterator();
-        ZSetOperations.TypedTuple<Object> next = it.next();
-
-//        return it.hasNext() ? it.ne;xt() : null;
-        return null;
+    public void addRank(User user) {
+        redisTemplate.opsForZSet().add(
+                ZSET_KEY, MEMBER_PREFIX + Long.toString(user.getId()), user.getCurrentBookPoint());
     }
 }

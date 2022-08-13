@@ -124,8 +124,6 @@ public class FarmService {
         HerbsRes herbListRes = new HerbsRes();
         User user = userRepository.findByUserId(userId);
 
-
-
         List<Herb> herbs = user.getHerbs();
 
         List<HerbRes> list = new ArrayList<>();
