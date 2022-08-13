@@ -1,3 +1,117 @@
+import React, { useState } from "react";
+// import HerbStoreItemCard from "../atoms/HerbStoreItemCard";
+import SelectItemList from "./SelectItemList";
+import HerbItemAvatar from "../atoms/HerbItemAvatar";
+// 허브 아이템 선택 아바타 라디오버튼
+import HerbStoreItemAvatar from "../atoms/HerbStoreItemAvatar";
+
+// TODO: 아이템 선택(카드 컴포넌트) 했을 때 선택한 것 보이도록 스타일링 해줘야함 (border styling)
+// FIXME: 아래 심으러 가기 (닫기 버튼) 없애고 위에 X 로 버튼 대체하기, 모달 전체적인 크기 줄이기
+
+function HerbItemsStoreModal(props) {
+  // initialization
+  const data = {
+    seed: "",
+    fertilizer: "",
+    water: "",
+  };
+
+  const [selectedItem, setSelectedItem] = useState(data);
+  const handleChange = ({ target }) => {
+    setSelectedItem((prev) => ({
+      ...prev,
+      [target.name]: target.value,
+      price: seedOptions.price,
+    }));
+    console.log(selectedItem);
+  };
+  // const [selectedItems, setSelectedItems] = useState({
+  //   selectedItemName: "",
+  //   selectedItemprice: "",
+  // });
+
+  // const checkItems = (e) => {
+  //   const { name, value } = e.target;
+  //   console.log(name, value);
+  //   setSelectedItems({
+  //     ...selectedItems,
+  //     [name]: value,
+  //   });
+  //   console.log(selectedItems);
+  // };
+
+  // resetBtn
+  // const handleReset = () => {
+  //   setSelectedItems({
+  //     selectedItemName: "",
+  //     selectedItemprice: "",
+  //   });
+  // };
+
+  // seed radio select btn
+  const [seed, setSeed] = useState("");
+  const [seedSley, setSeedSley] = useState(0);
+  const selectSeedItem = (e) => {
+    // console.log(e.target.id);
+    // console.log(e.target.value);
+    setSeed(e.target.name);
+    setSeedSley(e.target.value);
+  };
+
+  // fertilizer radio select btn
+  const [fertilizer, setFertilizer] = useState("");
+  const [fertilizerSley, setFertilizerSley] = useState(0);
+  const selectFertilizerItem = (e) => {
+    // console.log(e.target.name);
+    // console.log(e.target.value);
+    setFertilizer(e.target.name);
+    setFertilizerSley(e.target.value);
+  };
+
+  // water radio select btn
+  const [water, setWater] = useState("");
+  const [waterSley, setWaterSley] = useState(0);
+  const selectWaterItem = (e) => {
+    // console.log(e.target.id);
+    // console.log(e.target.value);
+    setWater(e.target.name);
+    setWaterSley(e.target.value);
+  };
+
+  // 선택된 아이템
+  const selectedItemsArr = [];
+  selectedItemsArr.push(seed, fertilizer, water);
+  // console.log(selectedItemsArr);
+
+  // 선택된 아이템 가격
+  const selectedItemsSleyArr = [];
+  selectedItemsSleyArr.push(seedSley, fertilizerSley, waterSley);
+
+  // convert string to int
+  var seedPrice = parseInt(seedSley);
+  var fertilizerPrice = parseInt(fertilizerSley);
+  var waterPrice = parseInt(waterSley);
+  const selectedItemsPriceArr = [];
+  selectedItemsPriceArr.push(seedPrice, fertilizerPrice, waterPrice);
+  // console.log(selectedItemsPriceArr);
+
+  const totalSley = selectedItemsPriceArr.reduce((stack, el) => {
+    return stack + el;
+  }, 0);
+
+  // // console.log(totalSley);
+
+  // // 자식컴포넌트에서 부모컴포넌트로 data보내기
+  // // const sendHerbItemsData = () => {};
+
+  // 아이템이 선택 되었는지 아닌지 확인하려고 !
+  const [isEmpty, setIsEmpty] = useState(false);
+  const handleIsEmpty = () => {
+    setIsEmpty((current) => !current);
+  };
+
+
+
 <div className="shadow rounded-xl lg:w-[300px] h-auto my-3 ml-10 py-3">
   <p className="text-lg mt-4 font-semibold text-center">구매 목록</p>
   <div className="mt-6 flex flex-col ">

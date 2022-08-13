@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 // import HerbStoreItemCard from "../atoms/HerbStoreItemCard";
 import SelectItemList from "./SelectItemList";
 import HerbItemAvatar from "../atoms/HerbItemAvatar";
@@ -9,7 +9,7 @@ import HerbStoreItemAvatar from "../atoms/HerbStoreItemAvatar";
 // FIXME: 아래 심으러 가기 (닫기 버튼) 없애고 위에 X 로 버튼 대체하기, 모달 전체적인 크기 줄이기
 
 function HerbItemsStoreModal(props) {
-  // initialization
+  // initialization;
   const data = {
     seed: "",
     fertilizer: "",
@@ -25,28 +25,6 @@ function HerbItemsStoreModal(props) {
     }));
     console.log(selectedItem);
   };
-  // const [selectedItems, setSelectedItems] = useState({
-  //   selectedItemName: "",
-  //   selectedItemprice: "",
-  // });
-
-  // const checkItems = (e) => {
-  //   const { name, value } = e.target;
-  //   console.log(name, value);
-  //   setSelectedItems({
-  //     ...selectedItems,
-  //     [name]: value,
-  //   });
-  //   console.log(selectedItems);
-  // };
-
-  // resetBtn
-  // const handleReset = () => {
-  //   setSelectedItems({
-  //     selectedItemName: "",
-  //     selectedItemprice: "",
-  //   });
-  // };
 
   // seed radio select btn
   const [seed, setSeed] = useState("");
@@ -93,22 +71,11 @@ function HerbItemsStoreModal(props) {
   var waterPrice = parseInt(waterSley);
   const selectedItemsPriceArr = [];
   selectedItemsPriceArr.push(seedPrice, fertilizerPrice, waterPrice);
-  // console.log(selectedItemsPriceArr);
+  console.log(selectedItemsPriceArr);
 
   const totalSley = selectedItemsPriceArr.reduce((stack, el) => {
     return stack + el;
   }, 0);
-
-  // // console.log(totalSley);
-
-  // // 자식컴포넌트에서 부모컴포넌트로 data보내기
-  // // const sendHerbItemsData = () => {};
-
-  // 아이템이 선택 되었는지 아닌지 확인하려고 !
-  const [isEmpty, setIsEmpty] = useState(false);
-  const handleIsEmpty = () => {
-    setIsEmpty((current) => !current);
-  };
 
   return (
     <div>
@@ -154,7 +121,7 @@ function HerbItemsStoreModal(props) {
                         checked={seed === `${option.name}`}
                         onChange={selectSeedItem}
                         // onClick={checkItems}
-                        onClick={handleChange}
+                        // onClick={handleChange}
                       />
                       {/* <HerbStoreItemCard
                         title={option.name}
@@ -185,7 +152,7 @@ function HerbItemsStoreModal(props) {
                         checked={fertilizer === `${option.name}`}
                         onChange={selectFertilizerItem}
                         // onClick={checkItems}
-                        onClick={handleChange}
+                        // onClick={handleChange}
                       />
                       <HerbStoreItemAvatar
                         title={option.name}
@@ -210,7 +177,7 @@ function HerbItemsStoreModal(props) {
                         checked={water === `${option.name}`}
                         onChange={selectWaterItem}
                         // onClick={checkItems}
-                        onClick={handleChange}
+                        // onClick={handleChange}
                       />
                       <HerbStoreItemAvatar
                         title={option.name}
@@ -228,30 +195,36 @@ function HerbItemsStoreModal(props) {
               <p className="text-lg mt-4 font-semibold text-center">
                 구매 목록
               </p>
-              <div className="mt-6 flex flex-col w-full">
+              <div className="mt-10 flex flex-col w-full">
                 {/* 씨앗 선택 내역 */}
-                <div className="flex w-full px-4 mb-4">
+                <div className="flex w-full px-4 mb-4 items-center">
                   <div className="flex justify-center w-1/4 mr-6">
                     <HerbItemAvatar imgUrl="/herbs/seeds.png" />
                   </div>
                   <span className="w-1/3 text-start">씨앗</span>
-                  <span className="w-1/3 text-end">{} 슬리</span>
+                  <span className="w-1/3 text-end">
+                    {selectedItemsPriceArr[0]} 슬리
+                  </span>
                 </div>
                 {/* 비료 선택 내역 */}
-                <div className="flex w-full px-4 mb-4">
+                <div className="flex w-full px-4 mb-4 items-center">
                   <div className="flex justify-center w-1/4 mr-6">
                     <HerbItemAvatar imgUrl="/herbs/fertilizer.png" />
                   </div>
                   <span className="w-1/3 text-start">비료</span>
-                  <span className="w-1/3 text-end">{} 슬리</span>
+                  <span className="w-1/3 text-end">
+                    {selectedItemsPriceArr[1]} 슬리
+                  </span>
                 </div>
                 {/* 물뿌리개 선택 내역 */}
-                <div className="flex w-full px-4 mb-4">
+                <div className="flex w-full px-4 mb-4 items-center">
                   <div className="flex justify-center w-1/4 mr-6">
                     <HerbItemAvatar imgUrl="/herbs/watering-can.png" />
                   </div>
                   <span className="w-1/3 text-start">물뿌리개</span>
-                  <span className="w-1/3 text-end">{} 슬리</span>
+                  <span className="w-1/3 text-end">
+                    {selectedItemsPriceArr[2]} 슬리
+                  </span>
                 </div>
                 {/* 총 슬리 합계 */}
                 <div className="m-10 font-semibold text-center text-xl">
