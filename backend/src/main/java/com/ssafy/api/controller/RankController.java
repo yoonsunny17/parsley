@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.response.RankNongbuGetRes;
+import com.ssafy.api.response.RankNongbuInfoRes;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.RankService;
 import com.ssafy.api.service.UserService;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Api(value = "공부왕/농부왕 조회 API", tags = {"Rank"})
 @RestController
@@ -44,35 +42,37 @@ public class RankController {
     })
     public ResponseEntity<? extends RankNongbuGetRes> getNongbuRanking() {
         Long rankSize = rankService.getRankSize();
-        if (rankSize == 0) {
+        if (rankSize == 0) { // redis 캐시에 없는 경우
             rankService.saveHerbBookRank();
         }
 
-        Map<String, Double> topRank = new HashMap<>();
+        // Top 5 가져와서 저장
+        List<RankNongbuInfoRes> topRank = new ArrayList<>();
         Set<ZSetOperations.TypedTuple<Object>> top5Rank = rankService.getTop5Rank();
+        long idx = 1;
 
         for (ZSetOperations.TypedTuple<Object> topUser : top5Rank) {
             String value = (String) topUser.getValue();
-
             User user = userService.getUserByUserId(
                     Long.parseLong(value.replace("user:", "")));
 
-            topRank.put(user.getName(), topUser.getScore());
+            topRank.add(RankNongbuInfoRes.of(user.getName(), topUser.getScore(), idx++));
         }
 
-        Map<String, Long> myRank = new HashMap<>();
+        // 나의 rank 정보 저장
+        RankNongbuInfoRes myRank = null;
         Long userId = jwtService.getUserId();
         if (userId == null) { // 로그인하지 않은 경우
-            myRank.put("guest", (long) -1);
+            myRank = RankNongbuInfoRes.of("guest", null, null);
         } else { // 로그인한 경우
             Long ranking = rankService.getMyRankByUserId(userId);
+            Double score = rankService.getMyScoreByUserId(userId);
             User user = userService.getUserByUserId(userId);
 
             if (ranking != null) {
-                ranking = ranking <= 1000 ? ranking : 0;
+                ranking = ranking <= 1000 ? ranking : -1;
             }
-
-            myRank.put(user.getName(), ranking);
+            myRank = RankNongbuInfoRes.of(user.getName(), score, ranking);
         }
 
         return ResponseEntity.status(200).body(

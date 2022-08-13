@@ -42,17 +42,21 @@ public class RankService {
 
     // top 5 정보 가져오기
     public Set<ZSetOperations.TypedTuple<Object>> getTop5Rank() {
-        return redisTemplate.opsForZSet().rangeWithScores(ZSET_KEY, 0, 4);
+        return redisTemplate.opsForZSet().reverseRangeWithScores(ZSET_KEY, 0, 4);
     }
 
-    // zRank로 내 등수 가져오기 -> 없거나 1000등 밖이라면 순위 밖이라는 것으로 표현
+    // 내 등수 가져오기
     public Long getMyRankByUserId(Long userId) {
-        Long rank = redisTemplate.opsForZSet().rank(ZSET_KEY, MEMBER_PREFIX + Long.toString(userId));
+        Long rank = redisTemplate.opsForZSet().reverseRank(ZSET_KEY, MEMBER_PREFIX + Long.toString(userId));
 
         if (rank != null) {
             return rank + 1;
         }
         return rank; // 없는 경우
+    }
+
+    public Double getMyScoreByUserId(Long userId) {
+        return redisTemplate.opsForZSet().score(ZSET_KEY, MEMBER_PREFIX + Long.toString(userId));
     }
 
     // 1000등의 point 가져오기
