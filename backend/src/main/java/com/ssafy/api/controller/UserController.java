@@ -35,9 +35,11 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserGetRes> getUser() {
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
+
         User user = userService.getUserByUserId(userId);
+
         return ResponseEntity.status(200).body(
                 UserGetRes.of(200, "Success", user)
         );
@@ -50,9 +52,11 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserPostRes> deleteUser() {
-//        User user = userService.getUserByUserId(jwtService.getUserId());
-        User user = userService.getUserByUserId(1L);
+
+        User user = userService.getUserByUserId(jwtService.getUserId());
+
         userService.deleteUser(user);
+
         return ResponseEntity.status(200).body(UserPostRes.of(201, "Success", user.getId()));
     }
 
@@ -64,13 +68,17 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserPostRes> updateUser(@RequestBody UserReq userInfo) {
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
+
         User user = userService.getUserByUserId(userId);
+
         if (userService.existsByName(userInfo.getName(), userId)) {
             return ResponseEntity.status(409).body(UserPostRes.of(409, "Conflict", user.getId()));
         }
+        
         userService.updateUser(user, userInfo);
+
         return ResponseEntity.status(200).body(UserPostRes.of(201, "Success", user.getId()));
     }
 }

@@ -17,14 +17,17 @@ public class RoomGetRes extends BaseResponseBody {
     boolean isNecessary;
     @ApiModelProperty(name = "수정, 삭제 가능 여부")
     boolean isPossible;
+    @ApiModelProperty(name = "현재 유저")
+    Long userId;
 
-    public static RoomGetRes of(Integer statusCode, String message, Room roomInfo, boolean isNecessary, boolean isPossible) {
+    public static RoomGetRes of(Integer statusCode, String message, Room roomInfo, boolean isNecessary, boolean isPossible, Long userId) {
         RoomGetRes res = new RoomGetRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setRoomInfo(roomInfo);
         res.setNecessary(isNecessary);
         res.setPossible(isPossible);
+        res.setUserId(userId);
         return res;
     }
 

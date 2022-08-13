@@ -123,7 +123,7 @@ public class StudyService {
     }
 
     @Transactional
-    public DailyStudyLog addDailyGoal(Long userId, LogCreatePostReq logInfo){
+    public DailyStudyLog addDailyLog(Long userId, LogCreatePostReq logInfo){
 
         User user = userRepository.findByUserId(userId);
 
