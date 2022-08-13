@@ -16,8 +16,8 @@ function FarmCollectionAvartarInfo({
           onClick={() => {
             Swal.fire({
               width: 350,
-              title: [name, grade],
-              text: [description],
+              title: [name],
+              text: "[" + [grade] + "] " + [description],
               imageUrl: [imgUrl], // 시간 되면 여기 사진 다른걸로 바꾸기
               imageWidth: 50,
               imageHeight: 50,

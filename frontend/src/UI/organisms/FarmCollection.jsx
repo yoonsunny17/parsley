@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import HerbItemAvatar from "../atoms/HerbItemAvatar";
 import FarmCollectionAvartarInfo from "../molecules/FarmCollectionAvartarInfo";
+import Button from "../atoms/Button";
 
 function FarmCollection() {
   const username = "유교보이";
@@ -9,21 +10,37 @@ function FarmCollection() {
   const description =
     "근육으로 똘똘 뭉친 파슬리이다... 먹으면 막강해질지도... ?";
   // const isOpened = "16";
-  const isOpendNumb = 0;
+  let isOpendNumb = 0; // 지금까지 모은 도감 캐릭터 개수 (중복 빼고)
+  for (let i = 0; i < herbCollectionList.length; i++) {
+    if (herbCollectionList[i].isOpened === true) {
+      isOpendNumb += 1;
+    }
+  }
+  console.log(isOpendNumb);
+
+  const profileImg = herbCollectionList[16].imgUrl;
 
   return (
+    // FIXME: device width sm이하로 갔을 때 도감 collapse 적용 할까말까 ??????
     // <div className="px-[30px] py-[35px] w-[30%] bg-white rounded-[30px] drop-shadow-[4px_4px_20px_rgba(0,0,0,0.1)]"></div>
     <div className="w-full md:w-[32%] rounded-2xl bg-white drop-shadow px-4 py-5 lg:px-8 lg:py-5">
       <div className="font-basic text-lg font-bold mb-2">
         {username}님의 도감
       </div>
+      {/* <button className="grid items-center text-sm h-full">edit</button> */}
       <div className="flex my-6">
         {/* // TODO: 대표 프로필 AVATAR 크기는 좀 크게 할까 ? */}
-        <HerbItemAvatar
+        <img
+          className="inline-block mt-3 mb-3 mr-4 h-16 w-16 rounded-full ring-2 ring-sub1"
+          // src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+          src={profileImg}
+          alt="avatar"
+        />
+        {/* <HerbItemAvatar
           imgUrl={
             "https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
           }
-        />
+        /> */}
         <div className="font-semibold text-sm mt-3">
           {herbname} [{grade}] <br />
           <span className="font-semibold text-xs">{description}</span>
@@ -34,7 +51,7 @@ function FarmCollection() {
         파슬리 [ {isOpendNumb} / 32 ]
       </div>
       <div className="">
-        <div className="grid grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
+        <div className="grid grid-cols-4 md:grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
           {herbCollectionList.map((info, idx) => {
             return <FarmCollectionAvartarInfo info={info} key={idx} />;
           })}
@@ -100,7 +117,7 @@ const herbCollectionList = [
     imgUrl: "/herbs/normal_hibiscus.png",
     grade: "일반",
     description:
-      "알쓸신잡) PARSLEY 프론트엔드 전OO은 별다방의 히비스커스 티를 좋아함",
+      "오늘의 알쓸신잡! PARSLEY 프론트엔드 전OO은 별다방의 히비스커스 티를 좋아함",
     isOpened: true,
   },
   {
@@ -151,7 +168,7 @@ const herbCollectionList = [
     imgUrl: "/herbs/normal_thysil.png",
     grade: "일반",
     description:
-      "알쓸신잡) 간에 좋은 밀크씨슬이라는 약초는 씨슬이라는 꽃의 줄기에서 나오는 우윳빛 진액이며, 한국식 이름은 엉겅퀴이다.",
+      "그거 아세요? 간에 좋은 밀크씨슬이라는 약초는 씨슬이라는 꽃의 줄기에서 나오는 우윳빛 진액이며, 한국식 이름은 엉겅퀴래요.",
     isOpened: true,
   },
   {
