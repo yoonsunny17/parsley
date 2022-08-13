@@ -13,7 +13,7 @@ function Navbar() {
             <div className="flex items-center gap-[25px] relative">
                 <div className="dropdown">
                     <label tabIndex="0">
-                        <i className="bx bx-bell mt-[10px] text-[25px]"></i>
+                        <i className="bx bx-bell mt-[10px] text-[25px] cursor-pointer"></i>
                     </label>
                     <div tabIndex="0" className="dropdown-content menu p-[20px] mt-[10px] shadow border-[1px] border-sub1 bg-white rounded-box w-[280px] h-[350px] absolute top-[35px] right-[-145px]">
                         <div className="flex justify-between mb-[20px]">
