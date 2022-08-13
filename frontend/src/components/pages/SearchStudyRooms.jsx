@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import StudyRoomItem from "../molecules/StudyRoomItem";
+import StudyRoomItem from "../../UI/molecules/StudyRoomItem";
+import Navbar from "../../UI/organisms/Navbar";
 
-function StudyRooms() {
+function SearchStudyRooms() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const tabClickHandler = (index) => {
@@ -10,43 +11,40 @@ function StudyRooms() {
   };
 
   return (
-    <div className="bg-white rounded-3xl border-4 border-main w-full relative">
-      {/* Tab */}
-      <div className="absolute top-[-44px] left-[40px]">
-        <div className="flex list-none text-lg gap-[10px]">
-          {tabContArr.map(({ title }, idx) => (
-            <button
-              key={`tab-` + idx}
-              onClick={() => tabClickHandler(idx)}
-              className={
-                (activeIndex === idx ? "bg-main " : "bg-sub2 hover:bg-main ") +
-                "color-delay cursor-pointer text-font3 font-semibold text-base rounded-t-2xl h-[40px] px-3"
-              }
-            >
-              {title}
-            </button>
-          ))}
-        </div>
+    <div>
+      <Navbar />
+      <div className="text-font1 font-bold text-2xl mt-5">
+        '파슬리' 검색결과
       </div>
-      {/* Content */}
-      <div className="px-6 pt-8 md:px-10 w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-5 md:gap-x-5">
-        {tabContArr[activeIndex].studyRoomList.length === 0 && (
-          <div>
-            {activeIndex === 1 && "참가한 스터디가 없어요"}
-            {activeIndex === 2 && "관심 있는 스터디가 없어요"}
-          </div>
-        )}
-        {tabContArr[activeIndex].studyRoomList.length > 0 &&
-          tabContArr[activeIndex].studyRoomList.map((info, idx) => {
-            return (
-              <Link to="/room" key={`room-${idx}`}>
-                <StudyRoomItem info={info} key={idx} />
-              </Link>
-            );
-          })}
+
+      {/* 손꾸락 스터디룸 검색결과 */}
+      <div className="text-font1 font-semibold text-xl mt-12">
+        손꾸락 스터디룸
       </div>
-      <div className="px-6 mt-4 mb-8 md:px-10 w-full flex justify-end text-font1 hover:text-main font-semibold color-delay">
-        <Link to="/search">더보기</Link>
+
+      <div className="pt-4 w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-5 md:gap-x-5">
+        {tabContArr[activeIndex].studyRoomList.map((info, idx) => {
+          return (
+            <Link to="/room">
+              <StudyRoomItem info={info} key={idx} />
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* 얼구리 컴퓨터 검색결과 */}
+      <div className="text-font1 font-semibold text-xl mt-14">
+        얼구리 컴퓨터 스터디룸
+      </div>
+
+      <div className="pt-4 pb-8 w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-5 md:gap-x-5">
+        {tabContArr[activeIndex].studyRoomList.map((info, idx) => {
+          return (
+            <Link to="/room">
+              <StudyRoomItem info={info} key={idx} />
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
@@ -94,7 +92,7 @@ const tabContArr = [
           "https://images.unsplash.com/photo-1643148636630-0b0fb138fc74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
         mode: 0,
         hashTags: ["자격증", "근육 파슬리", "CPA"],
-        description: "주 40시간 채우는 자율 스터디",
+        description: "주40시간 채우는 자율 스터디",
         maxPopulation: 3,
         isPublic: true,
       },
@@ -145,4 +143,4 @@ const tabContArr = [
   { title: "관심 공부방", studyRoomList: [] },
 ];
 
-export default StudyRooms;
+export default SearchStudyRooms;

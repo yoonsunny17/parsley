@@ -6,8 +6,10 @@ import Home from "./components/pages/Home";
 // import StudyRoom from "./components/pages/StudyRoom";
 import Drawer from "./UI/organisms/Drawer";
 // import FingerStudyRoom from "./OpenVidu/FingerStudyRoom";
-import StudySession from "./OpenVidu/StudySession";
+// import StudySession from "./OpenVidu/StudySession";
 import ShareSession from "./OpenVidu/ShareSession";
+import EnterStudyRoom from "./components/pages/EnterStudyRoom";
+import SearchStudyRooms from "./components/pages/SearchStudyRooms";
 
 function App() {
   return (
@@ -20,7 +22,8 @@ function App() {
             <Route path="/user/login" element={<AuthLogin />} />
             {/* <Route path="/studyroom" element={<StudyRoom />} /> */}
             {/* <Route path="/studyroom" element={<FingerStudyRoom />} /> */}
-            <Route path="/room" element={<StudySession />} />
+            {/* <Route path="/room" element={<StudySession />} /> */}
+            <Route path="/room" element={<SearchStudyRooms />} />
             <Route path="/share" element={<ShareSession />} />
           </Routes>
         </div>

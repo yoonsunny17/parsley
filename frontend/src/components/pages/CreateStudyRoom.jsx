@@ -59,6 +59,19 @@ function CreateStudyRoom() {
         method="POST"
         onSubmit={(event) => {
           event.preventDefault();
+          console.log(
+            event.target.title.value +
+              ", " +
+              event.target.mode.value +
+              ", " +
+              event.target.description.value +
+              ", " +
+              event.target.maximum.value +
+              ", " +
+              event.target.isPublic.value +
+              ", " +
+              event.target.password.value
+          );
         }}
       >
         <div className="my-12 flex flex-col gap-8">

@@ -10,7 +10,7 @@ function Navbar() {
         <span className="logo font-logo text-3xl cursor-pointer">PARSLEY</span>
       </Link>
       <div className="flex items-center gap-[25px]">
-        <Link to="/study/create">
+        <Link to="/room/create">
           <Button text={"스터디룸 생성"} />
         </Link>
         <SearchBar />
