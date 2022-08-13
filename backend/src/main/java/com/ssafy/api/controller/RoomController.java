@@ -104,10 +104,10 @@ public class RoomController {
 
 
     @GetMapping("/create")
-    @ApiOperation(value = "방 생성", notes = "인기 해시태그 5개를 가져온다.")
+    @ApiOperation(value = "방 생성 페이지 조회", notes = "방 생성 페이지를 보여주기 위해 인기 해시태그 5개를 가져온다.")
     @ApiResponses({
-            @ApiResponse(code = 201, message = "방 생성 성공"),
-            @ApiResponse(code = 500, message = "방 생성 실패")
+            @ApiResponse(code = 201, message = "방 생성 페이지 조회 성공"),
+            @ApiResponse(code = 500, message = "방 생성 페이지 조회 실패")
     })
     public ResponseEntity<? extends HashtagGetRes> getTopHashtag(){
 
