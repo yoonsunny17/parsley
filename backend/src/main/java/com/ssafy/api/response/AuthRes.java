@@ -17,12 +17,16 @@ public class AuthRes extends BaseResponseBody {
     @ApiModelProperty(name="is completed")
     private boolean isCompleted;
 
-    public static AuthRes of(Integer statusCode, String message, String accessToken, boolean isCompleted) {
+    @ApiModelProperty(name="user id")
+    private Long userId;
+
+    public static AuthRes of(Integer statusCode, String message, String accessToken, boolean isCompleted, Long userId) {
         AuthRes res = new AuthRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setAccessToken(accessToken);
         res.setCompleted(isCompleted);
+        res.setUserId(userId);
         return res;
     }
 }
