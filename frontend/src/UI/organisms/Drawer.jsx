@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import Button from "../atoms/Button";
+import React from "react";
 import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import DdayWidget from "../molecules/DdayWidget";
-import StudyWidget from "../molecules/StudyWidget";
+import StudyWidget from "../molecules/Studywidget";
+import Button from "../atoms/Button";
+import { useSelector } from "react-redux";
+import { useLazyLogoutQuery } from "../../services/user";
+import { KAKAO_AUTH_URL } from "../../services";
 import { Link } from "react-router-dom";
 
 function Drawer({ children }) {
-    // kakao social login
-    const REST_API_KEY = "c363c1414c4795051bf51aea0b37c03d";
-    const REDIRECT_URI = "http://localhost:8080/user/login";
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+    const isLogin = useSelector((state) => state.user.isLogin);
+    const [trigger] = useLazyLogoutQuery();
 
-    const [isLogin, setIsLogin] = useState(false);
+    const logoutHandler = () => trigger();
 
     const userSley = 10000;
     const bookPoint = 9500;
@@ -19,9 +20,6 @@ function Drawer({ children }) {
 
     const loginHandler = () => {
         window.location.href = KAKAO_AUTH_URL;
-    };
-    const logoutHandler = () => {
-        setIsLogin(false);
     };
 
     return (
@@ -64,14 +62,23 @@ function Drawer({ children }) {
                 {/* 로그인하지 않은 사용자인 경우 */}
                 {!isLogin && (
                     <div className="p-10 pt-24 overflow-y-auto w-[380px] bg-bg rounded-tl-3xl rounded-bl-3xl">
-                        <div className="text-center text-3xl font-bold text-font1 mb-6 font-basic">로그인</div>
+                        <div className="text-center text-3xl font-bold text-font1 mb-6 font-basic">
+                            로그인
+                        </div>
                         <div className="text-center text-lg font-normal text-font5 mb-16">
                             파슬리와 함께 공부하면서 <br />
                             허브 도감을 채워보세요!
                         </div>
                         <div className="flex justify-center">
-                            <button className="w-48 h-12" onClick={loginHandler}>
-                                <img src={kakao_oauth} alt="카카오 로그인" className="kakao object-fill" />
+                            <button
+                                className="w-48 h-12"
+                                onClick={loginHandler}
+                            >
+                                <img
+                                    src={kakao_oauth}
+                                    alt="카카오 로그인"
+                                    className="kakao object-fill"
+                                />
                             </button>
                         </div>
                     </div>

@@ -1,17 +1,42 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { BASE_URL } from ".";
+import { createApi } from "@reduxjs/toolkit/dist/query/react";
+import { baseQueryWithReAuth } from ".";
+import { login, logout, setToken, setUserId } from "../modules/userReducer";
+import { parseJwt } from "../util/common";
 
 export const userApi = createApi({
     reducerPath: "userApi",
-    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+    baseQuery: baseQueryWithReAuth,
     endpoints: (builder) => ({
         kakaoLogin: builder.query({
-            query: () => `/auth/login`,
+            query: (code) => `/auth/login?code=${code}`,
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                try {
+                    const result = await queryFulfilled;
+                    dispatch(login());
+                    dispatch(setToken(result?.data.accessToken));
+                    dispatch(
+                        setUserId(parseJwt(result?.data.accessToken).user.id)
+                    );
+                } catch (err) {
+                    console.log(err);
+                }
+            },
         }),
         logout: builder.query({
             query: () => `/auth/logout`,
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                try {
+                    const result = await queryFulfilled;
+                    dispatch(logout());
+                    dispatch(setToken(null));
+                    dispatch(setUserId(null));
+                } catch (err) {
+                    console.log(err);
+                }
+            },
         }),
     }),
 });
 
-export const { useKakaoLoginQuery, useLogoutQuery } = userApi;
+export const { useKakaoLoginQuery, useLogoutQuery, useLazyLogoutQuery } =
+    userApi;
