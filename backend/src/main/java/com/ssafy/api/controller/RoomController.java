@@ -62,7 +62,7 @@ public class RoomController {
 
         if (room == null) {
             return ResponseEntity.status(404).body(
-                    RoomGetRes.of(404, "Room not found", null, false, false)
+                    RoomGetRes.of(404, "Room not found", null, false, false, 0L)
             );
         }
         //수정, 삭제 가능 여부
@@ -74,7 +74,7 @@ public class RoomController {
         }
 
         return ResponseEntity.status(200).body(
-                RoomGetRes.of(200, "Success", room, isNecessary, isPossible)
+                RoomGetRes.of(200, "Success", room, isNecessary, isPossible, userId)
         );
     }
 
@@ -91,7 +91,6 @@ public class RoomController {
         Long userId = 1L;
 //        Long userId = jwtService.getUserId();
         Room room = roomService.createRoom(userId, roomInfo, multipartFile);
-
 
         if (room == null) {
             return ResponseEntity.status(500).body(
