@@ -56,8 +56,8 @@ public class RoomController {
 
         Room room = roomService.getRoomByRoomId(roomId);
 
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
+
         User user = userService.getUserByUserId(userId);
 
         if (room == null) {
@@ -69,7 +69,7 @@ public class RoomController {
         boolean isPossible = roomService.isHostUser(userId, roomId);
         //비밀번호 모달 필요 여부
         boolean isNecessary = true;
-        if(!room.isPublic() && !room.getMembers().contains(user)){
+        if (!room.isPublic() && !room.getMembers().contains(user)) {
             isNecessary = false;
         }
 
@@ -88,8 +88,8 @@ public class RoomController {
             @RequestPart(value = "roomInfo") @ApiParam(value = "방 생성 정보", required = true) @Valid RoomCreatePostReq roomInfo,
             @RequestPart(value = "imgUrl") @ApiParam(value = "방 이미지", required = true) @Valid MultipartFile multipartFile) {
 
-        Long userId = 1L;
-//        Long userId = jwtService.getUserId();
+        Long userId = jwtService.getUserId();
+
         Room room = roomService.createRoom(userId, roomInfo, multipartFile);
 
         if (room == null) {
@@ -109,7 +109,7 @@ public class RoomController {
             @ApiResponse(code = 201, message = "방 생성 페이지 조회 성공"),
             @ApiResponse(code = 500, message = "방 생성 페이지 조회 실패")
     })
-    public ResponseEntity<? extends HashtagGetRes> getTopHashtag(){
+    public ResponseEntity<? extends HashtagGetRes> getTopHashtag() {
 
         List<String> hashtags = roomService.getHashtags();
 
@@ -149,8 +149,8 @@ public class RoomController {
     public ResponseEntity<? extends RoomPostRes> delete(@PathVariable("room_id") @Valid Long roomId,
                                                         @RequestBody @ApiParam(value = "비밀번호", required = true) @Valid RoomPasswordPostReq passwordInfo) {
 
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
+
         boolean isSuccess = roomService.deleteRoom(userId, roomId, passwordInfo);
         if (!isSuccess) {
             return ResponseEntity.status(500).body(
@@ -171,15 +171,15 @@ public class RoomController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends RoomPostRes> checkPassword(@PathVariable("room_id") @Valid Long roomId,
-                                                               @RequestBody @ApiParam(value = "비밀번호", required = true) @Valid RoomPasswordPostReq passwordInfo){
+                                                               @RequestBody @ApiParam(value = "비밀번호", required = true) @Valid RoomPasswordPostReq passwordInfo) {
 
         boolean isTrue = roomService.isCorrectPwd(passwordInfo, roomId);
 
-        if(!isTrue){
+        if (!isTrue) {
             return ResponseEntity.status(202).body(
                     RoomPostRes.of(202, "Passwords do not match", false)
             );
-        }else{
+        } else {
             return ResponseEntity.status(201).body(
                     RoomPostRes.of(201, "Passwords match", true)
             );
@@ -193,14 +193,15 @@ public class RoomController {
             @ApiResponse(code = 404, message = "방 검색 목록 조회 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends RoomsGetRes> searchRooms(@RequestParam("search_word") String search){
+    public ResponseEntity<? extends RoomsGetRes> searchRooms(@RequestParam("search_word") String search) {
+
         List<Room> rooms = roomService.searchRooms(search);
 
-        if(rooms == null){
+        if (rooms == null) {
             return ResponseEntity.status(404).body(
                     RoomsGetRes.of(404, "Fail", null)
             );
-        }else{
+        } else {
             return ResponseEntity.status(200).body(
                     RoomsGetRes.of(200, "Success", rooms)
             );
