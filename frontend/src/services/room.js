@@ -1,9 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import { baseQuery } from ".";
+import { baseQueryWithReAuth } from ".";
 
 export const roomApi = createApi({
     reducerPath: "roomApi",
-    baseQuery: baseQuery,
+    baseQuery: baseQueryWithReAuth,
     endpoints: (builder) => ({
         getAllRooms: builder.query({
             query: () => `/room`,
@@ -12,11 +12,14 @@ export const roomApi = createApi({
             query: (roomId) => `/room/${roomId}`,
         }),
         createRoom: builder.mutation({
-            query: (room) => ({
-                url: `/room/create`,
-                method: "POST",
-                body: room,
-            }),
+            query: (room) => {
+                console.log(room);
+                return {
+                    url: `/room/create`,
+                    method: "POST",
+                    body: room,
+                };
+            },
         }),
         updateRoom: builder.mutation({
             query: ({ id, ...rest }) => ({
