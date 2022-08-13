@@ -33,8 +33,8 @@ public class UserRoomController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRoomsGetRes> getMyRoom(){
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         List<Room> myRooms = userRoomService.getMyRooms(userId);
 
@@ -55,8 +55,7 @@ public class UserRoomController {
     public ResponseEntity<? extends MyRoomPostRes> addMyRoom(
             @RequestBody @ApiParam(value = "나의 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         boolean isAdded = userRoomService.addMyRoom(userId, myRoomInfo);
 
@@ -77,8 +76,7 @@ public class UserRoomController {
     public ResponseEntity<? extends MyRoomPostRes> deleteMyRoom(
             @RequestBody @ApiParam(value = "나의 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         boolean isSuccess = userRoomService.deleteMyRoom(userId, myRoomInfo);
 
@@ -99,8 +97,8 @@ public class UserRoomController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRoomsGetRes> getInterestRoom(){
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         List<Room> myRooms = userRoomService.getInterestRooms(userId);
 
@@ -121,8 +119,7 @@ public class UserRoomController {
     public ResponseEntity<? extends MyRoomPostRes> addInterestRoom(
             @RequestBody @ApiParam(value = "관심 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         boolean isAdded = userRoomService.addInterestRoom(userId, myRoomInfo);
 
@@ -143,8 +140,7 @@ public class UserRoomController {
     public ResponseEntity<? extends MyRoomPostRes> deleteInterestRoom(
             @RequestBody @ApiParam(value = "관심 방 정보", required = true) @Valid MyRoomPostReq myRoomInfo){
 
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         boolean isSuccess = userRoomService.deleteInterestRoom(userId, myRoomInfo);
 
