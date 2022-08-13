@@ -5,6 +5,7 @@ import Home from "./UI/pages/Home";
 import Drawer from "./UI/organisms/Drawer";
 import StudySession from "./OpenVidu/StudySession";
 import MyPage from "./UI/pages/MyPage";
+import NotFound from "./UI/pages/NotFound";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                         /> */}
                         <Route path="/room" element={<StudySession />} />
                         <Route path="/me" element={<MyPage />} />
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </div>
             </Drawer>
