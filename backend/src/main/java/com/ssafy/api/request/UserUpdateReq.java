@@ -5,12 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
-@ApiModel("UserRequest")
-public class UserReq {
+@ApiModel("UserUpdateRequest")
+public class UserUpdateReq {
 
     @ApiModelProperty(name = "닉네임", example = "유교보이")
     private String name;

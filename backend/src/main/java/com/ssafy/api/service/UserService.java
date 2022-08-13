@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.UserReq;
+import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.common.util.UserUtil;
 import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public void updateUser(User user, UserReq userInfo) {
+	public void updateUser(User user, UserUpdateReq userInfo) {
 		user.setName(userInfo.getName());
 		user.setDescription(userInfo.getDescription());
 		user.setProfileImgUrl(userInfo.getProfileImgUrl());
@@ -61,5 +61,10 @@ public class UserService {
 			return true;
 		}
 		return false;
+	}
+
+	@Transactional
+	public void rejoinUser(User user) {
+		user.setWithdrawn(false);
 	}
 }
