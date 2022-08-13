@@ -20,7 +20,6 @@
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
 <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
 <img src="https://img.shields.io/badge/mattermost-0058CC?style=for-the-badge&logo=mattermost&logoColor=white">
-<img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
 <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
 <br/>
@@ -64,9 +63,16 @@
 <br/>
 
 ## 💡 기획
+
+* 리포트 기획서
 ![image](/uploads/a9c6edf67c3f1bb43fdd84f41869e674/image.png)
 
+* 기능 마인드맵
+![Untitled](/uploads/9f93c8263bd26a6af3878fb7132f31be/Untitled.png)
+
 ## ✏ 설계
+
+* [기능 명세서](https://a604-parsley.notion.site/c1d021a1eb0e4e1b815d84f3db48521d)
 
 * [목업](https://a604-parsley.notion.site/eccbc66413734cf99c264947e7ec7904)
 
@@ -76,89 +82,33 @@
 
 * [API 명세](https://a604-parsley.notion.site/API-0b2794a89678471eac820288255f8929)
 
-<br/>
+* [Sequence 다이어그램](https://a604-parsley.notion.site/Sequence-Diagram-ce431b5725674fc49cd0928150390bc9)
 
-## ⌛ 진행 상황
-* [진행 상황 체크리스트](https://a604-parsley.notion.site/40a0d9ddcbe2423aa5a1270741be7827)
+* [도감](https://a604-parsley.notion.site/9175fa6fd77e47e8ad7a9c9007baced7)
 
-<br/>
-
-## 🖥 구현 기능
-
->현재 구현 진행 단계로 아직 main 브랜치에 merge하지 않았습니다.<br/>
->FrontEnd 관련 코드는 frontend 브랜치의 frontend 폴더에,<br/>
->BackEnd 관련 코드는 backend 브랜치의 backend 폴더에 있는 코드를 참고해주세요.😄
+* [아키텍처](https://a604-parsley.notion.site/60c50827fbd74758bae5b2ec53b5251b)
 
 
 <br/>
 
 
-### 💽 배포 Server
+## 🌳 기능 설명
 
-> [배포 URL](https://i7a604.p.ssafy.io/)
-
-> [현재 배포된 서버에서 확인 가능한 내용](https://www.notion.so/a604-parsley/01de4e795921498ba959a31f9317fe31)
->
-> 프론트와 백엔드의 연동이 안된 상황이라,
->   - 프론트 개발한 부분 일부 페이지 간 라우팅만 확인 가능
->   - 백엔드 개발한 부분은 postman을 통해 확인 가능
-
-<br/>
-
-<details>
-<summary>서버 배포</summary>
-<div markdown="1">
-
-* 아키텍처
-    ![image](/uploads/1a10a6741718f37de958f8130e4974c7/image.png)
-
-    * docker-compose를 작성해서, Nginx/Server/DB/Cache 컨테이너를 한 번에 실행하도록 함
-
-        * Nginx 컨테이너 구축 시, React App을 build하여 Nginx의 static 폴더에 배치
-
-         * JDK 기반 Server 컨테이너 구축 시, Spring Boot를 build한 후 실행
-
-    * HTTPS 적용
-
-        * http 80번 포트로 들어오면, https로 redirect 시켜줌
-
-        * `/` 로 들어오는 요청은 static 파일을 응답
-
-        * `/api` 로 들어오는 요청은 내부적으로 `/` 로 rewrite 시켜주고, 8080번 포트로 전달
-        
-            이후 server에서 처리한 응답을 반환
-
-* [EC2에 배포 및 HTTPS 적용](https://a604-parsley.notion.site/EC2-HTTPS-832f7edc54a94fafa57f0ab720ff95b9)
-
-</div>
-</details>
-
-<br/>
-
-
-### 🎨 FrontEnd
-
-##### 컴포넌트 구현
+* [서비스 가이드](https://a604-parsley.notion.site/41bc2ed396ed4509a9d586e1ee4f17c1)
 
 <details>
 <summary>메인 페이지</summary>
 <div markdown="1">
 
-사용자의 허브 도감, 농부왕 랭킹, 스터디룸 탭 조회 컴포넌트로 이루어져 있습니다.<br/>
-허브 도감 컴포넌트를 통해 사용자가 얻은 허브 도감 확인 및 대표 허브 프로필을 설정할 수 있습니다.<br/>
-전체/나의/관심 공부방 탭 전환을 통해 간편하게 스터디룸 조회를 가능하도록 하였습니다.<br/>
-
-* 메인 페이지
-
-    ![image](/uploads/639b5b6e8fa4932b71e69ab3b5aa4d21/image.png)
-
-* 로그인 전 사이드바
-
-    ![image](/uploads/be0950fe9b24ec4d86bb4d63182cf646/image.png)
-
-* 로그인 후 사이드바
-
-    ![image](/uploads/a4dd4a1efe6aa6b1a235c222655a5b0b/image.png)
+* 회원가입 및 로그인
+    * 카카오 로그인 하는 움짤 -> 옆에 drawer 바뀌는 것까지 보여주기
+    * 설명으로 로그인 성공하면 자신의 랭킹도 확인할 수 있다고 적기
+* 방 목록
+    * 메인페이지에서 인덱스 탭 누르면서 나의 방, 관심 방 보여주고, '더보기' 눌러서 전체 리스트 보여주는 움짤
+* 방 검색
+    * 메인 페이지 상단에서 검색해서 검색 내용 보여주는 움짤
+* 알림
+    * 알림 함 누르면 0으로 줄어듦 + 전체 삭제하면 다 없어지는 움짤
 
 </div>
 </details>
@@ -167,13 +117,12 @@
 <summary>농장 페이지</summary>
 <div markdown="1">
 
-슬리 포인트를 얻을 수 있는 허브 재배 및 수확을 통한 허브 도감을 확인할 수 있는 페이지 입니다.<br/>
-최대 8개의 허브를 동시에 키울 수 있으며, 비어있는 칸을 클릭하게 되면 허브 아이템을 선택할 수 있는 상점 모달창이 나타납니다.<br/>
-상점 모달창에서 씨앗/비료/물뿌리개 아이템을 사용자 마음대로 조합하여 구매가 가능합니다.<br/>
-
-* 농장 아이템 상점 모달
-
-    ![image](/uploads/4c82233a783e8b8d317fa709721095b9/image.png)
+* 허브 심기
+    * 허브 심는 과정 움짤
+    * 시간 흐르는 기준 설명 적어주기
+    * 심으면 알림 올라간다 설명 적어주기
+* 허브 수확하기
+    * 허브 수확하는 과정 움짤 + 도감에 차는 것
 
 </div>
 </details>
@@ -182,20 +131,19 @@
 <summary>스터디룸 페이지</summary>
 <div markdown="1">
 
-스터디룸을 생성할 수 있는 페이지와, 스터디룸을 조회할 수 있는 목록 페이지입니다.<br/>
-스터디룸 생성 시 스터디룸을 홍보할 수 있는 해시태그 기능을 구현하였습니다.<br/>
-스터디룸 검색 목록 페이지는 손꾸락 모드/얼구리 모드로 나누어 가시성을 높였습니다.<br/>
-
-* 스터디룸 생성 페이지
-
-     ![image](/uploads/a9bfcb7755e3d7c4348d9646ab1bacdc/image.png)
-
-* 스터디룸 검색 목록 페이지
-
-     ![image](/uploads/161f66031ccf2ccfd49064b042580d33/image.png)
-
-     ![image](/uploads/d64bb6279519ae57ba11b1b2dfc65166/image.png) 
-
+* 스터디 생성하기
+    * 스터디 생성하는 과정 움짤
+* 스터디 참가하기
+    * 농부왕 및 공부왕 움짤 -> 공부 하고 오면 시간 늘어나서 등수 바뀌어있음?
+    * 손꾸락
+        * 스터디 참가하면서 캠 전환 + 채팅 움짤
+    * 얼구리
+        * 화면 공유 움짤 + 화면 배치 전환
+* 스터디 수정 및 삭제하기
+    * 수정하고 삭제하는 과정
+    * 호스트만 가능하다고 설명
+* 스터디 탈퇴하기
+    * 호스트가 아닐 때, 탈퇴하는 과정
 
 </div>
 </details>
@@ -204,320 +152,37 @@
 <summary>마이 페이지</summary>
 <div markdown="1">
 
-나의 프로필 및 학습 관리를 전체적으로 볼 수 있는 마이 페이지 입니다.<br/>
-중요한 일정을 위한 D-Day 설정과, 오늘의 스터디 목표 설정 기능을 구현하였습니다.<br/>
-또한, 사용자의 학습량 데이터를 통해 금주의 공부량 통계 데이터를 구현할 예정입니다.<br/>
-
-
-* 마이 페이지
-
-    ![image](/uploads/3b923a1862d7860b84129710ece2a61f/image.png)
-
-* 프로필 수정 컴포넌트
-
-    ![image](/uploads/74be6f33a715d016775b50bd83f2cb03/image.png)
-
-* D-Day 설정 모달
-
-    ![image](/uploads/3fba97be98704f696aa37e01a52f050f/image.png)
-
-* 오늘의 스터디 목표 설정 모달
-
-    ![image](/uploads/5d656d51c71c3df684711371ca829edc/image.png)
-
-</div>
-</details>
-
-##### OpenVidu
-<details>
-<summary>스터디룸 기능</summary>
-<div markdown="1">
-
-webRTC(OpenVidu)를 기반으로 한 스터디룸 입니다.<br/>
-손꾸락 모드/얼구리 모드 두 가지 모드를 구현할 예정이며, 현재는 손꾸락 모드까지 구현하였습니다.<br/>
-마이크 on/off, 화면 on/off, 채팅창 등 기본적인 기능을 구현하였습니다.<br/>
-이후, 4분할 메인 화면 구현 모드 또한 개발할 예정입니다.</br>
-
-
-* 스터디룸 화면 공유
-
-    ![openvidu_1](/uploads/973626302a71ed6aa598068a3bee295e/openvidu_1.gif)
-
-* 스터디룸 화면 카메라 on/off
-
-    ![openvidu_2](/uploads/3b6ca4c399f4775496969a8d0e59894f/openvidu_2.gif)
-
-* 스터디룸 팝업 채팅창
-
-    ![openvidu_4](/uploads/9979c155151ae1a828653453c437372b/openvidu_4.gif)
-
-* 스터디룸 나가기
-
-    ![openvidu_5](/uploads/5a427fdcc2d995d636919db0f9dad0d4/openvidu_5.gif)
-
-</div>
-</details>
-
-##### Three.js
-<details>
-<summary>3D 허브 모델</summary>
-<div markdown="1">
-
-Three.js를 기반으로 3D 허브 모델을 구현하여 시각적 재미를 더했습니다.<br/>
-3D 모델을 확대하거나, 원하는 방향으로 회전시켜볼 수 있도록 하여 게임적 요소를 더했습니다.<br/>
-3D 허브 모델은 유료 모델을 구매하여 사용할 예정이며, 현재는 무료로 다운로드 가능한 샘플들을 가져와서 테스트 하며 개발중에 있습니다.</br>
-
-![image](/uploads/c03f6149b5b081122a2c53ab35f4cf04/image.png)
-
-![image](/uploads/c6b129dd9b695be30df4339aeadbc647/image.png)
+* 내 정보 조회 및 수정
+    * 수정하는 움짤(프로필 변경도,,ㅎㅎ)
+* D-day 설정
+    * d-day 설정하는 과정
+* 오늘의 목표
+    * 목표 설정하는 과정
+    * 공부 한번 시작하면 못바꾼다고 설명적어주기
+* 오늘의 공부량 및 주간 공부량
+    * 오늘 공부한 그 화면 보여주기(캡쳐)
+    * 주간 공부량 (캡쳐)
 
 </div>
 </details>
 
 <br/>
 
-### 🧱 BackEnd
-
-##### Kakao Login API
-
-<details>
-<summary>회원가입 및 로그인</summary>
-<div markdown="1">
-
-* 시퀀스 다이어그램
-
-    ![image](/uploads/ef160b2c089df89bf6e280f310e5cabe/image.png)
-
-
-* 로그인 화면 캡쳐
-
-    ![image](/uploads/aaa3607eea41c4efa84118321a3d1650/image.png)
-
-    ![image](/uploads/8ecd861e6fc2891b2352ac31f71cd6d2/image.png)
-
-* 쿠키 & Response
-
-    ![image](/uploads/0e2a123a28b571d7c6692e9313098f6f/image.png)
-
-* 캐시 서버
-
-    ![image](/uploads/9c0b244b05d6a08fde098fee48727d6e/image.png)
-
-</div>
-</details>
-
-##### API
-
-> [배포한 서버의 Swagger URL](https://i7a604.p.ssafy.io/api/swagger-ui/index.html)
-
-> 현재 개발의 편의성을 위해 `userId = 1L`로 지정해놓은 상태입니다. 
-
-```sql
--- local 확인용 user data
-insert user(current_book_point, current_sley, d_day, description, is_withdrawn, name, reg_date)
-values(100, 100, curdate(), "취뽀하쟈", false, "김싸피", curdate());
-```
-
-
-<details>
-<summary>회원 정보</summary>
-<div markdown="1">
-
-* 회원 정보 수정
-
-    ![user_update1](/uploads/882515795751d4900dfd840c072226a3/user_update1.PNG)
-
-    ![user_update2](/uploads/54effc8c76f876726df96eccbdbb5fe5/user_update2.PNG)
-
-    ![user_update3](/uploads/4fe4261e7104c7b11479b47564b3d0aa/user_update3.PNG)
-
-* 회원 탈퇴
-
-    ![user_delete1](/uploads/e3b19259f96632d50c58307921cdef2e/user_delete1.PNG)
-
-    ![user_delete2](/uploads/c5ae8b8355b3c228660c40535e3ee43f/user_delete2.PNG)
-
-</div>
-</details>
-
-<details>
-<summary>스터디 룸</summary>
-<div markdown="1">
-
-* 생성
-
-    ![room_create1](/uploads/4d919de7a204a9a2297130be0df1c892/room_create1.PNG)
-
-    ![room_create2](/uploads/da5dd7ecd29ef2df9831d557aa4f8a0c/room_create2.PNG)
-
-    ![room_create3](/uploads/fa6141fc39782505001cbd35c239ff89/room_create3.PNG)
-
-* 조회
-
-    * 방 하나 조회
-
-        ![room_read1](/uploads/401a691ebb745d43bd6efef09038d07f/room_read1.PNG)
-
-        ![room_read2](/uploads/c082ba7ce23dafeaec551728e8caaf16/room_read2.PNG)
-
-    * 방 전체 조회
-
-        ![room_read_entire1](/uploads/adac8bd409eb088f4d00fb1f6c0a2859/room_read_entire1.PNG)
-
-        ![room_read_entire2](/uploads/1a45aaccc17f93be04a632621e7e5338/room_read_entire2.PNG)
-
-* 수정
-
-    ![room_update1](/uploads/69ffea06b63f95ca1143e164c03f2e58/room_update1.PNG)
-
-    ![room_update2](/uploads/18136b63589ec08a28e20f5016d98fec/room_update2.PNG)
-
-* 삭제
-
-    ![room_delete1](/uploads/98d27bc24675bf6779b63186c59a8019/room_delete1.PNG)
-
-    ![room_delete2](/uploads/cec1faa940087eee76cb9d66e6d2887f/room_delete2.PNG)
-
-</div>
-</details>
-
-<details>
-<summary>유저 스터디 룸</summary>
-<div markdown="1">
-
-* 나의 방
-    * 생성(스터디룸 참가)
-
-        ![user_room_create1](/uploads/f83066e9453d8f47b5bcebbd280281db/user_room_create1.PNG)
-
-        ![user_room_create2](/uploads/2f7fe7f92fc1d97b88f1fbdd433ae0cf/user_room_create2.PNG)
-
-    * 조회
-
-        ![user_room_read1](/uploads/78f023a32477469e28366d5dee3237f3/user_room_read1.PNG)
-
-        ![user_room_read2](/uploads/c2fac272c52317cec8dc8d90f08717c7/user_room_read2.PNG)
-
-    * 삭제
-
-        ![user_room_delete1](/uploads/b7291b7d9c4a9005d32f931cbcb2f8d9/user_room_delete1.PNG)
-
-        ![user_room_delete2](/uploads/8a41fc7addf7b14681d32cc30e01c185/user_room_delete2.PNG)
-
-
-* 관심 방
-
-    * 생성(관심 표시)
-
-        ![interest_room_create1](/uploads/eef04053eaa1e62ff5c4d8ef78c48f59/interest_room_create1.PNG)
-
-        ![interest_room_create2](/uploads/d6a0ed83e260811419f4f21e1c4d1606/interest_room_create2.PNG)
-
-        ![interest_room_create3](/uploads/6bfb69a4ac931f2f448ee150f741006c/interest_room_create3.PNG)
-
-    * 조회
-
-        ![interest_room_read1](/uploads/c5c716976c399eb0cfb7535d7f6f9f05/interest_room_read1.PNG)
-
-        ![interest_room_read2](/uploads/76476d1182368638e2c8b9e115ce8bc8/interest_room_read2.PNG)
-
-    * 삭제
-
-        ![interest_room_delete1](/uploads/7a920ffc45f1379a1824f447e8f704a2/interest_room_delete1.PNG)
-
-        ![interest_room_delete2](/uploads/c8d374a76093c39142a30e8c2432e926/interest_room_delete2.PNG)
-
-</div>
-</details>
-
-<details>
-<summary>마이페이지</summary>
-<div markdown="1">
-
-* 목표 시간
-
-    * 조회
-
-        ![study_goal_read1](/uploads/b5d811ab81754536a39e50f121582214/study_goal_read1.PNG)
-
-        ![study_goal_read2](/uploads/96ee0095510f8a69e4d336bc67ec2776/study_goal_read2.PNG)
-
-    * 등록
-
-        ![study_goal_create1](/uploads/6efffedcae2468284c75dac63444f9b0/study_goal_create1.PNG)
-
-        ![study_goal_create2](/uploads/837bdfa76e09f69d876dda17a6146fa4/study_goal_create2.PNG)
-
-        ![study_goal_create3](/uploads/17f27a7ddc796805462c9e97269e51d0/study_goal_create3.PNG)
-
-    * 수정
-
-        ![study_goal_update1](/uploads/81d9c96443b8cba7bc5c997bf12bc3e2/study_goal_update1.PNG)
-
-        ![study_goal_update2](/uploads/0b6a0d2ec165ad5c9172f043c1587191/study_goal_update2.PNG)
-
-* 공부 로그
-
-    * 추가
-
-        ![daily_study_log_create1](/uploads/58e02fbcfb8319317058fb609f4aa704/daily_study_log_create1.PNG)
-
-        ![daily_study_log_create2](/uploads/ec46d5f0295e32ef12963b09b7c04b54/daily_study_log_create2.PNG)
-
-        ![daily_study_log_create3](/uploads/06ac598fa7e439f814c15da1d813ae8c/daily_study_log_create3.PNG)
-
-        ![daily_study_log_create4](/uploads/e57fce0d8b6325d224c69d0190cff6c0/daily_study_log_create4.PNG)
-
-        ![daily_study_log_create5](/uploads/b689ab3e5a137b3b7d2fc9bf206dc8ee/daily_study_log_create5.PNG)
-
-    * 주간 공부량 조회
-
-        ![study_weekly_read1](/uploads/85348bd0a57584bcdb38544e37a4c5b0/study_weekly_read1.PNG)
-
-        ![study_weekly_read2](/uploads/176668c112d41a2ba5c83467cab41d80/study_weekly_read2.PNG)
-
-
-</div>
-</details>
-
-<details>
-<summary>농장 게임</summary>
-<div markdown="1">
-
-* 허브 수집
-
-    * 조회
-
-        ![image](/uploads/722ac0833e272994fa586915e8df90be/image.png)
-
-        ![image](/uploads/cdd162896a1a7adc3aa307f6e3c9ded0/image.png)
-
-    * 추가(수확)
-
-        ![image](/uploads/b7f5405e7fa6d479b24a0c6aee0f2ba9/image.png)
-
-        ![image](/uploads/d06022f1bab1484df5577e1051f4ffc1/image.png)
-
-        ![image](/uploads/d9e6a12dc6b251bda136ecc05e8f2358/image.png)
-
-* 작물
-
-    * 조회
-
-        ![image](/uploads/b229596b7e6202dd77822c76523cbc0c/image.png)
-
-        ![image](/uploads/212b6e242b00b488b275ed53901bb291/image.png)
-    
-    * 추가
-        ![image](/uploads/9926cb751c0a617a0fc1d5c1cec3bf42/image.png)
-
-        ![image](/uploads/8b350f8d5d3657c57ec0b851e1e537db/image.png)
-
-        ![image](/uploads/342a30a5c101576115b05d450ac13d10/image.png)
-
-        ![image](/uploads/2111071b144c7737d6d637c239ea6a6e/image.png)
-
-
-</div>
-</details>
-
+## 🖥 역할 분담
+
+|이름|역할|
+|---|---|
+|마유선| - ER 다이어그램, Entity 설계, API 설계 <br/> - API 구현(농장 게임, 알림) <br/> - 랭킹 시퀀스 <br/> - 산출물 관리|
+|이동희| - 로고 디자인 <br/> - 목업 <br/> - 컴포넌트 구현(마이페이지, 랭킹)|
+|전윤선| - 목업 <br/> - OpenVidu <br/> - Three.js <br/> - 컴포넌트 구현(농장 게임, 스터디룸, 메인페이지, 알림, 스터디룸 리스트)|
+|정윤영| - 와이어프레임 설계 <br/> - ER 다이어그램, Entity 설계, API 설계 <br/> - API 구현(스터디룸, 유저 스터디룸, 학습내역)|
+|조혜은| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(스터디룸, 랭킹) <br/> - 서버 구축 <br/> - 컴포넌트 구현(마이페이지, 사이드바)|
+|한상우| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(회원 정보) <br/> - OAuth + JWT <br/> - 캐시 서버 구축|
+
+## 📚 ETC? 산출물?
+
+* UCC
+* 발표 자료
+    * 중간 발표
+    * 최종 발표
+* 포팅 매뉴얼
