@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import HerbStoreItemCard from "../atoms/HerbStoreItemCard";
+// import HerbStoreItemCard from "../atoms/HerbStoreItemCard";
 import SelectItemList from "./SelectItemList";
 import HerbItemAvatar from "../atoms/HerbItemAvatar";
+// 허브 아이템 선택 아바타 라디오버튼
+import HerbStoreItemAvatar from "../atoms/HerbStoreItemAvatar";
 
 // TODO: 아이템 선택(카드 컴포넌트) 했을 때 선택한 것 보이도록 스타일링 해줘야함 (border styling)
 // FIXME: 아래 심으러 가기 (닫기 버튼) 없애고 위에 X 로 버튼 대체하기, 모달 전체적인 크기 줄이기
@@ -102,6 +104,12 @@ function HerbItemsStoreModal(props) {
   // // 자식컴포넌트에서 부모컴포넌트로 data보내기
   // // const sendHerbItemsData = () => {};
 
+  // 아이템이 선택 되었는지 아닌지 확인하려고 !
+  const [isEmpty, setIsEmpty] = useState(false);
+  const handleIsEmpty = () => {
+    setIsEmpty((current) => !current);
+  };
+
   return (
     <div>
       <label
@@ -144,11 +152,16 @@ function HerbItemsStoreModal(props) {
                         type="radio"
                         value={option.price}
                         checked={seed === `${option.name}`}
-                        // onChange={selectSeedItem}
+                        onChange={selectSeedItem}
                         // onClick={checkItems}
                         onClick={handleChange}
                       />
-                      <HerbStoreItemCard
+                      {/* <HerbStoreItemCard
+                        title={option.name}
+                        price={option.price}
+                        imgUrl={option.imgUrl}
+                      /> */}
+                      <HerbStoreItemAvatar
                         title={option.name}
                         price={option.price}
                         imgUrl={option.imgUrl}
@@ -174,7 +187,7 @@ function HerbItemsStoreModal(props) {
                         // onClick={checkItems}
                         onClick={handleChange}
                       />
-                      <HerbStoreItemCard
+                      <HerbStoreItemAvatar
                         title={option.name}
                         price={option.price}
                         imgUrl={option.imgUrl}
@@ -199,7 +212,7 @@ function HerbItemsStoreModal(props) {
                         // onClick={checkItems}
                         onClick={handleChange}
                       />
-                      <HerbStoreItemCard
+                      <HerbStoreItemAvatar
                         title={option.name}
                         price={option.price}
                         imgUrl={option.imgUrl}
@@ -225,12 +238,13 @@ function HerbItemsStoreModal(props) {
                         "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
                       }
                     />
-                    <p>{selectedItemsArr[0]}</p>
                   </div>
-
-                  <span className="flex badge">
-                    {selectedItemsPriceArr[0]} 슬리
-                  </span>
+                  <div>
+                    <p>{selectedItemsArr[0]}</p>
+                    <span className="flex badge">
+                      {selectedItemsPriceArr[0]} 슬리
+                    </span>
+                  </div>
                 </div>
 
                 {/* 비료 선택 내역 */}
@@ -300,36 +314,31 @@ const seedOptions = [
     name: "일반 씨앗",
     price: 0,
     grade: "normal",
-    imgUrl:
-      "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+    imgUrl: "/herbs/seed.png",
   },
   {
     name: "희귀 씨앗",
     price: 100,
     grade: "rare",
-    imgUrl:
-      "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+    imgUrl: "/herbs/seeds.png",
   },
   {
     name: "영웅 씨앗",
     price: 200,
     grade: "hero",
-    imgUrl:
-      "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+    imgUrl: "/herbs/seed.png",
   },
   {
     name: "전설 씨앗",
     price: 350,
     grade: "legend",
-    imgUrl:
-      "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+    imgUrl: "/herbs/seeds.png",
   },
   {
     name: "미스테리 씨앗",
     price: 500,
     grade: "mystery",
-    imgUrl:
-      "https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+    imgUrl: "/herbs/seed.png",
   },
 ];
 
@@ -337,26 +346,22 @@ const fertilizerOptions = [
   {
     name: "일반 비료",
     price: 150,
-    imgUrl:
-      "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    imgUrl: "/herbs/fertilizer.png",
   },
   {
     name: "고급 비료",
     price: 200,
-    imgUrl:
-      "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    imgUrl: "/herbs/liquid_fertilizer.png",
   },
   {
     name: "프로틴 비료",
     price: 300,
-    imgUrl:
-      "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    imgUrl: "herbs/fertilizer.png",
   },
   {
     name: "최상급 비료",
     price: 500,
-    imgUrl:
-      "https://images.unsplash.com/photo-1534278931827-8a259344abe7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    imgUrl: "/herbs/liquid_fertilizer.png",
   },
 ];
 
@@ -364,14 +369,12 @@ const waterOptions = [
   {
     name: "일반 물뿌리개",
     price: 250,
-    imgUrl:
-      "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1476&q=80",
+    imgUrl: "/herbs/watering-can.png",
   },
   {
     name: "고급 물뿌리개",
     price: 500,
-    imgUrl:
-      "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1476&q=80",
+    imgUrl: "/herbs/watering-can.png",
   },
 ];
 export default HerbItemsStoreModal;
