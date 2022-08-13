@@ -11,7 +11,7 @@ function Collections() {
     };
 
     return (
-        <div className="w-full mb-5 rounded-3xl bg-white drop-shadow px-8 py-5 md:w-2/3 md:mb-0">
+        <div className="w-full mb-5 rounded-3xl bg-white drop-shadow px-8 py-5 lg:w-2/3 lg:mb-0">
             <header className="flex justify-between items-center">
                 <h3 className="text-xl font-bold">{username} 님의 도감</h3>
                 {/* <button className="rounded-full px-2 py-1 bg-main hover:bg-sub2 text-font3 text-sm mr-11 mt-11">

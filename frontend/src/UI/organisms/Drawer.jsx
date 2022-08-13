@@ -1,7 +1,7 @@
 import React from "react";
 import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import DdayWidget from "../molecules/DdayWidget";
-import StudyWidget from "../molecules/Studywidget";
+import StudyWidget from "../molecules/StudyWidget";
 import Button from "../atoms/Button";
 import { useSelector } from "react-redux";
 import { useLazyLogoutQuery } from "../../services/user";
