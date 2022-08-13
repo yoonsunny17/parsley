@@ -3,7 +3,7 @@
 function HerbItemAvatar({ imgUrl, isEmpty }) {
   return (
     <img
-      className="inline-block mt-3 mb-3 mr-3 h-10 w-10 rounded-full ring-2 ring-sub1"
+      className="h-10 w-10 rounded-full ring-2 ring-sub1"
       src={imgUrl}
       alt="avatar"
     />

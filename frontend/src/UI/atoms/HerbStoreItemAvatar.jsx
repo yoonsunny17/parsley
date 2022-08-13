@@ -3,16 +3,16 @@ import React from "react";
 
 function HerbStoreItemAvatar({ imgUrl, title, price }) {
   return (
-    <div>
-      <div className="avatar mx-3 mt-4 mb-3  cursor-pointer">
+    <>
+      <div className="avatar mx-3 mt-4 mb-3 cursor-pointer">
         {/* <div className="w-16 rounded-xl"> */}
-        <div className="w-16 rounded-full ring-extra1 ring-offset-base-100 ring-2 hover:ring-sub1 color-delay">
+        <div className="w-16 rounded-full ring-extra1 ring-offset-base-100 ring-2 hover:ring-sub1 color-delay focus:ring-sub1 active:ring-sub1">
           <img src={imgUrl} alt="itemStore" />
         </div>
       </div>
       <div className="text-xs font-semibold text-center">{title}</div>
       <div className="text-xs font-semibold text-center">{price} 슬리</div>
-    </div>
+    </>
   );
 }
 

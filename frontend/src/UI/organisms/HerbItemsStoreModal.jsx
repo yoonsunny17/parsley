@@ -224,40 +224,34 @@ function HerbItemsStoreModal(props) {
             </div>
             {/* 아이템 선택 목록 a.k.a. 구매목록! */}
             {/* // TODO: 화면 WIDTH 좁아졌을 때 구매목록 어떻게 처리할지 ?? */}
-            <div className="shadow rounded-xl lg:w-[300px] h-auto my-3 ml-10 py-3">
+            <div className="shadow rounded-xl w-[300px] h-auto my-3 ml-10 py-3">
               <p className="text-lg mt-4 font-semibold text-center">
                 구매 목록
               </p>
-              <div className="mt-6 flex flex-col">
+              <div className="mt-6 flex flex-col w-full">
                 {/* 씨앗 선택 내역 */}
-                <div className="grid grid-rows-1 grid-flow-col items-center">
-                  <div className="flex justify-center">
+                <div className="flex w-full px-4 mb-4">
+                  <div className="flex justify-center w-1/4 mr-6">
                     <HerbItemAvatar imgUrl="/herbs/seeds.png" />
                   </div>
-                  {/* <div className="flex"> */}
-                  <div className="col-span-1">씨앗</div>
-                  <div className="text-end col-span-1">슬리</div>
-                  {/* </div> */}
+                  <span className="w-1/3 text-start">씨앗</span>
+                  <span className="w-1/3 text-end">{} 슬리</span>
                 </div>
                 {/* 비료 선택 내역 */}
-                <div className="grid grid-rows-1 grid-flow-col items-center">
-                  <div className="flex justify-center">
+                <div className="flex w-full px-4 mb-4">
+                  <div className="flex justify-center w-1/4 mr-6">
                     <HerbItemAvatar imgUrl="/herbs/fertilizer.png" />
                   </div>
-                  {/* <div className="flex"> */}
-                  <div className="col-span-1">비료</div>
-                  <div className="text-end col-span-1">슬리</div>
-                  {/* </div> */}
+                  <span className="w-1/3 text-start">비료</span>
+                  <span className="w-1/3 text-end">{} 슬리</span>
                 </div>
                 {/* 물뿌리개 선택 내역 */}
-                <div className="grid grid-rows-1 grid-flow-col items-center">
-                  <div className="flex justify-center">
+                <div className="flex w-full px-4 mb-4">
+                  <div className="flex justify-center w-1/4 mr-6">
                     <HerbItemAvatar imgUrl="/herbs/watering-can.png" />
                   </div>
-                  {/* <div className="grid grid-rows"> */}
-                  <div className="col-span-1">물뿌리개</div>
-                  <div className="text-end col-span-1">슬리</div>
-                  {/* </div> */}
+                  <span className="w-1/3 text-start">물뿌리개</span>
+                  <span className="w-1/3 text-end">{} 슬리</span>
                 </div>
                 {/* 총 슬리 합계 */}
                 <div className="m-10 font-semibold text-center text-xl">
@@ -265,10 +259,7 @@ function HerbItemsStoreModal(props) {
                   {/* 슬리 이미지 아바타로 넣기 */}
                   <div className="avatar">
                     <div className="ml-2 w-6 rounded-full">
-                      <img
-                        src="/herbs/sley.png"
-                        alt="Tailwind-CSS-Avatar-component"
-                      />
+                      <img src="/herbs/sley.png" alt="sley" />
                     </div>
                   </div>
                   <p className="text-base font-normal py-3">
