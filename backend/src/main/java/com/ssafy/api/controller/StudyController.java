@@ -132,7 +132,7 @@ public class StudyController {
 //        Long userId = jwtService.getUserId();
         Long userId = 1L;
 
-        DailyStudyLog dailyStudyLog = studyService.addDailyGoal(userId, logInfo);
+        DailyStudyLog dailyStudyLog = studyService.addDailyLog(userId, logInfo);
 
         if(dailyStudyLog == null){
             return ResponseEntity.status(500)
