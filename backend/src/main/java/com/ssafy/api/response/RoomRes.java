@@ -17,10 +17,10 @@ public class RoomRes {
     Long id;
 
     @ApiModelProperty(name = "호스트 정보")
-    User hostUser;
+    RoomUserRes hostUser;
 
     @ApiModelProperty(name = "참가자 목록")
-    List<User> members;
+    List<RoomUserRes> members = new ArrayList<>();
 
     @ApiModelProperty(name = "방 이름", example = "coding_with_me")
     String name;
@@ -64,5 +64,15 @@ public class RoomRes {
         res.setHashtags(hashtags);
 
         return res;
+    }
+
+    public void setHostUser(User hostUser){
+        this.hostUser = RoomUserRes.of(hostUser);
+    }
+
+    public void setMembers(List<User> members){
+        for(User member : members){
+            this.members.add(RoomUserRes.of(member));
+        }
     }
 }
