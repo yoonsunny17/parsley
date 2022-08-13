@@ -39,8 +39,8 @@ public class StudyController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends GoalGetRes>  getDailyGoal(){
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         int targetTime = studyService.getTargetTime(userId);
 
@@ -56,8 +56,8 @@ public class StudyController {
     })
     public ResponseEntity<? extends GoalCreatePostRes> createDailyGoal(
             @RequestBody @ApiParam(value = "목표 생성 정보", required = true) @Valid GoalCreatePostReq goalInfo) {
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         DailyGoal dailyGoal = studyService.createDailyGoal(userId, goalInfo);
 
@@ -79,8 +79,8 @@ public class StudyController {
     })
     public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(
             @RequestBody @ApiParam(value = "목표 수정 정보", required = true) @Valid GoalCreatePostReq goalInfo){
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         DailyGoal dailyGoal = studyService.updateDailyGoal(userId, goalInfo);
 
@@ -101,8 +101,8 @@ public class StudyController {
             @ApiResponse(code = 500, message = "주간 공부량 조회 실패")
     })
     public ResponseEntity<? extends WeeklyStudyGetRes> getWeeklyStudyTime(){
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         List<Long> week = studyService.getWeeklyStudyTime(userId);
         Long last_week = studyService.getLastWeekTime(userId);
@@ -129,8 +129,8 @@ public class StudyController {
     })
     public ResponseEntity<? extends LogCreatePostRes> createStudyLog(
             @RequestBody @ApiParam(value = "로그 생성 정보", required = true) @Valid LogCreatePostReq logInfo){
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         DailyStudyLog dailyStudyLog = studyService.addDailyLog(userId, logInfo);
 
@@ -151,8 +151,7 @@ public class StudyController {
     })
     public ResponseEntity<? extends LogGetRes> getDailyStudyLog(){
 
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         List<DailyStudyLog> dailyStudyLogs = studyService.getDailyLogs(userId);
 
