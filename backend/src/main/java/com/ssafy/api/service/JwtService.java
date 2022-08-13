@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-//    private static final String SALT = "parsley";
+    //    private static final String SALT = "parsley";
     @Value("${SALT}")
     private String SALT;
 
@@ -90,7 +90,12 @@ public class JwtService {
 
     public Map<String, Object> get(String key) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String jwt = request.getHeader("Authorization").split(" ")[1];
+        String bearer = request.getHeader("Authorization");
+        if (bearer == null) {
+            return null;
+        }
+
+        String jwt = bearer.split(" ")[1];
         Jws<Claims> claims = null;
         try {
             claims = Jwts.parser()
@@ -125,6 +130,9 @@ public class JwtService {
     }
 
     public Long getUserId() {
+        if (this.get("user") == null) {
+            return null;
+        }
         return Long.parseLong((String) this.get("user").get("id"));
     }
 }

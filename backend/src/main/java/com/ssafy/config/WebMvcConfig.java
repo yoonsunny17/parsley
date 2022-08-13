@@ -25,6 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
             "/auth/logout",
             "/auth/refresh",
             "/room",
+            "/rank/nongbu",
             "/error",
     };
 
