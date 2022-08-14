@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-three/drei": "^9.19.7",
+    "@react-three/fiber": "^8.3.1",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -11,6 +13,7 @@
     "axios": "^0.27.2",
     "bootstrap-icons": "^1.9.1",
     "daisyui": "^2.20.0",
+    "gltfjsx": "^5.0.2",
     "dotenv": "^16.0.1",
     "moment": "^2.29.4",
     "openvidu-browser": "^2.22.0",
@@ -27,6 +30,8 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.4.26",
     "redux-persist": "^6.0.0",
+    "sweetalert2": "^11.4.26",
+    "three": "^0.143.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

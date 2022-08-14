@@ -8,6 +8,8 @@ import NotFound from "./UI/pages/NotFound";
 import KakaoLogin from "./UI/pages/KakaoLogin";
 import EnterStudyRoom from "./UI/pages/EnterStudyRoom";
 import SearchStudyRooms from "./UI/pages/SearchStudyRooms";
+import Farm from "./components/pages/Farm";
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
             {/* <Route path="/room" element={<EnterStudyRoom />} /> */}
             <Route path="/me" element={<MyPage />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/farm" element={<Farm />} />
             <Route path="/room" element={<SearchStudyRooms />} />
           </Routes>
         </div>
