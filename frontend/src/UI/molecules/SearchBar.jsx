@@ -25,11 +25,16 @@ function SearchBar() {
         <i className="bx bx-search"></i>
       </button>
       {isOpen ? (
-        <input
-          onKeyPress={searchEnter}
-          className="rounded-md bg-extra4 px-3 py-1 input-border input-placeholder"
-          type="text"
-        />
+        <div>
+          <input
+            onKeyPress={searchEnter}
+            className="rounded-md bg-extra4 px-3 py-1 input-border input-placeholder"
+            type="text"
+          />
+          {/* {filtered.map((itemList) => {
+            return;
+          })} */}
+        </div>
       ) : (
         <input
           className="rounded-md bg-extra4 py-1 input-border input-placeholder hidden"
