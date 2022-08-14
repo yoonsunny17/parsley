@@ -1,11 +1,16 @@
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useRef, lazy, useState, useEffect } from "react";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
 function HerbComponent1(props) {
   const { nodes, materials } = useGLTF("nature_forest/scene.gltf");
+  // const [isMounted, setIsMounted] = useState(false);
+  // useEffect(() => {
+  //   setIsMounted(true);
+  // }, []);
   return (
     <div className="h-[200px] w-[180px]">
+      {/* {!isMounted ? null : ( */}
       <Canvas>
         <Suspense fallback={null}>
           <ambientLight color={0xfff8dd} intensity={0.6} />
@@ -53,6 +58,7 @@ function HerbComponent1(props) {
           </group>
         </Suspense>
       </Canvas>
+      {/* )} */}
     </div>
   );
 }
