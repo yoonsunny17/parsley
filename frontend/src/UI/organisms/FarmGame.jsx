@@ -5,6 +5,9 @@ import HerbItemsStoreModal from "./HerbItemsStoreModal";
 import HerbComponent1 from "../atoms/HerbComponent1";
 import HerbComponent2 from "../atoms/HerbComponent2";
 import HerbComponent3 from "../atoms/HerbComponent3";
+// import HerbComponent1 from "../atoms/HerbComponent1";
+// import HerbComponent2 from "../atoms/HerbComponent2";
+// import HerbComponent3 from "../atoms/HerbComponent3";
 
 import React, { useState } from "react";
 

@@ -8,8 +8,7 @@ import NotFound from "./UI/pages/NotFound";
 import KakaoLogin from "./UI/pages/KakaoLogin";
 import EnterStudyRoom from "./UI/pages/EnterStudyRoom";
 import SearchStudyRooms from "./UI/pages/SearchStudyRooms";
-import Farm from "./components/pages/Farm";
-
+import Farm from "./UI/pages/Farm";
 
 function App() {
   return (
