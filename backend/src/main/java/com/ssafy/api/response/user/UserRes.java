@@ -36,6 +36,7 @@ public class UserRes {
 
     public static UserRes of (User user) {
         UserRes res = new UserRes();
+        res.setId(user.getId());
         res.setName(user.getName());
         res.setRegDate(user.getRegDate());
         res.setDescription(user.getDescription());
