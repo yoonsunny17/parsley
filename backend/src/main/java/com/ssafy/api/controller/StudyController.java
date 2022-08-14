@@ -1,10 +1,8 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.DDayPostReq;
 import com.ssafy.api.request.GoalCreatePostReq;
-import com.ssafy.api.response.study.GoalCreatePostRes;
-import com.ssafy.api.response.study.GoalGetRes;
-import com.ssafy.api.response.study.LogGetRes;
-import com.ssafy.api.response.study.WeeklyStudyGetRes;
+import com.ssafy.api.response.study.*;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.db.entity.DailyGoal;
@@ -15,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -140,5 +139,47 @@ public class StudyController {
 
         return ResponseEntity.status(200)
                 .body(LogGetRes.of(200, "Success", dailyStudyLogs));
+    }
+
+    @GetMapping("/dday")
+    @ApiOperation(value = "디데이", notes = "디데이를 조회한다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "디데이 조회 성공"),
+            @ApiResponse(code = 500, message = "디데이 조회 실패")
+    })
+    public ResponseEntity<? extends DDayGetRes>  getDDay(){
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
+
+        LocalDate dDay = studyService.getDDay(userId);
+
+        if(dDay == null){
+            return ResponseEntity.status(500)
+                    .body(DDayGetRes.of(500, "Fail Get D-Day", null));
+        }else{
+            return ResponseEntity.status(200)
+                    .body(DDayGetRes.of(200, "Success", dDay));
+        }
+    }
+
+    @PostMapping("/dday/create")
+    @ApiOperation(value = "디데이", notes = "디데이를 등록한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "디데이 등록 성공"),
+            @ApiResponse(code = 500, message = "디데이 등록 실패")
+    })
+    public ResponseEntity<? extends DDayGetRes>  createDDay(@RequestBody @ApiParam(value = "디데이 등록 정보", required = true) @Valid DDayPostReq dDayInfo){
+//        Long userId = jwtService.getUserId();
+        Long userId = 1L;
+
+        LocalDate dDay = studyService.createDDay(userId, dDayInfo);
+
+        if(dDay == null){
+            return ResponseEntity.status(500)
+                    .body(DDayGetRes.of(500, "Fail create D-Day", null));
+        }else{
+            return ResponseEntity.status(200)
+                    .body(DDayGetRes.of(200, "Success", dDay));
+        }
     }
 }

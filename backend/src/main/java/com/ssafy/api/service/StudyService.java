@@ -1,10 +1,10 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.DDayPostReq;
 import com.ssafy.api.request.GoalCreatePostReq;
-import com.ssafy.api.request.LogCreatePostReq;
+import com.ssafy.api.response.study.DDayGetRes;
 import com.ssafy.db.entity.DailyGoal;
 import com.ssafy.db.entity.DailyStudyLog;
-import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.DailyGoalRepository;
 import com.ssafy.db.repository.DailyStudyRepository;
@@ -130,5 +130,20 @@ public class StudyService {
         List<DailyStudyLog> dailyStudyLogs = dailyStudyRepository.findWeeklyByUserId(userId, targetDate);
 
         return dailyStudyLogs;
+    }
+
+    public LocalDate getDDay(Long userId){
+        User user = userRepository.findByUserId(userId);
+
+        return user.getDDay();
+    }
+
+    @Transactional
+    public LocalDate createDDay(Long userId, DDayPostReq dDayInfo){
+        User user = userRepository.findByUserId(userId);
+
+        user.setDDay(dDayInfo.getDDay());
+
+        return user.getDDay();
     }
 }
