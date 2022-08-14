@@ -3,6 +3,7 @@ import { OpenVidu } from "openvidu-browser";
 import React, { Component, createRef } from "react";
 import "./StudySession.css";
 import UserVideoComponent from "./UserVideoComponent";
+import UserModel from "./models/user-model";
 
 // chat function
 import Messages from "./Chat/Messages";
@@ -29,7 +30,8 @@ const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 const footerBtn = "30";
 
-class StudySession extends Component {
+let localUser = new UserModel();
+class ShareSession extends Component {
   constructor(props) {
     super(props);
 
@@ -78,14 +80,6 @@ class StudySession extends Component {
     // 4분할 화면 전환
     this.changeDividedMainScreen = this.changeDividedMainScreen.bind(this);
   }
-
-  // studysession function
-  // handleScreenSize = () => {
-  //   this.setState({
-  //     width: window.innerWidth,
-  //     height: window.innerHeight,
-  //   });
-  // };
 
   // Exit button 눌렀을 때; 정말 나가시겠습니까? alert 띄워주기
   exitSessionAlert = () => {
@@ -187,7 +181,8 @@ class StudySession extends Component {
       .then(function (stream) {
         //success
         console.log(stream);
-        this.changeScreen(); // 화면 전환
+        // this.changeScreen(); // 화면 전환
+        this.startScreenShare(); // 화면 공유 시작
       })
       .catch(function (e) {
         //error;
@@ -279,18 +274,18 @@ class StudySession extends Component {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
-    // this.OVScreen = new OpenVidu();
+    this.OVScreen = new OpenVidu();
 
     // --- 2) Init a session ---
 
     this.setState(
       {
         session: this.OV.initSession(),
-        // sessionScreen: this.OVScreen.initSession(),
+        sessionScreen: this.OVScreen.initSession(),
       },
       () => {
         var mySession = this.state.session;
-        // var sessionScreen = this.state.sessionScreen;
+        var sessionScreen = this.state.sessionScreen;
 
         // --- 3) Specify the actions when events take place in the session ---
 
@@ -324,52 +319,49 @@ class StudySession extends Component {
         });
 
         // On every new Stream received...
-        mySession.on("streamCreated", (event) => {
-          // Subscribe to the Stream to receive it. Second parameter is undefined
-          // so OpenVidu doesn't create an HTML video by its own
-          var subscriber = mySession.subscribe(event.stream, undefined);
-          var subscribers = this.state.subscribers;
-          subscribers.push(subscriber);
-
-          // Update the state with the new subscribers
-          this.setState({
-            subscribers: subscribers,
-          });
-        });
-
         // mySession.on("streamCreated", (event) => {
         //   // Subscribe to the Stream to receive it. Second parameter is undefined
         //   // so OpenVidu doesn't create an HTML video by its own
-        //   if (event.stream.typeofVideo === "CAMERA") {
-        //     // var subscriber = mySession.subscribe(event.stream, undefined);
-        //     var subscriber = mySession.subscribe(
-        //       event.stream,
-        //       "container-cameras"
-        //     );
-        //     var subscribers = this.state.subscribers;
-        //     subscribers.push(subscriber);
+        //   var subscriber = mySession.subscribe(event.stream, undefined);
+        //   var subscribers = this.state.subscribers;
+        //   subscribers.push(subscriber);
 
-        //     // Update the state with the new subscribers
-        //     this.setState({
-        //       subscribers: subscribers,
-        //     });
-        //   }
+        //   // Update the state with the new subscribers
+        //   this.setState({
+        //     subscribers: subscribers,
+        //   });
         // });
 
-        // sessionScreen.on("streamCreated", (event) => {
-        //   if (event.stream.typeofvideo === "SCREEN") {
-        //     var subscriberScreen = sessionScreen.subscribe(
-        //       event.stream,
-        //       "container-screens"
-        //     );
-        //     var subscribersScreen = this.state.subscribers;
-        //     subscribersScreen.push(subscriberScreen);
+        // FIXME: OV/ OVScreen 나눈 경우
 
-        //     this.setState({
-        //       subscribersScreen: subscribersScreen,
-        //     });
-        //   }
-        // });
+        // case 1. OV (webcam 공유하는 상태)
+        mySession.on("streamCreated", (event) => {
+          if (event.stream.typeOfVideo === undefined) {
+            var subscriber = mySession.subscribe(event.stream, undefined);
+            var subscribers = this.state.subscribers;
+            subscribers.push(subscriber);
+
+            this.setState({
+              subscribers: subscribers,
+            });
+          }
+        });
+
+        // case 2. OVScreen (화면 공유하는 상태)
+        sessionScreen.on("streamCreated", (event) => {
+          if (event.stream.typeOfVideo === "SCREEN") {
+            var subscriberScreen = sessionScreen.subscribe(
+              event.stream,
+              "container-screens"
+            );
+            var subscriberScreens = this.state.subscriberScreens;
+            subscriberScreens.push(subscriberScreen);
+
+            this.setState({
+              subscriberScreens: subscriberScreens,
+            });
+          }
+        });
 
         mySession.on("signal:chat", (event) => {
           let chatdata = event.data.split(",");
@@ -450,8 +442,114 @@ class StudySession extends Component {
               );
             });
         });
+
+        this.getToken().then((tokenScreen) => {
+          // Create a token for screen share
+          sessionScreen
+            .connect(tokenScreen, {
+              clientData: this.state.myUserName,
+            })
+            .then(async () => {
+              console.log("session screen connected");
+            })
+            .catch((error) => {
+              console.warn(
+                "There was an error connecting to the session for screen share:",
+                error.code,
+                error.message
+              );
+            });
+        });
       }
     );
+  }
+
+  // screen share 버튼 눌렀을 때 화면공유 기능 활성화 되는 함수!!!!!!
+  // startScreenShare() {
+  //   // --- 9.1) To create a publisherScreen it is very important that the property 'videoSource' is set to 'screen'
+  //   var publisherScreen = this.OVScreen.initPublisher("container-screens", {
+  //     videoSource: "screen",
+  //   });
+
+  //   // --- 9.2) If the user grants access to the screen share function, publish the screen stream
+  //   publisherScreen.once("accessAllowed", (event) => {
+  //     this.setState({
+  //       screenstate: true,
+  //     });
+  //     console.log("-------plz!!!!!!!!-------");
+  //     publisherScreen.stream
+  //       .getMediaStream()
+  //       .getVideoTracks()[0]
+  //       .addEventListener("ended", () => {
+  //         console.log('User pressed the "Stop sharing" button');
+  //         this.sessionScreen.unpublish(publisherScreen);
+  //         this.setState({
+  //           screenstate: false,
+  //         });
+  //       });
+  //     this.sessionScreen.publish(publisherScreen);
+  //   });
+
+  //   publisherScreen.once("accessDenied", (event) => {
+  //     console.error("screen share: access denied");
+  //   });
+  // }
+  // stopScreenShare() {
+  //   publisherScreen.once("accessDenied", (event) => {
+  //     this.setState({
+  //       screenstate: false,
+  //     });
+  //   });
+  // }
+
+  // FIXME: 화면공유 문제를 고쳐주세요!!
+  // 화면공유 시작 (react code ref)
+  startScreenShare() {
+    const videoSource =
+      navigator.userAgent.indexOf("Firefox") !== -1 ? "window" : "screen";
+    this.OV = new OpenVidu();
+
+    const publisher = this.OV.initPublisher(
+      undefined,
+      {
+        videoSource: videoSource,
+        publishAudio: true,
+        publishVideo: true,
+        mirror: false,
+      },
+      (error) => {
+        if (error && error.name === "SCREEN_EXTENSION_NOT_INSTALLED") {
+          this.setState({ showExtensionDialog: true });
+        } else if (error && error.name === "SCREEN_SHARING_NOT_SUPPORTED") {
+          alert("Your browser does not support screen sharing");
+        } else if (error && error.name === "SCREEN_EXTENSION_DISABLED") {
+          alert("You need to enable screen sharing extension");
+        } else if (error && error.name === "SCREEN_CAPTURE_DENIED") {
+          alert("You need to choose a window or application to share");
+        }
+      }
+    );
+
+    publisher.once("accessAllowed", () => {
+      this.state.session.unpublish(localUser.getStreamManager());
+      localUser.setStreamManager(publisher);
+      this.state.session.publish(localUser.getStreamManager()).then(() => {
+        localUser.setScreenShareActive(true);
+        this.setState({ localUser: localUser }, () => {
+          this.changeConnectedUser({
+            isScreenShareActive: localUser.isScreenShareActive(),
+          });
+        });
+      });
+    });
+  }
+
+  changeConnectedUser(data) {
+    const signalOptions = {
+      data: JSON.stringify(data),
+      type: "userChanged",
+    };
+    this.state.session.signal(signalOptions);
   }
 
   leaveSession() {
@@ -814,36 +912,6 @@ class StudySession extends Component {
                       />
                     </div>
                   )}
-
-                  {/* {this.state.audiostate ? (
-                    <div className="cursor-pointer">
-                      <BsFillMicFill
-                        size={footerBtn}
-                        onClick={() => {
-                          this.state.publisher.publishAudio(
-                            !this.state.audiostate
-                          );
-                          this.setState({
-                            audiostate: !this.state.audiostate,
-                          });
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <div>
-                      <BsFillMicMuteFill
-                        size={footerBtn}
-                        onClick={() => {
-                          this.state.publisher.publishAudio(
-                            !this.state.audiostate
-                          );
-                          this.setState({
-                            audiostate: !this.state.audiostate,
-                          });
-                        }}
-                      />
-                    </div>
-                  )} */}
                   {/* video on/off */}
                   {this.state.videostate ? (
                     <div className="cursor-pointer">
@@ -943,145 +1011,6 @@ class StudySession extends Component {
         )}
       </div>
     );
-    // return (
-    //   <div className="container">
-    //     {/* 스터디룸 입장 전 */}
-    //     {this.state.session === undefined ? (
-    //       <div id="join">
-    //         <div id="img-div">
-    //           <img
-    //             src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-    //             alt="PARSLEY"
-    //           />
-    //         </div>
-    //         <div id="join-dialog" className="jumbotron vertical-center">
-    //           <h1> Study With PARSLEY! </h1>
-    //           <form className="form-group" onSubmit={this.joinSession}>
-    //             <div className="flex">
-    //               <label>Participant: </label>
-    //               <input
-    //                 className="form-control ml-2"
-    //                 type="text"
-    //                 id="userName"
-    //                 value={myUserName}
-    //                 onChange={this.handleChangeUserName}
-    //                 required
-    //               />
-    //             </div>
-    //             <div className="flex">
-    //               <label> Session: </label>
-    //               <input
-    //                 className="form-control ml-2"
-    //                 type="text"
-    //                 id="sessionId"
-    //                 value={mySessionId}
-    //                 onChange={this.handleChangeSessionId}
-    //                 required
-    //               />
-    //             </div>
-    //             <p className="text-center">
-    //               {/* <input
-    //                 className="btn btn-lg btn-success"
-    //                 name="commit"
-    //                 type="submit"
-    //                 value="JOIN"
-    //               /> */}
-    //               <Button text={"JOIN"} />
-    //             </p>
-    //           </form>
-    //         </div>
-    //       </div>
-    //     ) : null}
-
-    //     {/* 스터디룸 입장 후 */}
-    //     {this.state.session !== undefined ? (
-    //       <div>
-    //         <div id="session">
-    //           <div id="session-header">
-    //             <h1 id="session-title">{mySessionId}</h1>
-    //             {/* <input
-    //             className="btn btn-large btn-danger"
-    //             type="button"
-    //             id="buttonLeaveSession"
-    //             onClick={this.leaveSession}
-    //             value="Leave session"
-    //           /> */}
-    //             <button
-    //               id="buttonLeaveSession"
-    //               onClick={this.leaveSession}
-    //               className="bg-red-400 px-3 py-2 text-white rounded-lg"
-    //             >
-    //               LEAVE SESSION
-    //             </button>
-    //           </div>
-
-    //           {/* 메인화면 보이는 부분 */}
-    //           {this.state.mainStreamManager !== undefined ? (
-    //             <div id="main-video" className="col-md-6">
-    //               <UserVideoComponent
-    //                 streamManager={this.state.mainStreamManager}
-    //               />
-    //               {/* <input
-    //               className="btn btn-large btn-success"
-    //               type="button"
-    //               id="buttonSwitchCamera"
-    //               onClick={this.switchCamera}
-    //               value="Switch Camera"
-    //             /> */}
-    //               <button
-    //                 id="buttonSwitchCamera"
-    //                 onClick={this.switchCamera}
-    //                 className="float-left mt-5 bg-sub1 px-3 py-2 text-white rounded-lg"
-    //               >
-    //                 SWITCH CAMERA
-    //               </button>
-    //             </div>
-    //           ) : null}
-    //           <div id="video-container" className="col-md-6">
-    //             {this.state.publisher !== undefined ? (
-    //               <div
-    //                 className="stream-container col-md-6 col-xs-6"
-    //                 onClick={() =>
-    //                   this.handleMainVideoStream(this.state.publisher)
-    //                 }
-    //               >
-    //                 <UserVideoComponent streamManager={this.state.publisher} />
-    //               </div>
-    //             ) : null}
-    //             {this.state.subscribers.map((sub, i) => (
-    //               <div
-    //                 key={i}
-    //                 className="stream-container col-md-6 col-xs-6"
-    //                 onClick={() => this.handleMainVideoStream(sub)}
-    //               >
-    //                 <UserVideoComponent streamManager={sub} />
-    //               </div>
-    //             ))}
-    //           </div>
-    //         </div>
-    //         {/* chat */}
-    //         <div className="chatbox__messages" ref="chatoutput">
-    //           <Messages messages={messages} />
-    //         </div>
-    //         <div className="chatbox__footer">
-    //           <input
-    //             type="text"
-    //             id="chat_message"
-    //             placeholder="write messages"
-    //             onChange={this.handleChatMessageChange}
-    //             onKeyPress={this.sendMessageByEnter}
-    //             value={this.state.message}
-    //           />
-    //           <Button
-    //             className="chatbox__send--footer"
-    //             onClick={this.sendMessageByClick}
-    //             text={"send"}
-    //           />
-    //         </div>
-    //       </div>
-    //     ) : null}
-    //   </div>
-    // );
   }
 
   /**
@@ -1180,4 +1109,4 @@ class StudySession extends Component {
   }
 }
 
-export default StudySession;
+export default ShareSession;
