@@ -2,10 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateStudyRoom from "./UI/pages/CreateStudyRoom";
 import Home from "./UI/pages/Home";
 import Drawer from "./UI/organisms/Drawer";
-// import StudySession from "./OpenVidu/StudySession";
+import StudySession from "./OpenVidu/StudySession";
 import ShareSession from "./OpenVidu/ShareSession";
-import EnterStudyRoom from "./components/pages/EnterStudyRoom";
-import SearchStudyRooms from "./components/pages/SearchStudyRooms";
+// import EnterStudyRoom from "./components/pages/EnterStudyRoom";
+// import SearchStudyRooms from "./components/pages/SearchStudyRooms";
 import MyPage from "./UI/pages/MyPage";
 import NotFound from "./UI/pages/NotFound";
 import KakaoLogin from "./UI/pages/KakaoLogin";
@@ -27,14 +27,14 @@ function App() {
                             path="/studyroom"
                             element={<FingerStudyRoom />}
                         /> */}
-            {/* <Route path="/room/detail" element={<StudySession />} /> */}
+            <Route path="/study" element={<StudySession />} />
             <Route path="/room" element={<SearchStudyRooms />} />
             <Route path="/share" element={<ShareSession />} />
-            {/* <Route path="/room" element={<EnterStudyRoom />} /> */}
+            <Route path="/enter" element={<EnterStudyRoom />} />
             <Route path="/me" element={<MyPage />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/farm" element={<Farm />} />
-            <Route path="/room" element={<SearchStudyRooms />} />
+            <Route path="/search" element={<SearchStudyRooms />} />
           </Routes>
         </div>
       </Drawer>

@@ -175,19 +175,19 @@ class ShareSession extends Component {
   }
 
   // screen share onclick mode
-  screenShare(e) {
-    navigator.mediaDevices
-      .getDisplayMedia({ audio: true, video: true })
-      .then(function (stream) {
-        //success
-        console.log(stream);
-        // this.changeScreen(); // 화면 전환
-        this.startScreenShare(); // 화면 공유 시작
-      })
-      .catch(function (e) {
-        //error;
-      });
-  }
+  // screenShare(e) {
+  //   navigator.mediaDevices
+  //     .getDisplayMedia({ audio: true, video: true })
+  //     .then(function (stream) {
+  //       //success
+  //       console.log(stream);
+  //       // this.changeScreen(); // 화면 전환
+  //       this.startScreenShare(); // 화면 공유 시작
+  //     })
+  //     .catch(function (e) {
+  //       //error;
+  //     });
+  // }
 
   changeScreen(stream) {
     if (this.state.mainStreamManager !== stream) {
@@ -319,18 +319,18 @@ class ShareSession extends Component {
         });
 
         // On every new Stream received...
-        // mySession.on("streamCreated", (event) => {
-        //   // Subscribe to the Stream to receive it. Second parameter is undefined
-        //   // so OpenVidu doesn't create an HTML video by its own
-        //   var subscriber = mySession.subscribe(event.stream, undefined);
-        //   var subscribers = this.state.subscribers;
-        //   subscribers.push(subscriber);
+        mySession.on("streamCreated", (event) => {
+          // Subscribe to the Stream to receive it. Second parameter is undefined
+          // so OpenVidu doesn't create an HTML video by its own
+          var subscriber = mySession.subscribe(event.stream, undefined);
+          var subscribers = this.state.subscribers;
+          subscribers.push(subscriber);
 
-        //   // Update the state with the new subscribers
-        //   this.setState({
-        //     subscribers: subscribers,
-        //   });
-        // });
+          // Update the state with the new subscribers
+          this.setState({
+            subscribers: subscribers,
+          });
+        });
 
         // FIXME: OV/ OVScreen 나눈 경우
 
@@ -504,7 +504,7 @@ class ShareSession extends Component {
 
   // FIXME: 화면공유 문제를 고쳐주세요!!
   // 화면공유 시작 (react code ref)
-  startScreenShare() {
+  screenShare() {
     const videoSource =
       navigator.userAgent.indexOf("Firefox") !== -1 ? "window" : "screen";
     this.OV = new OpenVidu();
