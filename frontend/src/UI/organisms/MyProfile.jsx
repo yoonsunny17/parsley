@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Button from "../atoms/Button";
+
 
 function MyProfile() {
     const [username, setUserName] = useState("");
@@ -25,6 +27,7 @@ function MyProfile() {
         e.preventDefault();
         console.log("저장");
     };
+    const user = useSelector( state => state.user.user );
 
     return (
         <div className="rounded-2xl w-full mb-4 md:w-2/3 md:mb-0 shadow px-8 py-8 flex relative">
@@ -46,12 +49,12 @@ function MyProfile() {
                                         onChange={handleName}
                                         type="text"
                                         className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        placeholder={username}
+                                        placeholder={user.name}
                                     />
                                 ) : (
                                     <>
                                         <h2 className="font-bold">
-                                            {username}
+                                            {user.name}
                                         </h2>
                                     </>
                                 )}
@@ -65,11 +68,45 @@ function MyProfile() {
                                         onChange={handleMessage}
                                         type="text"
                                         className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        placeholder={message}
+                                        placeholder={user.description}
                                     />
                                 ) : (
                                     <>
-                                        <h2 className="font-bold">{message}</h2>
+                                        <h2 className="font-bold">{user.description}</h2>
+                                    </>
+                                )}
+                            </div>
+                            <div className="my-5">
+                                <p className="mt-5 text-font2 text-xs">
+                                    등록일
+                                </p>
+                                {edit ? (
+                                    <input
+                                        onChange={handleMessage}
+                                        type="text"
+                                        className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
+                                        placeholder={user.regDate}
+                                    />
+                                ) : (
+                                    <>
+                                        <h2 className="font-bold">{user.regDate}</h2>
+                                    </>
+                                )}
+                            </div>
+                            <div className="my-5">
+                                <p className="mt-5 text-font2 text-xs">
+                                    D-Day
+                                </p>
+                                {edit ? (
+                                    <input
+                                        onChange={handleMessage}
+                                        type="text"
+                                        className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
+                                        placeholder={user.dday}
+                                    />
+                                ) : (
+                                    <>
+                                        <h2 className="font-bold">{user.dday}</h2>
                                     </>
                                 )}
                             </div>
