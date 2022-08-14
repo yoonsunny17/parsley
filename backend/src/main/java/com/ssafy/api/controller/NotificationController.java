@@ -1,7 +1,7 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.response.NotificationGetCntRes;
-import com.ssafy.api.response.NotificationsGetRes;
+import com.ssafy.api.response.notification.NotificationGetCntRes;
+import com.ssafy.api.response.notification.NotificationsGetRes;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.NotificationService;
 import com.ssafy.common.model.response.BaseResponseBody;

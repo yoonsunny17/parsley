@@ -1,6 +1,6 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.response.AuthRes;
+import com.ssafy.api.response.auth.AuthRes;
 import com.ssafy.api.service.*;
 import com.ssafy.common.util.CookieUtil;
 import io.jsonwebtoken.JwtException;

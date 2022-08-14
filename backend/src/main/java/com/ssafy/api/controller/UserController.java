@@ -2,8 +2,8 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.UserRejoinReq;
 import com.ssafy.api.request.UserUpdateReq;
-import com.ssafy.api.response.UserGetRes;
-import com.ssafy.api.response.UserPostRes;
+import com.ssafy.api.response.user.UserGetRes;
+import com.ssafy.api.response.user.UserPostRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.UserService;

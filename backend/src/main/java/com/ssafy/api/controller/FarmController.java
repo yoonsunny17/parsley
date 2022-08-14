@@ -2,7 +2,9 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
-import com.ssafy.api.response.*;
+import com.ssafy.api.response.farm.HerbsRes;
+import com.ssafy.api.response.farm.UserHerbBookAddPostRes;
+import com.ssafy.api.response.farm.UserHerbBooksRes;
 import com.ssafy.api.service.FarmService;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.RankService;

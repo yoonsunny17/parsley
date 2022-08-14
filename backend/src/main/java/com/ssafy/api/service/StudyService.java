@@ -122,25 +122,6 @@ public class StudyService {
         return totalTime;
     }
 
-    @Transactional
-    public DailyStudyLog addDailyLog(Long userId, LogCreatePostReq logInfo){
-
-        User user = userRepository.findByUserId(userId);
-
-        DailyStudyLog dailyStudyLog = new DailyStudyLog();
-
-        Room room = roomRepository.findByRoomId(logInfo.getRoomId());
-
-        dailyStudyLog.setTime(LocalDateTime.now());
-        dailyStudyLog.setStatus(logInfo.isStatus());
-        dailyStudyLog.setUser(user);
-        dailyStudyLog.setRoom(room);
-
-        dailyStudyRepository.save(dailyStudyLog);
-
-        return dailyStudyLog;
-    }
-
     public List<DailyStudyLog> getDailyLogs(Long userId){
 
         User user = userRepository.findByUserId(userId);

@@ -1,8 +1,8 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.MyRoomPostReq;
-import com.ssafy.api.response.MyRoomPostRes;
-import com.ssafy.api.response.UserRoomsGetRes;
+import com.ssafy.api.response.userRoom.MyRoomPostRes;
+import com.ssafy.api.response.userRoom.UserRoomsGetRes;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.UserRoomService;
 import com.ssafy.db.entity.Room;
