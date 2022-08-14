@@ -6,19 +6,18 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
-@ApiModel("RankNongbuGetRes")
-public class RankNongbuGetRes extends BaseResponseBody {
+@ApiModel("RankGetRes")
+public class RankGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "농부왕 Top 5 정보")
-    List<RankNongbuInfoRes> topRank;
+    List<RankInfoRes> topRank;
 
     @ApiModelProperty(name = "나의 등수")
-    RankNongbuInfoRes myRank;
+    RankInfoRes myRank;
 
-    public static RankNongbuGetRes of(Integer statusCode, String message, List<RankNongbuInfoRes> topRank, RankNongbuInfoRes myRank) {
-        RankNongbuGetRes res = new RankNongbuGetRes();
+    public static RankGetRes of(Integer statusCode, String message, List<RankInfoRes> topRank, RankInfoRes myRank) {
+        RankGetRes res = new RankGetRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setTopRank(topRank);

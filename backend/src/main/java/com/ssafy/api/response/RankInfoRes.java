@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel("RankNongbuInfoRes")
-public class RankNongbuInfoRes {
+@ApiModel("RankInfoRes")
+public class RankInfoRes {
     @ApiModelProperty(name = "닉네임", example = "익명의 사용자 1")
     String name;
 
@@ -16,8 +16,8 @@ public class RankNongbuInfoRes {
     @ApiModelProperty(name = "등수", example = "-1")
     Long rank;
 
-    public static RankNongbuInfoRes of(String name, Double score, Long rank) {
-        RankNongbuInfoRes res = new RankNongbuInfoRes();
+    public static RankInfoRes of(String name, Double score, Long rank) {
+        RankInfoRes res = new RankInfoRes();
         res.setName(name);
         res.setScore(score);
         res.setRank(rank);
