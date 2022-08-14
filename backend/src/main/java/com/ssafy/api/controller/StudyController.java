@@ -148,8 +148,7 @@ public class StudyController {
             @ApiResponse(code = 500, message = "디데이 조회 실패")
     })
     public ResponseEntity<? extends DDayGetRes>  getDDay(){
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         LocalDate dDay = studyService.getDDay(userId);
 
@@ -169,8 +168,7 @@ public class StudyController {
             @ApiResponse(code = 500, message = "디데이 등록 실패")
     })
     public ResponseEntity<? extends DDayGetRes>  createDDay(@RequestBody @ApiParam(value = "디데이 등록 정보", required = true) @Valid DDayPostReq dDayInfo){
-//        Long userId = jwtService.getUserId();
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         LocalDate dDay = studyService.createDDay(userId, dDayInfo);
 
