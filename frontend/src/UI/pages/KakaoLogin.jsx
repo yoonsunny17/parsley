@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useKakaoLoginQuery } from "../../services/user";
+import { useKakaoLoginQuery } from "../../services/auth";
+import { useLazyGetUserQuery } from "../../services/user";
 
 function KakaoLogin() {
     const location = useLocation();
@@ -8,8 +9,10 @@ function KakaoLogin() {
 
     const code = location.search.split("=")[1];
     const { isLoading } = useKakaoLoginQuery(code);
+    const [ getUser ] = useLazyGetUserQuery();
 
     if (!isLoading) {
+        getUser();
         navigate("/");
     }
 

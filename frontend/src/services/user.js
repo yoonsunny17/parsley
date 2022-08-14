@@ -1,42 +1,51 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithReAuth } from ".";
-import { login, logout, setToken, setUserId } from "../modules/userReducer";
-import { parseJwt } from "../util/common";
+import { setUser } from "../modules/userReducer"
+
 
 export const userApi = createApi({
     reducerPath: "userApi",
     baseQuery: baseQueryWithReAuth,
     endpoints: (builder) => ({
-        kakaoLogin: builder.query({
-            query: (code) => `/auth/login?code=${code}`,
+        getUser: builder.query({
+            query: () => `/user`,
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {
                     const result = await queryFulfilled;
-                    dispatch(login());
-                    dispatch(setToken(result?.data.accessToken));
-                    dispatch(
-                        setUserId(parseJwt(result?.data.accessToken).user.id)
-                    );
+                    console.log(result.data.userInfo);
+                    dispatch(setUser(result.data.userInfo));
                 } catch (err) {
-                    console.log(err);
+                        console.log(err);
                 }
             },
         }),
-        logout: builder.query({
-            query: () => `/auth/logout`,
-            async onQueryStarted(_, { dispatch, queryFulfilled }) {
-                try {
-                    const result = await queryFulfilled;
-                    dispatch(logout());
-                    dispatch(setToken(null));
-                    dispatch(setUserId(null));
-                } catch (err) {
-                    console.log(err);
+        updateUser: builder.mutation({
+            query: ({ user }) => {
+                return {
+                    url: `/user/update`,
+                    method: "POST",
+                    body: user,
                 }
-            },
+            }
         }),
+        deleteUser: builder.mutation({
+            query: () => ({
+                url: `/user/delete`,
+                method: "POST",
+            }),
+        }),
+        rejoinUser: builder.mutation({
+            query: () => ({
+                url: `/user/rejoin`,
+                method: "POST",
+            })
+        })
     }),
 });
 
-export const { useKakaoLoginQuery, useLogoutQuery, useLazyLogoutQuery } =
-    userApi;
+export const {
+    useLazyGetUserQuery,
+    useUpdateUserMutation,
+    useDeleteUserMutation,
+    useRejoinUserMutation,
+} = userApi;
