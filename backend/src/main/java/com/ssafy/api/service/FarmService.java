@@ -47,6 +47,18 @@ public class FarmService {
     @Autowired
     NotificationRepository notificationRepository;
 
+    public List<ItemSeed> getAllItemSeeds(){
+        return itemRepository.findAllItemSeed();
+    }
+
+    public List<ItemWater> getAllItemWaters(){
+        return itemRepository.findAllItemWater();
+    }
+
+    public List<ItemFertilizer> getAllFertilizers(){
+        return itemRepository.findAllItemFertilizer();
+    }
+
     public List<Tuple> getHerbBooks(Long userId) {
         List<Tuple> userHerbBooks = userHerbBookRepository.findByUserAndGroupBy(userId);
 

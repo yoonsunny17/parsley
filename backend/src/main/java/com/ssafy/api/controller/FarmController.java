@@ -3,6 +3,7 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
 import com.ssafy.api.response.farm.HerbsRes;
+import com.ssafy.api.response.farm.ItemsRes;
 import com.ssafy.api.response.farm.UserHerbBookAddPostRes;
 import com.ssafy.api.response.farm.UserHerbBooksRes;
 import com.ssafy.api.service.FarmService;
@@ -11,6 +12,9 @@ import com.ssafy.api.service.RankService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 
+import com.ssafy.db.entity.ItemFertilizer;
+import com.ssafy.db.entity.ItemSeed;
+import com.ssafy.db.entity.ItemWater;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +44,20 @@ public class FarmController {
 
     @Autowired
     RankService rankService;
+
+    @GetMapping("/item")
+    @ApiOperation(value = "전체 아이템 조회", notes = "전체 아이템 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "전체 아이템 조회 성공"),
+            @ApiResponse(code = 404, message = ""),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends ItemsRes> getAllItems() {
+        List<ItemSeed> itemSeeds = farmService.getAllItemSeeds();
+        List<ItemWater> itemWaters = farmService.getAllItemWaters();
+        List<ItemFertilizer> itemFertilizers = farmService.getAllFertilizers();
+        return ResponseEntity.status(200).body(ItemsRes.of(200, "Success", itemSeeds, itemWaters, itemFertilizers));
+    }
 
     @GetMapping("/book")
     @ApiOperation(value = "작물 수집 내역", notes = "user정보를 이용하여 작물 수집 내역 가져오기")
