@@ -131,11 +131,10 @@ const herbCollectionList = [
     isOpened: true,
   },
   {
-    name: "비둘기가 좋아하는 캣잎",
-    imgUrl: "/herbs/rare_dove.png",
+    name: "고양이가 좋아하는 캣잎",
+    imgUrl: "/herbs/hero_catleaf.png",
     grade: "희귀",
-    description:
-      "구구...구구구..999...9구...99...gugugu..이 캣잎은 이제 제껍니다...gugu",
+    description: "고양이도 깻잎 좋아한다옹!",
     isOpened: true,
   },
   {
@@ -184,10 +183,10 @@ const herbCollectionList = [
     isOpened: false,
   },
   {
-    name: "고양이가 좋아하는 깻잎",
-    imgUrl: "/herbs/hero_catleaf.png",
+    name: "떠든애가 제라늄!",
+    imgUrl: "/herbs/hero_megaphone.png",
     grade: "hero",
-    description: "고양이도 깻잎 좋아한다옹!",
+    description: "아 누구야 떠든애가 제라늄?",
     isOpened: false,
   },
   {
@@ -213,7 +212,7 @@ const herbCollectionList = [
     isOpened: false,
   },
   {
-    name: "유교보이",
+    name: "유교보이가 제라늄?",
     imgUrl: "/herbs/legend_ugyoboy.png",
     grade: "전설",
     description: "아~ 파슬리~ 가보자고~",
