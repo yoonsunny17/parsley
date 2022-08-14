@@ -94,12 +94,12 @@ public class RoomController {
 
         if (room == null) {
             return ResponseEntity.status(500).body(
-                    RoomPostRes.of(500, "Fail to create", false)
+                    RoomPostRes.of(500, "Fail to create", 0L)
             );
         }
 
         return ResponseEntity.status(201).body(
-                RoomPostRes.of(201, "Success", true));
+                RoomPostRes.of(201, "Success", room.getId()));
     }
 
 
@@ -131,12 +131,12 @@ public class RoomController {
         Room room = roomService.updateRoom(roomId, roomInfo, multipartFile);
         if (room == null) {
             return ResponseEntity.status(500).body(
-                    RoomPostRes.of(500, "Room not found", false)
+                    RoomPostRes.of(500, "Room not found", roomId)
             );
         }
 
         return ResponseEntity.status(201).body(
-                RoomPostRes.of(201, "Success", true)
+                RoomPostRes.of(201, "Success", roomId)
         );
     }
 
@@ -154,12 +154,12 @@ public class RoomController {
         boolean isSuccess = roomService.deleteRoom(userId, roomId, passwordInfo);
         if (!isSuccess) {
             return ResponseEntity.status(500).body(
-                    RoomPostRes.of(500, "Unable to delete room", false)
+                    RoomPostRes.of(500, "Unable to delete room", roomId)
             );
         }
 
         return ResponseEntity.status(201).body(
-                RoomPostRes.of(201, "Success", true)
+                RoomPostRes.of(201, "Success", roomId)
         );
     }
 
@@ -177,11 +177,11 @@ public class RoomController {
 
         if (!isTrue) {
             return ResponseEntity.status(202).body(
-                    RoomPostRes.of(202, "Passwords do not match", false)
+                    RoomPostRes.of(202, "Passwords do not match", roomId)
             );
         } else {
             return ResponseEntity.status(201).body(
-                    RoomPostRes.of(201, "Passwords match", true)
+                    RoomPostRes.of(201, "Passwords match", roomId)
             );
         }
     }

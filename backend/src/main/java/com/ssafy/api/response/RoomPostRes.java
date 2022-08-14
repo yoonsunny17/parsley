@@ -10,14 +10,14 @@ import lombok.Setter;
 @Data
 @ApiModel("RoomPostResponse")
 public class RoomPostRes extends BaseResponseBody {
-    @ApiModelProperty(name = "t/f")
-    boolean isTrue;
+    @ApiModelProperty(name = "방 ID")
+    Long roomId;
 
-    public static RoomPostRes of(Integer statusCode, String message, boolean isTrue) {
+    public static RoomPostRes of(Integer statusCode, String message, Long roomId) {
         RoomPostRes res = new RoomPostRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setTrue(isTrue);
+        res.setRoomId(roomId);
         return res;
     }
 }
