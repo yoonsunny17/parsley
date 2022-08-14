@@ -1,50 +1,44 @@
 package com.ssafy.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+@Getter
+@Setter
 @EnableCaching
 @Configuration
-public class RedisConfig {
+public class Redis2Config {
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.redis2.host}")
     private String host;
 
-    @Value("${spring.redis.port}")
+    @Value("${spring.redis2.port}")
     private int port;
 
-    @Primary
-    @Bean(name="redisConnectionFactory1")
+    @Bean(name="redisConnectionFactory2")
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(host, port);
     }
 
-    @Primary
-    @Bean(name="redisTemplate1")
+    @Bean(name="redisTemplate2")
     public RedisTemplate<String, Object> redisTemplate(
-            @Qualifier("redisConnectionFactory1") RedisConnectionFactory redisConnectionFactory) {
+            @Qualifier("redisConnectionFactory2") RedisConnectionFactory redisConnectionFactory
+    ) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
 
-        //일반적인 key:value의 경우 시리얼라이저
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
-
-        // Hash를 사용할 경우 시리얼라이저
-        //redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        //redisTemplate.setHashValueSerializer(new StringRedisSerializer());
-
-        //모든 경우
-        //redisTemplate.setDefaultSerializer(new StringRedisSerializer());
-
+        
         return redisTemplate;
     }
 }

@@ -4,9 +4,12 @@ import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.FarmService;
+import com.ssafy.api.service.JwtService;
+import com.ssafy.api.service.RankService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 
+import com.ssafy.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,12 @@ public class FarmController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    JwtService jwtService;
+
+    @Autowired
+    RankService rankService;
+
     @GetMapping("/book")
     @ApiOperation(value = "작물 수집 내역", notes = "user정보를 이용하여 작물 수집 내역 가져오기")
     @ApiResponses({
@@ -38,7 +47,7 @@ public class FarmController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserHerbBooksRes> getUserHerbBook() {
-        //TODO: User받아오기, 아래 코드 삭제
+        // TODO: User받아오기, 아래 코드 삭제
         Long userId = 1L;
 
         List<Tuple> herbBooks = farmService.getHerbBooks(userId);
@@ -53,11 +62,29 @@ public class FarmController {
     })
     public ResponseEntity<? extends UserHerbBookAddPostRes> addUserHerbBook(
             @RequestBody @ApiParam(value = "수확한 작물 정보", required = true) @Valid UserHerbBookAddPostReq herbBookInfo) {
-        //TODO: User받아오기, 아래 코드 삭제
-        Long userId = 1L;
-        //TODO: response를 controller에서 처리할 것인가 controller에서 처리할 것인가
+        Long userId = jwtService.getUserId();
+        if (userId == null) {
+            return ResponseEntity.status(500).body(UserHerbBookAddPostRes.of(500, "Not Authorized", null));
+        }
+
+        // TODO: response를 controller에서 처리할 것인가 controller에서 처리할 것인가
         UserHerbBookAddPostRes userHerbBookAddPostRes = farmService.addUserHerbBook(userId, herbBookInfo);
-        if(userHerbBookAddPostRes == null){
+
+        // ranking 정보 업데이트하기
+        User user = userService.getUserByUserId(userId);
+        Long lastRankScore = Double.valueOf(rankService.getLastRankScore()).longValue();
+        Long currentBookPoint = user.getCurrentBookPoint();
+        Long addPoint = userHerbBookAddPostRes.getAddPoint();
+
+        if(currentBookPoint - addPoint < lastRankScore) {
+            if(currentBookPoint >= lastRankScore) {
+                rankService.addRank(user);
+            }
+        } else {
+            rankService.addRank(user);
+        }
+
+        if (userHerbBookAddPostRes == null) {
             return ResponseEntity.status(500).body(UserHerbBookAddPostRes.of(500, "Fail to add user herb book", null));
         }
         return ResponseEntity.status(200).body(UserHerbBookAddPostRes.of(200, "Success", userHerbBookAddPostRes));
@@ -71,12 +98,12 @@ public class FarmController {
             @ApiResponse(code = 500, message = "작물 조회 실패")
     })
     public ResponseEntity<?> getHerbs() {
-        //TODO: User받아오기, 아래 코드 삭제
+        // TODO: User받아오기, 아래 코드 삭제
         Long userId = 1L;
 
         HerbsRes herbs = farmService.getHerbs(userId);
 
-        if(herbs == null){
+        if (herbs == null) {
             return ResponseEntity.status(200).body(HerbsRes.of(200, "There are no herbs", null));
         }
 
@@ -92,11 +119,11 @@ public class FarmController {
     })
     public ResponseEntity<?> addHerb(@RequestBody @ApiParam(value = "심을 작물 정보", required = true)
                                      @Valid HerbAddPostReq herbInfo) {
-        //TODO: User받아오기, 아래 코드 삭제
+        // TODO: User받아오기, 아래 코드 삭제
         Long userId = 1L;
 
         boolean herb = farmService.addHerb(userId, herbInfo);
-        if(!herb){
+        if (!herb) {
             return ResponseEntity.status(202).body(BaseResponseBody.of(202, "슬리가 부족합니다."));
         }
 
