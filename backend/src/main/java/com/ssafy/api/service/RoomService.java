@@ -47,21 +47,23 @@ public class RoomService {
 
         roomRepository.save(room);
 
-        for(String tag : roomInfo.getHashtags()){
-            Hashtag hashtag = hashtagRepository.findBytag(tag);
+        if(roomInfo.getHashtags() != null){
+            for(String tag : roomInfo.getHashtags()){
+                Hashtag hashtag = hashtagRepository.findBytag(tag);
 
-            if(hashtag == null){        //이전에 사용한 적 없는 태그
-                hashtag = new Hashtag();
-                hashtag.setTag(tag);
-                hashtag.setUseCount(1L);
-                hashtagRepository.saveHashtag(hashtag);
-            }else{
-                hashtag.setUseCount(hashtag.getUseCount()+1L);
+                if(hashtag == null){        //이전에 사용한 적 없는 태그
+                    hashtag = new Hashtag();
+                    hashtag.setTag(tag);
+                    hashtag.setUseCount(1L);
+                    hashtagRepository.saveHashtag(hashtag);
+                }else{
+                    hashtag.setUseCount(hashtag.getUseCount()+1L);
+                }
+                RoomHashtag roomHashtag = new RoomHashtag();
+                roomHashtag.setRoom(room);
+                roomHashtag.setHashtag(hashtag);
+                hashtagRepository.saveRoomHashtag(roomHashtag);
             }
-            RoomHashtag roomHashtag = new RoomHashtag();
-            roomHashtag.setRoom(room);
-            roomHashtag.setHashtag(hashtag);
-            hashtagRepository.saveRoomHashtag(roomHashtag);
         }
 
         user.addUserRoom(room);
