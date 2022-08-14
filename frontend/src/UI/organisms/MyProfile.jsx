@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Button from "../atoms/Button";
 
 function MyProfile() {
     const [username, setUserName] = useState("");
@@ -23,7 +22,6 @@ function MyProfile() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log("저장");
     };
 
     return (
@@ -46,7 +44,7 @@ function MyProfile() {
                                         onChange={handleName}
                                         type="text"
                                         className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        placeholder={username}
+                                        value={username}
                                     />
                                 ) : (
                                     <>
@@ -65,7 +63,7 @@ function MyProfile() {
                                         onChange={handleMessage}
                                         type="text"
                                         className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        placeholder={message}
+                                        value={message}
                                     />
                                 ) : (
                                     <>
@@ -85,6 +83,12 @@ function MyProfile() {
                             ) : null}
                             {edit ? (
                                 <button
+                                    disabled={
+                                        username.length === 0 &&
+                                        message.length === 0
+                                            ? true
+                                            : false
+                                    }
                                     type="submit"
                                     onClick={clickedEdit}
                                     className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
