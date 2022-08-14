@@ -2,7 +2,9 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
-import com.ssafy.api.response.*;
+import com.ssafy.api.response.farm.HerbRes;
+import com.ssafy.api.response.farm.HerbsRes;
+import com.ssafy.api.response.farm.UserHerbBookAddPostRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

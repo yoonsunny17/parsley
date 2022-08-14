@@ -1,7 +1,7 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.response.RankGetRes;
-import com.ssafy.api.response.RankInfoRes;
+import com.ssafy.api.response.rank.RankGetRes;
+import com.ssafy.api.response.rank.RankInfoRes;
 import com.ssafy.api.service.*;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;

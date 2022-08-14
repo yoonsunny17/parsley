@@ -4,7 +4,7 @@ import com.ssafy.api.request.LogCreatePostReq;
 import com.ssafy.api.request.RoomCreatePostReq;
 import com.ssafy.api.request.RoomPasswordPostReq;
 import com.ssafy.api.request.RoomUpdatePostReq;
-import com.ssafy.api.response.*;
+import com.ssafy.api.response.room.*;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
@@ -217,7 +217,7 @@ public class RoomController {
             @ApiResponse(code = 500, message = "공부 로그 등록 실패")
     })
     public ResponseEntity<? extends LogCreatePostRes> createStudyLog(@PathVariable("room_id") @Valid Long roomId,
-            @RequestBody @ApiParam(value = "로그 생성 정보", required = true) @Valid LogCreatePostReq logInfo){
+                                                                     @RequestBody @ApiParam(value = "로그 생성 정보", required = true) @Valid LogCreatePostReq logInfo){
 
         Long userId = jwtService.getUserId();
 

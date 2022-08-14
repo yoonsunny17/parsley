@@ -1,14 +1,14 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.GoalCreatePostReq;
-import com.ssafy.api.request.LogCreatePostReq;
-import com.ssafy.api.response.*;
+import com.ssafy.api.response.study.GoalCreatePostRes;
+import com.ssafy.api.response.study.GoalGetRes;
+import com.ssafy.api.response.study.LogGetRes;
+import com.ssafy.api.response.study.WeeklyStudyGetRes;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.StudyService;
 import com.ssafy.db.entity.DailyGoal;
 import com.ssafy.db.entity.DailyStudyLog;
-import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
