@@ -186,8 +186,8 @@ const herbCollectionList = [
     name: "떠든애가 제라늄!",
     imgUrl: "/herbs/hero_megaphone.png",
     grade: "hero",
-    description: "아 누구야 떠든애가 제라늄?",
-    isOpened: false,
+    description: "공부하는데 떠드는 사람이 제라늄?",
+    isOpened: true,
   },
   {
     name: "알라딘 여친 자스민",

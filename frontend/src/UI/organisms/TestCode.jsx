@@ -1,4 +1,4 @@
-function TodayStudyTime() {
+function TestCode() {
   const FULL_MINUTES = 1440;
   const DAILY_STUDY_LOG = [
     {
@@ -66,6 +66,7 @@ function TodayStudyTime() {
     .fill(null)
     .map((_, index) => index * 10);
   const MINUTE = [];
+  // const HOUR = [];
 
   while (BOX_RENDER_LIST.length) {
     MINUTE.push(BOX_RENDER_LIST.splice(0, 6));
@@ -91,19 +92,37 @@ function TodayStudyTime() {
       NIGHT.push(MINUTE[i]);
     }
   }
+  // for (let i = 0; i < MINUTE.length; i++) {
+  //   if (i <= 7) {
+  //     MORNING.push(MINUTE[i]);
+  //   } else if (8 <= i <= 15) {
+  //     AFTERNOON.push(MINUTE[i]);
+  //   } else {
+  //     NIGHT.push(MINUTE[i]);
+  //   }
+  // }
+  // const AFTERNOON = [];
+  // for (let i = 0; i < MINUTE.length; i++) {
+  //   if (8 <= i <= 15) {
+  //     AFTERNOON.push(MINUTE[i]);
+  //   }
+  // }
+
+  // const NIGHT = [];
+  // for (let i = 0; i < MINUTE.length; i++) {
+  //   if (16 <= i) {
+  //     NIGHT.push(MINUTE[i]);
 
   console.log(MORNING);
   console.log(AFTERNOON);
   console.log(NIGHT);
 
   return (
-    <div className="rounded-2xl shadow px-8 py-5 w-full lg:w-2/3 md:w-[100%]">
-      <div className="font-basic text-2xl font-bold mb-2">오늘의 공부량</div>
+    <div className="rounded-2xl shadow px-8 py-5 w-full lg:w-2/3 md:w-[100%] p-[28px_30px]">
+      <div className="font-basic text-2xl font-bold ">오늘의 공부량</div>
 
-      <div className="flex flex-wrap justify-center mt-6 mb-3">
-        {/* MORNING */}
-        <div className="mx-6 xl:mx-10">
-          <div className>morning</div>
+      <div className="flex flex-wrap">
+        <div className="m-4">
           {MORNING.map((min) => (
             <div className="flex flex-row">
               {min.map((v) => (
@@ -123,10 +142,8 @@ function TodayStudyTime() {
             </div>
           ))}
         </div>
-        {/* AFTERNOON */}
-        <div className="mx-6 xl:mx-10">
-          <div className>afternoon</div>
 
+        <div className="m-4">
           {AFTERNOON.map((min) => (
             <div className="flex flex-row">
               {min.map((v) => (
@@ -146,10 +163,8 @@ function TodayStudyTime() {
             </div>
           ))}
         </div>
-        {/* NIGHT */}
-        <div className="mx-6 xl:mx-10">
-          <div className>night</div>
 
+        <div className="m-4">
           {NIGHT.map((min) => (
             <div className="flex flex-row">
               {min.map((v) => (
@@ -169,8 +184,26 @@ function TodayStudyTime() {
             </div>
           ))}
         </div>
+        {/* {MINUTE.map((min) => (
+            <div className="flex flex-row">
+              {min.map((v) => (
+                <div
+                  className={`${v} w-6 h-6 border-[0.5px] border-[#FAF5E4] bg-[#FEFBF6] relative overflow-hidden`}
+                >
+                  <div
+                    className="bg-[#FFD24C] absolute left-0 top-0 w-full h-full"
+                    style={{
+                      opacity: STUDY_CLASS_NAME_DICT[v]
+                        ? STUDY_CLASS_NAME_DICT[v] / 100
+                        : 0,
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          ))} */}
       </div>
     </div>
   );
 }
-export default TodayStudyTime;
+export default TestCode;
