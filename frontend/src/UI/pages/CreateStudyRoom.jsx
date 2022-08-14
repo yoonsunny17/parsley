@@ -9,10 +9,10 @@ function CreateStudyRoom() {
     const initialValue = {
         name: "",
         mode: 0,
-        hashTags: [],
+        hashtags: [],
         description: "",
         maxPopulation: 1,
-        isPublic: "true",
+        isPublic: 0,
         password: "",
     };
 
@@ -52,11 +52,10 @@ function CreateStudyRoom() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setRoom((prev) => ({
-            ...prev,
-            isPublic: prev.isPublic === "true",
-        }));
+        room.isPublic = room.isPublic === 0 ? true : false;
+
         const roomData = convertFormData();
+        console.log(room);
 
         const { roomId } = await createRoom(roomData).unwrap();
         navigate(`/room/${roomId}`);
@@ -76,14 +75,14 @@ function CreateStudyRoom() {
                         <div className="flex align-top">
                             <label
                                 className="text-lg font-bold w-32 md:w-48"
-                                htmlFor="title"
+                                htmlFor="name"
                             >
                                 스터디룸 이름
                             </label>
                             <input
                                 className="rounded-md bg-extra4 px-3 py-1 input-border input-placeholder"
                                 type="text"
-                                name="title"
+                                name="name"
                                 placeholder="스터디룸 이름을 입력하세요"
                                 onChange={handleValueChange}
                             />
@@ -98,7 +97,6 @@ function CreateStudyRoom() {
                                 커버 이미지
                             </label>
                             <React.Fragment>
-                                {/* <label htmlFor="fileUpload"></label> */}
                                 <input
                                     type="file"
                                     id="fileUpload"
@@ -210,8 +208,8 @@ function CreateStudyRoom() {
                                 type="radio"
                                 id="public"
                                 name="isPublic"
-                                value="true"
-                                checked={room.isPublic === "true"}
+                                value={0}
+                                checked={room.isPublic == 0}
                                 onChange={handleValueChange}
                             />
                             <label
@@ -224,15 +222,15 @@ function CreateStudyRoom() {
                                 type="radio"
                                 id="private"
                                 name="isPublic"
-                                value="false"
-                                checked={room.isPublic === "false"}
+                                value={1}
+                                checked={room.isPublic == 1}
                                 onChange={handleValueChange}
                             />
                             <label htmlFor="private" className="text-lg ml-2">
                                 비공개
                             </label>
                             <input
-                                disabled={room.isPublic !== "false"} // 라디오 버튼 선택 안되어있을때도 비활성화
+                                disabled={room.isPublic != 1} // 라디오 버튼 선택 안되어있을때도 비활성화
                                 name="password"
                                 type="current-password"
                                 value={room.password}
