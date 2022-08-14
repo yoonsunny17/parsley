@@ -72,7 +72,7 @@ function MyProfile() {
                                     />
                                 ) : (
                                     <>
-                                        <h2 className="font-bold">{user.description}</h2>
+                                        <h2 className= "font-bold">{user.description ? user.description : "상태메세지를 등록해보세요!"}</h2>
                                     </>
                                 )}
                             </div>
@@ -80,42 +80,20 @@ function MyProfile() {
                                 <p className="mt-5 text-font2 text-xs">
                                     등록일
                                 </p>
-                                {edit ? (
-                                    <input
-                                        onChange={handleMessage}
-                                        type="text"
-                                        className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        placeholder={user.regDate}
-                                    />
-                                ) : (
-                                    <>
-                                        <h2 className="font-bold">{user.regDate}</h2>
-                                    </>
-                                )}
+                                <h2 className="font-bold">{user.regDate}</h2>
                             </div>
                             <div className="my-5">
                                 <p className="mt-5 text-font2 text-xs">
                                     D-Day
                                 </p>
-                                {edit ? (
-                                    <input
-                                        onChange={handleMessage}
-                                        type="text"
-                                        className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        placeholder={user.dday}
-                                    />
-                                ) : (
-                                    <>
-                                        <h2 className="font-bold">{user.dday}</h2>
-                                    </>
-                                )}
+                                <h2 className="font-bold">{user.dday ? user.dday : "D-Day를 등록해보세요!"}</h2>
                             </div>
                         </div>
                         <div className="absolute bottom-[20px] right-[32px]">
                             {edit ? (
                                 <button
                                     onClick={onCancel}
-                                    className="bg-sub1 mr-[10px] text-font3 text-sm font-semibold rounded-full transition duration-0 w-[96px] py-2  hover:bg-sub2 hover:duration-500"
+                                    className="bg-sub1 mr-[10px] text-font3 text-sm font-semibold rounded-full transition duration-0 w-[96px] py-2 hover:bg-sub2 hover:duration-500"
                                 >
                                     취소
                                 </button>
