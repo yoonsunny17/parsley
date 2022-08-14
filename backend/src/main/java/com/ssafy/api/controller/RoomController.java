@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.LogCreatePostReq;
 import com.ssafy.api.request.RoomCreatePostReq;
 import com.ssafy.api.request.RoomPasswordPostReq;
 import com.ssafy.api.request.RoomUpdatePostReq;
@@ -7,6 +8,7 @@ import com.ssafy.api.response.*;
 import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
+import com.ssafy.db.entity.DailyStudyLog;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.*;
@@ -206,5 +208,27 @@ public class RoomController {
                     RoomsGetRes.of(200, "Success", rooms)
             );
         }
+    }
+
+    @PostMapping("/{room_id}/log")
+    @ApiOperation(value = "공부 로그", notes = "공부를 시작할 떄는 status가 T, 공부가 끝날 때는 status가 F로 현재 시간에 대한 로그를 저장한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "공부 시작 / 공부 끝"),
+            @ApiResponse(code = 500, message = "공부 로그 등록 실패")
+    })
+    public ResponseEntity<? extends LogCreatePostRes> createStudyLog(@PathVariable("room_id") @Valid Long roomId,
+            @RequestBody @ApiParam(value = "로그 생성 정보", required = true) @Valid LogCreatePostReq logInfo){
+
+        Long userId = jwtService.getUserId();
+
+        DailyStudyLog dailyStudyLog = roomService.addDailyLog(userId, roomId, logInfo);
+
+        if(dailyStudyLog == null){
+            return ResponseEntity.status(500)
+                    .body(LogCreatePostRes.of(500, "Fail to Create Log", null));
+        }
+
+        return ResponseEntity.status(200)
+                .body(LogCreatePostRes.of(200, "Success", dailyStudyLog.getId()));
     }
 }
