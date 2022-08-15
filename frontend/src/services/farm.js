@@ -21,12 +21,14 @@ export const farmApi = createApi({
     getHerbs: builder.query({
       query: () => `/farm/herb`,
     }),
-    updateHerbs: builder.mutation({
-      query: ({ herbId, ...rest }) => ({
-        url: `/farm/herb/add`,
-        method: "POST",
-        body: rest,
-      }),
+    updateHerbInfo: builder.mutation({
+      query: ({ herbId, ...rest }) => {
+        return {
+          url: `/farm/herb/add`,
+          method: "POST",
+          body: rest,
+        };
+      },
     }),
   }),
 });
@@ -36,5 +38,5 @@ export const {
   useGetCollectionQuery,
   useUpdateCollectionQuery,
   useGetHerbsQuery,
-  useUpdateHerbsQuery,
+  useUpdateHerbInfoQuery,
 } = farmApi;

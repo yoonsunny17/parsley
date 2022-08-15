@@ -6,14 +6,14 @@ import herbCollectionList from "../molecules/HerbCollectionList";
 import { useGetCollectionQuery, useGetHerbsQuery } from "../../services/farm";
 
 function FarmCollection() {
-  const { data: getCollection } = useGetCollectionQuery(
-    {},
-    { refetchOnMountOrArgChange: true }
-  );
-  const { data: getHerbs } = useGetHerbsQuery(
-    {},
-    { refetchOnMountOrArgChange: true }
-  );
+  //   const { data: getCollection } = useGetCollectionQuery(
+  //     {},
+  //     { refetchOnMountOrArgChange: true }
+  //   );
+  //   const { data: getHerbs } = useGetHerbsQuery(
+  //     {},
+  //     { refetchOnMountOrArgChange: true }
+  //   );
 
   const username = "유교보이";
   const herbname = "프로틴 중독 파슬리";

@@ -1,6 +1,8 @@
 // 농장 페이지 허브 기르기 컴포넌트 (최대 8개의 허브 기를 수 있음)
 // TODO: window.innerwidth 좁아지면 접어야 할 것 같음 너무 길어짐 근데 3d model이 접어도 되는지 모르겠다
 import React, { useState, useTransition } from "react";
+import { useParams } from "react-router-dom";
+import { useUpdateHerbInfoQuery } from "../../services/farm";
 
 import HerbStoreModal from "./HerbStoreModal";
 import HerbComponent1 from "../atoms/HerbComponent1";
@@ -8,6 +10,13 @@ import HerbComponent2 from "../atoms/HerbComponent2";
 import HerbComponent3 from "../atoms/HerbComponent3";
 
 function FarmGame(props) {
+  //     const params = useParams()
+  //   const [updateHerbInfo, { isSuccess }] = useUpdateHerbInfoQuery();
+
+  //   const handleUpdateHerbInfo = () => {
+  //     updateHerbInfo();
+  //   };
+
   const day = 32;
   const sley = 1000;
 
