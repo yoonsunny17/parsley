@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import { history } from "../../modules/store";
 
 function SearchBar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleSearch = () => {
-    setIsOpen((current) => !current);
-  };
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleSearch = () => {
+        setIsOpen((current) => !current);
+    };
 
-  const searchEnter = (e) => {
-    if (e.key === "Enter") {
-      isEnter();
-    }
-  };
+    const searchEnter = (e) => {
+        if (e.key === "Enter") {
+            isEnter();
+        }
+    };
 
-  const isEnter = () => {
-    console.log("hello");
-  };
+    const isEnter = () => {
+        console.log("hello");
+    };
 
   const [search, setSearch] = useState("");
 
