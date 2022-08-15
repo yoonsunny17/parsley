@@ -6,6 +6,8 @@ import { roomApi } from "../services/room";
 import { authApi } from "../services/auth";
 import { userApi } from "../services/user";
 import userReducer from "./userReducer";
+import { createBrowserHistory } from "history";
+export const history = createBrowserHistory();
 
 const reducers = combineReducers({
     user: userReducer,
