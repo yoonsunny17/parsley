@@ -4,7 +4,7 @@ import DdayWidget from "../molecules/DdayWidget";
 import StudyWidget from "../molecules/StudyWidget";
 import Button from "../atoms/Button";
 import { useSelector } from "react-redux";
-import { useLazyLogoutQuery } from "../../services/user";
+import { useLazyLogoutQuery } from "../../services/auth";
 import { KAKAO_AUTH_URL } from "../../services";
 import { Link } from "react-router-dom";
 

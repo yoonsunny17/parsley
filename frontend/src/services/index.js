@@ -9,52 +9,48 @@ export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_
 
 const mutex = new Mutex();
 export const baseQuery = fetchBaseQuery({
-    baseUrl: BASE_URL,
-    credentials: "include",
-    prepareHeaders: (headers, { getState }) => {
-        const token = getState().user.token;
-        if (token) {
-            headers.set("Authorization", `Bearer ${token}`);
-        }
-        return headers;
-    },
+  baseUrl: BASE_URL,
+  credentials: "include",
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().user.token;
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+    return headers;
+  },
 });
 
 export const baseQueryWithReAuth = async (args, api, extraOptions) => {
-    await mutex.waitForUnlock();
-    let result = await baseQuery(args, api, extraOptions);
+  await mutex.waitForUnlock();
+  let result = await baseQuery(args, api, extraOptions);
 
-    if (result?.error?.data.status === 444) {
-        if (!mutex.isLocked()) {
-            const release = await mutex.acquire();
-            try {
-                let result = await baseQuery(
-                    `/auth/refresh`,
-                    api,
-                    extraOptions
-                );
-                if (result?.data.accessToken) {
-                    api.dispatch(setToken(result?.data.accessToken));
+  if (result?.error?.data.status === 444) {
+    if (!mutex.isLocked()) {
+      const release = await mutex.acquire();
+      try {
+        let result = await baseQuery(`/auth/refresh`, api, extraOptions);
+        if (result?.data.accessToken) {
+          api.dispatch(setToken(result?.data.accessToken));
 
-                    // Retry Initial Query
-                    result = await baseQuery(args, api, extraOptions);
-                } else {
-                    await baseQuery(`/auth/logout`, api, extraOptions);
-                    window.location.href = "/";
-                }
-            } catch (err) {
-                alert(err);
-            } finally {
-                release();
-            }
+          // Retry Initial Query
+          result = await baseQuery(args, api, extraOptions);
         } else {
-            await mutex.waitForUnlock();
-            result = await baseQuery(args, api, extraOptions);
+          await baseQuery(`/auth/logout`, api, extraOptions);
+          window.location.href = "/";
         }
-    } else if (result?.error?.data.status === 445) {
-        await baseQuery(`/auth/logout`, api, extraOptions);
-        window.location.href = "/";
+      } catch (err) {
+        alert(err);
+      } finally {
+        release();
+      }
+    } else {
+      await mutex.waitForUnlock();
+      result = await baseQuery(args, api, extraOptions);
     }
+  } else if (result?.error?.data.status === 445) {
+    await baseQuery(`/auth/logout`, api, extraOptions);
+    window.location.href = "/";
+  }
 
-    return result;
+  return result;
 };
