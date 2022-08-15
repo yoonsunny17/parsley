@@ -219,13 +219,16 @@ function StudyInfo() {
 
               {/* 한번이라도 참여한 적 있는 경우 "참가하기" 버튼 활성화 */}
               {room?.members.filter((member) => member.id === user?.id).length >
-                0 && (
+                0.length > 0 && (
                 <>
                   <Link to={`/room/session/${params.id}`}>
                     <Button text={"입장하기"} />
                   </Link>
                   {/* // FIXME: 탈퇴하기 버튼 다른 디자인으로 바꿀것! */}
-                  <Button text={"탈퇴하기"} onClick={handleWithdrawRoom} />
+                  <Button
+                                        text={"탈퇴하기"}
+                                        onClick={handleWithdrawRoom}
+                                    onClick={handleWithdrawRoom} />
                 </>
               )}
             </div>
@@ -252,5 +255,14 @@ function StudyInfo() {
     </div>
   );
 }
+
+const Toast = Swal.mixin({
+    toast: true,
+    width: 320,
+    position: "top-right",
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+});
 
 export default StudyInfo;
