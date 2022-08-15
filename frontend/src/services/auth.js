@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import { baseQuery, baseQueryWithReAuth } from ".";
+import { baseQueryWithReAuth } from ".";
 import { login, logout, setToken, setUserId } from "../modules/userReducer";
 import { parseJwt } from "../util/common";
 
@@ -18,7 +18,7 @@ export const authApi = createApi({
                         setUserId(parseJwt(result?.data.accessToken).user.id)
                     );
                 } catch (err) {
-                        console.log(err);
+                    console.log(err);
                 }
             },
         }),

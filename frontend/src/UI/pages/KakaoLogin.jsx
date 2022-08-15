@@ -8,11 +8,13 @@ function KakaoLogin() {
     const navigate = useNavigate();
 
     const code = location.search.split("=")[1];
-    const { isLoading } = useKakaoLoginQuery(code);
-    const [ getUser ] = useLazyGetUserQuery();
+    const { isLoading, isSuccess, error } = useKakaoLoginQuery(code);
+    const [getUser] = useLazyGetUserQuery();
 
     if (!isLoading) {
-        getUser();
+        if (isSuccess) {
+            getUser();
+        }
         navigate("/");
     }
 
