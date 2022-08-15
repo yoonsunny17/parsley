@@ -13,7 +13,6 @@ export const roomApi = createApi({
         }),
         createRoom: builder.mutation({
             query: (room) => {
-                console.log(room);
                 return {
                     url: `/room/create`,
                     method: "POST",

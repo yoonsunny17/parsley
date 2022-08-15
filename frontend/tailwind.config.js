@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
@@ -27,7 +28,8 @@ module.exports = {
             },
             fontFamily: {
                 logo: ["Titan One", "cursive"],
-                basic: ["Noto Sans KR", "sans-serif"],
+                sans: ["NanumBarunGothicYetHangul", "sans-serif"],
+                // basic: ["Noto Sans KR", "sans-serif"],
             },
         },
     },

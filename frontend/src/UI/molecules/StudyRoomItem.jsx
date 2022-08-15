@@ -19,7 +19,7 @@ function StudyRoomItem({
                 className="w-full h-full absolute object-cover"
             />
             {/* <div className="absolute top-0 left-0 w-full h-full z-20 font-semibold text-white"></div> */}
-            <div className="absolute flex flex-col justify-between top-0 left-0 w-full h-full px-4 py-3 z-10 bg-extra5 bg-opacity-[0.22] font-semibold text-white">
+            <div className="absolute flex flex-col justify-between top-0 left-0 w-full h-full px-4 py-3 z-10 bg-extra5 bg-opacity-[0.22] font-medium text-white">
                 <div className="w-full flex justify-between text-sm">
                     <span className="bg-extra5 bg-opacity-50 w-5/12 lg:w-2/5 2xl:w-1/4 rounded-md text-center">
                         {/* {isPublic ? "공개" : "비공개"} */}
@@ -29,7 +29,7 @@ function StudyRoomItem({
                 </div>
                 <div className="w-full flex justify-between">
                     <div className="w-2/3">
-                        <div className="w-full truncate text-sm md:text-base xl:text-lg">
+                        <div className="w-full truncate text-sm md:text-base xl:text-lg font-semibold">
                             {name}
                         </div>
                         <div className="w-full truncate text-xs xl:text-sm">
