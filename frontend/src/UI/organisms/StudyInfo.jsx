@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useGetRoomQuery } from "../../services/room";
 import Button from "../atoms/Button";
@@ -10,6 +11,10 @@ function StudyInfo() {
     });
 
     const [like, setLike] = useState(false);
+
+    // member일 경우 -> 입장하기 Button + 탈퇴하기 Button
+
+    // hostUser일 경우 -> 설정 Button 추가해서 편집 모달 띄우기
 
     return (
         <div className="container flex flex-wrap gap-10">
@@ -24,7 +29,7 @@ function StudyInfo() {
                 </div>
             </div>
             {/* 스터디 상세 정보 */}
-            <div className="study-contents flex flex-col justify-between gap-4 w-100 lg:w-7/12 min-h-min">
+            <div className="flex flex-col justify-between gap-4 min-h-min w-full px-2 lg:w-7/12 lg:px-0">
                 {/* Header: 이름 + 태그 */}
                 <div className="flex flex-col gap-4">
                     <div>
@@ -78,18 +83,18 @@ function StudyInfo() {
                 <div className="flex items-center gap-4">
                     <Button text={"참가하기"} />
 
-                    <button className="text-3xl text-font1 rounded-[50px]">
-                        <i className="bx bx-link"></i>
+                    <button className="text-font1 rounded-[50px]">
+                        <i className="bx text-3xl bx-link"></i>
                     </button>
 
                     {!like && (
-                        <button className="text-3xl text-heart rounded-[50px]">
-                            <i className="bx bx-heart"></i>
+                        <button className="text-heart rounded-[50px]">
+                            <i className="bx text-3xl bx-heart"></i>
                         </button>
                     )}
                     {like && (
-                        <button className="text-3xl text-heart rounded-[50px]">
-                            <i className="bx bxs-heart"></i>
+                        <button className="text-heart rounded-[50px]">
+                            <i className="bx text-3xl bxs-heart"></i>
                         </button>
                     )}
                 </div>
