@@ -231,10 +231,10 @@ function StudyInfo() {
             </div>
           )}
 
-          {/* 클립보드 */}
+                    {/* 클립보드 */}
           <button onClick={copyLink} className="text-font1 rounded-[50px]">
-            <i className="bx text-3xl bx-link"></i>
-          </button>
+                        <i className="bx text-3xl bx-link"></i>
+                    </button>
 
           {/* 좋아요 */}
           {!like && (
