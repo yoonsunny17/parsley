@@ -6,7 +6,7 @@ function StudyRoomInfo() {
     return (
         <div className="text-font1">
             <Navbar />
-            <div>
+            <div className="flex flex-col gap-20 px-0 xl:px-36">
                 <StudyInfo />
                 <StudyKing />
             </div>

@@ -14,7 +14,7 @@ function App() {
     return (
         <BrowserRouter>
             <Drawer>
-                <div className="App container mx-auto px-5">
+                <div className="App container mx-auto px-5 font-sans">
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/me" element={<MyPage />} />
