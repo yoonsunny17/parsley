@@ -16,8 +16,10 @@ function NotFound() {
                         </div>
                         <div className="bg-sub1 w-[17.5px] h-[12.5px] rotate-[45deg] absolute bottom-[-4px] left-[20px]"></div>
                     </div>
-                    <div className="font-basic text-[100px] ml-[20px] text-sub1">PAGE NOT FOUND</div>
-                    <div className="font-basic font-thin tracking-wide text-[#646464] text-[30px] ml-[30px] mt-[11px]">
+                    <div className="text-[100px] ml-[20px] text-sub1">
+                        PAGE NOT FOUND
+                    </div>
+                    <div className="font-thin tracking-wide text-[#646464] text-[30px] ml-[30px] mt-[11px]">
                         <div>we looked everywhere for this page.</div>
                         <div>Are you sure the website URL is correct?</div>
                         <div>Get in touch with the site owner.</div>
@@ -25,7 +27,7 @@ function NotFound() {
                     <div className="mt-[80px] ml-[25px]">
                         <Link
                             to="/"
-                            className="font-basic font-thin text-[40px] border-[3px] border-sub1 p-[23px_21px] rounded-[50px] text-sub1
+                            className=" font-thin text-[40px] border-[3px] border-sub1 p-[23px_21px] rounded-[50px] text-sub1
                     hover:bg-sub1 hover:text-white"
                         >
                             Go Back Home

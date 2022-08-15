@@ -55,7 +55,6 @@ function CreateStudyRoom() {
         room.isPublic = room.isPublic === 0 ? true : false;
 
         const roomData = convertFormData();
-        console.log(room);
 
         const { roomId } = await createRoom(roomData).unwrap();
         navigate(`/room/${roomId}`);
@@ -66,7 +65,7 @@ function CreateStudyRoom() {
     return (
         <div className="text-extra5">
             <Navbar />
-            <div className="font-basic flex flex-col rounded-3xl shadow-md px-8 py-9">
+            <div className="flex flex-col rounded-3xl shadow-md px-8 py-9">
                 <div className="text-2xl font-bold">스터디룸 생성하기</div>
 
                 <form onSubmit={handleSubmit} onKeyPress={handleEnter}>

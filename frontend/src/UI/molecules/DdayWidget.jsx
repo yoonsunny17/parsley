@@ -3,7 +3,7 @@ import "moment/locale/ko";
 
 function DdayWidget() {
     return (
-        <div className="w-100 items-center justify-between p-6 shadow font-basic rounded-3xl">
+        <div className="w-100 items-center justify-between p-6 shadow rounded-3xl">
             {/* 날짜 표시 */}
             <div className="text-font1 text-xl font-bold mb-4">
                 {moment().format("YYYY. M. D (ddd)")}

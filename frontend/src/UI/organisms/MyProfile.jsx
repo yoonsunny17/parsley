@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Button from "../atoms/Button";
+// import Button from "../atoms/Button";
 
 function MyProfile() {
     const [username, setUserName] = useState("");
