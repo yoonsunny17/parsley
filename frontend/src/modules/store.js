@@ -5,28 +5,30 @@ import storage from "redux-persist/lib/storage";
 import { roomApi } from "../services/room";
 import { userApi } from "../services/user";
 import userReducer from "./userReducer";
+import { createBrowserHistory } from "history";
+export const history = createBrowserHistory();
 
 const reducers = combineReducers({
-    user: userReducer,
-    [roomApi.reducerPath]: roomApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
+  user: userReducer,
+  [roomApi.reducerPath]: roomApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
 });
 
 const persistedReducer = persistReducer(
-    {
-        key: "root",
-        storage,
-    },
-    reducers
+  {
+    key: "root",
+    storage,
+  },
+  reducers
 );
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({ serializableCheck: false }).concat([
-            roomApi.middleware,
-            userApi.middleware,
-        ]),
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).concat([
+      roomApi.middleware,
+      userApi.middleware,
+    ]),
 });
 
 // setupListeners(store.dispatch);

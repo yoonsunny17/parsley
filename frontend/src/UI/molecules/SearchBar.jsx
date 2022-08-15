@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { history } from "../../modules/store";
 
 function SearchBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +17,8 @@ function SearchBar() {
     console.log("hello");
   };
 
+  const [search, setSearch] = useState("");
+
   return (
     <div className="flex">
       <button
@@ -26,21 +29,28 @@ function SearchBar() {
       </button>
       {isOpen ? (
         <div>
-          <input
-            onKeyPress={searchEnter}
-            className="rounded-md bg-extra4 px-3 py-1 input-border input-placeholder"
-            type="text"
-          />
-          {/* {filtered.map((itemList) => {
-            return;
-          })} */}
+          <form
+            action={`/room/search/${search}`}
+            method="GET"
+            onSubmit={(e) => {
+              e.preventDefault();
+              history.push(`/room/search/${search}`);
+              setSearch("");
+              console.log(search);
+            }}
+          >
+            <input
+              value={search}
+              // onKeyPress={searchEnter}
+              className="rounded-md bg-extra4 px-3 py-1 input-border input-placeholder"
+              type="text"
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+            />
+          </form>
         </div>
-      ) : (
-        <input
-          className="rounded-md bg-extra4 py-1 input-border input-placeholder hidden"
-          type="text"
-        />
-      )}
+      ) : null}
     </div>
   );
 }

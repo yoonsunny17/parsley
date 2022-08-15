@@ -1,62 +1,20 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import StudyRoomItem from "../../UI/molecules/StudyRoomItem";
 import Navbar from "../organisms/Navbar";
-import { useSelector, useDispatch } from "react-redux";
 
-function SearchStudyRooms(props) {
+function ViewAllStudyRooms() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const tabClickHandler = (index) => {
     setActiveIndex(index);
   };
 
-  const room_list = useSelector((state) => state.room.room_list);
-  const [searchWord, setSearchWord] = useState(props.match.params.word);
-  const [search, setSearch] = useState(searchWord);
-
-  function searchRooms(room_list, searchWord) {
-    let search_list = [];
-    room_list.forEach((i) => {
-      if (i.roomInfo.indexOf(searchWord) === -1) {
-        return;
-      }
-      search_list.push(i); // 검색 일치하므로 배열에 추가
-    });
-
-    return search_list;
-  }
-
-  const search_list = useMemo(
-    () => searchRooms(room_list, searchWord),
-    [searchWord]
-  );
-
   return (
     <div>
       <Navbar />
-      <div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSearchWord(e.target.value);
-          }}
-          action=""
-          method="GET"
-        >
-          <input
-            type="text"
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-            value={search}
-          />
-        </form>
-      </div>
-
       <div className="text-font1 font-bold text-2xl mt-5">
-        검색결과
-        <span>총 {search_list.length}개의 검색 결과</span>
+        '파슬리' 검색결과
       </div>
 
       {/* 손꾸락 스터디룸 검색결과 */}
@@ -185,4 +143,4 @@ const tabContArr = [
   { title: "관심 공부방", studyRoomList: [] },
 ];
 
-export default SearchStudyRooms;
+export default ViewAllStudyRooms;

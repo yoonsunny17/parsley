@@ -7,7 +7,8 @@ import MyPage from "./UI/pages/MyPage";
 import NotFound from "./UI/pages/NotFound";
 import KakaoLogin from "./UI/pages/KakaoLogin";
 import EnterStudyRoom from "./UI/pages/EnterStudyRoom";
-import SearchStudyRooms from "./UI/pages/SearchStudyRooms";
+import SearchStudyRooms from "./UI/pages/SearchStudyRooms"; // 특정 검색어로 스터디룸 검색
+import ViewAllStudyRooms from "./UI/pages/ViewAllStudyRooms"; // 모든 스터디룸 리스트 검색
 import Farm from "./UI/pages/Farm";
 
 function App() {
@@ -26,10 +27,11 @@ function App() {
                         /> */}
             <Route path="/room/detail" element={<StudySession />} />
             {/* <Route path="/room" element={<EnterStudyRoom />} /> */}
+            <Route path="/farm" element={<Farm />} />
+            <Route path="/room/search/:room" element={<SearchStudyRooms />} />
+            <Route path="/room" element={<ViewAllStudyRooms />} />
             <Route path="/me" element={<MyPage />} />
             <Route path="*" element={<NotFound />} />
-            <Route path="/farm" element={<Farm />} />
-            <Route path="/room" element={<SearchStudyRooms />} />
           </Routes>
         </div>
       </Drawer>
