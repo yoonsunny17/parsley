@@ -1,15 +1,21 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useGetAllRoomsQuery } from "../../services/room";
+import { useGetMyRoomsQuery } from "../../services/user";
 import StudyRoomItem from "../molecules/StudyRoomItem";
 
 function StudyRooms() {
+    const isLogin = useSelector((state) => state.user.isLogin);
     const { data: getAllRooms } = useGetAllRoomsQuery(
         {},
         { refetchOnMountOrArgChange: true }
     );
-    // myRoomList
+    const { data: getMyRooms } = useGetMyRoomsQuery(
+        {},
+        { refetchOnMountOrArgChange: true }
+    );
+
     // interestRoomList
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -21,7 +27,7 @@ function StudyRooms() {
     return (
         <div className="bg-white rounded-3xl border-4 border-main w-full relative">
             {/* Tab */}
-            <div className="absolute top-[-44px] left-4 sm:left-[40px]">
+            <div className="absolute top-[-40px] left-4 sm:left-[40px]">
                 <div className="flex list-none text-lg gap-2 md:gap-[10px]">
                     {tabContArr.map(({ title }, idx) => (
                         <button
@@ -31,7 +37,7 @@ function StudyRooms() {
                                 (activeIndex === idx
                                     ? "bg-main "
                                     : "bg-sub2 hover:bg-main ") +
-                                "color-delay cursor-pointer text-font3 font-medium text-base rounded-t-2xl h-[44px] px-3 truncate w-[28%] sm:min-w-max"
+                                "color-delay cursor-pointer text-font3 font-medium text-base rounded-t-2xl h-[36px] px-3 truncate w-[28%] sm:min-w-max pt-1"
                             }
                         >
                             {title}
@@ -56,11 +62,26 @@ function StudyRooms() {
                             );
                         })
                     ))}
-                {/* {activeIndex === 1 && getMyRooms?.roomsInfo.length === 0 ? (
-                    <div>참가하고 있는 스터디가 없어요</div>
-                ) : (
-                    getMyRooms?.roomsInfo.slice(0, 8).map((room, idx) => {})
-                )} */}
+
+                {/* 나의 스터디 */}
+                {activeIndex === 1 &&
+                    (!isLogin ? (
+                        <div>로그인이 필요합니다</div>
+                    ) : getMyRooms?.rooms.length === 0 ? (
+                        <div>참가하고 있는 스터디가 없어요</div>
+                    ) : (
+                        getMyRooms?.rooms.slice(0, 8).map((room, idx) => {
+                            return (
+                                <Link
+                                    to={`/room/${room.id}`}
+                                    key={`room-${idx}`}
+                                >
+                                    <StudyRoomItem info={room} key={idx} />
+                                </Link>
+                            );
+                        })
+                    ))}
+
                 {/* {activeIndex === 2 && getInterestRooms?.roomsInfo.length === 0 ? (<div>관심 있는 스터디가 없어요</div> : (interestRooms?.roomsInfo.slice(0, 8).map((room, idx) => { })))} */}
             </div>
             <div className="px-6 mt-4 mb-8 md:px-10 w-full flex justify-end text-font1 hover:text-main font-semibold color-delay">
@@ -71,9 +92,9 @@ function StudyRooms() {
 }
 
 const tabContArr = [
-    { title: "전체 공부방" },
-    { title: "나의 공부방" },
-    { title: "관심 공부방" },
+    { title: "전체 스터디" },
+    { title: "나의 스터디" },
+    { title: "관심 스터디" },
 ];
 
 export default StudyRooms;
