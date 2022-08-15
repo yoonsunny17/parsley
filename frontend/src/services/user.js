@@ -14,7 +14,7 @@ export const userApi = createApi({
                     console.log(result.data.userInfo);
                     dispatch(setUser(result.data.userInfo));
                 } catch (err) {
-                        console.log(err);
+                    console.log(err);
                 }
             },
         }),
@@ -24,8 +24,8 @@ export const userApi = createApi({
                     url: `/user/update`,
                     method: "POST",
                     body: user,
-                }
-            }
+                };
+            },
         }),
         deleteUser: builder.mutation({
             query: () => ({
