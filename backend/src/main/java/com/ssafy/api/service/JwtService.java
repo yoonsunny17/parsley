@@ -25,7 +25,7 @@ public class JwtService {
                 .setHeaderParam("typ", "JWT")
                 .setIssuedAt(now)
                 .setSubject(subject)
-                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 5000))
                 .claim(key, data)
                 .signWith(SignatureAlgorithm.HS512, this.generateKey())
                 .compact();
@@ -38,7 +38,7 @@ public class JwtService {
                 .setHeaderParam("typ", "JWT")
                 .setIssuedAt(now)
                 .setSubject(subject)
-                .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400 * 7))
                 .claim(key, data)
                 .signWith(SignatureAlgorithm.HS512, this.generateKey())
                 .compact();
