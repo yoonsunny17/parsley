@@ -15,32 +15,29 @@ import Farm from "./UI/pages/Farm";
 import TestCode from "./UI/organisms/TestCode";
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Drawer>
-                <div className="App container mx-auto px-5 font-sans">
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/me" element={<MyPage />} />
-                        <Route path="/login" element={<KakaoLogin />} />
+  return (
+    <BrowserRouter>
+      <Drawer>
+        <div className="App container mx-auto px-5 font-sans">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/me" element={<MyPage />} />
+            <Route path="/login" element={<KakaoLogin />} />
 
-                        <Route path="/room">
-                            <Route path=":id" element={<StudyRoomInfo />} />
-                        </Route>
-                        <Route
-                            path="/room/create"
-                            element={<CreateStudyRoom />}
-                        />
-                        <Route path="/room/detail" element={<StudySession />} />
+            <Route path="/room">
+              <Route path=":id" element={<StudyRoomInfo />} />
+            </Route>
+            <Route path="/room/create" element={<CreateStudyRoom />} />
+            <Route path="/room/session/:roomId" element={<StudySession />} />
 
-                        <Route path="/search" element={<SearchStudyRooms />} />
-                        <Route path="/farm" element={<Farm />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </div>
-            </Drawer>
-        </BrowserRouter>
-    );
+            <Route path="/search" element={<SearchStudyRooms />} />
+            <Route path="/farm" element={<Farm />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </Drawer>
+    </BrowserRouter>
+  );
 }
 
 export default App;
