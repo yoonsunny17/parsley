@@ -231,6 +231,7 @@ const seedOptions = [
     price: 0,
     grade: "normal",
     imgUrl: "/herbs/seed.png",
+    rate: 2,
   },
   {
     name: "seed",
@@ -238,6 +239,7 @@ const seedOptions = [
     price: 100,
     grade: "rare",
     imgUrl: "/herbs/seeds.png",
+    rate: 4,
   },
   {
     name: "seed",
@@ -245,6 +247,7 @@ const seedOptions = [
     price: 200,
     grade: "hero",
     imgUrl: "/herbs/seed.png",
+    rate: 6,
   },
   {
     name: "seed",
@@ -252,6 +255,7 @@ const seedOptions = [
     price: 350,
     grade: "legend",
     imgUrl: "/herbs/seeds.png",
+    rate: 8,
   },
   {
     name: "seed",
@@ -259,6 +263,7 @@ const seedOptions = [
     price: 500,
     grade: "mystery",
     imgUrl: "/herbs/seed.png",
+    rate: 10,
   },
 ];
 
@@ -268,24 +273,28 @@ const fertilizerOptions = [
     title: "일반 비료",
     price: 150,
     imgUrl: "/herbs/fertilizer.png",
+    rate: 1.1,
   },
   {
     name: "fertilizer",
     title: "고급 비료",
     price: 200,
     imgUrl: "/herbs/liquid_fertilizer.png",
+    rate: 1.2,
   },
   {
     name: "fertilizer",
     title: "프로틴 비료",
     price: 300,
     imgUrl: "herbs/fertilizer.png",
+    rate: 1.3,
   },
   {
     name: "fertilizer",
     title: "최상급 비료",
     price: 500,
     imgUrl: "/herbs/liquid_fertilizer.png",
+    rate: 1.5,
   },
 ];
 
@@ -295,12 +304,14 @@ const waterOptions = [
     title: "일반 물뿌리개",
     price: 250,
     imgUrl: "/herbs/watering-can.png",
+    rate: 0.8,
   },
   {
     name: "water",
     title: "고급 물뿌리개",
     price: 500,
     imgUrl: "/herbs/watering-can.png",
+    rate: 0.7,
   },
 ];
 export default HerbStoreModal;

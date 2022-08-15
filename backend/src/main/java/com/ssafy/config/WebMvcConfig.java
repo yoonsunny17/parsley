@@ -27,7 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
             "/room/**",
             "/rank/nongbu",
             "/error",
-            "/swagger-ui",
+            "/swagger-ui/",
     };
 
     @Autowired
