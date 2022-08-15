@@ -29,7 +29,7 @@ public class UserRoomService {
 
         if(room.getMembers().size() == room.getMaxPopulation()){
             return false;
-        }else{
+        } else{
             if(!user.getJoinRooms().contains(room)){
                 user.addUserRoom(room);
             }

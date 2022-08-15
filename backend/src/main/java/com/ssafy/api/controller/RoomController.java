@@ -92,9 +92,7 @@ public class RoomController {
     public ResponseEntity<? extends RoomPostRes> createPost(
             @RequestPart(value = "roomInfo") @ApiParam(value = "방 생성 정보", required = true) @Valid RoomCreatePostReq roomInfo,
             @RequestPart(value = "imgUrl") @ApiParam(value = "방 이미지", required = true) @Valid MultipartFile multipartFile) {
-
         Long userId = jwtService.getUserId();
-
         Room room = roomService.createRoom(userId, roomInfo, multipartFile);
 
         if (room == null) {
