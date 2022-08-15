@@ -3,31 +3,62 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useGetRoomQuery } from "../../services/room";
-import { useJoinRoomMutation } from "../../services/userRoom";
+import {
+    useJoinRoomMutation,
+    useWithdrawRoomMutation,
+} from "../../services/userRoom";
 import Button from "../atoms/Button";
+import Swal from "sweetalert2";
 
 function StudyInfo() {
+    const isLogin = useSelector((state) => state.user.isLogin);
+    const user = useSelector((state) => state.user.user);
+    const [like, setLike] = useState(false);
+
     const params = useParams();
     const { data, refetch } = useGetRoomQuery(params.id, {
         refetchOnMountOrArgChange: true,
+        selectFromResult: ({ data }) => ({
+            data,
+        }),
     });
-    const [joinRoom, { isSuccess }] = useJoinRoomMutation();
-
-    const [like, setLike] = useState(false);
-    const user = useSelector((state) => state.user.user);
+    const [joinRoom, { isSuccess: isJoinRoomSuccess }] = useJoinRoomMutation();
+    const [withdrawRoom] = useWithdrawRoomMutation();
 
     const handleJoinRoom = () => {
-        joinRoom(params.id);
-        console.log(user);
-        console.log(data?.roomInfo);
-        if (isSuccess) {
-            refetch();
+        if (isLogin) {
+            joinRoom(params.id);
+            if (isJoinRoomSuccess) {
+                refetch();
+            }
+        } else {
+            Toast.fire({
+                icon: "info",
+                title: "로그인이 필요합니다.",
+            });
         }
     };
 
-    console.log(data?.roomInfo.members);
-    console.log(user?.id);
-    console.log(data?.roomInfo.members.includes(user?.id));
+    const handleWithdrawRoom = () => {
+        Swal.fire({
+            title: "정말로 탈퇴하실건가요?",
+            width: 450,
+            text: "한 번 나가면 돌이킬 수 없어요!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "나갈래",
+            cancelButtonText: "잘못 눌렀어",
+        }).then(async (res) => {
+            const result = await withdrawRoom(params.id).unwrap();
+            if (result && res.isConfirmed) {
+                Swal.fire({
+                    icon: "info",
+                    title: "다른 스터디룸에서 만나요!",
+                    text: "오늘도 화이팅 :)",
+                });
+            }
+        });
+    };
 
     return (
         <div className="container flex flex-wrap gap-10">
@@ -55,7 +86,7 @@ function StudyInfo() {
                                     return (
                                         <span
                                             key={`tag-${idx}`}
-                                            className="text-sm font-semibold bg-sub1 text-font3 rounded-[10px] px-2 py-1"
+                                            className="text-sm bg-sub1 text-font3 rounded-[10px] px-2 py-1"
                                         >
                                             {`# ${hashtag}`}
                                         </span>
@@ -95,7 +126,7 @@ function StudyInfo() {
                 {/* Footer: 참가 버튼 */}
                 <div className="flex items-center gap-4">
                     {/* 호스트인 경우 */}
-                    {user?.id === data?.roomInfo.hostUser.id ? (
+                    {isLogin && user?.id === data?.roomInfo.hostUser.id ? (
                         <div className="flex gap-2">
                             {/* 지금 바로 공부하러 가는거 */}
                             <Link to={`/room/session/${params.id}`}>
@@ -152,9 +183,9 @@ function StudyInfo() {
                     ) : (
                         <div className="flex gap-2">
                             {/* 한번도 참여한 적 없는 경우 "추가하기" 버튼 활성화   */}
-                            {!data?.roomInfo.members.filter(
+                            {data?.roomInfo.members.filter(
                                 (member) => member.id === user?.id
-                            ) && (
+                            ).length === 0 && (
                                 <Button
                                     text={"추가하기"}
                                     onClick={handleJoinRoom}
@@ -164,13 +195,16 @@ function StudyInfo() {
                             {/* 한번이라도 참여한 적 있는 경우 "참가하기" 버튼 활성화 */}
                             {data?.roomInfo.members.filter(
                                 (member) => member.id === user?.id
-                            ) && (
+                            ).length > 0 && (
                                 <>
                                     <Link to={`/room/session/${params.id}`}>
                                         <Button text={"입장하기"} />
                                     </Link>
                                     {/* // FIXME: 탈퇴하기 버튼 다른 디자인으로 바꿀것! */}
-                                    <Button text={"탈퇴하기"} />
+                                    <Button
+                                        text={"탈퇴하기"}
+                                        onClick={handleWithdrawRoom}
+                                    />
                                 </>
                             )}
                         </div>
@@ -195,5 +229,14 @@ function StudyInfo() {
         </div>
     );
 }
+
+const Toast = Swal.mixin({
+    toast: true,
+    width: 320,
+    position: "top-right",
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+});
 
 export default StudyInfo;

@@ -36,12 +36,12 @@ const reducers = {
 };
 
 export const userSlice = createSlice({
-  name: "user",
-  initialState,
-  reducers,
+    name: "user",
+    initialState,
+    reducers,
 });
 
 export const { login, logout, setToken, setUserId, setUser } =
-  userSlice.actions;
+    userSlice.actions;
 
 export default userSlice.reducer;

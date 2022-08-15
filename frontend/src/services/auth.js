@@ -1,6 +1,12 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithReAuth } from ".";
-import { login, logout, setToken, setUserId } from "../modules/userReducer";
+import {
+    login,
+    logout,
+    setToken,
+    setUser,
+    setUserId,
+} from "../modules/userReducer";
 import { parseJwt } from "../util/common";
 
 export const authApi = createApi({
@@ -30,6 +36,7 @@ export const authApi = createApi({
                     dispatch(logout());
                     dispatch(setToken(null));
                     dispatch(setUserId(null));
+                    dispatch(setUser(null));
                 } catch (err) {
                     console.log(err);
                 }

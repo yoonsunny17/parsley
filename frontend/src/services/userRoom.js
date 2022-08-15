@@ -13,8 +13,19 @@ export const userRoomApi = createApi({
                     body: { roomId },
                 };
             },
+            invalidatesTags: ["Room"],
+        }),
+        withdrawRoom: builder.mutation({
+            query: (roomId) => {
+                return {
+                    url: `/user/room/delete`,
+                    method: "POST",
+                    body: { roomId },
+                };
+            },
+            invalidatesTags: ["Room"],
         }),
     }),
 });
 
-export const { useJoinRoomMutation } = userRoomApi;
+export const { useJoinRoomMutation, useWithdrawRoomMutation } = userRoomApi;

@@ -56,3 +56,8 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
 }
+
+.swal2-popup {
+    font-size: 0.8rem !important;
+    font-family: NanumBarunGothicYetHangul, sans-serif;
+}
