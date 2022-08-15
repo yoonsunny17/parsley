@@ -6,35 +6,37 @@ import StudySession from "./OpenVidu/StudySession";
 import MyPage from "./UI/pages/MyPage";
 import NotFound from "./UI/pages/NotFound";
 import KakaoLogin from "./UI/pages/KakaoLogin";
-import EnterStudyRoom from "./UI/pages/EnterStudyRoom";
+import StudyRoomInfo from "./UI/pages/StudyRoomInfo";
 import SearchStudyRooms from "./UI/pages/SearchStudyRooms";
 import Farm from "./UI/pages/Farm";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Drawer>
-        <div className="App container mx-auto px-5">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/room/create" element={<CreateStudyRoom />} />
-            <Route path="/login" element={<KakaoLogin />} />
-            {/* <Route path="/studyroom" element={<StudyRoom />} /> */}
-            {/* <Route
-                            path="/studyroom"
-                            element={<FingerStudyRoom />}
-                        /> */}
-            <Route path="/room/detail" element={<StudySession />} />
-            {/* <Route path="/room" element={<EnterStudyRoom />} /> */}
-            <Route path="/me" element={<MyPage />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/farm" element={<Farm />} />
-            <Route path="/room" element={<SearchStudyRooms />} />
-          </Routes>
-        </div>
-      </Drawer>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <Drawer>
+                <div className="App container mx-auto px-5 font-sans">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/me" element={<MyPage />} />
+                        <Route path="/login" element={<KakaoLogin />} />
+
+                        <Route path="/room">
+                            <Route path=":id" element={<StudyRoomInfo />} />
+                        </Route>
+                        <Route
+                            path="/room/create"
+                            element={<CreateStudyRoom />}
+                        />
+                        <Route path="/room/detail" element={<StudySession />} />
+
+                        <Route path="/search" element={<SearchStudyRooms />} />
+                        <Route path="/farm" element={<Farm />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </div>
+            </Drawer>
+        </BrowserRouter>
+    );
 }
 
 export default App;

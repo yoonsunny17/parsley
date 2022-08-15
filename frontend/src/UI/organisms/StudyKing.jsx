@@ -20,7 +20,7 @@ function StudyKing() {
                                 (activeIndex === idx
                                     ? "bg-main "
                                     : "bg-sub2 hover:bg-main ") +
-                                "color-delay cursor-pointer text-font3 font-semibold text-base rounded-t-2xl h-[40px] px-3"
+                                "color-delay cursor-pointer text-font3 font-semibold text-base rounded-t-2xl h-[44px] px-3"
                             }
                         >
                             {title}
