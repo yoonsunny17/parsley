@@ -26,11 +26,11 @@ import java.util.List;
 public class RoomController {
 
     @Autowired
-    RoomService roomService;
+    private RoomService roomService;
     @Autowired
-    JwtService jwtService;
+    private JwtService jwtService;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping
     @ApiOperation(value = "방 목록 조회", notes = "방 목록들을 조회한다.")
@@ -55,22 +55,25 @@ public class RoomController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends RoomGetRes> getRoom(@PathVariable("room_id") @Valid Long roomId) {
-
         Room room = roomService.getRoomByRoomId(roomId);
-
         Long userId = jwtService.getUserId();
+        User user = null;
 
-        User user = userService.getUserByUserId(userId);
+        boolean isPossible = false;
+        boolean isNecessary = true;
 
         if (room == null) {
             return ResponseEntity.status(404).body(
                     RoomGetRes.of(404, "Room not found", null, false, false, 0L)
             );
         }
-        //수정, 삭제 가능 여부
-        boolean isPossible = roomService.isHostUser(userId, roomId);
-        //비밀번호 모달 필요 여부
-        boolean isNecessary = true;
+        // 수정, 삭제 가능 여부
+        if(userId != null) {
+            userService.getUserByUserId(userId);
+            isPossible = roomService.isHostUser(userId, roomId);
+        }
+
+        // 비밀번호 모달 필요 여부
         if (!room.isPublic() && !room.getMembers().contains(user)) {
             isNecessary = false;
         }
