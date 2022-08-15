@@ -2,6 +2,7 @@
 // TODO: window.innerwidth 좁아지면 접어야 할 것 같음 너무 길어짐 근데 3d model이 접어도 되는지 모르겠다
 import React, { useState, useTransition } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useUpdateHerbInfoQuery } from "../../services/farm";
 
 import HerbStoreModal from "./HerbStoreModal";
@@ -10,6 +11,7 @@ import HerbComponent2 from "../atoms/HerbComponent2";
 import HerbComponent3 from "../atoms/HerbComponent3";
 
 function FarmGame(props) {
+  const user = useSelector((state) => state.user.user);
   //     const params = useParams()
   //   const [updateHerbInfo, { isSuccess }] = useUpdateHerbInfoQuery();
 
@@ -35,7 +37,7 @@ function FarmGame(props) {
         <div className="text-lg font-bold mb-2">
           허브의 주인이 되신지 {day}일 째!
         </div>
-        <div className="text-base font-bold">{sley} 슬리</div>
+        <div className="text-base font-bold">{`${user?.currentSley} 슬리`}</div>
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 m-5">
         {data.map(function (item, idx) {

@@ -4,8 +4,10 @@ import FarmCollectionAvartarInfo from "../molecules/FarmCollectionAvartarInfo";
 import Button from "../atoms/Button";
 import herbCollectionList from "../molecules/HerbCollectionList";
 import { useGetCollectionQuery, useGetHerbsQuery } from "../../services/farm";
+import { useSelector } from "react-redux";
 
 function FarmCollection() {
+  const user = useSelector((state) => state.user.user);
   //   const { data: getCollection } = useGetCollectionQuery(
   //     {},
   //     { refetchOnMountOrArgChange: true }
@@ -15,7 +17,6 @@ function FarmCollection() {
   //     { refetchOnMountOrArgChange: true }
   //   );
 
-  const username = "유교보이";
   const herbname = "프로틴 중독 파슬리";
   const grade = "희귀";
   const description =
@@ -35,7 +36,7 @@ function FarmCollection() {
     // FIXME: device width sm이하로 갔을 때 도감 collapse 적용 할까말까 ??????
     // <div className="px-[30px] py-[35px] w-[30%] bg-white rounded-[30px] drop-shadow-[4px_4px_20px_rgba(0,0,0,0.1)]"></div>
     <div className="w-full md:w-[32%] rounded-2xl bg-white drop-shadow px-4 py-5 lg:px-8 lg:py-5">
-      <div className="text-lg font-bold mb-2">{username}님의 도감</div>
+      <div className="text-lg font-bold mb-2">{user?.name} 님의 도감</div>
       {/* <button className="grid items-center text-sm h-full">edit</button> */}
       <div className="flex my-6">
         {/* // TODO: 대표 프로필 AVATAR 크기는 좀 크게 할까 ? */}
@@ -57,7 +58,7 @@ function FarmCollection() {
       </div>
       {/* // TODO: 농장페이지 도감 컴포넌트 */}
       <div className="text-sm font-semibold my-8">
-        파슬리 [ {isOpendNumb} / 32 ]
+        파슬리 도감 [ {isOpendNumb} / 32 ]
       </div>
       <div className="">
         <div className="grid grid-cols-4 md:grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
