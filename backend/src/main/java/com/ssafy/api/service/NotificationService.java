@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,12 +29,17 @@ public class NotificationService {
     public List<Notification> getNotifications(Long userId){
         User user = userRepository.findByUserId(userId);
         List<Notification> notifications = user.getNotificationHistory();
+        List<Notification> resNotifications = new ArrayList<>();
+
         for(Notification notification : notifications){
             if(!notification.isCheck()){
                 notification.setCheck(true);
             }
+            if(!notification.isDelete()){
+                resNotifications.add(notification);
+            }
         }
-        return notifications;
+        return resNotifications;
     }
 
     public int getUncheckedNotificationsCnt(Long userId){
@@ -41,7 +47,7 @@ public class NotificationService {
         List<Notification> notifications = user.getNotificationHistory();
         int uncheckCnt = 0;
         for(Notification notification : notifications){
-            if(!notification.isCheck()){
+            if(!notification.isCheck() && !notification.isCheck()){
                 uncheckCnt++;
             }
         }
@@ -53,7 +59,9 @@ public class NotificationService {
         User user = userRepository.findByUserId(userId);
         List<Notification> notifications = user.getNotificationHistory();
         for(Notification notification : notifications){
-            notificationRepository.delete(notification);
+            if(!notification.isDelete()){
+                notification.setDelete(true);
+            }
         }
     }
 }

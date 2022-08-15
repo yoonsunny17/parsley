@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -14,7 +15,9 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    private static final String SALT = "parsley";
+    //    private static final String SALT = "parsley";
+    @Value("${SALT}")
+    private String SALT;
 
     public <T> String createAccessToken(String key, T data, String subject) {
         Date now = new Date();
@@ -22,7 +25,7 @@ public class JwtService {
                 .setHeaderParam("typ", "JWT")
                 .setIssuedAt(now)
                 .setSubject(subject)
-                .setExpiration(new Date(System.currentTimeMillis() + 5000))
+                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000))
                 .claim(key, data)
                 .signWith(SignatureAlgorithm.HS512, this.generateKey())
                 .compact();
@@ -35,7 +38,7 @@ public class JwtService {
                 .setHeaderParam("typ", "JWT")
                 .setIssuedAt(now)
                 .setSubject(subject)
-                .setExpiration(new Date(System.currentTimeMillis() + 86400 * 7))
+                .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000))
                 .claim(key, data)
                 .signWith(SignatureAlgorithm.HS512, this.generateKey())
                 .compact();
@@ -87,7 +90,12 @@ public class JwtService {
 
     public Map<String, Object> get(String key) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String jwt = request.getHeader("Authorization").split(" ")[1];
+        String bearer = request.getHeader("Authorization");
+        if (bearer == null) {
+            return null;
+        }
+
+        String jwt = bearer.split(" ")[1];
         Jws<Claims> claims = null;
         try {
             claims = Jwts.parser()
@@ -122,6 +130,9 @@ public class JwtService {
     }
 
     public Long getUserId() {
+        if (this.get("user") == null) {
+            return null;
+        }
         return Long.parseLong((String) this.get("user").get("id"));
     }
 }

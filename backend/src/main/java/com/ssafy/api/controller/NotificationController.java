@@ -1,7 +1,8 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.response.NotificationGetCntRes;
-import com.ssafy.api.response.NotificationsGetRes;
+import com.ssafy.api.response.notification.NotificationGetCntRes;
+import com.ssafy.api.response.notification.NotificationsGetRes;
+import com.ssafy.api.service.JwtService;
 import com.ssafy.api.service.NotificationService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Notification;
@@ -30,6 +31,9 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
+    @Autowired
+    JwtService jwtService;
+
     @PostMapping
     @ApiOperation(value = "전체 알림 목록", notes = "user정보를 이용하여 전체 알림 목록 조회, 읽음처리")
     @ApiResponses({
@@ -38,8 +42,8 @@ public class NotificationController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends NotificationsGetRes> getNotifications() {
-        //TODO: User받아오기, 아래 코드 삭제
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         List<Notification> notifications = notificationService.getNotifications(userId);
         return ResponseEntity.status(200).body(NotificationsGetRes.of(200, "Success", notifications));
@@ -53,8 +57,8 @@ public class NotificationController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends NotificationGetCntRes> getUncheckedNotificationsCnt() {
-        //TODO: User받아오기, 아래 코드 삭제
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         int uncheckCnt = notificationService.getUncheckedNotificationsCnt(userId);
         return ResponseEntity.status(200).body(NotificationGetCntRes.of(200, "Success", uncheckCnt));
@@ -68,8 +72,8 @@ public class NotificationController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteNotifications() {
-        //TODO: User받아오기, 아래 코드 삭제
-        Long userId = 1L;
+
+        Long userId = jwtService.getUserId();
 
         notificationService.deleteNotifications(userId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));

@@ -1,10 +1,10 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.DDayPostReq;
 import com.ssafy.api.request.GoalCreatePostReq;
-import com.ssafy.api.request.LogCreatePostReq;
+import com.ssafy.api.response.study.DDayGetRes;
 import com.ssafy.db.entity.DailyGoal;
 import com.ssafy.db.entity.DailyStudyLog;
-import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.DailyGoalRepository;
 import com.ssafy.db.repository.DailyStudyRepository;
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -81,17 +82,17 @@ public class StudyService {
 
         for(int i=day-1; i>=0; i--){
             LocalDate targetDate = LocalDate.from(LocalDateTime.now().minusDays(i));
-
             List<DailyStudyLog> dayLog = dailyStudyRepository.findWeeklyByUserId(user.getId(), targetDate);
 
             Long time = 0L;
+            if(dayLog.size()%2 == 1){
+                return null;
+            }
 
             for(int j=0; j< dayLog.size(); j+=2){
                 LocalDateTime tLog = dayLog.get(j).getTime();
                 LocalDateTime fLog = dayLog.get(j+1).getTime();
-
                 Duration duration = Duration.between(tLog, fLog);
-
                 time += duration.getSeconds();
             }
             week.add(time);
@@ -99,22 +100,54 @@ public class StudyService {
         return week;
     }
 
-    @Transactional
-    public DailyStudyLog addDailyGoal(Long userId, LogCreatePostReq logInfo){
+    public Long getLastWeekTime(Long userId){
+        User user = userRepository.findByUserId(userId);
+
+        Long totalTime = 0L;
+
+        int day = LocalDateTime.now().getDayOfWeek().getValue();
+
+        for(int i=day-1; i>=day-7; i--){
+            LocalDate targetDate = LocalDate.from(LocalDateTime.now().minusDays(i).minusWeeks(1));
+            List<DailyStudyLog> dayLog = dailyStudyRepository.findWeeklyByUserId(user.getId(), targetDate);
+
+            Long time = 0L;
+            for(int j=0; j< dayLog.size(); j+=2){
+                LocalDateTime tLog = dayLog.get(j).getTime();
+                LocalDateTime fLog = dayLog.get(j+1).getTime();
+                Duration duration = Duration.between(tLog, fLog);
+                time += duration.getSeconds();
+            }
+            totalTime += time;
+        }
+        return totalTime;
+    }
+
+    public List<DailyStudyLog> getDailyLogs(Long userId){
 
         User user = userRepository.findByUserId(userId);
 
-        DailyStudyLog dailyStudyLog = new DailyStudyLog();
+        LocalDate targetDate = LocalDate.from(LocalDateTime.now());
+        List<DailyStudyLog> dailyStudyLogs = dailyStudyRepository.findWeeklyByUserId(userId, targetDate);
 
-        Room room = roomRepository.findByRoomId(logInfo.getRoomId());
+        return dailyStudyLogs;
+    }
 
-        dailyStudyLog.setTime(LocalDateTime.now());
-        dailyStudyLog.setStatus(logInfo.isStatus());
-        dailyStudyLog.setUser(user);
-        dailyStudyLog.setRoom(room);
+    public LocalDate getDDay(Long userId){
+        User user = userRepository.findByUserId(userId);
 
-        dailyStudyRepository.save(dailyStudyLog);
+        return user.getDDay();
+    }
 
-        return dailyStudyLog;
+    @Transactional
+    public LocalDate createDDay(Long userId, DDayPostReq dDayInfo){
+        User user = userRepository.findByUserId(userId);
+
+        String dDay = dDayInfo.getDDay();
+        LocalDate dDayDate= LocalDate.parse(dDay, DateTimeFormatter.ISO_LOCAL_DATE);
+
+        user.setDDay(dDayDate);
+
+        return user.getDDay();
     }
 }

@@ -31,6 +31,7 @@ public class Notification {
     private NotificationType notificationType;
 
     private boolean isCheck;
+    private boolean isDelete;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

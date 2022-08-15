@@ -36,6 +36,7 @@ public class Room {
     @ManyToMany(mappedBy = "interestRooms", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> likes = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     private List<RoomHashtag> roomHashtags = new ArrayList<>();
 

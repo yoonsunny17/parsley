@@ -1,9 +1,11 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.LogCreatePostReq;
 import com.ssafy.api.request.RoomCreatePostReq;
 import com.ssafy.api.request.RoomPasswordPostReq;
 import com.ssafy.api.request.RoomUpdatePostReq;
 import com.ssafy.db.entity.*;
+import com.ssafy.db.repository.DailyStudyRepository;
 import com.ssafy.db.repository.HashtagRepository;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +30,8 @@ public class RoomService {
     HashtagRepository hashtagRepository;
     @Autowired
     FileService fileService;
+    @Autowired
+    DailyStudyRepository dailyStudyRepository;
 
     @Transactional
     public Room createRoom(Long userId, RoomCreatePostReq roomInfo, MultipartFile multipartFile) {
@@ -47,21 +52,23 @@ public class RoomService {
 
         roomRepository.save(room);
 
-        for(String tag : roomInfo.getHashtags()){
-            Hashtag hashtag = hashtagRepository.findBytag(tag);
+        if(roomInfo.getHashtags() != null){
+            for(String tag : roomInfo.getHashtags()){
+                Hashtag hashtag = hashtagRepository.findBytag(tag);
 
-            if(hashtag == null){        //이전에 사용한 적 없는 태그
-                hashtag = new Hashtag();
-                hashtag.setTag(tag);
-                hashtag.setUseCount(1L);
-                hashtagRepository.saveHashtag(hashtag);
-            }else{
-                hashtag.setUseCount(hashtag.getUseCount()+1L);
+                if(hashtag == null){        //이전에 사용한 적 없는 태그
+                    hashtag = new Hashtag();
+                    hashtag.setTag(tag);
+                    hashtag.setUseCount(1L);
+                    hashtagRepository.saveHashtag(hashtag);
+                }else{
+                    hashtag.setUseCount(hashtag.getUseCount()+1L);
+                }
+                RoomHashtag roomHashtag = new RoomHashtag();
+                roomHashtag.setRoom(room);
+                roomHashtag.setHashtag(hashtag);
+                hashtagRepository.saveRoomHashtag(roomHashtag);
             }
-            RoomHashtag roomHashtag = new RoomHashtag();
-            roomHashtag.setRoom(room);
-            roomHashtag.setHashtag(hashtag);
-            hashtagRepository.saveRoomHashtag(roomHashtag);
         }
 
         user.addUserRoom(room);
@@ -88,8 +95,8 @@ public class RoomService {
         }
     }
 
-    public boolean isCorrectPwd(RoomPasswordPostReq passwordInfo){
-        Room room = roomRepository.findByRoomId(passwordInfo.getRoomId());
+    public boolean isCorrectPwd(RoomPasswordPostReq passwordInfo, Long roomId){
+        Room room = roomRepository.findByRoomId(roomId);
 
         if(room.getPassword().equals(passwordInfo.getPassword())){
             return true;
@@ -179,6 +186,12 @@ public class RoomService {
             //멤버 삭제
             for(User member : room.getMembers()){
                 member.getJoinRooms().remove(room);
+                //스터디로그 연결 해제
+                for(DailyStudyLog log : member.getDailyStudyLogs()){
+                    if(log.getRoom() == room){
+                        log.setRoom(null);
+                    }
+                }
             }
 
             //좋아요 멤버 삭제
@@ -216,6 +229,25 @@ public class RoomService {
 
         return rooms;
 
+    }
+
+    @Transactional
+    public DailyStudyLog addDailyLog(Long userId, Long roomId, LogCreatePostReq logInfo){
+
+        User user = userRepository.findByUserId(userId);
+
+        DailyStudyLog dailyStudyLog = new DailyStudyLog();
+
+        Room room = roomRepository.findByRoomId(roomId);
+
+        dailyStudyLog.setTime(LocalDateTime.now());
+        dailyStudyLog.setStatus(logInfo.isStatus());
+        dailyStudyLog.setUser(user);
+        dailyStudyLog.setRoom(room);
+
+        dailyStudyRepository.save(dailyStudyLog);
+
+        return dailyStudyLog;
     }
 }
 

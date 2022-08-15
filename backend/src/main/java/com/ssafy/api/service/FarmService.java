@@ -2,7 +2,9 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.HerbAddPostReq;
 import com.ssafy.api.request.UserHerbBookAddPostReq;
-import com.ssafy.api.response.*;
+import com.ssafy.api.response.farm.HerbRes;
+import com.ssafy.api.response.farm.HerbsRes;
+import com.ssafy.api.response.farm.UserHerbBookAddPostRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,18 @@ public class FarmService {
     @Autowired
     NotificationRepository notificationRepository;
 
+    public List<ItemSeed> getAllItemSeeds(){
+        return itemRepository.findAllItemSeed();
+    }
+
+    public List<ItemWater> getAllItemWaters(){
+        return itemRepository.findAllItemWater();
+    }
+
+    public List<ItemFertilizer> getAllFertilizers(){
+        return itemRepository.findAllItemFertilizer();
+    }
+
     public List<Tuple> getHerbBooks(Long userId) {
         List<Tuple> userHerbBooks = userHerbBookRepository.findByUserAndGroupBy(userId);
 
@@ -66,6 +80,7 @@ public class FarmService {
 
         //도감에서 허브 타입 조회
         List<HerbBook> herbBooks = herbBookRepository.findByHerbType(herbRate.getHerbType());
+
         percentage = (int)(Math.random()*herbBooks.size());
         HerbBook herbBook = herbBooks.get(percentage);
 
@@ -96,13 +111,15 @@ public class FarmService {
                 break;
         }
         //추가 슬리
-        int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime()*60, user.getDailyStudyLogs());
+        int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime(), user.getDailyStudyLogs());
         double maxAdd = (1+leftTime*1.0/herb.getGrowthTime() >= 2.0 ? 2.0 : 1+(leftTime*1.0)/herb.getGrowthTime());
 
-        sley = (long)(sley * (item.getItemFertilizer().getSleyRate() *1.0)/100 * maxAdd);
+        sley = (long)(sley * (1+(item.getItemFertilizer().getSleyRate() *1.0)/100) * maxAdd);
         StringBuilder content = new StringBuilder();
         content.append("작물 수확(").append(herbBook.getName()).append(")");
+
         addNotificationLog((int)sley, content.toString(), user, NotificationType.SLEY);
+
         UserHerbBookAddPostRes res = new UserHerbBookAddPostRes();
         res.setAddSley(sley);
         sley += user.getCurrentSley();
@@ -110,7 +127,9 @@ public class FarmService {
 
         //도감 포인트
         long point = herbBook.getPoint();
+
         addNotificationLog((int)point, content.toString(), user, NotificationType.POINT);
+
         res.setAddPoint(point);
         point += user.getCurrentBookPoint();
         user.setCurrentBookPoint(point);
@@ -140,7 +159,7 @@ public class FarmService {
             res.setItemWaterId(item.getItemWater().getId());
             res.setItemFertilizerId(item.getItemFertilizer().getId());
 
-            int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime()*60, user.getDailyStudyLogs());
+            int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime(), user.getDailyStudyLogs());
             res.setLeftTime(leftTime);
 
             list.add(res);
@@ -151,7 +170,7 @@ public class FarmService {
     }
 
     @Transactional
-    public Herb addHerb(Long userId, HerbAddPostReq herbInfo) {
+    public boolean addHerb(Long userId, HerbAddPostReq herbInfo) {
         Herb herb = new Herb();
         User user = userRepository.findByUserId(userId);
         ItemSeed itemSeed = itemRepository.findByItemSeedId(herbInfo.getItemSeedId());
@@ -159,7 +178,12 @@ public class FarmService {
         ItemFertilizer itemFertilizer = itemRepository.findByItemFertilizerId(herbInfo.getItemFertilizerId());
         Item item = new Item(itemSeed, itemWater, itemFertilizer);
 
-        int growthTime = (int) (itemSeed.getGrowthTime() * (1 - itemWater.getTimeRate() * 1.0 / 100));
+        int sum = itemSeed.getSley() + itemWater.getSley() + itemFertilizer.getSley();
+        if(user.getCurrentSley() < sum){
+            return false;
+        }
+
+        int growthTime = (int) (itemSeed.getGrowthTime() * (1 - itemWater.getTimeRate() * 1.0 / 100)* 60) ;
         LocalDateTime date = LocalDateTime.now();
         herb.setStartDate(date);
         herb.setCompleted(false);
@@ -168,14 +192,15 @@ public class FarmService {
         herb.setUser(user);
         herb.setPosition(herbInfo.getPosition());
 
-        int sum = itemSeed.getSley() + itemWater.getSley() + itemFertilizer.getSley();
         StringBuilder content = new StringBuilder();
         content.append("작물 심기(").append(itemSeed.getName()).append(", ")
                 .append(itemWater.getName()).append(", ").append(itemFertilizer.getName()).append(")");
         addNotificationLog(sum*-1, content.toString() , user, NotificationType.SLEY);
+        long currentSley = user.getCurrentSley()-sum;
+        user.setCurrentSley(currentSley);
 
         herbRepository.save(herb);
-        return herb;
+        return true;
     }
 
     private void addNotificationLog(int value, String content, User user, NotificationType type){

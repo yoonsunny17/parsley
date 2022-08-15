@@ -8,8 +8,6 @@ import lombok.Data;
 @ApiModel("RoomPasswordPostRequest")
 public class RoomPasswordPostReq {
 
-    @ApiModelProperty(name = "방 번호", example = "1")
-    Long roomId;
     @ApiModelProperty(name = "비밀번호", example = "parsley123")
     String password;
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class ItemRepository {
@@ -25,5 +26,20 @@ public class ItemRepository {
 
     public ItemFertilizer findByItemFertilizerId(Integer itemFertilizerId){
         return em.find(ItemFertilizer.class, itemFertilizerId);
+    }
+
+    public List<ItemSeed> findAllItemSeed(){
+        return em.createQuery("select s from ItemSeed s", ItemSeed.class)
+                .getResultList();
+    }
+
+    public List<ItemWater> findAllItemWater(){
+        return em.createQuery("select w from ItemWater w", ItemWater.class)
+                .getResultList();
+    }
+
+    public List<ItemFertilizer> findAllItemFertilizer(){
+        return em.createQuery("select f from ItemFertilizer f", ItemFertilizer.class)
+                .getResultList();
     }
 }
