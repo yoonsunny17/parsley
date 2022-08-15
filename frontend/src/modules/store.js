@@ -9,6 +9,7 @@ import { studyApi } from "../services/study";
 import userReducer from "./userReducer";
 import studyReducer from "./studyReducer";
 import { createBrowserHistory } from "history";
+import { userRoomApi } from "../services/userRoom";
 export const history = createBrowserHistory();
 
 const reducers = combineReducers({
@@ -18,6 +19,7 @@ const reducers = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
+    [userRoomApi.reducerPath]: userRoomApi.reducer,
 });
 
 const persistedReducer = persistReducer(
@@ -35,6 +37,7 @@ export const store = configureStore({
             roomApi.middleware,
             authApi.middleware,
             userApi.middleware,
+            userRoomApi.middleware,
             studyApi.middleware,
         ]),
 });

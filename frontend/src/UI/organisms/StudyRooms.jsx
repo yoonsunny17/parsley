@@ -13,10 +13,8 @@ function StudyRooms() {
     );
     const { data: getMyRooms } = useGetMyRoomsQuery(
         {},
-        { refetchOnMountOrArgChange: true }
+        { skip: !isLogin, refetchOnMountOrArgChange: true }
     );
-
-    // interestRoomList
 
     const [activeIndex, setActiveIndex] = useState(0);
 
