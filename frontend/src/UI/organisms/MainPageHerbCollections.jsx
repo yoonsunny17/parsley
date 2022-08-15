@@ -1,19 +1,19 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import herbCollectionList from "../molecules/HerbCollectionList";
 // import FarmCollectionAvatarInfo from "./FarmCollectionAvatarInfo";
 import MainHerbAvatarInfo from "./MainHerbAvatarInfo";
 
 function Collections() {
-  const username = "유교보이";
   const herbname = "프로틴 중독 파슬리";
-
+  const user = useSelector((state) => state.user.user);
   return (
     <div className="w-full mb-5 rounded-3xl bg-white drop-shadow px-6 py-5 lg:w-2/3 lg:mb-0">
       <header className="flex justify-between items-center">
-        <h3 className="text-xl font-bold">{username} 님의 도감</h3>
+        <h3 className="text-xl font-bold">{user?.name} 님의 도감</h3>
         <Link to="/farm">
-          <span className="rounded-full px-2 py-1 text-sm">내 농장</span>
+          <span className="rounded-full px-2 py-1 text-sm">내 농장 가기</span>
         </Link>
       </header>
       <div className="grid lg:grid-cols-largeCollections items-center justify-center">

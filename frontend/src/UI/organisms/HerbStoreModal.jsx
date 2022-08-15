@@ -6,9 +6,6 @@ import HerbItemAvatar from "../atoms/HerbItemAvatar";
 import HerbStoreItemAvatar from "../atoms/HerbStoreItemAvatar";
 import { useEffect } from "react";
 
-// TODO: 아이템 선택(카드 컴포넌트) 했을 때 선택한 것 보이도록 스타일링 해줘야함 (border styling)
-// FIXME: 아래 심으러 가기 (닫기 버튼) 없애고 위에 X 로 버튼 대체하기, 모달 전체적인 크기 줄이기
-
 function HerbStoreModal(props) {
   // initialization;
   const initialData = {
