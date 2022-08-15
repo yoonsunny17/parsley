@@ -13,7 +13,7 @@ import java.util.List;
 public class WeeklyStudyGetRes extends BaseResponseBody {
 
     @ApiModelProperty(name = "weekly study time")
-    List<Long> week = new LinkedList<>();
+    List<WeeklyRes> week = new LinkedList<>();
     @ApiModelProperty(name = "last week study time")
     Long lastWeek;
 
@@ -26,5 +26,19 @@ public class WeeklyStudyGetRes extends BaseResponseBody {
         res.setLastWeek(lastWeek);
 
         return res;
+    }
+
+    public void setWeek(List<Long> week){
+
+        String[] days = {"월", "화", "수", "목", "금", "토", "일"};
+
+        if(week != null){
+            for(int i=0; i<week.size(); i++){
+                this.week.add(WeeklyRes.of(days[i], week.get(i)/60));
+            }
+            for(int i=week.size(); i<7; i++){
+                this.week.add(WeeklyRes.of(days[i], 0L));
+            }
+        }
     }
 }

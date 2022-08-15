@@ -27,8 +27,10 @@ public class LogGetRes extends BaseResponseBody {
     }
 
     public void setDailyStudyLogs(List<DailyStudyLog> dailyStudyLogs){
-        for(int i=0; i<dailyStudyLogs.size(); i+=2){
-            this.dailyStudyLogs.add(LogRes.of(dailyStudyLogs.get(i).getTime(), dailyStudyLogs.get(i+1).getTime()));
+        if(dailyStudyLogs != null) {
+            for (int i = 0; i < dailyStudyLogs.size(); i += 2) {
+                this.dailyStudyLogs.add(LogRes.of(dailyStudyLogs.get(i).getTime(), dailyStudyLogs.get(i + 1).getTime()));
+            }
         }
     }
 }

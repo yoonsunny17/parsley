@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 public class LogRes {
 
     @ApiModelProperty(name = "시작 로그")
-    LocalDateTime startTime;
+    String startTime;
 
     @ApiModelProperty(name = "종료 로그")
-    LocalDateTime endTime;
+    String endTime;
 
     public static LogRes of(LocalDateTime startTime, LocalDateTime endTime){
         if(startTime == null || endTime == null){
@@ -22,8 +22,8 @@ public class LogRes {
         }
 
         LogRes res = new LogRes();
-        res.setStartTime(startTime);
-        res.setEndTime(endTime);
+        res.setStartTime(startTime.toString());
+        res.setEndTime(endTime.toString());
 
         return res;
 

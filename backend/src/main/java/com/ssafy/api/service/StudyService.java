@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -142,7 +143,10 @@ public class StudyService {
     public LocalDate createDDay(Long userId, DDayPostReq dDayInfo){
         User user = userRepository.findByUserId(userId);
 
-        user.setDDay(dDayInfo.getDDay());
+        String dDay = dDayInfo.getDDay();
+        LocalDate dDayDate= LocalDate.parse(dDay, DateTimeFormatter.ISO_LOCAL_DATE);
+
+        user.setDDay(dDayDate);
 
         return user.getDDay();
     }
