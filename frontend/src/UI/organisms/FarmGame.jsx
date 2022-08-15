@@ -36,7 +36,6 @@ function FarmGame(props) {
 
   const day = 32;
   const sley = 1000;
->>>>>>> a3ed704 ([S07P12A604-305] feat: farm redux toolkit)
 
   const [isPending, startTransition] = useTransition();
   const [isEmpty, setIsEmpty] = useState(true);
