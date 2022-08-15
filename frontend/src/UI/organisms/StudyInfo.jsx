@@ -12,10 +12,14 @@ function StudyInfo() {
   });
 
   const [like, setLike] = useState(false);
+  const user = useSelector((state) => state.user.user);
 
   // member일 경우 -> 입장하기 Button + 탈퇴하기 Button
 
-  // hostUser일 경우 -> 설정 Button 추가해서 편집 모달 띄우기
+  // hostUser일 경우 -> 설정 Button 추가해서 편집 모달 띄우기 ( 모달에서 삭제 가능하도록 ?)
+
+  //   console.log(data?.roomInfo.hostUser.name);
+  //   console.log(user?.name);
 
   return (
     <div className="container flex flex-wrap gap-10">
@@ -76,9 +80,60 @@ function StudyInfo() {
 
         {/* Footer: 참가 버튼 */}
         <div className="flex items-center gap-4">
-          <Link to={`/room/session/${params.id}`}>
-            <Button text={"참가하기"} />
-          </Link>
+          {user?.name && data?.roomInfo.hostUser.name ? (
+            <div>
+              <Link to={`/room/session/${params.id}`}>
+                <Button text={"참가하기"} />
+              </Link>
+              {/* // FIXME: 설정 버튼 다른 디자인으로 바꿀것! */}
+              <button className=" color-delay rounded-full text-sm font-semibold bg-main hover:bg-sub2 text-font3">
+                <label
+                  htmlFor="editSession"
+                  className="cursor-pointer px-4 py-2"
+                >
+                  수정하기
+                </label>
+              </button>
+              <input type="checkbox" id="editSession" class="modal-toggle" />
+              <div class="modal">
+                <div class="modal-box">
+                  <div className="flex justify-between">
+                    <div className="text-lg font-bold mb-3">방 정보 수정</div>
+                    <button>
+                      <label
+                        htmlFor="editSession"
+                        className="cursor-pointer px-2 py-2"
+                      >
+                        닫기
+                      </label>
+                    </button>
+                  </div>
+
+                  <div>방 제목</div>
+                  <div>최대 인원</div>
+                  <div>소개</div>
+                  <div>비공개/공개 여부: 비번도 바꿀수있나?</div>
+                  <div class="modal-action">
+                    {/* // TODO: 적용하기, 취소, 닫기 버튼 만들기 */}
+                    <button className="cursor-pointer px-2 py-2">
+                      수정하기
+                    </button>
+                    <button className="cursor-pointer px-2 py-2">
+                      방 삭제하기
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <Link to={`/room/session/${params.id}`}>
+                <Button text={"참가하기"} />
+              </Link>
+              {/* // FIXME: 탈퇴하기 버튼 다른 디자인으로 바꿀것! */}
+              <Button text={"탈퇴하기"} />
+            </div>
+          )}
 
           <button className="text-font1 rounded-[50px]">
             <i className="bx text-3xl bx-link"></i>
