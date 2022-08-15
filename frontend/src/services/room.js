@@ -36,6 +36,13 @@ export const roomApi = createApi({
     getStudySession: builder.query({
       query: (roomId) => `/room/session/${roomId}`,
     }), // 스터디룸 참가
+    addStudyRooms: builder.query({
+      query: ({ ...rest }) => ({
+        url: `/room/add`,
+        method: "POST",
+        body: rest,
+      }),
+    }), // 스터디룸 추가 (한번도 참여 이력 없을 경우)
   }),
 });
 

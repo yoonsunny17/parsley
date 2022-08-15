@@ -20,6 +20,7 @@ function StudyInfo() {
 
   //   console.log(data?.roomInfo.hostUser.name);
   //   console.log(user?.name);
+  //   console.log(data?.roomInfo.members.includes(user?.name));
 
   return (
     <div className="container flex flex-wrap gap-10">
@@ -82,9 +83,19 @@ function StudyInfo() {
         <div className="flex items-center gap-4">
           {user?.name && data?.roomInfo.hostUser.name ? (
             <div>
-              <Link to={`/room/session/${params.id}`}>
-                <Button text={"참가하기"} />
-              </Link>
+              {/* 한번도 참여한 적 없는 경우 "추가하기" 버튼 활성화   */}
+              {!data?.roomInfo.members.includes(user?.name) && (
+                <Link to={`/room/session/${params.id}`}>
+                  <Button text={"추가하기"} />
+                </Link>
+              )}
+
+              {/* 한번이라도 참여한 적 있는 경우 "참가하기" 버튼 활성화 */}
+              {data?.roomInfo.members.includes(user?.name) && (
+                <Link to={`/room/add`}>
+                  <Button text={"참가하기"} />
+                </Link>
+              )}
               {/* // FIXME: 설정 버튼 다른 디자인으로 바꿀것! */}
               <button className=" color-delay rounded-full text-sm font-semibold bg-main hover:bg-sub2 text-font3">
                 <label
@@ -127,6 +138,7 @@ function StudyInfo() {
             </div>
           ) : (
             <div>
+              {/* 지금 바로 공부하러 가는거 */}
               <Link to={`/room/session/${params.id}`}>
                 <Button text={"참가하기"} />
               </Link>
