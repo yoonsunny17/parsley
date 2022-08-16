@@ -2,26 +2,26 @@
 import React from "react";
 import Swal from "sweetalert2";
 
+// isOptained, info: { name, imgUrl, grade, description },
 // FIXME: sweetalert로 description 보여주기
-function FarmCollectionAvartarInfo({
-  info: { name, imgUrl, grade, description, isOpened },
-}) {
+function FarmCollectionAvartarInfo({ count, herbBook }) {
   return (
     <div>
-      {isOpened ? (
+      {count > 0 ? (
         <img
           className="cursor-pointer inline-block mt-3 mb-3 mr-3 h-12 w-12 rounded-full ring-2 ring-sub1"
-          src={imgUrl}
+          src={herbBook.imageUrl}
           alt="avatar"
           onClick={() => {
             Swal.fire({
               width: 350,
-              title: [name],
-              text: "[" + [grade] + "] " + [description],
-              imageUrl: [imgUrl], // 시간 되면 여기 사진 다른걸로 바꾸기
+              title: [herbBook.name],
+              text: "[" + [herbBook.herbType] + "] " + [herbBook.description],
+              imageUrl: [herbBook.imageUrl], // 시간 되면 여기 사진 다른걸로 바꾸기
               imageWidth: 50,
               imageHeight: 50,
               imageAlt: "Herb Collection Image",
+              footer: "벌써 " + [count] + "개를 수확하셨네요:)",
             });
           }}
         />

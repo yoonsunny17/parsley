@@ -3,7 +3,7 @@ import HerbItemAvatar from "../atoms/HerbItemAvatar";
 import FarmCollectionAvartarInfo from "../molecules/FarmCollectionAvartarInfo";
 import Button from "../atoms/Button";
 import herbCollectionList from "../molecules/HerbCollectionList";
-import { useGetCollectionQuery, useGetHerbsQuery } from "../../services/farm";
+import { useGetAllHerbBooksQuery } from "../../services/farm";
 import { useSelector } from "react-redux";
 
 function FarmCollection() {
@@ -17,14 +17,16 @@ function FarmCollection() {
   //     { refetchOnMountOrArgChange: true }
   //   );
 
+  const { data: herbBooks } = useGetAllHerbBooksQuery();
+
   const herbname = "프로틴 중독 파슬리";
   const grade = "희귀";
   const description =
     "근육으로 똘똘 뭉친 파슬리이다... 먹으면 막강해질지도... ?";
   // const isOpened = "16";
   let isOpendNumb = 0; // 지금까지 모은 도감 캐릭터 개수 (중복 빼고)
-  for (let i = 0; i < herbCollectionList.length; i++) {
-    if (herbCollectionList[i].isOpened === true) {
+  for (let i = 0; i < herbBooks?.userHerbBooks.length; i++) {
+    if (herbBooks?.userHerbBooks[i].count > 0) {
       isOpendNumb += 1;
     }
   }
@@ -62,8 +64,14 @@ function FarmCollection() {
       </div>
       <div className="">
         <div className="grid grid-cols-4 md:grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
-          {herbCollectionList.map((info, idx) => {
-            return <FarmCollectionAvartarInfo info={info} key={idx} />;
+          {herbBooks?.userHerbBooks.map((info, idx) => {
+            return (
+              <FarmCollectionAvartarInfo
+                count={info.count}
+                herbBook={info.herbBook}
+                key={idx}
+              />
+            );
           })}
         </div>
       </div>
