@@ -34,6 +34,11 @@ function HerbStoreModal({ clickCancel }) {
     parseInt(allItems?.itemFertilizers[fertilizerId - 1].sley) +
     parseInt(allItems?.itemWaters[waterId - 1].sley);
 
+  const clickCancel = () => {
+    setItems((prev) => initialData);
+    setPrice((prev) => initialPrice);
+  };
+
   return (
     <>
       <h3 className="font-bold text-xl py-2">허브 심기</h3>
