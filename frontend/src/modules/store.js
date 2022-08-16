@@ -9,38 +9,42 @@ import { studyApi } from "../services/study";
 import userReducer from "./userReducer";
 import studyReducer from "./studyReducer";
 import { createBrowserHistory } from "history";
+import { notificationApi } from "../services/notification";
 import { userRoomApi } from "../services/userRoom";
+import userReducer from "./userReducer";
 import roomReducer from "./roomReducer";
 export const history = createBrowserHistory();
 
 const reducers = combineReducers({
-  user: userReducer,
+    user: userReducer,
     study: studyReducer,
-  room: roomReducer,
-  [roomApi.reducerPath]: roomApi.reducer,
-  [authApi.reducerPath]: authApi.reducer,
-  [userApi.reducerPath]: userApi.reducer,
+    room: roomReducer,
+    [roomApi.reducerPath]: roomApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
-  [userRoomApi.reducerPath]: userRoomApi.reducer,
+    [userRoomApi.reducerPath]: userRoomApi.reducer,
+    [notificationApi.reducerPath]: notificationApi.reducer,
 });
 
 const persistedReducer = persistReducer(
-  {
-    key: "root",
-    storage,
-  },
-  reducers
+    {
+        key: "root",
+        storage,
+    },
+    reducers
 );
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({ serializableCheck: false }).concat([
-            roomApi.middleware,
-            authApi.middleware,
-            userApi.middleware,
-            userRoomApi.middleware,
-            studyApi.middleware,
+      reducer: persistedReducer,
+      middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware({ serializableCheck: false }).concat([
+                  roomApi.middleware,
+                  authApi.middleware,
+                  userApi.middleware,
+                  userRoomApi.middleware,
+            notificationApi.middleware,
+                studyApi.middleware,
         ]),
 });
 
