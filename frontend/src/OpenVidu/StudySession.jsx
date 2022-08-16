@@ -6,7 +6,6 @@ import UserVideoComponent from "./UserVideoComponent";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-// params.id
 
 // chat function
 import Messages from "./Chat/Messages";
@@ -21,12 +20,11 @@ import {
 } from "react-icons/bs";
 import { TbScreenShare } from "react-icons/tb";
 import { MdExitToApp } from "react-icons/md";
-import { BiGroup } from "react-icons/bi";
+import { BiGroup, BiWindows } from "react-icons/bi";
 
-// atomic component
 import Button from "../UI/atoms/Button";
-// sweetalert
 import Swal from "sweetalert2";
+import Navbar from "../UI/organisms/Navbar";
 
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -155,8 +153,6 @@ class StudySession extends Component {
       }
     });
   };
-
-  //
 
   // 채팅 길어지면 자동으로 내려가게 ... 스크롤 기능이용
   componentDidUpdate(previousProps, previousState) {
@@ -563,69 +559,74 @@ class StudySession extends Component {
     };
 
     return (
-      <div className="bg-extra4">
-        {this.state.session === undefined ? (
-          <div className="container p-24">
-            <div className="flex flex-row">
-              <div className="flex flex-col">
+      <div className="text-extra5">
+        {/* Session 참여 전 */}
+        {!this.state.session && (
+          <>
+            <Navbar />
+            <div className="flex flex-col rounded-3xl shadow-md px-8 py-9 items-center">
+              <div className="flex flex-col items-center w-full">
                 <div className="flex flex-col text-main font-semibold text-2xl mt-2">
                   파슬리랑 공부할 사람?
                 </div>
+                {/* <img
+                className=""
+                src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                alt="PARSLEY"
+              /> */}
                 <img
-                  className="w-2/3"
-                  src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                  className="w-1/2 m-6"
+                  src="https://doodleipsum.com/700/flat?i=d9b7afd47e72690f4113cb5795b3ba52"
                   alt="PARSLEY"
                 />
               </div>
-            </div>
-            <div className="flex flex-row">
-              <div className="flex flex-col">
-                <div id="join">
-                  <div id="join-dialog" className="jumbotron vertical-center">
-                    <form
-                      action=""
-                      className="form-group"
-                      onSubmit={this.joinSession}
+              <div className="flex w-full justify-center">
+                <div className="flex flex-col w-full">
+                  <div id="join w-full">
+                    <div
+                      id="join-dialog"
+                      className="jumbotron vertical-center w-full"
                     >
-                      <div
-                        className="flex font-semibold mr-3"
-                        htmlFor="userName"
+                      <form
+                        action=""
+                        className="form-group w-full"
+                        onSubmit={this.joinSession}
                       >
-                        {myUserName} 님, 공부할 준비 되셨나요?
-                        {/* <label>Participant: </label>
-                        <input
-                          className="form-control input-border rounded-lg"
-                          type="text"
-                          id="userName"
-                          value={myUserName}
-                          onChange={this.handleChangeUserName}
-                          required
-                        /> */}
-                      </div>
-                      <div
-                        className="flex font-semibold mr-3"
-                        htmlFor="sessionId"
-                      >
-                        {/* <label></label> */}
-                        {this.state.mySessionId}
-                      </div>
-                      <div className="flex">
-                        <div className="my-3">
-                          <Button text={"준비됐어요!"} />
+                        <div
+                          className="flex font-semibold mr-3 justify-center"
+                          htmlFor="userName"
+                        >
+                          {myUserName} 님, 공부할 준비 되셨나요?
                         </div>
-                        <Link to={`/room/${this.props.info.id}`}>
-                          <div className="my-3 mx-2">
-                            <Button text={"아직이요.."} />
+                        <div
+                          className="flex font-semibold mr-3"
+                          htmlFor="sessionId"
+                        >
+                          {this.state.mySessionId}
+                        </div>
+                        <div className="flex justify-center w-full">
+                          <div className="my-3">
+                            <Button text={"준비됐어요!"} />
                           </div>
-                        </Link>
-                      </div>
-                    </form>
+                          <Link to={`/room/${this.props.info.id}`}>
+                            <div className="my-3 mx-2">
+                              <button className="color-delay rounded-full px-4 py-2 text-sm font-medium bg-sub1 hover:bg-sub2 text-font3">
+                                아직이요..
+                              </button>
+                            </div>
+                          </Link>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
+          </>
+        )}
+
+        {/* 입장 하기 전! */}
+        {this.state.session && (
           <div id="session">
             <header className="h-[72px] flex items-center mt-0 bg-extra4">
               <button
@@ -746,7 +747,8 @@ class StudySession extends Component {
                       console.log(this.state.isDivided);
                     }}
                   >
-                    divide
+                    {/* // FIXME: 일단은 푸터에 넣어놓고,, 시간되면 바꾸기 */}
+                    <BiWindows size={footerBtn} />
                   </button>
                   <div className="cursor-pointer" onClick={this.screenShare}>
                     <TbScreenShare size={footerBtn} />
