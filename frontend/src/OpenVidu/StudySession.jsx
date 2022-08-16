@@ -164,6 +164,8 @@ class StudySession extends Component {
     });
   };
 
+  //
+
   // 채팅 길어지면 자동으로 내려가게 ... 스크롤 기능이용
   componentDidUpdate(previousProps, previousState) {
     if (this.refs.chatoutput != null) {
