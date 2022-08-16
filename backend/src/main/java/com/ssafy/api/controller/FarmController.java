@@ -12,10 +12,7 @@ import com.ssafy.api.service.RankService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 
-import com.ssafy.db.entity.ItemFertilizer;
-import com.ssafy.db.entity.ItemSeed;
-import com.ssafy.db.entity.ItemWater;
-import com.ssafy.db.entity.User;
+import com.ssafy.db.entity.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.Tuple;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 농장게임 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -67,10 +65,9 @@ public class FarmController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserHerbBooksRes> getUserHerbBook() {
-        // TODO: User받아오기, 아래 코드 삭제
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
-        List<Tuple> herbBooks = farmService.getHerbBooks(userId);
+        Map<HerbBook, Integer> herbBooks = farmService.getHerbBooks(userId);
         return ResponseEntity.status(200).body(UserHerbBooksRes.of(200, "Success", herbBooks));
     }
 
@@ -87,7 +84,6 @@ public class FarmController {
             return ResponseEntity.status(500).body(UserHerbBookAddPostRes.of(500, "Not Authorized", null));
         }
 
-        // TODO: response를 controller에서 처리할 것인가 controller에서 처리할 것인가
         UserHerbBookAddPostRes userHerbBookAddPostRes = farmService.addUserHerbBook(userId, herbBookInfo);
 
         // ranking 정보 업데이트하기
@@ -118,9 +114,7 @@ public class FarmController {
             @ApiResponse(code = 500, message = "작물 조회 실패")
     })
     public ResponseEntity<?> getHerbs() {
-        // TODO: User받아오기, 아래 코드 삭제
-        Long userId = 1L;
-
+        Long userId = jwtService.getUserId();
         HerbsRes herbs = farmService.getHerbs(userId);
 
         if (herbs == null) {
@@ -139,8 +133,7 @@ public class FarmController {
     })
     public ResponseEntity<?> addHerb(@RequestBody @ApiParam(value = "심을 작물 정보", required = true)
                                      @Valid HerbAddPostReq herbInfo) {
-        // TODO: User받아오기, 아래 코드 삭제
-        Long userId = 1L;
+        Long userId = jwtService.getUserId();
 
         boolean herb = farmService.addHerb(userId, herbInfo);
         if (!herb) {
