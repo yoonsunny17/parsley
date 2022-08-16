@@ -22,8 +22,8 @@ public class HerbBookRepository {
         em.persist(herbBook);
     }
 
-    public HerbBook findByHerbBookId(Long herbBookId){
-        return em.find(HerbBook.class, herbBookId);
+    public List<HerbBook> findAll(){
+        return em.createQuery("select h from HerbBook h", HerbBook.class).getResultList();
     }
 
     public List<HerbBook> findByHerbType(HerbType herbType){

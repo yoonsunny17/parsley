@@ -64,13 +64,18 @@ public class FarmService {
     public Map<HerbBook, Integer> getHerbBooks(Long userId) {
         User user = userRepository.findByUserId(userId);
         List<UserHerbBook> userHerbBooks = user.getUserHerbBooks();
+        List<HerbBook> herbBooks = herbBookRepository.findAll();
         Map<HerbBook, Integer> map = new HashMap<>();
+        int size = herbBooks.size();
+
+        for(HerbBook herbBook : herbBooks){
+            map.put(herbBook, 0);
+        }
+
         for(UserHerbBook userHerbBook : userHerbBooks){
             if(map.containsKey(userHerbBook.getHerbBook())){
                 int cnt = map.get(userHerbBook.getHerbBook());
                 map.put(userHerbBook.getHerbBook(), cnt+1);
-            } else{
-                map.put(userHerbBook.getHerbBook(), 1);
             }
         }
 
