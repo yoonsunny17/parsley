@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaCog } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 function MyProfile() {
     const [username, setUserName] = useState("");
@@ -25,6 +26,8 @@ function MyProfile() {
         e.preventDefault();
     };
 
+    const user = useSelector((state) => state.user.user);
+
     return (
         <div className="rounded-2xl w-full mb-4 md:w-2/3 md:mb-0 shadow px-8 py-8 flex relative">
             <div className="flex">
@@ -45,12 +48,12 @@ function MyProfile() {
                                         onChange={handleName}
                                         type="text"
                                         className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        value={username}
+                                        value={user.name}
                                     />
                                 ) : (
                                     <>
                                         <h2 className="font-bold">
-                                            {username}
+                                            {user.name}
                                         </h2>
                                     </>
                                 )}
@@ -58,7 +61,7 @@ function MyProfile() {
                             <div className="my-5">
                                 {/* <p className="mt-5 text-font2 text-xs">상태 메세지</p> */}
                                 <p className="mt-5 text-font2 text-xs">
-                                    {username}님이 파슬리와 함께한지 date일째!
+                                    {user.name}님이 파슬리와 함께한지 date일째!
                                 </p>
                                 {edit ? (
                                     <input
