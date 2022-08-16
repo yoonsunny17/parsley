@@ -34,10 +34,11 @@ public class WeeklyStudyGetRes extends BaseResponseBody {
 
         if(week != null){
             for(int i=0; i<week.size(); i++){
-                this.week.add(WeeklyRes.of(days[i], week.get(i)/60));
+                double hour = week.get(i)/3600.0;
+                this.week.add(WeeklyRes.of(days[i], (double)Math.round(hour*100)/100));
             }
             for(int i=week.size(); i<7; i++){
-                this.week.add(WeeklyRes.of(days[i], 0L));
+                this.week.add(WeeklyRes.of(days[i], 0));
             }
         }
     }

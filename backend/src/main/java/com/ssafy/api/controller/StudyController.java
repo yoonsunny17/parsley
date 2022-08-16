@@ -132,10 +132,10 @@ public class StudyController {
 
         List<DailyStudyLog> dailyStudyLogs = studyService.getDailyLogs(userId);
 
-        if(dailyStudyLogs.isEmpty()){
-            return ResponseEntity.status(500)
-                    .body(LogGetRes.of(500, "Fail to Get Log", null));
-        }
+//        if(dailyStudyLogs.isEmpty()){
+//            return ResponseEntity.status(500)
+//                    .body(LogGetRes.of(500, "Fail to Get Log", null));
+//        }
 
         return ResponseEntity.status(200)
                 .body(LogGetRes.of(200, "Success", dailyStudyLogs));
