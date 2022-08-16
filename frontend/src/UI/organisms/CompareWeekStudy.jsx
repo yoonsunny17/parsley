@@ -12,8 +12,8 @@ function CompareWeekStudy() {
     // console.log(lastWeek);
     // console.log(thisWeek[1].hour);
 
-    const [thisAvgTime, setThisAvgTime] = useState(0);
-    const [lastAvgTime, setLastAvgTime] = useState(0);
+    const [thisAvgTime, setThisAvgTime] = useState();
+    const [lastAvgTime, setLastAvgTime] = useState();
 
     const thisHourPerMinute = (thisAvgTime / 24) * 100;
     const lastHourPerMinute = (lastAvgTime / 24) * 100;

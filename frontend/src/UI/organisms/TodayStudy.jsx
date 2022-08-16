@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux/es/exports";
-import {
-    useGetGoalQuery,
-    useCreateGoalMutation,
-    useUpdateGoalMutation,
-} from "../../services/study";
+import { useGetGoalQuery, useCreateGoalMutation } from "../../services/study";
 import { FaCog } from "react-icons/fa";
 import "moment/locale/ko";
 
@@ -16,38 +12,40 @@ function TodayStudy(args) {
     const studyTime = weekly[dayOfWeek].hour * 60;
 
     const [createGoal] = useCreateGoalMutation();
-    const [updateGoal] = useUpdateGoalMutation();
     const { data: goal } = useGetGoalQuery(
         {},
         { refetchOnMountOrArgChange: true }
     );
 
-    // console.log(goal.targetTime);
+    let timePercent = 0;
 
-    const [disabled, setDisabled] = useState(false);
-
-    // if (targetTime !== 0) {
-    //     setDisabled(true);
-    //     console.log(disabled);
-    // }
-
-    const [percent, setPercent] = useState(0);
+    const [percent, setPercent] = useState();
     const [hour, setHour] = useState(0);
     const [min, SetMin] = useState(0);
+    const [targetHour, setTargetHour] = useState();
+    const [targetMin, setTargetMin] = useState();
     const [targetTime, setTargetTime] = useState();
 
+    useEffect(() => {
+        if (!targetTime) {
+            setTargetTime(goal.targetTime);
+            setTargetHour((targetTime / 60).toFixed(0));
+            setTargetMin(targetTime % 60);
+        }
+        timePercent = Math.floor((studyTime / targetTime) * 100);
+        if (isNaN(timePercent)) {
+            setPercent("0");
+        } else {
+            setPercent(timePercent);
+        }
+    }, [targetTime]);
+
     const changeHour = (e) => {
-        // console.log(goal.targetTime);
         setHour(e.target.value);
     };
     const changeMin = (e) => {
         SetMin(e.target.value);
     };
-
-    const timePercent = Math.floor(
-        (studyTime / targetTime) * 100
-        // (studyTime / targetTime) * 100
-    );
 
     const [showModal, setShowModal] = useState(false);
 
@@ -57,20 +55,19 @@ function TodayStudy(args) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("The button was clicked");
+        await createGoal(parseInt(hour) * 60 + parseInt(min)).unwrap();
 
-        await createGoal(targetTime).unwrap();
-        setPercent(timePercent);
-
-        handleModal();
-    };
-
-    const handleClick = () => {
-        console.log("====================");
-        if (studyTime !== 0) {
-            console.log("--------------");
-            setDisabled(true);
+        setTargetHour(hour);
+        setTargetMin(min);
+        setTargetTime(parseInt(hour) * 60 + parseInt(min));
+        timePercent = Math.floor((studyTime / targetTime) * 100);
+        if (isNaN(timePercent)) {
+            setPercent("0");
+        } else {
+            setPercent(timePercent);
         }
+        console.log(percent);
+        handleModal();
     };
 
     return (
@@ -79,7 +76,7 @@ function TodayStudy(args) {
                 <div>
                     <h3 className="text-xl font-bold">오늘의 목표</h3>
                 </div>
-                <button onClick={handleModal} disabled={disabled}>
+                <button onClick={handleModal}>
                     <FaCog />
                 </button>
             </div>
@@ -154,10 +151,10 @@ function TodayStudy(args) {
                 >
                     <p className="text-font1 text-[20px]">{percent}%</p>
                 </div>
-                {/* <div>
-                    {hour === "" ? null : <span>{hour}시간</span>}
-                    {min === "" ? null : <span>{min}분</span>}
-                </div> */}
+                <div>
+                    {hour === "" ? null : <span>{targetHour}시간</span>}
+                    {min === "" ? null : <span>{targetMin}분</span>}
+                </div>
             </div>
         </div>
     );
