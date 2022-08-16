@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useGetAllRoomsQuery } from "../../services/room";
-import { useGetMyRoomsQuery } from "../../services/user";
+import {
+    useGetMyLikeRoomsQuery,
+    useGetMyRoomsQuery,
+} from "../../services/user";
 import StudyRoomItem from "../molecules/StudyRoomItem";
 
 function StudyRooms() {
@@ -12,6 +15,10 @@ function StudyRooms() {
         { refetchOnMountOrArgChange: true }
     );
     const { data: getMyRooms } = useGetMyRoomsQuery(
+        {},
+        { skip: !isLogin, refetchOnMountOrArgChange: true }
+    );
+    const { data: getMyLikeRooms } = useGetMyLikeRoomsQuery(
         {},
         { skip: !isLogin, refetchOnMountOrArgChange: true }
     );
@@ -80,7 +87,24 @@ function StudyRooms() {
                         })
                     ))}
 
-                {/* {activeIndex === 2 && getInterestRooms?.roomsInfo.length === 0 ? (<div>관심 있는 스터디가 없어요</div> : (interestRooms?.roomsInfo.slice(0, 8).map((room, idx) => { })))} */}
+                {/* 관심 스터디 */}
+                {activeIndex === 2 &&
+                    (!isLogin ? (
+                        <div>로그인이 필요합니다</div>
+                    ) : getMyLikeRooms?.rooms.length === 0 ? (
+                        <div>관심 있는 스터디가 없어요</div>
+                    ) : (
+                        getMyLikeRooms?.rooms.slice(0, 8).map((room, idx) => {
+                            return (
+                                <Link
+                                    to={`/room/${room.id}`}
+                                    key={`room-${idx}`}
+                                >
+                                    <StudyRoomItem info={room} key={idx} />
+                                </Link>
+                            );
+                        })
+                    ))}
             </div>
             <div className="px-6 mt-4 mb-8 md:px-10 w-full flex justify-end text-font1 hover:text-main font-semibold color-delay">
                 <Link to="/room">더보기</Link>

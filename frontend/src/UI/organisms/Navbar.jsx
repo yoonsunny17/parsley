@@ -1,9 +1,12 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../atoms/Button";
 import Notification from "../molecules/Notification";
 import SearchBar from "../molecules/SearchBar";
 
 function Navbar() {
+    const isLogin = useSelector((state) => state.user.isLogin);
+
     return (
         <header className="h-[72px] flex justify-between items-center mt-0 mb-4">
             <Link to="/">
@@ -12,11 +15,16 @@ function Navbar() {
                 </span>
             </Link>
             <div className="flex items-center gap-[25px] relative">
-                <Link to="/room/create">
-                    <Button text={"스터디룸 생성"} color="primary" />
-                </Link>
-                {/* Notification */}
-                <Notification />
+                {isLogin && (
+                    <div className="hidden sm:flex sm:items-center sm:gap-[25px] sm:relative">
+                        <Link to="/room/create">
+                            <Button text={"스터디룸 생성"} color="primary" />
+                        </Link>
+                        {/* Notification */}
+                        <Notification />
+                    </div>
+                )}
+
                 {/* Search Bar */}
                 <SearchBar />
                 {/* Menu Button */}
