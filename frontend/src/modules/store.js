@@ -5,23 +5,27 @@ import storage from "redux-persist/lib/storage";
 import { roomApi } from "../services/room";
 import { authApi } from "../services/auth";
 import { userApi } from "../services/user";
+import { studyApi } from "../services/study";
 import userReducer from "./userReducer";
+import studyReducer from "./studyReducer";
 import { createBrowserHistory } from "history";
 export const history = createBrowserHistory();
 
 const reducers = combineReducers({
     user: userReducer,
+    study: studyReducer,
     [roomApi.reducerPath]: roomApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [studyApi.reducerPath]: studyApi.reducer,
 });
 
 const persistedReducer = persistReducer(
-  {
-    key: "root",
-    storage,
-  },
-  reducers
+    {
+        key: "root",
+        storage,
+    },
+    reducers
 );
 
 export const store = configureStore({
@@ -31,6 +35,7 @@ export const store = configureStore({
             roomApi.middleware,
             authApi.middleware,
             userApi.middleware,
+            studyApi.middleware,
         ]),
 });
 

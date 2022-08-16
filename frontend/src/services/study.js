@@ -1,10 +1,26 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithReAuth } from ".";
+import { setWeekly, setLastWeek } from "../modules/studyReducer";
 
 export const studyApi = createApi({
     reducerPath: "studyApi",
     baseQuery: baseQueryWithReAuth,
+    // refetchOnMountOrArgChange: 30,
+    // refetchOnReconnect: true,
     endpoints: (builder) => ({
+        getDDay: builder.query({
+            query: () => `/study/dday`,
+        }),
+        createDDay: builder.mutation({
+            query: (dDay) => {
+                console.log("-----------");
+                return {
+                    url: `/study/dday/create`,
+                    method: "POST",
+                    body: { dDay },
+                };
+            },
+        }),
         getGoal: builder.query({
             query: () => `/study/goal`,
         }),
@@ -30,15 +46,29 @@ export const studyApi = createApi({
             query: () => `/study/log`,
         }),
         getWeekly: builder.query({
-            query: () => `/study/wekkly`,
+            query: () => `/study/weekly`,
+            async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
+                try {
+                    const result = await queryFulfilled;
+                    console.log(getState().study.weekly);
+                    dispatch(setWeekly(result?.data.week));
+                    console.log(getState().study.weekly);
+                    dispatch(setLastWeek(result?.data.lastWeek));
+                } catch (err) {
+                    console.log(err);
+                }
+            },
         }),
     }),
 });
 
 export const {
+    useGetDDayQuery,
+    useCreateDDayMutation,
     useGetGoalQuery,
     useCreateGoalMutation,
     useUpdateGoalMutation,
     useGetLogQuery,
+    useLazyGetLogQuery,
     useGetWeeklyQuery,
 } = studyApi;
