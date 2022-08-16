@@ -14,50 +14,52 @@ import { setRoom } from "../../modules/roomReducer";
 import { useEffect } from "react";
 
 function StudyInfo() {
-  const navigate = useNavigate();
-  const isLogin = useSelector((state) => state.user.isLogin);
-  const user = useSelector((state) => state.user.user);
-  const room = useSelector((state) => state.room.room);
-  const [like, setLike] = useState(false);
+    const navigate = useNavigate();
+    const isLogin = useSelector((state) => state.user.isLogin);
+    const user = useSelector((state) => state.user.user);
+    const room = useSelector((state) => state.room.room);
+    const [like, setLike] = useState(false);
 
-  const dispatch = useDispatch();
-  const params = useParams();
-  const { data, isLoading: isGetRoomLoading } = useGetRoomQuery(params.id, {
-    refetchOnMountOrArgChange: true,
-  });
-  const [joinRoom] = useJoinRoomMutation();
-  const [withdrawRoom] = useWithdrawRoomMutation();
+    const dispatch = useDispatch();
+    const params = useParams();
+    const { data, isLoading: isGetRoomLoading } = useGetRoomQuery(params.id, {
+        refetchOnMountOrArgChange: true,
+    });
+    const [joinRoom] = useJoinRoomMutation();
+    const [withdrawRoom] = useWithdrawRoomMutation();
 
-  // TODO: 비밀번호 있는 방인 경우 처리
-  const handleJoinRoom = async () => {
-    if (isLogin) {
-      if (data?.roomInfo.members.length === data?.roomInfo.maxPopulation) {
-        Toast.fire({
-          icon: "error",
-          title: "인원이 가득 찼습니다.",
-        });
-        return;
-      }
-      await joinRoom(params.id);
-      Toast.fire({
-        icon: "success",
-        title: "나의 스터디에 추가되었습니다.",
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-      // if (isJoinRoomSuccess) {
-      //     refetch();
+    // TODO: 비밀번호 있는 방인 경우 처리
+    const handleJoinRoom = async () => {
+        if (isLogin) {
+            if (
+                data?.roomInfo.members.length === data?.roomInfo.maxPopulation
+            ) {
+                Toast.fire({
+                    icon: "error",
+                    title: "인원이 가득 찼습니다.",
+                });
+                return;
+            }
+            await joinRoom(params.id);
+            Toast.fire({
+                icon: "success",
+                title: "나의 스터디에 추가되었습니다.",
+            });
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+            // if (isJoinRoomSuccess) {
+            //     refetch();
 
-      //     window.location.reload();
-      // }
-    } else {
-      Toast.fire({
-        icon: "info",
-        title: "로그인이 필요합니다.",
-      });
-    }
-  };
+            //     window.location.reload();
+            // }
+        } else {
+            Toast.fire({
+                icon: "info",
+                title: "로그인이 필요합니다.",
+            });
+        }
+    };
 
   const handleWithdrawRoom = () => {
     Swal.fire({
