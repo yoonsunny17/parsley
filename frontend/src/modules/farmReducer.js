@@ -24,6 +24,14 @@ const reducers = {
   setWater: (state, { payload: itemWaterId }) => {
     state.itemWaterId = itemWaterId;
   },
+  setProfile: (
+    state,
+    { payload: { profileName, profileDescription, profileUrl } }
+  ) => {
+    state.profileName = profileName;
+    state.profileDescription = profileDescription;
+    state.profileUrl = profileUrl;
+  },
 };
 
 export const farmSlice = createSlice({
@@ -32,7 +40,7 @@ export const farmSlice = createSlice({
   reducers,
 });
 
-export const { setPosition, setSeed, setFertilizer, setWater } =
+export const { setPosition, setSeed, setFertilizer, setWater, setProfile } =
   farmSlice.actions;
 
 export default farmSlice.reducer;

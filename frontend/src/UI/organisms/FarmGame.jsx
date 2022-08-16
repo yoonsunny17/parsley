@@ -3,7 +3,10 @@
 import React, { useState, useTransition } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useUpdateHerbInfoQuery } from "../../services/farm";
+import {
+  useGetAllHerbsQuery,
+  useUpdateHerbInfoQuery,
+} from "../../services/farm";
 import {
   setFertilizer,
   setPosition,
@@ -20,12 +23,10 @@ import { useEffect } from "react";
 function FarmGame(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  //     const params = useParams()
-  //   const [updateHerbInfo, { isSuccess }] = useUpdateHerbInfoQuery();
 
-  //   const handleUpdateHerbInfo = () => {
-  //     updateHerbInfo();
-  //   };
+  const { data: getAllHerbs } = useGetAllHerbsQuery();
+  console.log("허브를 심어보쟈");
+  console.log(getAllHerbs);
 
   const day = 32;
 
@@ -56,22 +57,24 @@ function FarmGame(props) {
           return (
             <div key={item.id}>
               <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
-                {/* {item.isEmpty ? (
-                  <HerbItemsStoreModal />
-                ) : (
-                  startTransition(() => {
-                    <HerbComponent1 />;
-                  })
-                )} */}
                 {/* Modal Click Button */}
-                <label
-                  htmlFor="my-modal-3"
-                  className="btn btn-ghost text-main modal-button tooltip"
-                  data-tip="자네..허브를 심어보지 않겠나?"
-                  onClick={() => dispatch(setPosition(item.id))}
-                >
-                  <i className="bx bx-leaf bx-lg"></i>
-                </label>
+                {getAllHerbs?.herbs.find(
+                  (herb) => herb.position === idx + 1
+                ) ? (
+                  <div></div>
+                ) : (
+                  // startTransition(() => {
+                  //   <HerbComponent1 />;
+                  // })
+                  <label
+                    htmlFor="my-modal-3"
+                    className="btn btn-ghost text-main modal-button tooltip"
+                    data-tip="자네..허브를 심어보지 않겠나?"
+                    onClick={() => dispatch(setPosition(item.id))}
+                  >
+                    <i className="bx bx-leaf bx-lg"></i>
+                  </label>
+                )}
               </div>
             </div>
           );

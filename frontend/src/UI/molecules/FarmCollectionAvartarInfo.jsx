@@ -1,10 +1,14 @@
 // 농장 페이지 우측에 있는 도감 컴포넌트의 아바타 atomic components
 import React from "react";
 import Swal from "sweetalert2";
+import { setProfille } from "../../modules/farmReducer";
+import { useUpdateUserMutation } from "../../services/user";
+import { Toast } from "../../util/common";
 
 // isOptained, info: { name, imgUrl, grade, description },
-// FIXME: sweetalert로 description 보여주기
 function FarmCollectionAvartarInfo({ count, herbBook }) {
+  const [updateUser] = useUpdateUserMutation();
+
   return (
     <div>
       {count > 0 ? (
@@ -21,7 +25,31 @@ function FarmCollectionAvartarInfo({ count, herbBook }) {
               imageWidth: 50,
               imageHeight: 50,
               imageAlt: "Herb Collection Image",
-              footer: "벌써 " + [count] + "개를 수확하셨네요:)",
+              footer:
+                "<center> 도감 포인트 " +
+                [herbBook.point] +
+                "점 <br/>" +
+                "벌써 " +
+                [count] +
+                "개를 수확하셨네요 :) </center>",
+              showCancelButton: true,
+              confirmButtonText: "대표 프로필 설정",
+              cancelButtonText: "닫기",
+            }).then(async (res) => {
+              console.log("대표 프로필 설정하기");
+              // TODO: 대표 프로필 설정 버튼
+              // const newProfile = {
+              //     profileName: herbBook.name,
+              //     profileDescription: herbBook.description,
+              //     profileUrl: herbBook.imageUrl,
+              // }
+              // const result = await updateUser().unwrap();
+              // if (result && res.isConfirmed) {
+              //   Toast.fire({
+              //     icon: "success",
+              //     title: "대표 프로필 설정 완료"
+              //   })
+              // }
             });
           }}
         />

@@ -11,7 +11,7 @@ function FarmCollectionAvatarInfo({
       {isOpened ? (
         <img
           className="cursor-pointer inline-block mt-3 mb-3 mr-3 h-12 w-12 rounded-full ring-2 ring-sub1 hover:scale-105 duration-200"
-          src={imgUrl}
+          src={"/herbs/normal_rosemary.png"}
           alt="avatar"
           onClick={() => {
             Swal.fire({
