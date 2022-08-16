@@ -27,6 +27,9 @@ function MyProfile() {
     };
 
     const user = useSelector((state) => state.user.user);
+    const today = new Date();
+    const regDate = new Date(user.regDate);
+    const togetherDays = parseInt((today.getTime() - regDate.getTime())/(1000*60*60*24)+1);
 
     return (
         <div className="rounded-2xl w-full mb-4 md:w-2/3 md:mb-0 shadow px-8 py-8 flex relative">
@@ -58,10 +61,15 @@ function MyProfile() {
                                     </>
                                 )}
                             </div>
+                            <div>
+                                <p className="text-xs">
+                                    파슬리와 함께한지 {togetherDays}일째!
+                                </p>
+                            </div>
                             <div className="my-5">
                                 {/* <p className="mt-5 text-font2 text-xs">상태 메세지</p> */}
                                 <p className="mt-5 text-font2 text-xs">
-                                    {user.name}님이 파슬리와 함께한지 date일째!
+                                    자기소개
                                 </p>
                                 {edit ? (
                                     <input
