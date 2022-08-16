@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useCreateDDayMutation, useGetDDayQuery } from "../../services/study";
 import moment from "moment";
 import "moment/locale/ko";
 import { FaCog } from "react-icons/fa";
 
 function MyDday() {
     const [showModal, setShowMdoal] = React.useState(false);
-    const onChange = () => {
+    const handleModal = () => {
         setShowMdoal((current) => !current);
     };
 
     const [inputValue, setInputValue] = useState("");
+    const [createDDay] = useCreateDDayMutation();
 
     // const Dday = () => {
     //   if (document.querySelector("#targetDate").value === ""){
@@ -21,8 +24,8 @@ function MyDday() {
     //       document.querySelector("#resultDiv").textContent = ("D-day  " + diff)
     //   }
     // }
-    const [dday, setDday] = useState("");
-    const ddaysave = () => {
+    const [dDay, setDday] = useState("");
+    const dDaySave = async (e) => {
         const firstDate = moment().format("YYYY-MM-DD");
         let secondDate = moment(document.querySelector("#targetDate").value);
         console.log(secondDate._i);
@@ -36,8 +39,10 @@ function MyDday() {
             diff = "+" + diff * -1;
         }
 
+        await createDDay(secondDate._i).unwrap();
+
         setDday(secondDate._i + "까지 D" + diff);
-        onChange();
+        handleModal();
     };
 
     var curr = new Date();
@@ -54,17 +59,11 @@ function MyDday() {
 
             <div>
                 <div className="my-6 text-2xl font-bold">
-                    {inputValue.length === 0 ? (
-                        <h3 className="text-base">D-Day</h3>
-                    ) : (
-                        <h3 className="">{inputValue}</h3>
-                    )}
-
-                    <h3 className="text-[20px]">{dday}</h3>
+                    <h3 className="text-[20px]">{dDay}</h3>
                 </div>
             </div>
             <div className="flex justify-end mt-[65px]">
-                <button onClick={onChange}>
+                <button onClick={handleModal}>
                     <FaCog />
                 </button>
                 {/* <button
@@ -95,22 +94,6 @@ function MyDday() {
                                         htmlFor=""
                                         className="mr-[20px] text-[16px] font-semibold"
                                     >
-                                        제목
-                                    </label>
-                                    <input
-                                        onChange={(e) => {
-                                            setInputValue(e.target.value);
-                                        }}
-                                        value={inputValue}
-                                        type="text"
-                                        className="border border-main rounded-[5px] p-[2px_8px] focus:border-sub1"
-                                    />
-                                </div>
-                                <div className="relative w-[480px] p-[20px_100px] flex-auto">
-                                    <label
-                                        htmlFor=""
-                                        className="mr-[20px] text-[16px] font-semibold"
-                                    >
                                         날짜
                                     </label>
                                     <input
@@ -127,17 +110,16 @@ function MyDday() {
                                 <div className="flex items-center justify-end p-6  gap-[10px]">
                                     <button
                                         className="color-delay bg-sub1 text-font3 rounded-full px-4 py-2 text-sm font-semibold  hover:bg-[#7DAA71]"
-                                        onClick={onChange}
+                                        onClick={handleModal}
                                     >
                                         취소
                                     </button>
                                     {/* <Button onClick={ddaysave} text={"디데이 저장"} /> */}
                                     <button
                                         className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
-                                        onClick={ddaysave}
-                                        disabled={inputValue.length === 0}
+                                        onClick={dDaySave}
                                     >
-                                        디데이 저장
+                                        저장
                                     </button>
                                 </div>
                             </div>

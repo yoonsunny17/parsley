@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-// import Button from "../atoms/Button";
+import { FaCog } from "react-icons/fa";
 
 function MyProfile() {
     const [username, setUserName] = useState("");
@@ -24,9 +23,7 @@ function MyProfile() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log("저장");
     };
-    const user = useSelector((state) => state.user.user);
 
     return (
         <div className="rounded-2xl w-full mb-4 md:w-2/3 md:mb-0 shadow px-8 py-8 flex relative">
@@ -48,63 +45,62 @@ function MyProfile() {
                                         onChange={handleName}
                                         type="text"
                                         className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        placeholder={user.name}
+                                        value={username}
                                     />
                                 ) : (
                                     <>
                                         <h2 className="font-bold">
-                                            {user.name}
+                                            {username}
                                         </h2>
                                     </>
                                 )}
                             </div>
                             <div className="my-5">
+                                {/* <p className="mt-5 text-font2 text-xs">상태 메세지</p> */}
                                 <p className="mt-5 text-font2 text-xs">
-                                    상태 메세지
+                                    {username}님이 파슬리와 함께한지 date일째!
                                 </p>
                                 {edit ? (
                                     <input
                                         onChange={handleMessage}
                                         type="text"
                                         className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        placeholder={user.description}
+                                        value={message}
                                     />
                                 ) : (
                                     <>
-                                        <h2 className="font-bold">
-                                            {user.description
-                                                ? user.description
-                                                : "상태메세지를 등록해보세요!"}
-                                        </h2>
+                                        <h2 className="font-bold">{message}</h2>
                                     </>
                                 )}
                             </div>
                             <div className="my-5">
                                 <p className="mt-5 text-font2 text-xs">
-                                    등록일
+                                    도감 개수
                                 </p>
-                                <h2 className="font-bold">{user.regDate}</h2>
                             </div>
                             <div className="my-5">
-                                <p className="mt-5 text-font2 text-xs">D-Day</p>
-                                <h2 className="font-bold">
-                                    {user.dday
-                                        ? user.dday
-                                        : "D-Day를 등록해보세요!"}
-                                </h2>
+                                <p className="mt-5 text-font2 text-xs">
+                                    슬리 / 포인트
+                                </p>
                             </div>
                         </div>
                         <div className="absolute bottom-[20px] right-[32px]">
                             {edit ? (
                                 <button
                                     onClick={onCancel}
-                                    className="bg-sub1 mr-[10px] text-font3 text-sm font-semibold rounded-full transition duration-0 w-[96px] py-2 hover:bg-sub2 hover:duration-500"
+                                    className="bg-sub1 mr-[10px] text-font3 text-sm font-semibold rounded-full transition duration-0 w-[96px] py-2  hover:bg-sub2 hover:duration-500"
                                 >
                                     취소
                                 </button>
                             ) : null}
                             {edit ? (
                                 <button
+                                    disabled={
+                                        username.length === 0 &&
+                                        message.length === 0
+                                            ? true
+                                            : false
+                                    }
                                     type="submit"
                                     onClick={clickedEdit}
                                     className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
@@ -112,48 +108,19 @@ function MyProfile() {
                                     프로필 저장
                                 </button>
                             ) : (
-                                <button
-                                    onClick={clickedEdit}
-                                    className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
-                                >
-                                    프로필 편집
+                                <button onClick={clickedEdit}>
+                                    <FaCog />
                                 </button>
+                                // <button
+                                //     onClick={clickedEdit}
+                                //     className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
+                                // >
+                                //     프로필 편집
+                                // </button>
                             )}
                         </div>
                     </form>
                 </div>
-            </div>
-            <div className="absolute bottom-[20px] right-[32px]">
-                {edit ? (
-                    <button
-                        onClick={onCancel}
-                        className="bg-sub1 mr-[10px] text-font3 text-sm font-semibold rounded-full transition duration-0 w-[96px] py-2  hover:bg-sub2 hover:duration-500"
-                    >
-                        취소
-                    </button>
-                ) : null}
-                {edit ? (
-                    <button
-                        disabled={
-                            username.length === 0 && message.length === 0
-                                ? true
-                                : false
-                        }
-                        type="submit"
-                        onClick={clickedEdit}
-                        className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
-                    >
-                        프로필 저장
-                    </button>
-                ) : (
-                    <button onClick={clickedEdit}>{/* <FaCog /> */}</button>
-                    // <button
-                    //     onClick={clickedEdit}
-                    //     className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
-                    // >
-                    //     프로필 편집
-                    // </button>
-                )}
             </div>
         </div>
     );
