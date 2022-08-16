@@ -4,8 +4,14 @@ import TodayStudy from "../../UI/organisms/TodayStudy";
 import TodayStudyTime from "../../UI/organisms/TodayStudyTime";
 import WeekStudy from "../../UI/organisms/WeekStudy";
 import Navbar from "../organisms/Navbar";
+import DailyStudy from "../../UI/organisms/DailyStudy";
+import CompareWeekStudy from "../../UI/organisms/CompareWeekStudy";
+import { useGetWeeklyQuery } from "../../services/study";
 
 function MyPage() {
+    const { data } = useGetWeeklyQuery({}, { refetchOnMountOrArgChange: true });
+    console.log(data);
+
     return (
         <div className="text-font1 h-100">
             <Navbar />
@@ -18,8 +24,10 @@ function MyPage() {
                     <TodayStudy />
                     <TodayStudyTime />
                 </div>
-                <div className="flex justify-between w-full">
-                    <WeekStudy />
+                <div className="flex flex-wrap justify-between w-full">
+                    {/* <WeekStudy /> */}
+                    <DailyStudy />
+                    <CompareWeekStudy />
                 </div>
             </div>
         </div>

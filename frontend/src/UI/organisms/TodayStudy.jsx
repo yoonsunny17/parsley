@@ -36,7 +36,7 @@ function TodayStudy(args) {
     const onSubmit = () => {
         setPercent(timePercent);
     };
-    console.log(percent);
+    // console.log(percent);
 
     const [showModal, setShowModal] = useState(false);
 

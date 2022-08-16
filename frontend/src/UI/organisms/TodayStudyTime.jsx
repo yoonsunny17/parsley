@@ -1,35 +1,12 @@
+import { useGetLogQuery } from "../../services/study";
+
 function TodayStudyTime() {
     const FULL_MINUTES = 1440;
-    const DAILY_STUDY_LOG = [
-        {
-            startTime: "2022-08-13 00:02:30.271000",
-            endTime: "2022-08-13 00:32:33.271000",
-        },
-        {
-            startTime: "2022-08-13 00:38:36.205000",
-            endTime: "2022-08-13 01:21:39.533000",
-        },
-        {
-            startTime: "2022-08-13 02:29:36.205000",
-            endTime: "2022-08-13 04:24:39.533000",
-        },
-        {
-            startTime: "2022-08-13 04:29:36.205000",
-            endTime: "2022-08-13 04:59:39.533000",
-        },
-        {
-            startTime: "2022-08-13 05:29:36.205000",
-            endTime: "2022-08-13 05:59:39.533000",
-        },
-        {
-            startTime: "2022-08-13 15:29:36.205000",
-            endTime: "2022-08-13 16:59:39.533000",
-        },
-    ];
+    const { data } = useGetLogQuery({}, { refetchOnMountOrArgChange: true });
 
     const STUDY_CLASS_NAME_DICT = {};
 
-    DAILY_STUDY_LOG.forEach((e) => {
+    data?.dailyStudyLogs.forEach((e) => {
         const START_TIME = new Date(e.startTime);
         const END_TIME = new Date(e.endTime);
 
@@ -71,7 +48,7 @@ function TodayStudyTime() {
     while (BOX_RENDER_LIST.length) {
         MINUTE.push(BOX_RENDER_LIST.splice(0, 6));
     }
-    console.log(MINUTE); // 한 줄 한 시간
+    // console.log(MINUTE); // 한 줄 한 시간
 
     // MORNING, AFTERNOON, NIGHT
     const MORNING = [];
@@ -93,22 +70,23 @@ function TodayStudyTime() {
         }
     }
 
-    console.log(MORNING);
-    console.log(AFTERNOON);
-    console.log(NIGHT);
+    // console.log(MORNING);
+    // console.log(AFTERNOON);
+    // console.log(NIGHT);
 
     return (
         <div className="rounded-2xl shadow px-8 py-5 w-full lg:w-2/3 md:w-[100%]">
-            <div className="text-xl font-bold mb-2">오늘의 공부량</div>
+            <div className="text-xl font-bold">오늘의 공부 기록</div>
 
             <div className="flex flex-wrap justify-center mt-6 mb-3">
                 {/* MORNING */}
                 <div className="mx-6 xl:mx-10">
-                    <div className>morning</div>
-                    {MORNING.map((min) => (
-                        <div className="flex flex-row">
-                            {min.map((v) => (
+                    <div className="">morning</div>
+                    {MORNING.map((min, idx) => (
+                        <div key={idx} className="flex flex-row">
+                            {min.map((v, idx) => (
                                 <div
+                                    key={idx}
                                     className={`${v} w-6 h-6 border-[0.5px] border-[#FAF5E4] bg-[#FEFBF6] relative overflow-hidden`}
                                 >
                                     <div
@@ -126,12 +104,13 @@ function TodayStudyTime() {
                 </div>
                 {/* AFTERNOON */}
                 <div className="mx-6 xl:mx-10">
-                    <div className>afternoon</div>
+                    <div className="">afternoon</div>
 
-                    {AFTERNOON.map((min) => (
-                        <div className="flex flex-row">
-                            {min.map((v) => (
+                    {AFTERNOON.map((min, idx) => (
+                        <div key={idx} className="flex flex-row">
+                            {min.map((v, idx) => (
                                 <div
+                                    key={idx}
                                     className={`${v} w-6 h-6 border-[0.5px] border-[#FAF5E4] bg-[#FEFBF6] relative overflow-hidden`}
                                 >
                                     <div
@@ -149,12 +128,13 @@ function TodayStudyTime() {
                 </div>
                 {/* NIGHT */}
                 <div className="mx-6 xl:mx-10">
-                    <div className>night</div>
+                    <div className="">night</div>
 
-                    {NIGHT.map((min) => (
-                        <div className="flex flex-row">
-                            {min.map((v) => (
+                    {NIGHT.map((min, idx) => (
+                        <div key={idx} className="flex flex-row">
+                            {min.map((v, idx) => (
                                 <div
+                                    key={idx}
                                     className={`${v} w-6 h-6 border-[0.5px] border-[#FAF5E4] bg-[#FEFBF6] relative overflow-hidden`}
                                 >
                                     <div
