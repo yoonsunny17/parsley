@@ -47,6 +47,11 @@ function HerbStoreModal(props) {
   //   );
   // };
 
+  const clickCancel = () => {
+    setItems((prev) => initialData);
+    setPrice((prev) => initialPrice);
+  };
+
   return (
     <div>
       <label
@@ -60,12 +65,14 @@ function HerbStoreModal(props) {
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box w-11/12 max-w-5xl p-6">
-          <label
-            htmlFor="my-modal-3"
-            className="btn btn-ghost absolute right-2 top-2"
-          >
-            <i class="bx bx-x bx-sm"></i>
-          </label>
+          <button onClick={clickCancel}>
+            <label
+              htmlFor="my-modal-3"
+              className="btn btn-ghost absolute right-2 top-2"
+            >
+              <i class="bx bx-x bx-sm"></i>
+            </label>
+          </button>
 
           <h3 className="font-bold text-xl py-2">허브 심기</h3>
           <div className="flex justify-evenly">
