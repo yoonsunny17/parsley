@@ -115,6 +115,35 @@ class StudySession extends Component {
     });
   };
 
+  // 네비게이션 바 로고 눌렀을 때도 나갈거냐고 물어봐주기 + 이스터에그
+  onClickLogo = () => {
+    Swal.fire({
+      title: "스터디룸을 떠나실건가요?",
+      showCancelButton: true,
+      confirmButtonText: "더 공부하자!",
+      cancelButtonText: "그만할래",
+      width: 400,
+      padding: "3em",
+      color: "#716add",
+      background: "#fff",
+      backdrop: `
+        rgba(0,0,123,0.4)
+        url("https://c.tenor.com/rI_0O_9AJ5sAAAAi/nyan-cat-poptart-cat.gif")
+        left top
+        no-repeat
+      `,
+    }).then((result) => {
+      if (result.isDismissed) {
+        Swal.fire({
+          icon: "success",
+          title: "파슬리가 응원할게요!",
+          text: "오늘도 화이팅 :)",
+        });
+        this.leaveSession();
+      }
+    });
+  };
+
   // 채팅 길어지면 자동으로 내려가게 ... 스크롤 기능이용
   componentDidUpdate(previousProps, previousState) {
     if (this.refs.chatoutput != null) {
@@ -585,6 +614,15 @@ class StudySession extends Component {
           </div>
         ) : (
           <div id="session">
+            <header className="h-[72px] flex justify-between items-center mt-0 mb-4 bg-extra4">
+              <button
+                onClick={this.onClickLogo}
+                className="logo font-logo text-3xl cursor-pointer ml-4"
+              >
+                PARSLEY
+              </button>
+              <div className="flex items-center gap-[25px] relative"></div>
+            </header>
             <div className="container">
               <div className="flex flex-row">
                 <div className="flex flex-col">
