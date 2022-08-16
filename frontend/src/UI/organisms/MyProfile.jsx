@@ -61,11 +61,6 @@ function MyProfile() {
                                     </>
                                 )}
                             </div>
-                            <div>
-                                <p className="text-xs">
-                                    파슬리와 함께한지 {togetherDays}일째!
-                                </p>
-                            </div>
                             <div className="my-5">
                                 {/* <p className="mt-5 text-font2 text-xs">상태 메세지</p> */}
                                 <p className="mt-5 text-font2 text-xs">
@@ -86,15 +81,15 @@ function MyProfile() {
                             </div>
                             <div className="my-5">
                                 <p className="mt-5 text-font2 text-xs">
-                                    도감 개수
-                                </p>
-                            </div>
-                            <div className="my-5">
-                                <p className="mt-5 text-font2 text-xs">
                                     슬리 / 도감 포인트
                                 </p>
                                 <h2 className="font-bold">{user.currentBookPoint}Sley / {user.currentBookPoint}P</h2>
                             </div>
+                            <div>
+                            <p className="text-xs">
+                                파슬리와 함께한지 {togetherDays}일째!
+                            </p>
+                        </div>
                         </div>
                         <div className="absolute bottom-[20px] right-[32px]">
                             {edit ? (
