@@ -91,8 +91,9 @@ function MyProfile() {
                             </div>
                             <div className="my-5">
                                 <p className="mt-5 text-font2 text-xs">
-                                    슬리 / 포인트
+                                    슬리 / 도감 포인트
                                 </p>
+                                <h2 className="font-bold">{user.currentBookPoint}Sley / {user.currentBookPoint}P</h2>
                             </div>
                         </div>
                         <div className="absolute bottom-[20px] right-[32px]">
