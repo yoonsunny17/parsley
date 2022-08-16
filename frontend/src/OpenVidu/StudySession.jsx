@@ -45,11 +45,15 @@ class StudySession extends Component {
     // console.log(this.props.info.members);
 
     const membersArr = this.props.info.members;
+    console.log("현재 여기 스터디방 참가 되어있는 사람은 ????");
     console.log(membersArr);
 
+    const memberList = [];
     for (let i = 0; i < membersArr.length; i++) {
       console.log(membersArr[i].name);
+      memberList.push(membersArr[i]);
     }
+    console.log("????????????????????" + memberList);
 
     const roomId = this.props.info.Id;
 
@@ -60,7 +64,8 @@ class StudySession extends Component {
       hostUserName: this.props.info.hostUser.name, // 방장 이름
       mode: this.props.info.mode, // 손꾸락모드 = 0, 얼구리모드 = 1
       // FIXME: 이거 현재 참여한 사람으로 할지, 아니면 전체 사람으로 할지 고민중
-      members: [], // 방 멤버
+      membersArr: this.props.info.members, // 공부방에 참여 되어있는 모든 사람들 리스트
+      onlineMembers: memberList, // 현재 세션에 참가한 멤버
       //
       session: undefined,
       mainStreamManager: undefined,
@@ -104,7 +109,12 @@ class StudySession extends Component {
     // screen share (화면공유)
     this.screenShare = this.screenShare.bind(this);
     // 참여한 멤버 확인하기
+    this.sessionOnline = this.sessionOnline.bind(this);
   }
+
+  sessionOnline = () => {
+    console.log(this.state.membersArr);
+  };
 
   // Exit button 눌렀을 때; 정말 나가시겠습니까? alert 띄워주기
   exitSessionAlert = () => {
@@ -625,17 +635,31 @@ class StudySession extends Component {
           </>
         )}
 
-        {/* 입장 하기 전! */}
+        {/* Session 참여 후 */}
         {this.state.session && (
           <div id="session">
-            <header className="h-[72px] flex items-center mt-0 bg-extra4">
+            <header className="h-[72px] flex items-center mt-0">
               <button
                 onClick={this.onClickLogo}
                 className="logo font-logo text-3xl cursor-pointer ml-4"
               >
                 PARSLEY
               </button>
-              <BiGroup className="mx-2 my-[2px] cursor-pointer" size={NavBtn} />
+              <div className="dropdown">
+                <label tabindex="0">
+                  <BiGroup
+                    onClick={this.sessionOnline}
+                    className="mx-2 my-2 cursor-pointer"
+                    size={NavBtn}
+                  />
+                </label>
+                <div className="dropdown-content menu mt-[10px] shadow-lg bg-white overflow-hidden rounded-box w-[260px] absolute top-[35px] right-[-118px] pb-1">
+                  <div>현재 참여한 사람</div>
+
+                  <hr />
+                  <div>세션 모든 멤버들</div>
+                </div>
+              </div>
               <div className="flex items-center gap-[25px] relative"></div>
             </header>
             <div className="container">
@@ -738,7 +762,7 @@ class StudySession extends Component {
               </div>
 
               {/* tool bar; screen share, mic on/off, camera on/off, chat popper, exit */}
-              <footer className="footer footer-center p-4 bg-extra4 text-base-content">
+              <footer className="footer footer-center p-4  text-base-content">
                 <div className="grid-flow-col gap-6 md:place-self-center">
                   {/* divided test */}
                   <button
