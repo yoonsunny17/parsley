@@ -5,7 +5,6 @@ import "./StudySession.css";
 import UserVideoComponent from "./UserVideoComponent";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
 // params.id
 
 // chat function
@@ -27,6 +26,7 @@ import { BiGroup } from "react-icons/bi";
 import Button from "../UI/atoms/Button";
 // sweetalert
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -41,49 +41,46 @@ class StudySession extends Component {
     console.log(this.props);
     console.log(this.props.info);
     console.log(this.props.info.hostUser);
-    console.log(this.props.info.name);
     console.log("============================================");
 
-    const roomId = this.props.info.Id;
-
     this.state = {
-      mySessionId: roomId, // 스터디룸 이름
+      mySessionName: this.props.info.name, // 스터디룸 이름
+      mySessionId: this.props.info.id, // 스터디룸 아이디
       myUserName: this.props.user.name, // 내 이름
       hostID: this.props.info.hostUser.id, // 방장 Id
       hostUserName: this.props.info.hostUser.name, // 방장 이름
-      mode: this.props.info.mode, // 손꾸락모드 = 0, 얼구리모드 = 1
+      mode: this.props.info.mode, // 손꾸락모드: finger, 얼구리모드: face FIXME: frontend branch의 CreateStudyRoom 의 mode 이름 바꾸기
       //
-      session: undefined,
+      session: undefined, // this.OV.initSession()
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-      //
+      // 채팅방
       messages: [],
       message: "",
       //
+      // sessionData: [],
       audiostate: true,
       screenstate: false, // 화면
       videostate: true, // 웹캠
       videoallowed: true,
       audioallowed: true,
-      //
-      host: {},
-      isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
+      // host: {},
+      // isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
       width: window.innerWidth,
       height: window.innerHeight,
-      connectionUser: [],
-      connections: [],
-      connectionId: "",
+      // connectionUser: [],
+      // connections: [],
+      // connectionId: "",
       leaved: false,
-      // 화면 분할 모드인가요?
       isDivided: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
-    this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
-    this.handleChangeUserName = this.handleChangeUserName.bind(this);
+    // this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
+    // this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     // send message (chat)
@@ -94,7 +91,17 @@ class StudySession extends Component {
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     // screen share (화면공유)
     this.screenShare = this.screenShare.bind(this);
+    // 4분할 화면 전환
+    this.changeDividedMainScreen = this.changeDividedMainScreen.bind(this);
   }
+
+  // studysession function
+  // handleScreenSize = () => {
+  //   this.setState({
+  //     width: window.innerWidth,
+  //     height: window.innerHeight,
+  //   });
+  // };
 
   // Exit button 눌렀을 때; 정말 나가시겠습니까? alert 띄워주기
   exitSessionAlert = () => {
@@ -235,23 +242,28 @@ class StudySession extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onbeforeunload);
+    // window.removeEventListener("resize", this.handleScreenMode);
+    // window.location.reload();
+    // if (!this.state.leaved) {
+    //   this.leaveSession();
+    // }
   }
 
   onbeforeunload(event) {
     this.leaveSession();
   }
 
-  handleChangeSessionId(e) {
-    this.setState({
-      mySessionId: e.target.value,
-    });
-  }
+  // handleChangeSessionId(e) {
+  //   this.setState({
+  //     mySessionName: e.target.value,
+  //   });
+  // }
 
-  handleChangeUserName(e) {
-    this.setState({
-      myUserName: e.target.value,
-    });
-  }
+  // handleChangeUserName(e) {
+  //   this.setState({
+  //     myUserName: e.target.value,
+  //   });
+  // }
 
   handleMainVideoStream(stream) {
     if (this.state.mainStreamManager !== stream) {
@@ -259,6 +271,13 @@ class StudySession extends Component {
         mainStreamManager: stream,
       });
     }
+  }
+
+  changeDividedMainScreen() {
+    // if (this.state.isDivided) {
+    //   this.setState({ isDivided: !this.state.isDivided });
+    //   console.log(this.state.isDivided);
+    // }
   }
 
   deleteSubscriber(streamManager) {
@@ -291,33 +310,34 @@ class StudySession extends Component {
 
         // --- 3) Specify the actions when events take place in the session ---
 
-        mySession.on("connectionCreated", (event) => {
-          console.log("========= connection =========");
-          console.log(event.connection);
-          var connection = event.connection;
-          var connections = this.state.connections;
-          var connectionUser = this.state.connectionUser;
-          connections.push(connection);
+        // mySession.on("connectionCreated", (event) => {
+        //   console.log("========= connection =========");
+        //   console.log(event.connection);
+        //   var connection = event.connection;
+        //   var connections = this.state.connections;
+        //   var connectionUser = this.state.connectionUser;
+        //   connections.push(connection);
 
-          var userId = connection.connectionId;
-          var userName = JSON.parse(connection.data).clientData;
-          connectionUser.push({ userId, userName });
+        //   var userId = connection.connectionId;
+        //   var userName = JSON.parse(connection.data).clientData;
+        //   connectionUser.push({ userId, userName });
 
-          // 방장 확인
-          var host = this.state.connections[0];
+        //   // 방장 확인
+        //   var host = this.state.connections[0];
+        //   console.log(host);
 
-          this.setState({
-            connections: connections,
-            connectionUser: connectionUser,
-            host: host,
-          });
+        //   this.setState({
+        //     connections: connections,
+        //     connectionUser: connectionUser,
+        //     host: host,
+        //   });
 
-          if (this.state.connectionId === this.state.host.connectionId) {
-            this.setState({ isHost: true });
-          } else {
-            this.setState({ isHost: false });
-          }
-        });
+        //   if (this.state.connectionId === this.state.host.connectionId) {
+        //     this.setState({ isHost: true });
+        //   } else {
+        //     this.setState({ isHost: false });
+        //   }
+        // });
 
         // On every new Stream received...
         mySession.on("streamCreated", (event) => {
@@ -332,6 +352,40 @@ class StudySession extends Component {
             subscribers: subscribers,
           });
         });
+
+        // mySession.on("streamCreated", (event) => {
+        //   // Subscribe to the Stream to receive it. Second parameter is undefined
+        //   // so OpenVidu doesn't create an HTML video by its own
+        //   if (event.stream.typeofVideo === "CAMERA") {
+        //     // var subscriber = mySession.subscribe(event.stream, undefined);
+        //     var subscriber = mySession.subscribe(
+        //       event.stream,
+        //       "container-cameras"
+        //     );
+        //     var subscribers = this.state.subscribers;
+        //     subscribers.push(subscriber);
+
+        //     // Update the state with the new subscribers
+        //     this.setState({
+        //       subscribers: subscribers,
+        //     });
+        //   }
+        // });
+
+        // sessionScreen.on("streamCreated", (event) => {
+        //   if (event.stream.typeofvideo === "SCREEN") {
+        //     var subscriberScreen = sessionScreen.subscribe(
+        //       event.stream,
+        //       "container-screens"
+        //     );
+        //     var subscribersScreen = this.state.subscribers;
+        //     subscribersScreen.push(subscriberScreen);
+
+        //     this.setState({
+        //       subscribersScreen: subscribersScreen,
+        //     });
+        //   }
+        // });
 
         mySession.on("signal:chat", (event) => {
           let chatdata = event.data.split(",");
@@ -432,34 +486,34 @@ class StudySession extends Component {
     // Empty all properties...
     this.OV = null;
     this.setState({
-      mySessionId: "",
-      myUserName: this.props.user.name,
+      mySessionName: this.props.info.name, // 스터디룸 이름
+      mySessionId: this.props.info.id, // 스터디룸 아이디
+      myUserName: this.props.user.name, // 내 이름
       hostID: this.props.info.hostUser.id, // 방장 Id
       hostUserName: this.props.info.hostUser.name, // 방장 이름
-      mode: this.props.info.mode, // 손꾸락모드 = 0, 얼구리모드 = 1
+      mode: this.props.info.mode, // 손꾸락모드: finger, 얼구리모드: face FIXME: frontend branch의 CreateStudyRoom 의 mode 이름 바꾸기
       //
-      session: undefined,
-      subscribers: [],
+      session: undefined, // this.OV.initSession()
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-      //
+      // 채팅방
       messages: [],
       message: "",
-      //
+      // sessionData: [],
       audiostate: true,
       screenstate: false, // 화면
       videostate: true, // 웹캠
       videoallowed: true,
       audioallowed: true,
-      //
-      host: {},
+      // host: {},
       // isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
-      connectionUser: [],
-      connections: [],
-      connectionId: "",
+      // connectionUser: [],
+      // connections: [],
+      // connectionId: "",
+      width: window.innerWidth,
+      height: window.innerHeight,
       leaved: false,
-      // 화면 분할 모드인가요?
       isDivided: false,
     });
   }
@@ -479,7 +533,7 @@ class StudySession extends Component {
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
+          let newPublisher = this.OV.initPublisher(undefined, {
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: true,
             publishVideo: true,
@@ -505,20 +559,21 @@ class StudySession extends Component {
   render() {
     // 나중에 login token도 받을 생각
     const messages = this.state.messages;
+    const mySessionName = this.state.mySessionName;
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
 
-    const sendUserInfo = () => {
-      axios({
-        url: "https://localhost:4443/openvidu/api/sessions/SessionB/connection",
-        method: "POST",
-        data: {
-          userId: this.state.userId,
-          nickname: this.state.myUserName,
-          connectionId: this.state.connectionId,
-        },
-      });
-    };
+    // const sendUserInfo = () => {
+    //   axios({
+    //     url: "https://localhost:4443/openvidu/api/sessions/SessionB/connection",
+    //     method: "POST",
+    //     data: {
+    //       userId: this.state.userId,
+    //       nickname: this.state.myUserName,
+    //       connectionId: this.state.connectionId,
+    //     },
+    //   });
+    // };
 
     return (
       <div className="bg-extra4">
@@ -530,7 +585,7 @@ class StudySession extends Component {
                   파슬리랑 공부할 사람?
                 </div>
                 <img
-                  className="w-2/3"
+                  className="w-1/3"
                   src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
                   alt="PARSLEY"
                 />
@@ -547,25 +602,15 @@ class StudySession extends Component {
                     >
                       <div
                         className="flex font-semibold mr-3"
-                        htmlFor="userName"
+                        htmlFor="sessionId"
                       >
-                        {myUserName} 님, 공부할 준비 되셨나요?
-                        {/* <label>Participant: </label>
-                        <input
-                          className="form-control input-border rounded-lg"
-                          type="text"
-                          id="userName"
-                          value={myUserName}
-                          onChange={this.handleChangeUserName}
-                          required
-                        /> */}
+                        {mySessionName} 방에 참여하셨네요
                       </div>
                       <div
                         className="flex font-semibold mr-3"
-                        htmlFor="sessionId"
+                        htmlFor="userName"
                       >
-                        {/* <label></label> */}
-                        {this.state.mySessionId}
+                        {myUserName} 님, 공부할 준비 되셨나요?
                       </div>
                       <div className="flex">
                         <div className="my-3">
@@ -589,7 +634,15 @@ class StudySession extends Component {
               <div className="flex flex-row">
                 <div className="flex flex-col">
                   {/* // FIXME: navbar 일단 제외 */}
-                  {this.state.mode === "finger" ? (
+                  {/* <div className="navbar bg-base-100">
+                    <div className="flex-1 text-xl font-bold">PARSLEY</div>
+                    <div className="flex-none cursor-pointer">
+                      <BsThreeDots />
+                    </div>
+                  </div> */}
+                  {/* 손꾸락 모드인 경우 vs 얼구리 모드인 경우 */}
+                  {/* 손꾸락 모드 = 0, 얼구리 모드 = 1 */}
+                  {this.state.mode === 0 ? (
                     <div id="video-container" className="video-container">
                       {/* // TODO: 화면 넘어가는것을 carousel?? pagination?? 구현해야 할 것 같음 */}
                       {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
@@ -645,6 +698,32 @@ class StudySession extends Component {
                           <UserVideoComponent streamManager={sub} />
                         </div>
                       ))}
+                      {/* 하단의 메인 화면; 화면 공유 되어지고있는 사람 */}
+                      {/* 화면 4분할 기능 추가 */}
+                      {/* 4분할 되어 4개의 화면이 공유되어지는 경우 */}
+                      {/* <div id="main-video-divided">
+                        <div
+                          className="w-[45%]"
+                          onClick={() => {
+                            this.handleMainVideoStream(this.state.publisher);
+                          }}
+                        >
+                          <UserVideoComponent
+                            streamManager={this.state.publisher}
+                          />
+                        </div>
+                        {this.state.subscribers.map((sub, i) => (
+                          <div
+                            className="w-[45%]"
+                            key={i}
+                            onClick={() => {
+                              this.handleMainVideoStream(sub);
+                            }}
+                          >
+                            <UserVideoComponent streamManager={sub} />
+                          </div>
+                        ))}
+                      </div>{" "} */}
                       {/* 4분할 되지 않고 하나의 화면만 공유되는 경우 */}
                       {/* 클릭했을 때 다시 4분할로 돌아가도록 */}
                       <div id="main-video-onescreen">
@@ -680,7 +759,25 @@ class StudySession extends Component {
                             ))}
                           </div>
                         )}
+                        {/* <div
+                        // onClick={() => {
+                        //   this.setState({ isDivided: !this.state.isDivided });
+                        //   console.log(this.state.isDivided);
+                        // }}
+                        >
+                          <UserVideoComponent
+                            streamManager={this.state.mainStreamManager}
+                          />
+                        </div> */}
                       </div>{" "}
+                      ,
+                      {/* {this.state.mainStreamManager !== undefined ? (
+                        <div id="main-video" className="">
+                          <UserVideoComponent
+                            streamManager={this.state.mainStreamManager}
+                          />
+                        </div>
+                      ) : null} */}
                     </div>
                   )}
                 </div>
@@ -732,6 +829,36 @@ class StudySession extends Component {
                       />
                     </div>
                   )}
+
+                  {/* {this.state.audiostate ? (
+                    <div className="cursor-pointer">
+                      <BsFillMicFill
+                        size={footerBtn}
+                        onClick={() => {
+                          this.state.publisher.publishAudio(
+                            !this.state.audiostate
+                          );
+                          this.setState({
+                            audiostate: !this.state.audiostate,
+                          });
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <BsFillMicMuteFill
+                        size={footerBtn}
+                        onClick={() => {
+                          this.state.publisher.publishAudio(
+                            !this.state.audiostate
+                          );
+                          this.setState({
+                            audiostate: !this.state.audiostate,
+                          });
+                        }}
+                      />
+                    </div>
+                  )} */}
                   {/* video on/off */}
                   {this.state.videostate ? (
                     <div className="cursor-pointer">
@@ -789,7 +916,7 @@ class StudySession extends Component {
                       </label>
                       <div className="rounded-2xl flex flex-col bg-font3 w-auto h-full ease-in-out">
                         <div className="flex text-start p-2 text-xl h-10">
-                          {this.state.mySessionId} 채팅방
+                          {mySessionName} 채팅방
                         </div>
                         <div
                           className="chatbox__messages mt-auto flex flex-col overflow-y-scroll items-end"
@@ -831,6 +958,145 @@ class StudySession extends Component {
         )}
       </div>
     );
+    // return (
+    //   <div className="container">
+    //     {/* 스터디룸 입장 전 */}
+    //     {this.state.session === undefined ? (
+    //       <div id="join">
+    //         <div id="img-div">
+    //           <img
+    //             src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+    //             alt="PARSLEY"
+    //           />
+    //         </div>
+    //         <div id="join-dialog" className="jumbotron vertical-center">
+    //           <h1> Study With PARSLEY! </h1>
+    //           <form className="form-group" onSubmit={this.joinSession}>
+    //             <div className="flex">
+    //               <label>Participant: </label>
+    //               <input
+    //                 className="form-control ml-2"
+    //                 type="text"
+    //                 id="userName"
+    //                 value={myUserName}
+    //                 onChange={this.handleChangeUserName}
+    //                 required
+    //               />
+    //             </div>
+    //             <div className="flex">
+    //               <label> Session: </label>
+    //               <input
+    //                 className="form-control ml-2"
+    //                 type="text"
+    //                 id="sessionId"
+    //                 value={mySessionId}
+    //                 onChange={this.handleChangeSessionId}
+    //                 required
+    //               />
+    //             </div>
+    //             <p className="text-center">
+    //               {/* <input
+    //                 className="btn btn-lg btn-success"
+    //                 name="commit"
+    //                 type="submit"
+    //                 value="JOIN"
+    //               /> */}
+    //               <Button text={"JOIN"} />
+    //             </p>
+    //           </form>
+    //         </div>
+    //       </div>
+    //     ) : null}
+
+    //     {/* 스터디룸 입장 후 */}
+    //     {this.state.session !== undefined ? (
+    //       <div>
+    //         <div id="session">
+    //           <div id="session-header">
+    //             <h1 id="session-title">{mySessionId}</h1>
+    //             {/* <input
+    //             className="btn btn-large btn-danger"
+    //             type="button"
+    //             id="buttonLeaveSession"
+    //             onClick={this.leaveSession}
+    //             value="Leave session"
+    //           /> */}
+    //             <button
+    //               id="buttonLeaveSession"
+    //               onClick={this.leaveSession}
+    //               className="bg-red-400 px-3 py-2 text-white rounded-lg"
+    //             >
+    //               LEAVE SESSION
+    //             </button>
+    //           </div>
+
+    //           {/* 메인화면 보이는 부분 */}
+    //           {this.state.mainStreamManager !== undefined ? (
+    //             <div id="main-video" className="col-md-6">
+    //               <UserVideoComponent
+    //                 streamManager={this.state.mainStreamManager}
+    //               />
+    //               {/* <input
+    //               className="btn btn-large btn-success"
+    //               type="button"
+    //               id="buttonSwitchCamera"
+    //               onClick={this.switchCamera}
+    //               value="Switch Camera"
+    //             /> */}
+    //               <button
+    //                 id="buttonSwitchCamera"
+    //                 onClick={this.switchCamera}
+    //                 className="float-left mt-5 bg-sub1 px-3 py-2 text-white rounded-lg"
+    //               >
+    //                 SWITCH CAMERA
+    //               </button>
+    //             </div>
+    //           ) : null}
+    //           <div id="video-container" className="col-md-6">
+    //             {this.state.publisher !== undefined ? (
+    //               <div
+    //                 className="stream-container col-md-6 col-xs-6"
+    //                 onClick={() =>
+    //                   this.handleMainVideoStream(this.state.publisher)
+    //                 }
+    //               >
+    //                 <UserVideoComponent streamManager={this.state.publisher} />
+    //               </div>
+    //             ) : null}
+    //             {this.state.subscribers.map((sub, i) => (
+    //               <div
+    //                 key={i}
+    //                 className="stream-container col-md-6 col-xs-6"
+    //                 onClick={() => this.handleMainVideoStream(sub)}
+    //               >
+    //                 <UserVideoComponent streamManager={sub} />
+    //               </div>
+    //             ))}
+    //           </div>
+    //         </div>
+    //         {/* chat */}
+    //         <div className="chatbox__messages" ref="chatoutput">
+    //           <Messages messages={messages} />
+    //         </div>
+    //         <div className="chatbox__footer">
+    //           <input
+    //             type="text"
+    //             id="chat_message"
+    //             placeholder="write messages"
+    //             onChange={this.handleChatMessageChange}
+    //             onKeyPress={this.sendMessageByEnter}
+    //             value={this.state.message}
+    //           />
+    //           <Button
+    //             className="chatbox__send--footer"
+    //             onClick={this.sendMessageByClick}
+    //             text={"send"}
+    //           />
+    //         </div>
+    //       </div>
+    //     ) : null}
+    //   </div>
+    // );
   }
 
   /**
@@ -846,7 +1112,7 @@ class StudySession extends Component {
    */
 
   getToken() {
-    return this.createSession(this.state.mySessionId).then((sessionId) =>
+    return this.createSession(this.state.mySessionName).then((sessionId) =>
       this.createToken(sessionId)
     );
   }
@@ -863,7 +1129,7 @@ class StudySession extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
+          console.log("CREATE SESSION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
