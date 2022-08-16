@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useKakaoLoginQuery } from "../../services/auth";
 import { useLazyGetUserQuery } from "../../services/user";
@@ -11,12 +12,14 @@ function KakaoLogin() {
     const { isLoading, isSuccess, error } = useKakaoLoginQuery(code);
     const [getUser] = useLazyGetUserQuery();
 
-    if (!isLoading) {
-        if (isSuccess) {
-            getUser();
+    useEffect(() => {
+        if (!isLoading) {
+            if (isSuccess) {
+                getUser();
+            }
+            navigate("/");
         }
-        navigate("/");
-    }
+    });
 
     return <div>카카오 로그인중...</div>;
 }
