@@ -9,6 +9,7 @@ import {
 } from "../../services/userRoom";
 import Button from "../atoms/Button";
 import Swal from "sweetalert2";
+import { Toast } from "../../util/common";
 
 function StudyInfo() {
     const isLogin = useSelector((state) => state.user.isLogin);
@@ -27,10 +28,23 @@ function StudyInfo() {
 
     const handleJoinRoom = () => {
         if (isLogin) {
+            if (
+                data?.roomInfo.members.length === data?.roomInfo.maxPopulation
+            ) {
+                Toast.fire({
+                    icon: "error",
+                    title: "인원이 가득 찼습니다.",
+                });
+                return;
+            }
             joinRoom(params.id);
             if (isJoinRoomSuccess) {
                 refetch();
             }
+            Toast.fire({
+                icon: "success",
+                title: "나의 스터디에 추가되었습니다.",
+            });
         } else {
             Toast.fire({
                 icon: "info",
@@ -229,14 +243,5 @@ function StudyInfo() {
         </div>
     );
 }
-
-const Toast = Swal.mixin({
-    toast: true,
-    width: 320,
-    position: "top-right",
-    showConfirmButton: false,
-    timer: 1500,
-    timerProgressBar: true,
-});
 
 export default StudyInfo;
