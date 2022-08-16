@@ -38,12 +38,12 @@
 /* 위에 작게 보이는 곳 */
 .stream-container {
   width: calc(100% / 4);
-  padding-top: 15px;
+  /* padding-top: 10px; */
   /* padding-bottom: 30px; */
 }
 
 .video-container {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   display: flex;
   justify-content: center;
   flex-wrap: wrap;

@@ -31,7 +31,8 @@ import Swal from "sweetalert2";
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
-const footerBtn = "30";
+const footerBtn = "20";
+const NavBtn = "24";
 
 class StudySession extends Component {
   constructor(props) {
@@ -94,6 +95,7 @@ class StudySession extends Component {
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     // screen share (화면공유)
     this.screenShare = this.screenShare.bind(this);
+    // 참여한 멤버 확인하기
   }
 
   // Exit button 눌렀을 때; 정말 나가시겠습니까? alert 띄워주기
@@ -143,6 +145,8 @@ class StudySession extends Component {
       }
     });
   };
+
+  //
 
   // 채팅 길어지면 자동으로 내려가게 ... 스크롤 기능이용
   componentDidUpdate(previousProps, previousState) {
@@ -614,13 +618,14 @@ class StudySession extends Component {
           </div>
         ) : (
           <div id="session">
-            <header className="h-[72px] flex justify-between items-center mt-0 mb-4 bg-extra4">
+            <header className="h-[72px] flex items-center mt-0 bg-extra4">
               <button
                 onClick={this.onClickLogo}
                 className="logo font-logo text-3xl cursor-pointer ml-4"
               >
                 PARSLEY
               </button>
+              <BiGroup className="mx-2 my-[2px] cursor-pointer" size={NavBtn} />
               <div className="flex items-center gap-[25px] relative"></div>
             </header>
             <div className="container">
@@ -633,7 +638,6 @@ class StudySession extends Component {
                       {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
                       {this.state.publisher !== undefined ? (
                         <div
-                          // className="stream-container col-md-6 col-xs-6"
                           className="w-[calc-96% / 2] m-[1%] col-md-6 col-xs-6"
                           onClick={() =>
                             this.handleMainVideoStream(this.state.publisher)
@@ -648,7 +652,6 @@ class StudySession extends Component {
                       {this.state.subscribers.map((sub, i) => (
                         <div
                           key={i}
-                          // className="stream-container col-md-6 col-xs-6"
                           className="w-[calc-96% / 2] m-[1%] col-md-6 col-xs-6"
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
@@ -725,7 +728,7 @@ class StudySession extends Component {
               </div>
 
               {/* tool bar; screen share, mic on/off, camera on/off, chat popper, exit */}
-              <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+              <footer className="footer footer-center p-4 bg-extra4 text-base-content">
                 <div className="grid-flow-col gap-6 md:place-self-center">
                   {/* divided test */}
                   <button
