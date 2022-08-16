@@ -1,4 +1,5 @@
 import React from "react";
+import { FaCrown } from "react-icons/fa";
 
 function StudyRoomItem({
     info: {

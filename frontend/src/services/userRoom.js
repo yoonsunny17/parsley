@@ -1,5 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithReAuth } from ".";
+import { setRoom } from "../modules/roomReducer";
+import { roomApi } from "./room";
 
 export const userRoomApi = createApi({
     reducerPath: "userRoomApi",
@@ -13,9 +15,20 @@ export const userRoomApi = createApi({
                     body: { roomId },
                 };
             },
-            async onQueryStarted(_, { dispatch, queryFulFilled }) {
+            async onQueryStarted(_, { dispatch, getState, queryFulFilled }) {
                 try {
-                    const result = await queryFulFilled;
+                    await queryFulFilled;
+                    const room = getState().room.room;
+                    const user = getState().user.user;
+                    const newRoom = {
+                        ...room,
+                        members: [...room.members, user],
+                    };
+                    console.log(room);
+                    dispatch(setRoom(newRoom));
+                    console.log(newRoom);
+                    console.log(getState().room.room);
+                    dispatch(roomApi.util.invalidateTags(["Room"]));
                 } catch (err) {
                     console.log(err);
                 }
@@ -28,6 +41,26 @@ export const userRoomApi = createApi({
                     method: "POST",
                     body: { roomId },
                 };
+            },
+            async onQueryStarted(_, { dispatch, getState, queryFulFilled }) {
+                try {
+                    await queryFulFilled;
+                    const room = getState().room.room;
+                    const user = getState().user.user;
+                    const newRoom = {
+                        ...room,
+                        members: room.members.filter(
+                            (member) => member.id !== user.id
+                        ),
+                    };
+                    console.log(room);
+                    dispatch(setRoom(newRoom));
+                    console.log(newRoom);
+                    console.log(getState().room.room);
+                    dispatch(roomApi.util.invalidateTags(["Room"]));
+                } catch (err) {
+                    console.log(err);
+                }
             },
         }),
     }),

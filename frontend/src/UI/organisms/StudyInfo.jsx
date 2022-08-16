@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useGetRoomQuery } from "../../services/room";
 import {
@@ -14,6 +14,7 @@ import { setRoom } from "../../modules/roomReducer";
 import { useEffect } from "react";
 
 function StudyInfo() {
+    const navigate = useNavigate();
     const isLogin = useSelector((state) => state.user.isLogin);
     const user = useSelector((state) => state.user.user);
     const room = useSelector((state) => state.room.room);
@@ -21,15 +22,14 @@ function StudyInfo() {
 
     const dispatch = useDispatch();
     const params = useParams();
-    const {
-        data,
-        refetch,
-        isLoading: isGetRoomLoading,
-    } = useGetRoomQuery(params.id, { refetchOnMountOrArgChange: true });
-    const [joinRoom, { isSuccess: isJoinRoomSuccess }] = useJoinRoomMutation();
+    const { data, isLoading: isGetRoomLoading } = useGetRoomQuery(params.id, {
+        refetchOnMountOrArgChange: true,
+    });
+    const [joinRoom] = useJoinRoomMutation();
     const [withdrawRoom] = useWithdrawRoomMutation();
 
-    const handleJoinRoom = () => {
+    // TODO: 비밀번호 있는 방인 경우 처리
+    const handleJoinRoom = async () => {
         if (isLogin) {
             if (
                 data?.roomInfo.members.length === data?.roomInfo.maxPopulation
@@ -40,14 +40,19 @@ function StudyInfo() {
                 });
                 return;
             }
-            joinRoom(params.id);
-            if (isJoinRoomSuccess) {
-                refetch();
-            }
+            await joinRoom(params.id);
             Toast.fire({
                 icon: "success",
                 title: "나의 스터디에 추가되었습니다.",
             });
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+            // if (isJoinRoomSuccess) {
+            //     refetch();
+
+            //     window.location.reload();
+            // }
         } else {
             Toast.fire({
                 icon: "info",
@@ -72,6 +77,10 @@ function StudyInfo() {
                     icon: "info",
                     title: "다른 스터디룸에서 만나요!",
                     text: "오늘도 화이팅 :)",
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        window.location.reload();
+                    }
                 });
             }
         });
