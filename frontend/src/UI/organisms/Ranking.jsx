@@ -6,7 +6,7 @@ function Ranking() {
 
     return (
         <div className="bg-white rounded-3xl drop-shadow px-8 py-5 w-full lg:w-[32%]">
-            <h3 className="text-xl font-bold text-center mb-4">
+            <h3 className="text-lg font-bold text-center mb-4">
                 오늘의 농부왕
             </h3>
             <ul className="list-none">
