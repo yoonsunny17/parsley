@@ -50,7 +50,14 @@ public class StudyService {
 
         User user = userRepository.findByUserId(userId);
 
-        DailyGoal dailyGoal = new DailyGoal();
+        DailyGoal dailyGoal = dailyGoalRepository.findByUserId(userId);
+        if(dailyGoal != null){
+            dailyGoal.setTargetTime(goalInfo.getTargetTime());
+
+            return dailyGoal;
+        }
+
+        dailyGoal = new DailyGoal();
         dailyGoal.setDate(LocalDate.now());
         dailyGoal.setTargetTime(goalInfo.getTargetTime());
         dailyGoal.setUser(user);
@@ -58,16 +65,6 @@ public class StudyService {
         dailyGoalRepository.save(dailyGoal);
 
         return dailyGoal;
-    }
-
-    @Transactional
-    public DailyGoal updateDailyGoal(Long userId, GoalCreatePostReq goalInfo){
-        DailyGoal dailyGoal = dailyGoalRepository.findByUserId(userId);
-
-        dailyGoal.setTargetTime(goalInfo.getTargetTime());
-
-        return dailyGoal;
-
     }
 
     //현재 데이터 확인용으로 초단위로 가져옴 -> 추후 /60 해줄 예정
