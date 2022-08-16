@@ -11,7 +11,10 @@ import SearchBar from "../molecules/SearchBar";
 
 function Navbar() {
     const isLogin = useSelector((state) => state.user.isLogin);
-    const { data } = useGetNotificationCntQuery();
+    const { data } = useGetNotificationCntQuery(
+        {},
+        { skip: !isLogin, refetchOnMountOrArgChange: true }
+    );
     const [readNotification] = useReadNotificationMutation();
     const [notiArr, setNotiArr] = useState([]);
 
