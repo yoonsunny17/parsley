@@ -12,6 +12,7 @@ import farmReducer from "./farmReducer";
 import { createBrowserHistory } from "history";
 import { notificationApi } from "../services/notification";
 import { userRoomApi } from "../services/userRoom";
+import userReducer from "./userReducer";
 import roomReducer from "./roomReducer";
 import { farmApi } from "../services/farm";
 export const history = createBrowserHistory();
@@ -31,11 +32,11 @@ const reducers = combineReducers({
 });
 
 const persistedReducer = persistReducer(
-  {
-    key: "root",
-    storage,
-  },
-  reducers
+    {
+        key: "root",
+        storage,
+    },
+    reducers
 );
 
 export const store = configureStore({
