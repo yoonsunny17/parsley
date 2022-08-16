@@ -8,35 +8,47 @@ export const farmApi = createApi({
     getAllItems: builder.query({
       query: () => `/farm/item`,
     }),
-    getCollection: builder.query({
+
+    getAllUserHerbBooks: builder.query({
       query: () => `/farm/book`,
     }),
-    updateCollection: builder.mutation({
-      query: (herbId) => ({
-        url: `/farm/book/add`,
-        method: "POST",
-        body: herbId,
-      }),
-    }),
-    getHerbs: builder.query({
-      query: () => `/farm/herb`,
-    }),
-    updateHerbInfo: builder.mutation({
-      query: ({ herbId, ...rest }) => {
+
+    addHerb: builder.mutation({
+      query: (herb) => {
         return {
           url: `/farm/herb/add`,
           method: "POST",
-          body: rest,
+          body: herb,
         };
       },
+    }),
+
+    getAllHerbs: builder.query({
+      query: () => `/farm/herb`,
+    }),
+
+    addHerbBook: builder.mutation({
+      query: (herbId) => {
+        console.log("수확하기 어떤 허브인가요~: " + herbId);
+        return {
+          url: `/farm/book/add`,
+          method: "POST",
+          body: herbId,
+        };
+      },
+    }),
+
+    getAllHerbBooks: builder.query({
+      query: () => `/farm/book`,
     }),
   }),
 });
 
 export const {
   useGetAllItemsQuery,
-  useGetCollectionQuery,
-  useUpdateCollectionQuery,
-  useGetHerbsQuery,
-  useUpdateHerbInfoQuery,
+  useGetAllUserHerbBooksQuery,
+  useAddHerbMutation,
+  useGetAllHerbsQuery,
+  useAddHerbBookMutation,
+  useGetAllHerbBooksQuery,
 } = farmApi;
