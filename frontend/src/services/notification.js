@@ -4,7 +4,20 @@ import { baseQueryWithReAuth } from ".";
 export const notificationApi = createApi({
     reducerPath: "notificationApi",
     baseQuery: baseQueryWithReAuth,
-    endpoints: (builder) => ({}),
+    endpoints: (builder) => ({
+        readNotification: builder.mutation({
+            query: () => {
+                return {
+                    url: `/notification`,
+                    method: "POST",
+                };
+            },
+        }),
+        getNotificationCnt: builder.query({
+            query: () => `/notification/cnt`,
+        }),
+    }),
 });
 
-export const {} = notificationApi;
+export const { useReadNotificationMutation, useGetNotificationCntQuery } =
+    notificationApi;
