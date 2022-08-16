@@ -10,24 +10,26 @@ import userReducer from "./userReducer";
 import studyReducer from "./studyReducer";
 import { createBrowserHistory } from "history";
 import { userRoomApi } from "../services/userRoom";
+import roomReducer from "./roomReducer";
 export const history = createBrowserHistory();
 
 const reducers = combineReducers({
-    user: userReducer,
+  user: userReducer,
     study: studyReducer,
-    [roomApi.reducerPath]: roomApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
+  room: roomReducer,
+  [roomApi.reducerPath]: roomApi.reducer,
+  [authApi.reducerPath]: authApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
-    [userRoomApi.reducerPath]: userRoomApi.reducer,
+  [userRoomApi.reducerPath]: userRoomApi.reducer,
 });
 
 const persistedReducer = persistReducer(
-    {
-        key: "root",
-        storage,
-    },
-    reducers
+  {
+    key: "root",
+    storage,
+  },
+  reducers
 );
 
 export const store = configureStore({

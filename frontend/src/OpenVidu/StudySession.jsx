@@ -3,6 +3,9 @@ import { OpenVidu } from "openvidu-browser";
 import React, { Component, createRef } from "react";
 import "./StudySession.css";
 import UserVideoComponent from "./UserVideoComponent";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+// params.id
 
 // chat function
 import Messages from "./Chat/Messages";
@@ -33,9 +36,13 @@ class StudySession extends Component {
   constructor(props) {
     super(props);
 
+    console.log("======= 현재 참여한 사람 정보 =========");
+    console.log(this.props);
+    console.log("======= 현재 참여한 사람 정보 =========");
+
     this.state = {
       mySessionId: "SessionB",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      myUserName: this.props.user.name,
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
@@ -473,7 +480,7 @@ class StudySession extends Component {
       session: undefined,
       subscribers: [],
       mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      myUserName: this.props.user.name,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
@@ -562,6 +569,7 @@ class StudySession extends Component {
                   파슬리랑 공부할 사람?
                 </div>
                 <img
+                  className="w-2/3"
                   src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
                   alt="PARSLEY"
                 />
@@ -580,7 +588,8 @@ class StudySession extends Component {
                         className="flex font-semibold mr-3"
                         htmlFor="userName"
                       >
-                        <label>Participant: </label>
+                        {myUserName} 님, 공부할 준비 되셨나요?
+                        {/* <label>Participant: </label>
                         <input
                           className="form-control input-border rounded-lg"
                           type="text"
@@ -588,7 +597,7 @@ class StudySession extends Component {
                           value={myUserName}
                           onChange={this.handleChangeUserName}
                           required
-                        />
+                        /> */}
                       </div>
                       <div
                         className="flex font-semibold mr-3"
@@ -1180,4 +1189,13 @@ class StudySession extends Component {
   }
 }
 
-export default StudySession;
+const mapToStateToProps = (state) => ({
+  user: state.user.user,
+  info: state.room.room,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapToStateToProps, mapDispatchToProps)(StudySession);
