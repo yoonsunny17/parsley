@@ -63,11 +63,11 @@ function CreateStudyRoom() {
 
   const handleEnter = (e) => e.key === "Enter" && e.preventDefault();
 
-  return (
-    <div className="text-extra5">
-      <Navbar />
-      <div className="flex flex-col rounded-3xl shadow-md px-8 py-9">
-        <div className="text-xl font-bold">스터디룸 생성하기</div>
+    return (
+        <div className="text-extra5">
+            <Navbar />
+            <div className="flex flex-col rounded-3xl shadow-md px-8 py-9">
+                <div className="text-xl font-bold">스터디룸 생성하기</div>
 
                 <form
                     onSubmit={handleSubmit(onSubmit)}
