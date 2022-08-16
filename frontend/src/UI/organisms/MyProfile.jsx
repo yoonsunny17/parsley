@@ -8,7 +8,9 @@ function MyProfile() {
   const today = new Date();
   const regDate = new Date(user.regDate);
   const togetherDays = parseInt(
-    (today.getTime() - regDate.getTime()) / (1000 * 60 * 60 * 24) + 1
+    (today.getDate() - regDate.getDate() + 1000 * 60 * 60 * 9) /
+      (1000 * 60 * 60 * 24) +
+      1
   );
 
   const [edit, setEdit] = useState(false);
