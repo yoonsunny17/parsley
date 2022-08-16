@@ -37,14 +37,14 @@ export const userApi = createApi({
             query: () => ({
                 url: `/user/rejoin`,
                 method: "POST",
-            })
+            }),
         }),
         getMyRooms: builder.query({
-          query: () => `/user/room`,
-      }),
-      getMyLikeRooms: builder.query({
-          query: () => `/user/like`,
-      }),
+            query: () => `/user/room`,
+        }),
+        getMyLikeRooms: builder.query({
+            query: () => `/user/like`,
+        }),
     }),
 });
 
