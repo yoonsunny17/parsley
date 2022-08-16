@@ -35,10 +35,10 @@ function FarmGame(props) {
   const user = useSelector((state) => state.user.user);
 
   const day = 32;
-  const sley = 1000;
 
   const [isPending, startTransition] = useTransition();
   const [isEmpty, setIsEmpty] = useState(true);
+
   const clickToEmpty = () => {
     setIsEmpty((current) => !current);
   };

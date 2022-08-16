@@ -38,6 +38,8 @@ function HerbStoreModal({ clickCancel }) {
     setItems((prev) => initialData);
     setPrice((prev) => initialPrice);
   };
+=======
+>>>>>>> 2ea21e0 (S07P12A604-268] feat: add "/farm/herb")
 
   return (
     <>
@@ -189,83 +191,4 @@ function HerbStoreModal({ clickCancel }) {
   );
 }
 
-const seedOptions = [
-  {
-    name: "seed",
-    title: "일반 씨앗",
-    price: 0,
-    grade: "normal",
-    imgUrl: "/herbs/seed.png",
-  },
-  {
-    name: "seed",
-    title: "희귀 씨앗",
-    price: 100,
-    grade: "rare",
-    imgUrl: "/herbs/seeds.png",
-  },
-  {
-    name: "seed",
-    title: "영웅 씨앗",
-    price: 200,
-    grade: "hero",
-    imgUrl: "/herbs/seed.png",
-  },
-  {
-    name: "seed",
-    title: "전설 씨앗",
-    price: 350,
-    grade: "legend",
-    imgUrl: "/herbs/seeds.png",
-  },
-  {
-    name: "seed",
-    title: "미스테리 씨앗",
-    price: 500,
-    grade: "mystery",
-    imgUrl: "/herbs/seed.png",
-  },
-];
-
-const fertilizerOptions = [
-  {
-    name: "fertilizer",
-    title: "일반 비료",
-    price: 150,
-    imgUrl: "/herbs/fertilizer.png",
-  },
-  {
-    name: "fertilizer",
-    title: "고급 비료",
-    price: 200,
-    imgUrl: "/herbs/liquid_fertilizer.png",
-  },
-  {
-    name: "fertilizer",
-    title: "프로틴 비료",
-    price: 300,
-    imgUrl: "herbs/fertilizer.png",
-  },
-  {
-    name: "fertilizer",
-    title: "최상급 비료",
-    price: 500,
-    imgUrl: "/herbs/liquid_fertilizer.png",
-  },
-];
-
-const waterOptions = [
-  {
-    name: "water",
-    title: "일반 물뿌리개",
-    price: 250,
-    imgUrl: "/herbs/watering-can.png",
-  },
-  {
-    name: "water",
-    title: "고급 물뿌리개",
-    price: 500,
-    imgUrl: "/herbs/watering-can.png",
-  },
-];
 export default HerbStoreModal;
