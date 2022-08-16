@@ -43,7 +43,15 @@ class StudySession extends Component {
     console.log(this.props.info);
     console.log(this.props.info.hostUser);
     console.log(this.props.info.name);
-    console.log("============================================");
+    console.log("========= 참여 멤버는 누구?? ===============");
+    // console.log(this.props.info.members);
+
+    const membersArr = this.props.info.members;
+    console.log(membersArr);
+
+    for (let i = 0; i < membersArr.length; i++) {
+      console.log(membersArr[i].name);
+    }
 
     const roomId = this.props.info.Id;
 
@@ -53,6 +61,8 @@ class StudySession extends Component {
       hostID: this.props.info.hostUser.id, // 방장 Id
       hostUserName: this.props.info.hostUser.name, // 방장 이름
       mode: this.props.info.mode, // 손꾸락모드 = 0, 얼구리모드 = 1
+      // FIXME: 이거 현재 참여한 사람으로 할지, 아니면 전체 사람으로 할지 고민중
+      members: [], // 방 멤버
       //
       session: undefined,
       mainStreamManager: undefined,
@@ -475,7 +485,6 @@ class StudySession extends Component {
       subscribers: [],
       mainStreamManager: undefined,
       publisher: undefined,
-      subscribers: [],
       //
       messages: [],
       message: "",
