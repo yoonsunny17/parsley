@@ -15,7 +15,7 @@ public class WeeklyStudyGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "weekly study time")
     List<WeeklyRes> week = new LinkedList<>();
     @ApiModelProperty(name = "last week study time")
-    Long lastWeek;
+    double lastWeek;
 
     public static WeeklyStudyGetRes of(Integer statusCode, String message, List<Long> week, long lastWeek){
         WeeklyStudyGetRes res = new WeeklyStudyGetRes();
@@ -23,7 +23,8 @@ public class WeeklyStudyGetRes extends BaseResponseBody {
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setWeek(week);
-        res.setLastWeek(lastWeek);
+        double last = lastWeek/3600.0;
+        res.setLastWeek((double)Math.round(last*100)/100);
 
         return res;
     }
