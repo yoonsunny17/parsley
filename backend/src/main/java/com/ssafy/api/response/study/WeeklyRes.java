@@ -11,13 +11,13 @@ public class WeeklyRes{
     @ApiModelProperty(name = "day of the week")
     String day;
     @ApiModelProperty(name = "study time")
-    Long time;
+    double hour;
 
-    public static WeeklyRes of(String day, Long time){
+    public static WeeklyRes of(String day, double hour){
         WeeklyRes res = new WeeklyRes();
 
         res.day = day;
-        res.time = time;
+        res.hour = hour;
 
         return res;
     }

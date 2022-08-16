@@ -1,58 +1,74 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux/es/exports";
+import { useGetGoalQuery, useCreateGoalMutation } from "../../services/study";
+import { FaCog } from "react-icons/fa";
 import "moment/locale/ko";
 
 function TodayStudy(args) {
-    const ResizedComponent = () => {
-        const handleResize = () => {
-            console.log(
-                `browser window x-axis size: ${window.innerWidth}, y-axis size: ${window.innerHeight}`
-            );
-        };
+    const now = new Date();
+    const dayOfWeek = now.getDay() - 1;
 
-        useEffect(() => {
-            window.addEventListener("resize", handleResize);
-            return () => {
-                window.removeEventListener("resize", handleResize);
-            };
-        }, []);
-    };
-    const [percent, setPercent] = useState(0);
+    const weekly = useSelector((state) => state.study.weekly);
+    const studyTime = weekly[dayOfWeek].hour * 60;
 
+    const [createGoal] = useCreateGoalMutation();
+    const { data: goal } = useGetGoalQuery(
+        {},
+        { refetchOnMountOrArgChange: true }
+    );
+
+    let timePercent = 0;
+
+    const [percent, setPercent] = useState();
     const [hour, setHour] = useState(0);
-
     const [min, SetMin] = useState(0);
+    const [targetHour, setTargetHour] = useState();
+    const [targetMin, setTargetMin] = useState();
+    const [targetTime, setTargetTime] = useState();
+
+    useEffect(() => {
+        if (!targetTime) {
+            setTargetTime(goal.targetTime);
+            setTargetHour((targetTime / 60).toFixed(0));
+            setTargetMin(targetTime % 60);
+        }
+        timePercent = Math.floor((studyTime / targetTime) * 100);
+        if (isNaN(timePercent)) {
+            setPercent("0");
+        } else {
+            setPercent(timePercent);
+        }
+    }, [targetTime]);
 
     const changeHour = (e) => {
         setHour(e.target.value);
     };
-
     const changeMin = (e) => {
         SetMin(e.target.value);
     };
 
-    const timePercent = Math.floor(
-        ((parseInt(hour) * 60 + parseInt(min)) / 1440) * 100
-    );
-    const onSubmit = () => {
-        setPercent(timePercent);
-    };
-    console.log(percent);
-
     const [showModal, setShowModal] = useState(false);
 
-    const onChange = () => {
+    const handleModal = () => {
         setShowModal((current) => !current);
-        console.log(showModal);
     };
 
-    const handleClick = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("The button was clicked");
-        onChange();
-    };
+        await createGoal(parseInt(hour) * 60 + parseInt(min)).unwrap();
 
-    // const timePercent = Math.floor(((parseInt(hour) * 60 + parseInt(min)) / 1440) * 100);
-    // console.log(timePercent);
+        setTargetHour(hour);
+        setTargetMin(min);
+        setTargetTime(parseInt(hour) * 60 + parseInt(min));
+        timePercent = Math.floor((studyTime / targetTime) * 100);
+        if (isNaN(timePercent)) {
+            setPercent("0");
+        } else {
+            setPercent(timePercent);
+        }
+        console.log(percent);
+        handleModal();
+    };
 
     return (
         <div className="rounded-2xl mb-4 shadow px-8 py-5 w-full lg:w-[32%] md:w-[100%] md:mb-0">
@@ -60,11 +76,8 @@ function TodayStudy(args) {
                 <div>
                     <h3 className="text-xl font-bold">오늘의 목표</h3>
                 </div>
-                <button
-                    onClick={onChange}
-                    className=" bg-main text-[12px] text-font3 font-bold rounded-[50px] w-24 h-[32px]"
-                >
-                    목표 설정하기
+                <button onClick={handleModal}>
+                    <FaCog />
                 </button>
             </div>
             {showModal ? (
@@ -80,7 +93,7 @@ function TodayStudy(args) {
                                     </h3>
                                 </div>
                                 {/*body*/}
-                                <form onSubmit={handleClick}>
+                                <form onSubmit={handleSubmit}>
                                     {/* prevent default! */}
                                     <div className="relative w-[480px] p-[20px_100px] flex gap-[30px] justify-center items-center">
                                         <input
@@ -88,7 +101,7 @@ function TodayStudy(args) {
                                             type="number"
                                             value={hour}
                                             min="0"
-                                            max="12"
+                                            max="23"
                                             onChange={changeHour}
                                         />{" "}
                                         <span className="font-bold">시간</span>
@@ -105,14 +118,13 @@ function TodayStudy(args) {
                                     {/*footer*/}
                                     <div className="flex items-center justify-end p-6  gap-[20px]">
                                         <button
-                                            onClick={onChange}
+                                            onClick={handleModal}
                                             className="bg-sub1 text-font3 rounded-[50px] p-[3px_17px]"
                                         >
                                             취소
                                         </button>
                                         <button
                                             type="submit"
-                                            onClick={onSubmit}
                                             className="bg-main text-font3 rounded-[50px] p-[3px_17px]"
                                         >
                                             적용
@@ -140,8 +152,8 @@ function TodayStudy(args) {
                     <p className="text-font1 text-[20px]">{percent}%</p>
                 </div>
                 <div>
-                    {hour === "" ? null : <span>{hour}시간</span>}
-                    {min === "" ? null : <span>{min}분</span>}
+                    {hour === "" ? null : <span>{targetHour}시간</span>}
+                    {min === "" ? null : <span>{targetMin}분</span>}
                 </div>
             </div>
         </div>

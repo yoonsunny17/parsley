@@ -70,28 +70,6 @@ public class StudyController {
 
     }
 
-    @PostMapping("/goal/update")
-    @ApiOperation(value = "오늘의 목표 시간 수정", notes = "오늘의 목표시간을 수정한다.")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "오늘의 목표 시간 수정 성공"),
-            @ApiResponse(code = 500, message = "오늘의 목표 시간 수정 실패")
-    })
-    public ResponseEntity<? extends GoalCreatePostRes> updateDailyGoal(
-            @RequestBody @ApiParam(value = "목표 수정 정보", required = true) @Valid GoalCreatePostReq goalInfo){
-
-        Long userId = jwtService.getUserId();
-
-        DailyGoal dailyGoal = studyService.updateDailyGoal(userId, goalInfo);
-
-        if(dailyGoal == null){
-            return ResponseEntity.status(500)
-                    .body(GoalCreatePostRes.of(500,"Fail to Update Goal", null));
-        }
-
-        return ResponseEntity.status(200)
-                .body(GoalCreatePostRes.of(200, "Success", dailyGoal.getId()));
-    }
-
     @GetMapping("/weekly")
     @ApiOperation(value = "주간 공부량 조회", notes = "이번주 월요일부터 조회 날짜까지의 공부시간을 조회한다.(현재 테스트 편의성을 위한 초단위)")
     @ApiResponses({
@@ -132,10 +110,10 @@ public class StudyController {
 
         List<DailyStudyLog> dailyStudyLogs = studyService.getDailyLogs(userId);
 
-        if(dailyStudyLogs.isEmpty()){
-            return ResponseEntity.status(500)
-                    .body(LogGetRes.of(500, "Fail to Get Log", null));
-        }
+//        if(dailyStudyLogs.isEmpty()){
+//            return ResponseEntity.status(500)
+//                    .body(LogGetRes.of(500, "Fail to Get Log", null));
+//        }
 
         return ResponseEntity.status(200)
                 .body(LogGetRes.of(200, "Success", dailyStudyLogs));
