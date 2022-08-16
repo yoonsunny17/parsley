@@ -76,11 +76,11 @@ function MyProfile() {
                                         onChange={handleMessage}
                                         type="text"
                                         className="border-[2px] border-main rounded-[10px] p-[1px_5px]"
-                                        value={message}
+                                        value={user.description}
                                     />
                                 ) : (
                                     <>
-                                        <h2 className="font-bold">{message}</h2>
+                                        <h2 className="font-bold">{user.description ? user.description : "자기소개를 등록해보세요!"}</h2>
                                     </>
                                 )}
                             </div>
