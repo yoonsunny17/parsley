@@ -12,8 +12,8 @@ function CompareWeekStudy() {
     // console.log(lastWeek);
     // console.log(thisWeek[1].hour);
 
-    const [thisAvgTime, setThisAvgTime] = useState();
-    const [lastAvgTime, setLastAvgTime] = useState();
+    const [thisAvgTime, setThisAvgTime] = useState(0);
+    const [lastAvgTime, setLastAvgTime] = useState(0);
 
     const thisHourPerMinute = (thisAvgTime / 24) * 100;
     const lastHourPerMinute = (lastAvgTime / 24) * 100;
@@ -22,14 +22,14 @@ function CompareWeekStudy() {
 
     useEffect(() => {
         if (lastWeek) {
-            setLastAvgTime((lastWeek / 7).toFixed(2) * 1000);
+            setLastAvgTime((lastWeek / 7).toFixed(2));
         }
         if (thisWeek) {
             let time = 0;
             for (var i = 0; i < thisWeek.length; i++) {
                 time += thisWeek[i].hour;
             }
-            setThisAvgTime((time / 7).toFixed(2) * 1000);
+            setThisAvgTime((time / 7).toFixed(2));
         }
         if (thisAvgTime < lastAvgTime) {
             setText("줄었습니다.");

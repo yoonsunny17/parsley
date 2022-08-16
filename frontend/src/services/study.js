@@ -28,7 +28,8 @@ export const studyApi = createApi({
                 return {
                     url: `/study/goal/create`,
                     method: "POST",
-                    body: targetTime,
+                    // body: targetTime,
+                    body: { targetTime },
                 };
             },
         }),
@@ -37,7 +38,7 @@ export const studyApi = createApi({
                 return {
                     url: `/study/goal/update`,
                     method: "POST",
-                    body: targetTime,
+                    body: { targetTime },
                 };
             },
         }),
