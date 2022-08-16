@@ -7,23 +7,19 @@ function HashTags(props) {
     const saveHashTag = () => {
         const updatedHashTagList = [...hashTagList, `${hashTag}`];
         setHashTagList(updatedHashTagList);
-        props.setRoom((prev) => ({
-            ...prev,
-            hashtags: updatedHashTagList,
-        }));
+        props.setHashtags(updatedHashTagList);
         setHashTag("");
     };
 
     const deleteHashTag = (event) => {
-        const removeHashTag = event.target.innerText;
+        // FIXME: 동일 문자열의 경우 다 없어지는 것 고치기
+        const removeHashTag = event.target.innerText.substring(2);
         const filteredHashTagList = hashTagList.filter(
             (hashTag) => hashTag !== removeHashTag
         );
+
         setHashTagList(filteredHashTagList);
-        props.setRoom((prev) => ({
-            ...prev,
-            hashtags: filteredHashTagList,
-        }));
+        props.setRoom(filteredHashTagList);
     };
 
     const handleChange = (event) => {
@@ -48,6 +44,7 @@ function HashTags(props) {
                 })}
 
                 <input
+                    name="hashtags"
                     className="inline-flex cursor-text focus:outline-none text-md pl-1 w-fit h-8 rounded-md bg-extra4 input-placeholder"
                     type="text"
                     placeholder="해시태그를 추가하세요"

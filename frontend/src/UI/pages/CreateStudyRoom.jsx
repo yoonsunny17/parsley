@@ -4,43 +4,41 @@ import { useCreateRoomMutation } from "../../services/room";
 import Button from "../atoms/Button";
 import HashTags from "../molecules/HashTags";
 import Navbar from "../organisms/Navbar";
+import { useForm } from "react-hook-form";
+
+const initialValue = {
+    name: "",
+    mode: "0",
+    description: "",
+    maxPopulation: 1,
+    isPublic: "public",
+    password: "",
+};
 
 function CreateStudyRoom() {
-    const initialValue = {
-        name: "",
-        mode: 0,
-        hashtags: [],
-        description: "",
-        maxPopulation: 1,
-        isPublic: 0,
-        password: "",
-    };
-
     const navigate = useNavigate();
-    const [room, setRoom] = useState(initialValue);
     const [file, setFile] = useState(null);
+    const [hashtags, setHashtags] = useState([]);
     const [createRoom] = useCreateRoomMutation();
 
-    const maxPopulation = [...Array(6).keys()].map((i) => i + 1);
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        getValues,
+        watch,
+    } = useForm({
+        defaultValues: initialValue,
+    });
+    watch();
+
+    const maxPopulation = [...Array(8).keys()].map((i) => i + 1);
 
     const handleFileChange = ({ target }) => {
         setFile(target.files[0]);
     };
 
-    const handleValueChange = ({ target }) => {
-        setRoom((prev) => ({
-            ...prev,
-            [target.name]: target.value,
-        }));
-        if (target.name === "isPublic" && target.value === "public") {
-            setRoom((prev) => ({
-                ...prev,
-                password: "",
-            }));
-        }
-    };
-
-    const convertFormData = () => {
+    const convertFormData = (room) => {
         const formData = new FormData();
         formData.append("imgUrl", file);
         formData.append(
@@ -50,12 +48,14 @@ function CreateStudyRoom() {
         return formData;
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        room.isPublic = room.isPublic === 0 ? true : false;
-
-        const roomData = convertFormData();
-
+    const onSubmit = async (data) => {
+        const room = {
+            ...data,
+            mode: data.mode === "0" ? 0 : 1,
+            isPublic: data.isPublic === "public" ? true : false,
+            hashtags,
+        };
+        const roomData = convertFormData(room);
         const { roomId } = await createRoom(roomData).unwrap();
         navigate(`/room/${roomId}`);
     };
@@ -68,8 +68,11 @@ function CreateStudyRoom() {
             <div className="flex flex-col rounded-3xl shadow-md px-8 py-9">
                 <div className="text-2xl font-bold">스터디룸 생성하기</div>
 
-                <form onSubmit={handleSubmit} onKeyPress={handleEnter}>
-                    <div className="my-12 flex flex-col gap-8">
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    onKeyPress={handleEnter}
+                >
+                    <div className="my-12 flex flex-col gap-7">
                         {/* 스터디룸 이름 */}
                         <div className="flex align-top">
                             <label
@@ -78,17 +81,38 @@ function CreateStudyRoom() {
                             >
                                 스터디룸 이름
                             </label>
-                            <input
-                                className="rounded-md bg-extra4 px-3 py-1 input-border input-placeholder"
-                                type="text"
-                                name="name"
-                                placeholder="스터디룸 이름을 입력하세요"
-                                onChange={handleValueChange}
-                            />
+                            <div>
+                                <input
+                                    {...register("name", {
+                                        required: {
+                                            value: true,
+                                            message:
+                                                "스터디룸 이름을 입력해주세요",
+                                        },
+                                        minLength: {
+                                            value: 2,
+                                            message:
+                                                "최소 2글자, 최대 20글자 입력해주세요",
+                                        },
+                                        maxLength: {
+                                            value: 20,
+                                            message:
+                                                "최소 2글자, 최대 20글자 입력해주세요",
+                                        },
+                                    })}
+                                    className="rounded-md bg-extra4 px-3 py-1 input-border input-placeholder"
+                                    id="name"
+                                    type="text"
+                                    placeholder="스터디룸 이름을 입력하세요"
+                                />
+                                <div className="text-red-500 text-xs mt-2">
+                                    {errors.name?.message}{" "}
+                                </div>
+                            </div>
                         </div>
 
                         {/* 커버 이미지 */}
-                        <div className="flex align-top">
+                        <div className="flex align-top mb-2">
                             <label
                                 className="text-base font-medium w-32 md:w-48"
                                 htmlFor="fileUpload"
@@ -102,40 +126,32 @@ function CreateStudyRoom() {
                                     name="imgFile"
                                     accept="image/*"
                                     className="w-2/3"
-                                    value={room.imgFile}
                                     onChange={handleFileChange}
                                 />
                             </React.Fragment>
                         </div>
 
                         {/* 모드 선택 (손꾸락 얼구리) */}
-                        <div className="flex align-top">
-                            <label
-                                className="text-base font-medium w-32 md:w-48"
-                                htmlFor="selectMode"
-                            >
+                        <div className="flex align-top mb-2">
+                            <label className="text-base font-medium w-32 md:w-48">
                                 모드 선택
                             </label>
                             {/* mode */}
                             <input
+                                {...register("mode")}
                                 type="radio"
                                 id="cam"
-                                name="mode"
-                                value={0}
-                                checked={room.mode == 0}
-                                onChange={handleValueChange}
+                                value="0"
                             />
                             <label htmlFor="cam" className="ml-2 mr-4">
                                 손꾸락 모드
                             </label>
 
                             <input
+                                {...register("mode")}
                                 type="radio"
                                 id="screen"
-                                name="mode"
-                                value={1}
-                                checked={room.mode == 1}
-                                onChange={handleValueChange}
+                                value="1"
                             />
                             <label htmlFor="screen" className="ml-2">
                                 얼구리 모드
@@ -143,7 +159,7 @@ function CreateStudyRoom() {
                         </div>
 
                         {/* 해시태그  */}
-                        <div className="flex align-top">
+                        <div className="flex align-top mb-2">
                             <label
                                 className="text-base font-medium w-32 md:w-48"
                                 htmlFor="hashTags"
@@ -151,7 +167,7 @@ function CreateStudyRoom() {
                                 해시 태그
                             </label>
                             <div className="w-7/12">
-                                <HashTags setRoom={setRoom} />
+                                <HashTags setHashtags={setHashtags} />
                             </div>
                         </div>
 
@@ -163,18 +179,38 @@ function CreateStudyRoom() {
                             >
                                 스터디룸 설명
                             </label>
-                            <textarea
-                                className="rounded-md bg-extra4 w-7/12 px-3 py-2 input-border input-placeholder"
-                                type="text"
-                                name="description"
-                                placeholder="스터디 목적, 내용, 규칙 등 스터디룸에 대한 정보를 설명해 주세요"
-                                value={room.description}
-                                onChange={handleValueChange}
-                            />
+                            <div className="w-7/12">
+                                <textarea
+                                    {...register("description", {
+                                        required: {
+                                            value: true,
+                                            message:
+                                                "스터디룸 설명을 입력하세요",
+                                        },
+                                        minLength: {
+                                            value: 3,
+                                            message:
+                                                "최소 3글자, 최대 255글자 입력해주세요",
+                                        },
+                                        maxLength: {
+                                            value: 255,
+                                            message:
+                                                "최소 3글자, 최대 255글자 입력해주세요",
+                                        },
+                                    })}
+                                    className="rounded-md bg-extra4 w-full px-3 py-2 input-border input-placeholder"
+                                    type="text"
+                                    name="description"
+                                    placeholder="스터디 목적, 내용, 규칙 등 스터디룸에 대한 정보를 설명해 주세요"
+                                />
+                                <div className="text-red-500 text-xs">
+                                    {errors.description?.message}{" "}
+                                </div>
+                            </div>
                         </div>
 
                         {/* 최대 참가 인원 */}
-                        <div className="flex align-top">
+                        <div className="flex align-top mb-2">
                             <label
                                 className="text-base font-medium w-32 md:w-48"
                                 htmlFor="maxPopulation"
@@ -182,9 +218,9 @@ function CreateStudyRoom() {
                                 최대 참가 인원
                             </label>
                             <select
+                                {...register("maxPopulation")}
+                                id="maxPopulation"
                                 className="rounded-md bg-extra4 text-center px-3 py-1 input-border input-placeholder"
-                                name="maxPopulation"
-                                onChange={handleValueChange}
                             >
                                 {maxPopulation.map((val, idx) => (
                                     <option key={idx} value={val}>
@@ -196,43 +232,44 @@ function CreateStudyRoom() {
 
                         {/* 공개 여부 */}
                         <div className="flex align-top">
-                            <label
-                                className="text-base font-medium w-32 md:w-48"
-                                htmlFor="selectMode"
-                            >
+                            <label className="text-base font-medium w-32 md:w-48">
                                 공개 여부
                             </label>
-                            {/* mode */}
+                            {/* isPublic */}
                             <input
+                                {...register("isPublic")}
                                 type="radio"
                                 id="public"
-                                name="isPublic"
-                                value={0}
-                                checked={room.isPublic == 0}
-                                onChange={handleValueChange}
+                                value="public"
                             />
                             <label htmlFor="public" className="ml-2 mr-4 pt-1">
                                 공개
                             </label>
                             <input
+                                {...register("isPublic")}
                                 type="radio"
                                 id="private"
-                                name="isPublic"
-                                value={1}
-                                checked={room.isPublic == 1}
-                                onChange={handleValueChange}
+                                value="private"
                             />
                             <label htmlFor="private" className="ml-2 pt-1">
                                 비공개
                             </label>
                             <input
-                                disabled={room.isPublic != 1} // 라디오 버튼 선택 안되어있을때도 비활성화
+                                {...register("password", {
+                                    required: {
+                                        value:
+                                            getValues("isPublic") === "private",
+                                        message: "비밀번호를 입력해주세요",
+                                    },
+                                })}
+                                disabled={
+                                    !(getValues("isPublic") === "private")
+                                }
                                 name="password"
                                 type="current-password"
-                                value={room.password}
-                                onChange={handleValueChange}
                                 className="ml-4 w-28 rounded-md bg-extra4 px-3 py-1 focus:outline-none input-placeholder"
                             />
+                            <div>{errors.password?.message}</div>
                         </div>
                     </div>
 
