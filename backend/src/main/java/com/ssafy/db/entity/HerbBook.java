@@ -1,5 +1,6 @@
 package com.ssafy.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class HerbBook {
 
     @Id
@@ -21,10 +23,11 @@ public class HerbBook {
     @Column(name = "herb_book_id")
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
+    private HerbType herbType;
+
     private String name;
     private long point;
     private String imageUrl;
-
-    @Enumerated(EnumType.STRING)
-    private HerbType herbType;
+    private String description;
 }

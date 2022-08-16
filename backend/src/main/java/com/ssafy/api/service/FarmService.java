@@ -16,7 +16,9 @@ import javax.persistence.Tuple;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 농장게임 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -59,10 +61,20 @@ public class FarmService {
         return itemRepository.findAllItemFertilizer();
     }
 
-    public List<Tuple> getHerbBooks(Long userId) {
-        List<Tuple> userHerbBooks = userHerbBookRepository.findByUserAndGroupBy(userId);
+    public Map<HerbBook, Integer> getHerbBooks(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        List<UserHerbBook> userHerbBooks = user.getUserHerbBooks();
+        Map<HerbBook, Integer> map = new HashMap<>();
+        for(UserHerbBook userHerbBook : userHerbBooks){
+            if(map.containsKey(userHerbBook.getHerbBook())){
+                int cnt = map.get(userHerbBook.getHerbBook());
+                map.put(userHerbBook.getHerbBook(), cnt+1);
+            } else{
+                map.put(userHerbBook.getHerbBook(), 1);
+            }
+        }
 
-        return userHerbBooks;
+        return map;
     }
 
     @Transactional
