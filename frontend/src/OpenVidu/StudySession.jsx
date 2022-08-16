@@ -25,6 +25,7 @@ import { BiGroup, BiWindows } from "react-icons/bi";
 import Button from "../UI/atoms/Button";
 import Swal from "sweetalert2";
 import Navbar from "../UI/organisms/Navbar";
+import { useState } from "react";
 
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -48,12 +49,11 @@ class StudySession extends Component {
     console.log("현재 여기 스터디방 참가 되어있는 사람은 ????");
     console.log(membersArr);
 
-    const memberList = [];
-    for (let i = 0; i < membersArr.length; i++) {
-      console.log(membersArr[i].name);
-      memberList.push(membersArr[i]);
-    }
-    console.log("????????????????????" + memberList);
+    // const [members, setMembers] = useState([])
+    // for (let i = 0; i < membersArr.length; i++) {
+    //   console.log(membersArr[i].name);
+    //   setMembers((prev), ...)
+    // }
 
     const roomId = this.props.info.Id;
 
@@ -65,7 +65,7 @@ class StudySession extends Component {
       mode: this.props.info.mode, // 손꾸락모드 = 0, 얼구리모드 = 1
       // FIXME: 이거 현재 참여한 사람으로 할지, 아니면 전체 사람으로 할지 고민중
       membersArr: this.props.info.members, // 공부방에 참여 되어있는 모든 사람들 리스트
-      onlineMembers: memberList, // 현재 세션에 참가한 멤버
+      onlineMembers: {}, // 현재 세션에 참가한 멤버 추가
       //
       session: undefined,
       mainStreamManager: undefined,
@@ -654,10 +654,11 @@ class StudySession extends Component {
                   />
                 </label>
                 <div className="dropdown-content menu mt-[10px] shadow-lg bg-white overflow-hidden rounded-box w-[260px] absolute top-[35px] right-[-118px] pb-1">
-                  <div>현재 참여한 사람</div>
-
-                  <hr />
-                  <div>세션 모든 멤버들</div>
+                  <div className="m-4">
+                    <div>현재 참여한 사람</div>
+                    <hr />
+                    <div className="text-sm">{this.state.myUserName}</div>
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-[25px] relative"></div>
