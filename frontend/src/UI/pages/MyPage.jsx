@@ -10,7 +10,6 @@ import { useGetWeeklyQuery } from "../../services/study";
 
 function MyPage() {
     const { data } = useGetWeeklyQuery({}, { refetchOnMountOrArgChange: true });
-    console.log(data);
 
     return (
         <div className="text-font1 h-100">

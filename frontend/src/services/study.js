@@ -13,7 +13,6 @@ export const studyApi = createApi({
         }),
         createDDay: builder.mutation({
             query: (dDay) => {
-                console.log("-----------");
                 return {
                     url: `/study/dday/create`,
                     method: "POST",
@@ -50,9 +49,8 @@ export const studyApi = createApi({
             async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
                 try {
                     const result = await queryFulfilled;
-                    console.log(getState().study.weekly);
                     dispatch(setWeekly(result?.data.week));
-                    console.log(getState().study.weekly);
+                    // console.log(getState().study.weekly);
                     dispatch(setLastWeek(result?.data.lastWeek));
                 } catch (err) {
                     console.log(err);
@@ -69,6 +67,5 @@ export const {
     useCreateGoalMutation,
     useUpdateGoalMutation,
     useGetLogQuery,
-    useLazyGetLogQuery,
     useGetWeeklyQuery,
 } = studyApi;

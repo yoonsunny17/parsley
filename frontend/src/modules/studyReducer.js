@@ -6,10 +6,9 @@ const initialState = {
 };
 
 const reducers = {
-    setWeekly: (state, actions) => {
-        // state.weekly = weekly;
-        console.log("---------------------");
-        console.log(actions);
+    setWeekly: (state, { payload: weekly }) => {
+        state.weekly = weekly;
+        // console.log(actions);
     },
     setLastWeek: (state, { payload: lastWeek }) => {
         state.lastWeek = lastWeek;
@@ -24,4 +23,4 @@ export const studySlice = createSlice({
 
 export const { setWeekly, setLastWeek } = studySlice.actions;
 
-export default studySlice.reducers;
+export default studySlice.reducer;

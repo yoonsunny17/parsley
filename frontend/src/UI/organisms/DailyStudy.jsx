@@ -17,7 +17,7 @@ function DailyStudy() {
     let sortData;
 
     if (data) {
-        var sortingField = "hour";
+        let sortingField = "hour";
         sortData = data.slice();
         sortData.sort(function (a, b) {
             return a[sortingField] - b[sortingField];
@@ -50,7 +50,7 @@ function DailyStudy() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="hour" fill="#8EC281" />
+                    <Line type="monotone" dataKey="hour" stroke="#628D54" />
                 </LineChart>
             </div>
         </div>
