@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useGetRoomQuery } from "../../services/room";
+import { useGetRoomQuery, useUpdateRoomMutation } from "../../services/room";
 import {
   useJoinRoomMutation,
   useWithdrawRoomMutation,
@@ -15,7 +15,6 @@ import { useEffect } from "react";
 
 import { BiEditAlt } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
-import { produceWithPatches } from "immer";
 
 function StudyInfo() {
   const navigate = useNavigate();
@@ -104,6 +103,43 @@ function StudyInfo() {
     });
   };
   console.log(room);
+
+  const [edit, setEdit] = useState(false);
+  const onCancel = () => {
+    setEdit(false);
+  }; // 취소 버튼 누르면 편집 취소
+
+  const initialValue = {
+    id: room?.id,
+    name: room?.name,
+    // maxPopulation: room?.maxPopulation,
+    description: room?.description,
+    // mode: room?.mode,
+    // isPublic: room?.public,
+  };
+
+  const [newRoomInfo, setNewRoomInfo] = useState(initialValue);
+  const [updateInfo] = useUpdateRoomMutation();
+
+  const handleChange = ({ target }) => {
+    setNewRoomInfo((prev) => ({
+      ...prev,
+      [target.name]: target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await updateInfo(newRoomInfo);
+    setEdit(false);
+  };
+
+  const handleEnter = (e) => e.key === "Enter" && e.preventDefault();
+
+  const onClickEdit = () => {
+    console.log(newRoomInfo);
+  };
+
   return (
     <div className="container flex flex-wrap gap-10">
       {/* 스터디 이미지 */}
@@ -170,6 +206,7 @@ function StudyInfo() {
                 <Button text={"입장하기"} />
               </Link>
               {/* // FIXME: 설정 버튼 다른 디자인으로 바꿀것! */}
+
               <button className="color-delay rounded-full text-sm bg-main hover:bg-sub2 text-font3">
                 <label
                   htmlFor="editSession"
@@ -204,22 +241,58 @@ function StudyInfo() {
                     </button>
                   </div>
                   <div className="mt-3">
-                    <div>방 제목: {room?.name}</div>
-                    <div>최대 인원: {room?.maxPopulation}</div>
-                    <div>소개</div>
-                    <div>{room?.description}</div>
-                    <div>모드: {room?.mode === 0 ? "손꾸락" : "얼구리"}</div>
-                    <div>공개 여부: {room?.isPublic ? "공개" : "비공개"}</div>
+                    <form onSubmit={handleSubmit} onKeyPress={handleEnter}>
+                      <div>방 제목</div>
+                      <input
+                        type="text"
+                        onChange={handleChange}
+                        name="name"
+                        value={newRoomInfo?.name}
+                      />
+                      {/* <div>최대 인원</div>
+                      <input
+                        type="text"
+                        onChange={handleChange}
+                        name="maxPopulation"
+                        value={newRoomInfo?.maxPopulation}
+                      /> */}
+                      <div>스터디룸 소개</div>
+                      <textarea
+                        type="text"
+                        onChange={handleChange}
+                        name="description"
+                        value={newRoomInfo?.description}
+                      />
+                      {/* <div>모드</div>
+                      <input
+                        type="text"
+                        onChange={handleChange}
+                        name="mode"
+                        value={newRoomInfo?.mode}
+                      /> */}
+                      {/* <div>공개 여부</div>
+                      <input
+                        type="boolean"
+                        onChange={handleChange}
+                        name="isPublic"
+                        value={newRoomInfo?.isPublic}
+                      /> */}
+                      <button
+                        type="submit"
+                        onClick={onClickEdit}
+                        className="cursor-pointer px-2 py-2"
+                      >
+                        수정 완료
+                      </button>
+                    </form>
+                    <button className="cursor-pointer px-2 py-2">
+                      방 삭제하기
+                    </button>
                   </div>
 
                   <div className="modal-action">
                     {/* // TODO: 적용하기, 취소, 닫기 버튼 만들기 */}
-                    <button className="cursor-pointer px-2 py-2">
-                      수정하기
-                    </button>
-                    <button className="cursor-pointer px-2 py-2">
-                      방 삭제하기
-                    </button>
+                    {/* <Link to={`/room/${params.id}/update`}> */}
                   </div>
                 </div>
               </div>
