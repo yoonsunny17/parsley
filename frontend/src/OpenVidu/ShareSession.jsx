@@ -1,3 +1,4 @@
+// 이 파일은 StudySession의 복사본 파일입니당.. 나중에 없앨 예정!!
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import React, { Component, createRef } from "react";
