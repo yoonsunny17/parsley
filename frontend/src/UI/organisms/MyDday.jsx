@@ -89,20 +89,20 @@ function MyDday() {
             {showModal ? (
                 <>
                     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                        <div className="relative mx-auto max-w-3xl w-[340px]">
                             {/*content*/}
-                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none p-5 gap-6">
                                 {/*header*/}
-                                <div className="flex items-start justify-between p-5">
-                                    <h3 className="text-3xl font-semibold">
+                                <div className="flex items-start justify-between w-full">
+                                    <h3 className="text-lg font-semibold">
                                         D-Day 설정
                                     </h3>
                                 </div>
                                 {/*body*/}
-                                <div className="relative w-[480px] p-[20px_100px] flex-auto">
+                                <div className="relative flex w-full justify-center items-center">
                                     <label
                                         htmlFor=""
-                                        className="mr-[20px] text-[16px] font-semibold"
+                                        className="text-base font-semibold mr-2"
                                     >
                                         날짜
                                     </label>
@@ -112,21 +112,17 @@ function MyDday() {
                                         defaultValue={date}
                                         className="border border-main rounded-[5px] p-[2px_8px] focus:border-sub1"
                                     />
-                                    {/* <button onClick={ddaysave}>gdgd</button> */}
-                                    {/* <button id="resultBtn" onClick={Dday}>결과</button> */}
-                                    {/* <div id="resultDiv"></div> */}
                                 </div>
                                 {/*footer*/}
-                                <div className="flex items-center justify-end p-6  gap-[10px]">
+                                <div className="flex items-center justify-end gap-[10px]">
                                     <button
-                                        className="color-delay bg-sub1 text-font3 rounded-full px-4 py-2 text-sm font-semibold  hover:bg-[#7DAA71]"
+                                        className="color-delay bg-sub1 text-font3 rounded-full px-4 py-2 text-sm hover:bg-[#7DAA71]"
                                         onClick={handleModal}
                                     >
                                         취소
                                     </button>
-                                    {/* <Button onClick={ddaysave} text={"디데이 저장"} /> */}
                                     <button
-                                        className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
+                                        className="color-delay rounded-full px-4 py-2 text-sm bg-main hover:bg-sub2 text-font3"
                                         onClick={dDaySave}
                                     >
                                         저장
