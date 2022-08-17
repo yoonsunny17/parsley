@@ -122,13 +122,13 @@ public class AuthController {
             }
         }
 
-        Long userId = Long.parseLong((String) jwtService.getUserInfo(refreshToken).get("id"));
-        String kakaoEmail = authService.getEmailbyUserId(userId);
-
-        if (accessToken != null && !"".equals(accessToken)) {
-            // cache server에서 token들 삭제
-            redisService.deleteTokens(kakaoEmail);
-        }
+//        Long userId = Long.parseLong((String) jwtService.getUserInfo(refreshToken).get("id"));
+//        String kakaoEmail = authService.getEmailbyUserId(userId);
+//
+//        if (accessToken != null && !"".equals(accessToken)) {
+//            // cache server에서 token들 삭제
+//            redisService.deleteTokens(kakaoEmail);
+//        }
 
         Cookie accessCookie = new Cookie("accessToken", null);
         accessCookie.setMaxAge(0);
@@ -140,7 +140,7 @@ public class AuthController {
         refreshCookie.setPath("/");
         response.addCookie(refreshCookie);
 
-        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", null, true, userId));
+        return ResponseEntity.status(200).body(AuthRes.of(200, "Success", null, true, 0L));
     }
 
     @GetMapping("/refresh")
