@@ -1,48 +1,72 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useGetNongbuRankingQuery } from "../../services/ranking";
 
 function Ranking() {
-    const [rank, setRank] = useState(999);
-    const [point, setPoint] = useState(10000);
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const { data: getNongbuRankings } = useGetNongbuRankingQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
 
-    return (
-        <div className="bg-white rounded-3xl drop-shadow px-8 py-5 w-full lg:w-[32%]">
-            <h3 className="text-lg font-bold text-center mb-4">
-                오늘의 농부왕
-            </h3>
-            <ul className="list-none">
-                <li className="flex items-center justify-between mb-2">
-                    <span className="w-12 inline-block text-center">
-                        <i className="bx bx-medal text-[#D5A11E] text-3xl"></i>
-                    </span>
-                    <span className="w-2/5 text-start truncate">유교보이</span>
-                    <span className="w-1/3 text-end">{point} 점</span>
-                </li>
-                <li className="flex items-center justify-between mb-2">
-                    <span className="w-12 inline-block text-center">
-                        <i className="bx bx-medal text-[#A3A3A3] text-3xl"></i>
-                    </span>
-                    <span className="w-2/5 text-start truncate">
-                        슬리파슬리
-                    </span>
-                    <span className="w-1/3 text-end">{point} 점</span>
-                </li>
-                <li className="flex items-center justify-between mb-2">
-                    <span className="w-12 inline-block text-center">
-                        <i className="bx bx-medal text-[#CD7F32] text-3xl"></i>
-                    </span>
-                    <span className="w-2/5 text-start truncate">
-                        유교보이 가보자고라고
-                    </span>
-                    <span className="w-1/3 text-end">{point} 점</span>
-                </li>
-                <li className="flex items-center justify-between mt-4">
-                    <span className="w-12 text-center">{rank}등</span>
-                    <span className="w-2/5 text-start">나</span>
-                    <span className="w-1/3 text-end">{point} 점</span>
-                </li>
-            </ul>
-        </div>
-    );
+  const [rank, setRank] = useState(999);
+  const [point, setPoint] = useState(10000);
+
+  console.log(getNongbuRankings);
+  const color = ["#D5A11E", "#A3A3A3", "#CD7F32"];
+
+  function topRank() {
+    let array = [];
+    if (getNongbuRankings) {
+      let length = getNongbuRankings?.topRank.length;
+      for (let i = 0; i < 3; i++) {
+        array.push(
+          <li key={i} className="flex items-center justify-between mb-2">
+            <span className="w-16 inline-block text-center">
+              <i className={`bx bx-medal text-[${color[i]}] text-3xl`}></i>
+            </span>
+            <span className="w-2/5 text-start truncate">
+              {length <= i ? "--" : getNongbuRankings?.topRank[i].name}
+            </span>
+            <span className="w-1/3 text-end">
+              {length <= i ? "--" : getNongbuRankings?.topRank[i].score} 점
+            </span>
+          </li>
+        );
+      }
+    }
+
+    return array;
+  }
+
+  return (
+    <div className="bg-white rounded-3xl drop-shadow px-8 py-5 w-full lg:w-[32%]">
+      <h3 className="text-lg font-bold text-center mb-4">오늘의 농부왕</h3>
+      <ul className="list-none text-sm w-full">
+        {topRank()}
+        <li className="flex items-center justify-between mb-2"></li>
+        <li className="flex items-center justify-between mt-4">
+          {getNongbuRankings?.myRank.name === "guest" ? (
+            <div className="flex justify-center w-full">
+              회원가입 후 등수를 알아보세요
+            </div>
+          ) : (
+            <>
+              <span className="w-16 text-center">
+                {getNongbuRankings?.myRank.rank === null
+                  ? "랭킹\n없음"
+                  : getNongbuRankings?.myRank.rank + "등"}
+              </span>
+              <span className="w-2/5 text-start">나</span>
+              <span className="w-1/3 text-end">
+                {getNongbuRankings?.myRank.score} 점
+              </span>
+            </>
+          )}
+        </li>
+      </ul>
+    </div>
+  );
 }
 
 export default Ranking;

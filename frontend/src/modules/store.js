@@ -14,20 +14,22 @@ import { notificationApi } from "../services/notification";
 import { userRoomApi } from "../services/userRoom";
 import roomReducer from "./roomReducer";
 import { farmApi } from "../services/farm";
+import { rankingApi } from "../services/ranking";
 export const history = createBrowserHistory();
 
 const reducers = combineReducers({
-    user: userReducer,
-    study: studyReducer,
-    room: roomReducer,
-    farm: farmReducer,
-    [roomApi.reducerPath]: roomApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
-    [studyApi.reducerPath]: studyApi.reducer,
-    [userRoomApi.reducerPath]: userRoomApi.reducer,
-    [notificationApi.reducerPath]: notificationApi.reducer,
-    [farmApi.reducerPath]: farmApi.reducer,
+  user: userReducer,
+  study: studyReducer,
+  room: roomReducer,
+  farm: farmReducer,
+  [roomApi.reducerPath]: roomApi.reducer,
+  [authApi.reducerPath]: authApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
+  [studyApi.reducerPath]: studyApi.reducer,
+  [userRoomApi.reducerPath]: userRoomApi.reducer,
+  [notificationApi.reducerPath]: notificationApi.reducer,
+  [farmApi.reducerPath]: farmApi.reducer,
+  [rankingApi.reducerPath]: rankingApi.reducer,
 });
 
 const persistedReducer = persistReducer(
@@ -39,17 +41,18 @@ const persistedReducer = persistReducer(
 );
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({ serializableCheck: false }).concat([
-            roomApi.middleware,
-            authApi.middleware,
-            userApi.middleware,
-            farmApi.middleware,
-            userRoomApi.middleware,
-            notificationApi.middleware,
-            studyApi.middleware,
-        ]),
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).concat([
+      roomApi.middleware,
+      authApi.middleware,
+      userApi.middleware,
+      userRoomApi.middleware,
+      notificationApi.middleware,
+      studyApi.middleware,
+      farmApi.middleware,
+      rankingApi.middleware,
+    ]),
 });
 
 // setupListeners(store.dispatch);
