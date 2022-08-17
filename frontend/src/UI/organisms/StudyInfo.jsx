@@ -4,8 +4,8 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useGetRoomQuery } from "../../services/room";
 import {
-    useJoinRoomMutation,
-    useWithdrawRoomMutation,
+  useJoinRoomMutation,
+  useWithdrawRoomMutation,
 } from "../../services/userRoom";
 import Button from "../atoms/Button";
 import Swal from "sweetalert2";
@@ -14,52 +14,50 @@ import { setRoom } from "../../modules/roomReducer";
 import { useEffect } from "react";
 
 function StudyInfo() {
-    const navigate = useNavigate();
-    const isLogin = useSelector((state) => state.user.isLogin);
-    const user = useSelector((state) => state.user.user);
-    const room = useSelector((state) => state.room.room);
-    const [like, setLike] = useState(false);
+  const navigate = useNavigate();
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const user = useSelector((state) => state.user.user);
+  const room = useSelector((state) => state.room.room);
+  const [like, setLike] = useState(false);
 
-    const dispatch = useDispatch();
-    const params = useParams();
-    const { data, isLoading: isGetRoomLoading } = useGetRoomQuery(params.id, {
-        refetchOnMountOrArgChange: true,
-    });
-    const [joinRoom] = useJoinRoomMutation();
-    const [withdrawRoom] = useWithdrawRoomMutation();
+  const dispatch = useDispatch();
+  const params = useParams();
+  const { data, isLoading: isGetRoomLoading } = useGetRoomQuery(params.id, {
+    refetchOnMountOrArgChange: true,
+  });
+  const [joinRoom] = useJoinRoomMutation();
+  const [withdrawRoom] = useWithdrawRoomMutation();
 
-    // TODO: 비밀번호 있는 방인 경우 처리
-    const handleJoinRoom = async () => {
-        if (isLogin) {
-            if (
-                data?.roomInfo.members.length === data?.roomInfo.maxPopulation
-            ) {
-                Toast.fire({
-                    icon: "error",
-                    title: "인원이 가득 찼습니다.",
-                });
-                return;
-            }
-            await joinRoom(params.id);
-            Toast.fire({
-                icon: "success",
-                title: "나의 스터디에 추가되었습니다.",
-            });
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
-            // if (isJoinRoomSuccess) {
-            //     refetch();
+  // TODO: 비밀번호 있는 방인 경우 처리
+  const handleJoinRoom = async () => {
+    if (isLogin) {
+      if (data?.roomInfo.members.length === data?.roomInfo.maxPopulation) {
+        Toast.fire({
+          icon: "error",
+          title: "인원이 가득 찼습니다.",
+        });
+        return;
+      }
+      await joinRoom(params.id);
+      Toast.fire({
+        icon: "success",
+        title: "나의 스터디에 추가되었습니다.",
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+      // if (isJoinRoomSuccess) {
+      //     refetch();
 
-            //     window.location.reload();
-            // }
-        } else {
-            Toast.fire({
-                icon: "info",
-                title: "로그인이 필요합니다.",
-            });
-        }
-    };
+      //     window.location.reload();
+      // }
+    } else {
+      Toast.fire({
+        icon: "info",
+        title: "로그인이 필요합니다.",
+      });
+    }
+  };
 
   const handleWithdrawRoom = () => {
     Swal.fire({
@@ -165,92 +163,80 @@ function StudyInfo() {
                     </div>
                 </div>
 
-                {/* Footer: 참가 버튼 */}
-                <div className="flex items-center gap-4">
-                    {/* 호스트인 경우 */}
-                    {isLogin && user?.id === room?.hostUser.id ? (
-                        <div className="flex gap-2">
-                            {/* 지금 바로 공부하러 가는거 */}
-                            <Link to={`/room/session/${params.id}`}>
-                                <Button text={"입장하기"} />
-                            </Link>
-                            {/* // FIXME: 설정 버튼 다른 디자인으로 바꿀것! */}
-                            <button className="color-delay rounded-full text-sm bg-main hover:bg-sub2 text-font3">
-                                <label
-                                    htmlFor="editSession"
-                                    className="cursor-pointer px-4 py-2"
-                                >
-                                    수정하기
-                                </label>
-                            </button>
-                            <input
-                                type="checkbox"
-                                id="editSession"
-                                className="modal-toggle"
-                            />
-                            <div className="modal">
-                                <div className="modal-box">
-                                    <div className="flex justify-between">
-                                        <div className="text-lg font-bold mb-3">
-                                            방 정보 수정
-                                        </div>
-                                        <button>
-                                            <label
-                                                htmlFor="editSession"
-                                                className="cursor-pointer px-2 py-2"
-                                            >
-                                                닫기
-                                            </label>
-                                        </button>
-                                    </div>
+        {/* Footer: 참가 버튼 */}
+        <div className="flex items-center gap-4">
+          {/* 호스트인 경우 */}
+          {isLogin && user?.id === room?.hostUser.id ? (
+            <div className="flex gap-2">
+              {/* 지금 바로 공부하러 가는거 */}
+              <Link to={`/room/session/${params.id}`}>
+                <Button text={"입장하기"} />
+              </Link>
+              {/* // FIXME: 설정 버튼 다른 디자인으로 바꿀것! */}
+              <button className="color-delay rounded-full text-sm bg-main hover:bg-sub2 text-font3">
+                <label
+                  htmlFor="editSession"
+                  className="cursor-pointer px-4 py-2"
+                >
+                  수정하기
+                </label>
+              </button>
+              <input
+                type="checkbox"
+                id="editSession"
+                className="modal-toggle"
+              />
+              <div className="modal">
+                <div className="modal-box">
+                  <div className="flex justify-between">
+                    <div className="text-lg font-bold mb-3">방 정보 수정</div>
+                    <button>
+                      <label
+                        htmlFor="editSession"
+                        className="cursor-pointer px-2 py-2"
+                      >
+                        닫기
+                      </label>
+                    </button>
+                  </div>
 
-                                    <div>방 제목</div>
-                                    <div>최대 인원</div>
-                                    <div>소개</div>
-                                    <div>
-                                        비공개/공개 여부: 비번도 바꿀수있나?
-                                    </div>
-                                    <div className="modal-action">
-                                        {/* // TODO: 적용하기, 취소, 닫기 버튼 만들기 */}
-                                        <button className="cursor-pointer px-2 py-2">
-                                            수정하기
-                                        </button>
-                                        <button className="cursor-pointer px-2 py-2">
-                                            방 삭제하기
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="flex gap-2">
-                            {/* 한번도 참여한 적 없는 경우 "추가하기" 버튼 활성화   */}
-                            {room?.members.filter(
-                                (member) => member.id === user?.id
-                            ).length === 0 && (
-                                <Button
-                                    text={"추가하기"}
-                                    onClick={handleJoinRoom}
-                                />
-                            )}
+                  <div>방 제목</div>
+                  <div>최대 인원</div>
+                  <div>소개</div>
+                  <div>비공개/공개 여부: 비번도 바꿀수있나?</div>
+                  <div className="modal-action">
+                    {/* // TODO: 적용하기, 취소, 닫기 버튼 만들기 */}
+                    <button className="cursor-pointer px-2 py-2">
+                      수정하기
+                    </button>
+                    <button className="cursor-pointer px-2 py-2">
+                      방 삭제하기
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              {/* 한번도 참여한 적 없는 경우 "추가하기" 버튼 활성화   */}
+              {room?.members.filter((member) => member.id === user?.id)
+                .length === 0 && (
+                <Button text={"추가하기"} onClick={handleJoinRoom} />
+              )}
 
-                            {/* 한번이라도 참여한 적 있는 경우 "참가하기" 버튼 활성화 */}
-                            {room?.members.filter(
-                                (member) => member.id === user?.id
-                            ).length > 0 && (
-                                <>
-                                    <Link to={`/room/session/${params.id}`}>
-                                        <Button text={"입장하기"} />
-                                    </Link>
-                                    {/* // FIXME: 탈퇴하기 버튼 다른 디자인으로 바꿀것! */}
-                                    <Button
-                                        text={"탈퇴하기"}
-                                        onClick={handleWithdrawRoom}
-                                    />
-                                </>
-                            )}
-                        </div>
-                    )}
+              {/* 한번이라도 참여한 적 있는 경우 "참가하기" 버튼 활성화 */}
+              {room?.members.filter((member) => member.id === user?.id).length >
+                0 && (
+                <>
+                  <Link to={`/room/session/${params.id}`}>
+                    <Button text={"입장하기"} />
+                  </Link>
+                  {/* // FIXME: 탈퇴하기 버튼 다른 디자인으로 바꿀것! */}
+                  <Button text={"탈퇴하기"} onClick={handleWithdrawRoom} />
+                </>
+              )}
+            </div>
+          )}
 
                               {/* 클립보드 */}
           <button onClick={copyLink} className="text-font1 rounded-[50px]">
