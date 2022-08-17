@@ -661,20 +661,7 @@ class StudySession extends Component {
 
   render() {
     const messages = this.state.messages;
-    const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-
-    // const sendUserInfo = () => {
-    //   axios({
-    //     url: "https://localhost:4443/openvidu/api/sessions/SessionB/connection",
-    //     method: "POST",
-    //     data: {
-    //       userId: this.state.userId,
-    //       nickname: this.state.myUserName,
-    //       connectionId: this.state.connectionId,
-    //     },
-    //   });
-    // };
 
     return (
       <div className="text-extra5">
@@ -773,17 +760,24 @@ class StudySession extends Component {
               <div className="flex items-center gap-[25px] relative"></div>
             </header>
             <div className="container">
-              <div className="flex flex-row justify-around">
+              {/* <div className="flex flex-row justify-around"> */}
+              <div className="flex flex-row justify-between">
                 {/* // FIXME: navbar 일단 제외 */}
                 {/* 손꾸락 모드 ( mode = 0 ) 인 경우 */}
                 {this.state.mode === 0 ? (
-                  <div>
-                    <div id="video-container" className="w-3/4">
+                  <div className="flex flex-col">
+                    {/* <div id="video-container" className="w-3/4"> */}
+                    <div
+                      id="video-container"
+                      className="w-[calc-94% / 2] m-[1%] flex flex-wrap col-span-1"
+                    >
                       {/* // TODO: 화면 넘어가는것을 carousel?? pagination?? 구현해야 할 것 같음 */}
                       {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
                       {this.state.publisher !== undefined ? (
                         <div
-                          className="w-[calc-94% / 2] m-[1%] col-md-4 col-xs-4"
+                          // className="w-[calc-94% / 2] m-[1%] col-md-4 col-xs-4"
+                          className=""
+                          // className="video-container--finger col-md-6 col-xs-6"
                           onClick={() =>
                             this.handleMainVideoStream(this.state.publisher)
                           }
@@ -867,41 +861,49 @@ class StudySession extends Component {
                     </div>{" "}
                   </div>
                 )}
+                {/* 채팅창 */}
                 <div className="flex flex-col">
-                  {/* 채팅창 */}
-                  <div className="mx-2 mt-4 mb-10 shadow-md rounded-xl flex flex-col bg-font3 w-80 h-full ease-in-out">
-                    <div className="flex text-start m-2 text-base h-10">
-                      [{this.state.mySessionName}] 채팅방
-                    </div>
-                    <div
-                      className="chatbox__messages mt-auto flex flex-col overflow-y-scroll items-end"
-                      ref="chatoutput"
-                    >
-                      <Messages messages={messages} />
-                    </div>
-                    <div className="flex align-center justify-center chatbox__footer my-2">
-                      <input
-                        className="outline-hidden box-border w-4/5 h-8 input-border rounded-md placeholder-font2 px-1"
-                        id="chat_message"
-                        type="text"
-                        placeholder="채팅을 입력해 주세요"
-                        onChange={this.handleChatMessageChange}
-                        onKeyPress={this.sendMessageByEnter}
-                        value={this.state.message}
-                      />
-                      <button
-                        className="chatbox__send--footer mx-1 rounded-tr-lg rounded-br-lg text-sm"
-                        onClick={this.sendMessageByClick}
+                  <div
+                    className={
+                      this.state.mode === 0
+                        ? "w-[300px] h-[600px]"
+                        : "w-[300px] h-[800px]"
+                    }
+                  >
+                    <div className="flex flex-col mx-2 mt-4 mb-10 shadow-md rounded-xl bg-font3 w-auto h-full ease-in-out">
+                      <div className="flex text-start m-2 text-base h-10">
+                        [{this.state.mySessionName}] 채팅방
+                      </div>
+                      <div
+                        className="chatbox__messages mt-auto flex flex-col items-end overflow-y-auto"
+                        ref="chatoutput"
                       >
-                        SEND
-                      </button>
+                        <Messages messages={messages} />
+                      </div>
+                      <div className="flex align-center justify-center chatbox__footer my-2">
+                        <input
+                          className="outline-hidden box-border w-4/5 h-8 input-border rounded-md placeholder-font2 text-sm px-1"
+                          id="chat_message"
+                          type="text"
+                          placeholder="채팅을 입력해 주세요"
+                          onChange={this.handleChatMessageChange}
+                          onKeyPress={this.sendMessageByEnter}
+                          value={this.state.message}
+                        />
+                        <button
+                          className="chatbox__send--footer mx-1 rounded-tr-lg rounded-br-lg text-sm"
+                          onClick={this.sendMessageByClick}
+                        >
+                          SEND
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* tool bar; screen share, mic on/off, camera on/off, chat popper, exit */}
-              <footer className="footer footer-center p-4  text-base-content">
+              <footer className="footer footer-center p-4 text-base-content">
                 <div className="grid-flow-col gap-6 md:place-self-center">
                   {/* divided test */}
                   <button
@@ -992,7 +994,7 @@ class StudySession extends Component {
                     }
                   /> */}
                   {/* 초반에 생각을 잘못 해서 모달로 구현함.. */}
-                  <label htmlFor="my-modal-3" className="cursor-pointer">
+                  {/* <label htmlFor="my-modal-3" className="cursor-pointer">
                     <BsChatDots size={footerBtn} />
                   </label>
                   <input
@@ -1037,7 +1039,7 @@ class StudySession extends Component {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   {/* exit */}
                   <div className="cursor-pointer md:place-self-end">
                     <MdExitToApp
