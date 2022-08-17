@@ -32,6 +32,7 @@ public class UserService {
 		User user = new User();
 		user.setName(newName);
 		user.setRegDate(date);
+		user.setDescription("안녕하세요. 파슬리입니다. :)");
 		user.setCurrentBookPoint(0L);
 		user.setCurrentSley(0L);
 		user.setWithdrawn(false);
