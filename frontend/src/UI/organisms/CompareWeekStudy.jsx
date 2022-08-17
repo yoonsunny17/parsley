@@ -2,23 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux/es/exports";
 
 function CompareWeekStudy() {
-    // const[value, setValue] = useState(0);
-    // const onChange = () => {
-    //   setValue(value + 1);
-    // }
-
     const lastWeek = useSelector((state) => state.study.lastWeek);
     const thisWeek = useSelector((state) => state.study.weekly);
     // console.log(lastWeek);
     // console.log(thisWeek[1].hour);
 
-    const [thisAvgTime, setThisAvgTime] = useState();
-    const [lastAvgTime, setLastAvgTime] = useState();
+    const [thisAvgTime, setThisAvgTime] = useState(0);
+    const [lastAvgTime, setLastAvgTime] = useState(0);
+    const [text, setText] = useState("늘었습니다.");
 
     const thisHourPerMinute = (thisAvgTime / 24) * 100;
     const lastHourPerMinute = (lastAvgTime / 24) * 100;
-
-    const [text, setText] = useState("늘었습니다.");
 
     useEffect(() => {
         if (lastWeek) {

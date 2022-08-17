@@ -9,7 +9,7 @@ function TodayStudy(args) {
     const dayOfWeek = now.getDay() - 1;
 
     const weekly = useSelector((state) => state.study.weekly);
-    const studyTime = weekly[dayOfWeek].hour * 60;
+    const studyTime = weekly[dayOfWeek]?.hour * 60;
 
     const [createGoal] = useCreateGoalMutation();
     const { data: goal } = useGetGoalQuery(
