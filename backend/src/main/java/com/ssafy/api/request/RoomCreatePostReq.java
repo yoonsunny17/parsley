@@ -1,12 +1,9 @@
 package com.ssafy.api.request;
 
-import com.ssafy.db.entity.Hashtag;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,9 +12,6 @@ import java.util.List;
 public class RoomCreatePostReq {
     @ApiModelProperty(name = "방 이름", example = "coding_with_me")
     String name;
-
-//    @ApiModelProperty(name = "방 커버 이미지 URL", example = "https://images.unsplash.com/photo-1622653533660-a1538fe8424c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80")
-//    MultipartFile imageUrl;
 
     @ApiModelProperty(name = "방 모드", example = "1")
     int mode; // 0: Finger, 1: Face
@@ -28,6 +22,7 @@ public class RoomCreatePostReq {
     @ApiModelProperty(name = "방 최대 참가 인원 수", example = "4")
     int maxPopulation;
 
+    @JsonProperty("isPublic")
     @ApiModelProperty(name = "공개 여부", example = "1")
     boolean isPublic;
 

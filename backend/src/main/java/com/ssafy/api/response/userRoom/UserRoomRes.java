@@ -19,6 +19,9 @@ public class UserRoomRes {
     @ApiModelProperty(name = "방 커버 이미지 URL", example = "https://images.unsplash.com/photo-1622653533660-a1538fe8424c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80")
     String imageUrl;
 
+    @ApiModelProperty(name = "방 설명", example = "나랑 모각코 할 사람~")
+    String description;
+
     @ApiModelProperty(name = "방 모드", example = "1")
     int mode;
 
@@ -38,6 +41,7 @@ public class UserRoomRes {
         res.setId(room.getId());
         res.setName(room.getName());
         res.setImageUrl(room.getImageUrl());
+        res.setDescription(room.getDescription());
         res.setMode(room.getMode() == Mode.FINGER ? 0 : 1);
         res.setMaxPopulation(room.getMaxPopulation());
         res.setPublic(room.isPublic());
