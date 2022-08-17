@@ -4,6 +4,7 @@ import React, { useState, useTransition } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  useAddHerbBookMutation,
   useGetAllHerbsQuery,
   useUpdateHerbInfoQuery,
 } from "../../services/farm";
@@ -19,14 +20,19 @@ import HerbComponent1 from "../atoms/HerbComponent1";
 import HerbComponent2 from "../atoms/HerbComponent2";
 import HerbComponent3 from "../atoms/HerbComponent3";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 function FarmGame(props) {
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const { data: getAllHerbs } = useGetAllHerbsQuery(
+    {},
+    { skip: !isLogin, refetchOnMountOrArgChange: true }
+  );
+
+  const [addHerbBook] = useAddHerbBookMutation();
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-
-  const { data: getAllHerbs } = useGetAllHerbsQuery();
-  console.log("허브를 심어보쟈");
-  console.log(getAllHerbs);
 
   const day = 32;
 
@@ -41,6 +47,45 @@ function FarmGame(props) {
     dispatch(setSeed(1));
     dispatch(setFertilizer(1));
     dispatch(setWater(1));
+  };
+
+  const onSubmit = async (e, id) => {
+    e.preventDefault();
+    const alertInfo = await addHerbBook({ herbId: id }).unwrap();
+    console.log("알림창 :" + alertInfo);
+    Swal.fire({
+      width: 350,
+      title: "[" + alertInfo.name + "] 수확 완료",
+      text:
+        " + " +
+        [alertInfo.addSley] +
+        "슬리<br/>+ " +
+        [alertInfo.addPoint] +
+        "포인트 ",
+      imageUrl: [alertInfo.imageUrl], // 시간 되면 여기 사진 다른걸로 바꾸기
+      imageWidth: 50,
+      imageHeight: 50,
+      imageAlt: "Herb Collection Image",
+    });
+  };
+
+  const calcTime = (seconds) => {
+    var temp = seconds;
+    seconds = Math.abs(seconds);
+    var hour, min, sec;
+    hour = parseInt(seconds / 3600);
+    min = parseInt((seconds % 3600) / 60);
+    sec = seconds % 60;
+
+    if (hour.toString().length == 1) hour = "0" + hour;
+    if (min.toString().length == 1) min = "0" + min;
+    if (sec.toString().length == 1) sec = "0" + sec;
+
+    if (temp < 0) {
+      return "- " + hour + ":" + min + ":" + sec;
+    } else {
+      return "+ " + hour + ":" + min + ":" + sec;
+    }
   };
 
   return (
@@ -58,9 +103,8 @@ function FarmGame(props) {
             <div key={item.id}>
               <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
                 {/* Modal Click Button */}
-                {getAllHerbs?.herbs.find(
-                  (herb) => herb.position === idx + 1
-                ) ? (
+                {getAllHerbs &&
+                getAllHerbs?.herbs.find((herb) => herb.position === idx + 1) ? (
                   <div></div>
                 ) : (
                   // startTransition(() => {
@@ -74,6 +118,43 @@ function FarmGame(props) {
                   >
                     <i className="bx bx-leaf bx-lg"></i>
                   </label>
+                )}
+              </div>
+              <div>
+                {getAllHerbs?.herbs.find(
+                  (herb) => herb.position === idx + 1
+                ) ? (
+                  <div>
+                    {calcTime(
+                      getAllHerbs?.herbs.find(
+                        (herb) => herb.position === idx + 1
+                      ).leftTime
+                    )}
+                    {getAllHerbs?.herbs.find(
+                      (herb) => herb.position === idx + 1
+                    ).leftTime >= 0 ? (
+                      <div>
+                        <button
+                          type="submit"
+                          onClick={(e) =>
+                            onSubmit(
+                              e,
+                              getAllHerbs?.herbs.find(
+                                (herb) => herb.position === idx + 1
+                              ).herbId
+                            )
+                          }
+                          className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                ) : (
+                  ""
                 )}
               </div>
             </div>

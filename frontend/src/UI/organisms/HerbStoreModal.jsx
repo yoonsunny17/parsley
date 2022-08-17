@@ -49,7 +49,7 @@ function HerbStoreModal({ clickCancel }) {
                     className="hidden"
                     type="radio"
                     // checked={items.seed === `${option.title}`}
-                    onChange={() => dispatch(setSeed(option.itemId))}
+                    onClick={() => dispatch(setSeed(option.itemId))}
                   />
                   <HerbStoreItemAvatar
                     title={option.name}
@@ -71,7 +71,7 @@ function HerbStoreModal({ clickCancel }) {
                     className="hidden"
                     type="radio"
                     // checked={items.fertilizer === `${option.title}`}
-                    onChange={() => dispatch(setFertilizer(option.itemId))}
+                    onClick={() => dispatch(setFertilizer(option.itemId))}
                   />
                   <HerbStoreItemAvatar
                     title={option.name}
@@ -91,7 +91,7 @@ function HerbStoreModal({ clickCancel }) {
                   <input
                     className="hidden"
                     type="radio"
-                    onChange={() => dispatch(setWater(option.itemId))}
+                    onClick={() => dispatch(setWater(option.itemId))}
                   />
                   <HerbStoreItemAvatar
                     title={option.name}
