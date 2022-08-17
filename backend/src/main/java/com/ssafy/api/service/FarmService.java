@@ -147,6 +147,8 @@ public class FarmService {
 
         addNotificationLog((int)point, content.toString(), user, NotificationType.POINT);
 
+        res.setHerbName(herbBook.getName());
+        res.setHerbImageUrl(herbBook.getImageUrl());
         res.setAddPoint(point);
         point += user.getCurrentBookPoint();
         user.setCurrentBookPoint(point);
