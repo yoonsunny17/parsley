@@ -36,12 +36,14 @@ const footerBtn = "20";
 const NavBtn = "24";
 
 let localUser = new UserModel();
+
 class StudySession extends Component {
   constructor(props) {
     super(props);
 
     console.log("======= 현재 참여한 사람/세션 정보 =========");
     console.log(this.props);
+
     console.log(this.props.info);
     console.log(this.props.info.hostUser);
     console.log(this.props.info.name);
@@ -57,15 +59,13 @@ class StudySession extends Component {
     //   console.log(membersArr[i].name);
     //   setMembers((prev), ...)
     // }
-
-    console.log("======== roomId 정보 드립니다 ========");
     const roomId = String(this.props.info.id);
+    console.log("ddddddddddddddd");
     console.log(roomId);
-    console.log("======== roomId 정보 드립니다 ========");
 
     this.state = {
       mySessionName: this.props.info.name,
-      mySessionId: roomId, // 스터디룸 이름
+      mySessionId: roomId, // 스터디룸 id === session id (이거 있어야지 같은 방 들어오는거야)
       myUserName: this.props.user.name, // 내 이름
       hostID: this.props.info.hostUser.id, // 방장 Id
       hostUserName: this.props.info.hostUser.name, // 방장 이름
@@ -247,16 +247,16 @@ class StudySession extends Component {
 
   // // screen share onclick mode
   // screenShare(e) {
-  //     navigator.mediaDevices
-  //         .getDisplayMedia({ audio: true, video: true })
-  //         .then(function (stream) {
-  //             //success
-  //             console.log(stream);
-  //             this.changeScreen(); // 화면 전환
-  //         })
-  //         .catch(function (e) {
-  //             //error;
-  //         });
+  //   navigator.mediaDevices
+  //     .getDisplayMedia({ audio: true, video: true })
+  //     .then(function (stream) {
+  //       //success
+  //       console.log(stream);
+  //       this.changeScreen(); // 화면 전환
+  //     })
+  //     .catch(function (e) {
+  //       //error;
+  //     });
   // }
 
   changeScreen(stream) {
@@ -382,6 +382,9 @@ class StudySession extends Component {
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
+
+          console.log("실시간 참여자 누구인지 보고싶어요!!!!!!!!!!!!!!!!!!");
+          console.log(subscribers);
 
           // Update the state with the new subscribers
           this.setState({
@@ -517,6 +520,9 @@ class StudySession extends Component {
         });
       }
     );
+
+    console.log("++++++++++++++++++++++++++++++++++++++");
+    console.log(this.state);
   }
 
   // 화면공유 시작 (react code ref)
@@ -658,6 +664,18 @@ class StudySession extends Component {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
 
+    // const sendUserInfo = () => {
+    //   axios({
+    //     url: "https://localhost:4443/openvidu/api/sessions/SessionB/connection",
+    //     method: "POST",
+    //     data: {
+    //       userId: this.state.userId,
+    //       nickname: this.state.myUserName,
+    //       connectionId: this.state.connectionId,
+    //     },
+    //   });
+    // };
+
     return (
       <div className="text-extra5">
         {/* Session 참여 전 */}
@@ -666,11 +684,22 @@ class StudySession extends Component {
             <Navbar />
             <div className="flex flex-col rounded-3xl shadow-md px-8 py-9 items-center">
               <div className="flex flex-col items-center w-full">
-                <div className="flex flex-col text-main font-semibold text-2xl mt-2">
+                {/* <div className="flex flex-col text-main font-semibold text-2xl mt-2">
                   파슬리랑 공부할 사람?
+                </div> */}
+                <div
+                  className="flex font-semibold text-xl mt-2"
+                  htmlFor="sessionId"
+                >
+                  [{this.state.mySessionName}] 방에 참여하셨어요
                 </div>
+                {/* <img
+                className=""
+                src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                alt="PARSLEY"
+              /> */}
                 <img
-                  className="w-1/2 m-6"
+                  className="w-1/3 m-6"
                   src="https://doodleipsum.com/700/flat?i=d9b7afd47e72690f4113cb5795b3ba52"
                   alt="PARSLEY"
                 />
@@ -693,12 +722,7 @@ class StudySession extends Component {
                         >
                           {myUserName} 님, 공부할 준비 되셨나요?
                         </div>
-                        <div
-                          className="flex font-semibold mr-3"
-                          htmlFor="sessionId"
-                        >
-                          {this.state.mySessionId}
-                        </div>
+
                         <div className="flex justify-center w-full">
                           <div className="my-3">
                             <Button text={"준비됐어요!"} />
@@ -738,27 +762,28 @@ class StudySession extends Component {
                     size={NavBtn}
                   />
                 </label>
-                <div className="dropdown-content menu mt-[10px] shadow-lg bg-white overflow-hidden rounded-box w-[260px] absolute top-[35px] right-[-118px] pb-1">
+                <div className="messageBox dropdown-content menu mt-[10px] shadow-lg bg-white overflow-hidden rounded-box w-[260px] absolute top-[35px] right-[-118px] pb-1">
                   <div className="m-4">
                     <div>현재 참여한 사람</div>
                     <hr />
-                    <div className="text-sm">{this.state.myUserName}</div>
+                    <div className="text-sm">(나) {this.state.myUserName}</div>
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-[25px] relative"></div>
             </header>
             <div className="container">
-              <div className="flex flex-row">
-                <div className="flex flex-col">
-                  {/* // FIXME: navbar 일단 제외 */}
-                  {this.state.mode === "finger" ? (
-                    <div id="video-container" className="video-container">
+              <div className="flex flex-row justify-around">
+                {/* // FIXME: navbar 일단 제외 */}
+                {/* 손꾸락 모드 ( mode = 0 ) 인 경우 */}
+                {this.state.mode === 0 ? (
+                  <div>
+                    <div id="video-container" className="w-3/4">
                       {/* // TODO: 화면 넘어가는것을 carousel?? pagination?? 구현해야 할 것 같음 */}
                       {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
                       {this.state.publisher !== undefined ? (
                         <div
-                          className="w-[calc-96% / 2] m-[1%] col-md-6 col-xs-6"
+                          className="w-[calc-94% / 2] m-[1%] col-md-4 col-xs-4"
                           onClick={() =>
                             this.handleMainVideoStream(this.state.publisher)
                           }
@@ -772,78 +797,106 @@ class StudySession extends Component {
                       {this.state.subscribers.map((sub, i) => (
                         <div
                           key={i}
-                          className="w-[calc-96% / 2] m-[1%] col-md-6 col-xs-6"
+                          className="w-[calc-96% / 2] m-[1%] col-md-4 col-xs-4"
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
                           <UserVideoComponent streamManager={sub} />
                         </div>
                       ))}
                     </div>
-                  ) : (
-                    // 얼구리 모드
-                    <div id="video-container" className="video-container">
-                      {/* 상단의 작은 화면들 */}
-                      {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
-                      {this.state.publisher !== undefined ? (
-                        <div
-                          className="stream-container col-md-6 col-xs-6"
-                          onClick={() =>
-                            this.handleMainVideoStream(this.state.publisher)
-                          }
-                        >
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                          />
-                        </div>
-                      ) : null}
-                      {/* 제 3자; subscribers */}
-                      {this.state.subscribers.map((sub, i) => (
-                        <div
-                          key={i}
-                          className="stream-container col-md-6 col-xs-6"
-                          onClick={() => this.handleMainVideoStream(sub)}
-                        >
-                          <UserVideoComponent streamManager={sub} />
-                        </div>
-                      ))}
-                      {/* 4분할 되지 않고 하나의 화면만 공유되는 경우 */}
-                      {/* 클릭했을 때 다시 4분할로 돌아가도록 */}
-                      <div id="main-video-onescreen">
-                        {/* // TODO: isDivided ? (4분할인 경우) : (분할되지 않은 경우, onclick으로 되돌아가게) */}
-                        {this.state.isDivided === false ? (
-                          <UserVideoComponent
-                            streamManager={this.state.mainStreamManager}
-                          />
-                        ) : (
-                          <div id="main-video-divided">
+                  </div>
+                ) : (
+                  // 얼구리 모드
+                  <div id="video-container" className="video-container">
+                    {/* 상단의 작은 화면들 */}
+                    {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
+                    {this.state.publisher !== undefined ? (
+                      <div
+                        className="stream-container col-md-6 col-xs-6"
+                        onClick={() =>
+                          this.handleMainVideoStream(this.state.publisher)
+                        }
+                      >
+                        <UserVideoComponent
+                          streamManager={this.state.publisher}
+                        />
+                      </div>
+                    ) : null}
+                    {/* 제 3자; subscribers */}
+                    {this.state.subscribers.map((sub, i) => (
+                      <div
+                        key={i}
+                        className="stream-container col-md-6 col-xs-6"
+                        onClick={() => this.handleMainVideoStream(sub)}
+                      >
+                        <UserVideoComponent streamManager={sub} />
+                      </div>
+                    ))}
+                    {/* 클릭했을 때 다시 4분할로 돌아가도록 */}
+                    <div id="main-video-onescreen">
+                      {/* // TODO: isDivided ? (4분할인 경우) : (분할되지 않은 경우, onclick으로 되돌아가게) */}
+                      {this.state.isDivided === false ? (
+                        <UserVideoComponent
+                          streamManager={this.state.mainStreamManager}
+                        />
+                      ) : (
+                        <div id="main-video-divided">
+                          <div
+                            className="w-[45%]"
+                            onClick={() => {
+                              this.handleMainVideoStream(this.state.publisher);
+                            }}
+                          >
+                            <UserVideoComponent
+                              streamManager={this.state.publisher}
+                            />
+                          </div>
+                          {this.state.subscribers.map((sub, i) => (
                             <div
                               className="w-[45%]"
+                              key={i}
                               onClick={() => {
-                                this.handleMainVideoStream(
-                                  this.state.publisher
-                                );
+                                this.handleMainVideoStream(sub);
                               }}
                             >
-                              <UserVideoComponent
-                                streamManager={this.state.publisher}
-                              />
+                              <UserVideoComponent streamManager={sub} />
                             </div>
-                            {this.state.subscribers.map((sub, i) => (
-                              <div
-                                className="w-[45%]"
-                                key={i}
-                                onClick={() => {
-                                  this.handleMainVideoStream(sub);
-                                }}
-                              >
-                                <UserVideoComponent streamManager={sub} />
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>{" "}
+                          ))}
+                        </div>
+                      )}
+                    </div>{" "}
+                  </div>
+                )}
+                <div className="flex flex-col">
+                  {/* 채팅창 */}
+                  <div className="mx-2 mt-4 mb-10 shadow-md rounded-xl flex flex-col bg-font3 w-80 h-full ease-in-out">
+                    <div className="flex text-start m-2 text-base h-10">
+                      [{this.state.mySessionName}] 채팅방
                     </div>
-                  )}
+                    <div
+                      className="chatbox__messages mt-auto flex flex-col overflow-y-scroll items-end"
+                      ref="chatoutput"
+                    >
+                      <Messages messages={messages} />
+                    </div>
+                    <div className="flex align-center justify-center chatbox__footer my-2">
+                      <input
+                        className="outline-hidden box-border w-4/5 h-8 input-border rounded-md placeholder-font2 px-1"
+                        id="chat_message"
+                        type="text"
+                        placeholder="채팅을 입력해 주세요"
+                        onChange={this.handleChatMessageChange}
+                        onKeyPress={this.sendMessageByEnter}
+                        value={this.state.message}
+                      />
+                      <button
+                        className="chatbox__send--footer mx-1 rounded-tr-lg rounded-br-lg text-sm"
+                        onClick={this.sendMessageByClick}
+                      >
+                        SEND
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -853,9 +906,7 @@ class StudySession extends Component {
                   {/* divided test */}
                   <button
                     onClick={() => {
-                      this.setState({
-                        isDivided: !this.state.isDivided,
-                      });
+                      this.setState({ isDivided: !this.state.isDivided });
                       console.log(this.state.isDivided);
                     }}
                   >
@@ -931,8 +982,14 @@ class StudySession extends Component {
                   {/* 새창으로 넘어가지만 콘솔 오류가 뜸 ... signal을 못읽어서 message data가 안읽혀옴 */}
                   {/* <BsChatDots
                     className="cursor-pointer"
-                    onClick={() => window.open("/room/chat", "", "_blank")}
                     size={footerBtn}
+                    onClick={() =>
+                      window.open(
+                        `room/chat/${this.state.mySessionId}`,
+                        "",
+                        "_blank"
+                      )
+                    }
                   /> */}
                   {/* 초반에 생각을 잘못 해서 모달로 구현함.. */}
                   <label htmlFor="my-modal-3" className="cursor-pointer">
@@ -953,7 +1010,7 @@ class StudySession extends Component {
                       </label>
                       <div className="rounded-2xl flex flex-col bg-font3 w-auto h-full ease-in-out">
                         <div className="flex text-start p-2 text-xl h-10">
-                          {this.state.mySessionId} 채팅방
+                          {this.state.mySessionName} 채팅방
                         </div>
                         <div
                           className="chatbox__messages mt-auto flex flex-col overflow-y-scroll items-end"

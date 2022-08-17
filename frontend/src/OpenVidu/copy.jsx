@@ -3,6 +3,9 @@ import { OpenVidu } from "openvidu-browser";
 import React, { Component, createRef } from "react";
 import "./StudySession.css";
 import UserVideoComponent from "./UserVideoComponent";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import UserModel from "./models/user-model";
 
 // chat function
@@ -14,42 +17,77 @@ import {
   BsCameraVideoFill,
   BsCameraVideoOffFill,
   BsChatDots,
-  BsThreeDots,
 } from "react-icons/bs";
 import { TbScreenShare } from "react-icons/tb";
 import { MdExitToApp } from "react-icons/md";
-import { BiGroup } from "react-icons/bi";
+import { BiGroup, BiWindows } from "react-icons/bi";
 
-// atomic component
 import Button from "../UI/atoms/Button";
-// sweetalert
 import Swal from "sweetalert2";
+import Navbar from "../UI/organisms/Navbar";
 
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
-const footerBtn = "30";
+// const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_URL;
+// const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SECRET;
+
+const footerBtn = "20";
+const NavBtn = "24";
 
 let localUser = new UserModel();
-class ShareSession extends Component {
+class StudySession extends Component {
   constructor(props) {
     super(props);
 
+    console.log("======= 현재 참여한 사람/세션 정보 =========");
+    console.log(this.props);
+    console.log(this.props.info);
+    console.log(this.props.info.hostUser);
+    console.log(this.props.info.name);
+    console.log("========= 참여 멤버는 누구?? ===============");
+    // console.log(this.props.info.members);
+
+    const membersArr = this.props.info.members;
+    console.log("현재 여기 스터디방 참가 되어있는 사람은 ????");
+    console.log(membersArr);
+
+    // const [members, setMembers] = useState([])
+    // for (let i = 0; i < membersArr.length; i++) {
+    //   console.log(membersArr[i].name);
+    //   setMembers((prev), ...)
+    // }
+
+    console.log("======== roomId 정보 드립니다 ========");
+    const roomId = String(this.props.info.id);
+    console.log(roomId);
+    console.log("======== roomId 정보 드립니다 ========");
+
     this.state = {
-      mySessionId: "SessionB",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mySessionName: this.props.info.name,
+      mySessionId: roomId, // 스터디룸 이름
+      myUserName: this.props.user.name, // 내 이름
+      hostID: this.props.info.hostUser.id, // 방장 Id
+      hostUserName: this.props.info.hostUser.name, // 방장 이름
+      mode: this.props.info.mode, // 손꾸락모드 = 0, 얼구리모드 = 1
+      // FIXME: 이거 현재 참여한 사람으로 할지, 아니면 전체 사람으로 할지 고민중
+      membersArr: this.props.info.members, // 공부방에 참여 되어있는 모든 사람들 리스트
+      onlineMembers: {}, // 현재 세션에 참가한 멤버 추가
+      //
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
+      //
       messages: [],
       message: "",
-      sessionData: [],
+      //
       audiostate: true,
       screenstate: false, // 화면
       videostate: true, // 웹캠
       videoallowed: true,
       audioallowed: true,
+      //
       host: {},
       isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
       width: window.innerWidth,
@@ -58,7 +96,7 @@ class ShareSession extends Component {
       connections: [],
       connectionId: "",
       leaved: false,
-      mode: "", // 손꾸락모드: finger, 얼구리모드: face FIXME: frontend branch의 CreateStudyRoom 의 mode 이름 바꾸기
+      // 화면 분할 모드인가요?
       isDivided: false,
     };
 
@@ -77,9 +115,13 @@ class ShareSession extends Component {
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     // screen share (화면공유)
     this.screenShare = this.screenShare.bind(this);
-    // 4분할 화면 전환
-    this.changeDividedMainScreen = this.changeDividedMainScreen.bind(this);
+    // 참여한 멤버 확인하기
+    this.sessionOnline = this.sessionOnline.bind(this);
   }
+
+  sessionOnline = () => {
+    console.log(this.state.membersArr);
+  };
 
   // Exit button 눌렀을 때; 정말 나가시겠습니까? alert 띄워주기
   exitSessionAlert = () => {
@@ -88,6 +130,35 @@ class ShareSession extends Component {
       showCancelButton: true,
       confirmButtonText: "더 공부하자!",
       cancelButtonText: "그만할래",
+    }).then((result) => {
+      if (result.isDismissed) {
+        Swal.fire({
+          icon: "success",
+          title: "파슬리가 응원할게요!",
+          text: "오늘도 화이팅 :)",
+        });
+        this.leaveSession();
+      }
+    });
+  };
+
+  // 네비게이션 바 로고 눌렀을 때도 나갈거냐고 물어봐주기 + 이스터에그
+  onClickLogo = () => {
+    Swal.fire({
+      title: "스터디룸을 떠나실건가요?",
+      showCancelButton: true,
+      confirmButtonText: "더 공부하자!",
+      cancelButtonText: "그만할래",
+      width: 400,
+      padding: "3em",
+      color: "#716add",
+      background: "#fff",
+      backdrop: `
+        rgba(0,0,123,0.4)
+        url("https://c.tenor.com/rI_0O_9AJ5sAAAAi/nyan-cat-poptart-cat.gif")
+        left top
+        no-repeat
+      `,
     }).then((result) => {
       if (result.isDismissed) {
         Swal.fire({
@@ -174,19 +245,18 @@ class ShareSession extends Component {
     });
   }
 
-  // screen share onclick mode
+  // // screen share onclick mode
   // screenShare(e) {
-  //   navigator.mediaDevices
-  //     .getDisplayMedia({ audio: true, video: true })
-  //     .then(function (stream) {
-  //       //success
-  //       console.log(stream);
-  //       // this.changeScreen(); // 화면 전환
-  //       this.startScreenShare(); // 화면 공유 시작
-  //     })
-  //     .catch(function (e) {
-  //       //error;
-  //     });
+  //     navigator.mediaDevices
+  //         .getDisplayMedia({ audio: true, video: true })
+  //         .then(function (stream) {
+  //             //success
+  //             console.log(stream);
+  //             this.changeScreen(); // 화면 전환
+  //         })
+  //         .catch(function (e) {
+  //             //error;
+  //         });
   // }
 
   changeScreen(stream) {
@@ -221,11 +291,6 @@ class ShareSession extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onbeforeunload);
-    // window.removeEventListener("resize", this.handleScreenMode);
-    // window.location.reload();
-    // if (!this.state.leaved) {
-    //   this.leaveSession();
-    // }
   }
 
   onbeforeunload(event) {
@@ -250,13 +315,6 @@ class ShareSession extends Component {
         mainStreamManager: stream,
       });
     }
-  }
-
-  changeDividedMainScreen() {
-    // if (this.state.isDivided) {
-    //   this.setState({ isDivided: !this.state.isDivided });
-    //   console.log(this.state.isDivided);
-    // }
   }
 
   deleteSubscriber(streamManager) {
@@ -303,7 +361,6 @@ class ShareSession extends Component {
 
           // 방장 확인
           var host = this.state.connections[0];
-          console.log(host);
 
           this.setState({
             connections: connections,
@@ -331,8 +388,6 @@ class ShareSession extends Component {
             subscribers: subscribers,
           });
         });
-
-        // FIXME: OV/ OVScreen 나눈 경우
 
         // case 1. OV (webcam 공유하는 상태)
         mySession.on("streamCreated", (event) => {
@@ -464,45 +519,6 @@ class ShareSession extends Component {
     );
   }
 
-  // screen share 버튼 눌렀을 때 화면공유 기능 활성화 되는 함수!!!!!!
-  // startScreenShare() {
-  //   // --- 9.1) To create a publisherScreen it is very important that the property 'videoSource' is set to 'screen'
-  //   var publisherScreen = this.OVScreen.initPublisher("container-screens", {
-  //     videoSource: "screen",
-  //   });
-
-  //   // --- 9.2) If the user grants access to the screen share function, publish the screen stream
-  //   publisherScreen.once("accessAllowed", (event) => {
-  //     this.setState({
-  //       screenstate: true,
-  //     });
-  //     console.log("-------plz!!!!!!!!-------");
-  //     publisherScreen.stream
-  //       .getMediaStream()
-  //       .getVideoTracks()[0]
-  //       .addEventListener("ended", () => {
-  //         console.log('User pressed the "Stop sharing" button');
-  //         this.sessionScreen.unpublish(publisherScreen);
-  //         this.setState({
-  //           screenstate: false,
-  //         });
-  //       });
-  //     this.sessionScreen.publish(publisherScreen);
-  //   });
-
-  //   publisherScreen.once("accessDenied", (event) => {
-  //     console.error("screen share: access denied");
-  //   });
-  // }
-  // stopScreenShare() {
-  //   publisherScreen.once("accessDenied", (event) => {
-  //     this.setState({
-  //       screenstate: false,
-  //     });
-  //   });
-  // }
-
-  // FIXME: 화면공유 문제를 고쳐주세요!!
   // 화면공유 시작 (react code ref)
   screenShare() {
     const videoSource =
@@ -568,27 +584,33 @@ class ShareSession extends Component {
     // Empty all properties...
     this.OV = null;
     this.setState({
+      mySessionId: "",
+      myUserName: this.props.user.name,
+      hostID: this.props.info.hostUser.id, // 방장 Id
+      hostUserName: this.props.info.hostUser.name, // 방장 이름
+      mode: this.props.info.mode, // 손꾸락모드 = 0, 얼구리모드 = 1
+      //
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
       mainStreamManager: undefined,
       publisher: undefined,
+      //
       messages: [],
       message: "",
-      sessionData: [],
+      //
       audiostate: true,
       screenstate: false, // 화면
       videostate: true, // 웹캠
       videoallowed: true,
       audioallowed: true,
+      //
       host: {},
-      isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
+      // isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
       connectionUser: [],
       connections: [],
       connectionId: "",
       leaved: false,
-      mode: "", // 손꾸락모드: finger, 얼구리모드: face FIXME: frontend branch의 CreateStudyRoom 의 mode 이름 바꾸기
+      // 화면 분할 모드인가요?
       isDivided: false,
     });
   }
@@ -637,87 +659,105 @@ class ShareSession extends Component {
     const myUserName = this.state.myUserName;
 
     return (
-      <div className="bg-extra4">
-        {this.state.session === undefined ? (
-          <div className="container p-24">
-            <div className="flex flex-row">
-              <div className="flex flex-col">
+      <div className="text-extra5">
+        {/* Session 참여 전 */}
+        {!this.state.session && (
+          <>
+            <Navbar />
+            <div className="flex flex-col rounded-3xl shadow-md px-8 py-9 items-center">
+              <div className="flex flex-col items-center w-full">
                 <div className="flex flex-col text-main font-semibold text-2xl mt-2">
                   파슬리랑 공부할 사람?
                 </div>
                 <img
-                  src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                  className="w-1/2 m-6"
+                  src="https://doodleipsum.com/700/flat?i=d9b7afd47e72690f4113cb5795b3ba52"
                   alt="PARSLEY"
                 />
               </div>
-            </div>
-            <div className="flex flex-row">
-              <div className="flex flex-col">
-                <div id="join">
-                  <div id="join-dialog" className="jumbotron vertical-center">
-                    <form
-                      action=""
-                      className="form-group"
-                      onSubmit={this.joinSession}
+              <div className="flex w-full justify-center">
+                <div className="flex flex-col w-full">
+                  <div id="join w-full">
+                    <div
+                      id="join-dialog"
+                      className="jumbotron vertical-center w-full"
                     >
-                      <div
-                        className="flex font-semibold mr-3"
-                        htmlFor="userName"
+                      <form
+                        action=""
+                        className="form-group w-full"
+                        onSubmit={this.joinSession}
                       >
-                        <label>Participant: </label>
-                        <input
-                          className="form-control input-border rounded-lg"
-                          type="text"
-                          id="userName"
-                          value={myUserName}
-                          onChange={this.handleChangeUserName}
-                          required
-                        />
-                      </div>
-                      <div
-                        className="flex font-semibold mr-3"
-                        htmlFor="sessionId"
-                      >
-                        <label> Session: </label>
-                        <input
-                          className="form-control input-border rounded-lg"
-                          type="text"
-                          id="sessionId"
-                          value={mySessionId}
-                          onChange={this.handleChangeSessionId}
-                          required
-                        />
-                      </div>
-                      <div className="my-3">
-                        <Button text={"JOIN"} />
-                      </div>
-                    </form>
+                        <div
+                          className="flex font-semibold mr-3 justify-center"
+                          htmlFor="userName"
+                        >
+                          {myUserName} 님, 공부할 준비 되셨나요?
+                        </div>
+                        <div
+                          className="flex font-semibold mr-3"
+                          htmlFor="sessionId"
+                        >
+                          {this.state.mySessionId}
+                        </div>
+                        <div className="flex justify-center w-full">
+                          <div className="my-3">
+                            <Button text={"준비됐어요!"} />
+                          </div>
+                          <Link to={`/room/${this.props.info.id}`}>
+                            <div className="my-3 mx-2">
+                              <button className="color-delay rounded-full px-4 py-2 text-sm font-medium bg-sub1 hover:bg-sub2 text-font3">
+                                아직이요..
+                              </button>
+                            </div>
+                          </Link>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
+          </>
+        )}
+
+        {/* Session 참여 후 */}
+        {this.state.session && (
           <div id="session">
+            <header className="h-[72px] flex items-center mt-0">
+              <button
+                onClick={this.onClickLogo}
+                className="logo font-logo text-3xl cursor-pointer ml-4"
+              >
+                PARSLEY
+              </button>
+              <div className="dropdown">
+                <label tabindex="0">
+                  <BiGroup
+                    onClick={this.sessionOnline}
+                    className="mx-2 my-2 cursor-pointer"
+                    size={NavBtn}
+                  />
+                </label>
+                <div className="dropdown-content menu mt-[10px] shadow-lg bg-white overflow-hidden rounded-box w-[260px] absolute top-[35px] right-[-118px] pb-1">
+                  <div className="m-4">
+                    <div>현재 참여한 사람</div>
+                    <hr />
+                    <div className="text-sm">{this.state.myUserName}</div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-[25px] relative"></div>
+            </header>
             <div className="container">
               <div className="flex flex-row">
                 <div className="flex flex-col">
                   {/* // FIXME: navbar 일단 제외 */}
-                  {/* <div className="navbar bg-base-100">
-                    <div className="flex-1 text-xl font-bold">PARSLEY</div>
-                    <div className="flex-none cursor-pointer">
-                      <BsThreeDots />
-                    </div>
-                  </div> */}
-                  {/* 손꾸락 모드인 경우 vs 얼구리 모드인 경우 */}
-
                   {this.state.mode === "finger" ? (
                     <div id="video-container" className="video-container">
                       {/* // TODO: 화면 넘어가는것을 carousel?? pagination?? 구현해야 할 것 같음 */}
                       {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
                       {this.state.publisher !== undefined ? (
                         <div
-                          // className="stream-container col-md-6 col-xs-6"
                           className="w-[calc-96% / 2] m-[1%] col-md-6 col-xs-6"
                           onClick={() =>
                             this.handleMainVideoStream(this.state.publisher)
@@ -732,7 +772,6 @@ class ShareSession extends Component {
                       {this.state.subscribers.map((sub, i) => (
                         <div
                           key={i}
-                          // className="stream-container col-md-6 col-xs-6"
                           className="w-[calc-96% / 2] m-[1%] col-md-6 col-xs-6"
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
@@ -767,32 +806,6 @@ class ShareSession extends Component {
                           <UserVideoComponent streamManager={sub} />
                         </div>
                       ))}
-                      {/* 하단의 메인 화면; 화면 공유 되어지고있는 사람 */}
-                      {/* 화면 4분할 기능 추가 */}
-                      {/* 4분할 되어 4개의 화면이 공유되어지는 경우 */}
-                      {/* <div id="main-video-divided">
-                        <div
-                          className="w-[45%]"
-                          onClick={() => {
-                            this.handleMainVideoStream(this.state.publisher);
-                          }}
-                        >
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                          />
-                        </div>
-                        {this.state.subscribers.map((sub, i) => (
-                          <div
-                            className="w-[45%]"
-                            key={i}
-                            onClick={() => {
-                              this.handleMainVideoStream(sub);
-                            }}
-                          >
-                            <UserVideoComponent streamManager={sub} />
-                          </div>
-                        ))}
-                      </div>{" "} */}
                       {/* 4분할 되지 않고 하나의 화면만 공유되는 경우 */}
                       {/* 클릭했을 때 다시 4분할로 돌아가도록 */}
                       <div id="main-video-onescreen">
@@ -828,41 +841,26 @@ class ShareSession extends Component {
                             ))}
                           </div>
                         )}
-                        {/* <div
-                        // onClick={() => {
-                        //   this.setState({ isDivided: !this.state.isDivided });
-                        //   console.log(this.state.isDivided);
-                        // }}
-                        >
-                          <UserVideoComponent
-                            streamManager={this.state.mainStreamManager}
-                          />
-                        </div> */}
                       </div>{" "}
-                      ,
-                      {/* {this.state.mainStreamManager !== undefined ? (
-                        <div id="main-video" className="">
-                          <UserVideoComponent
-                            streamManager={this.state.mainStreamManager}
-                          />
-                        </div>
-                      ) : null} */}
                     </div>
                   )}
                 </div>
               </div>
 
               {/* tool bar; screen share, mic on/off, camera on/off, chat popper, exit */}
-              <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+              <footer className="footer footer-center p-4  text-base-content">
                 <div className="grid-flow-col gap-6 md:place-self-center">
                   {/* divided test */}
                   <button
                     onClick={() => {
-                      this.setState({ isDivided: !this.state.isDivided });
+                      this.setState({
+                        isDivided: !this.state.isDivided,
+                      });
                       console.log(this.state.isDivided);
                     }}
                   >
-                    divide
+                    {/* // FIXME: 일단은 푸터에 넣어놓고,, 시간되면 바꾸기 */}
+                    <BiWindows size={footerBtn} />
                   </button>
                   <div className="cursor-pointer" onClick={this.screenShare}>
                     <TbScreenShare size={footerBtn} />
@@ -955,7 +953,7 @@ class ShareSession extends Component {
                       </label>
                       <div className="rounded-2xl flex flex-col bg-font3 w-auto h-full ease-in-out">
                         <div className="flex text-start p-2 text-xl h-10">
-                          {mySessionId} 채팅방
+                          {this.state.mySessionId} 채팅방
                         </div>
                         <div
                           className="chatbox__messages mt-auto flex flex-col overflow-y-scroll items-end"
@@ -1095,4 +1093,13 @@ class ShareSession extends Component {
   }
 }
 
-export default ShareSession;
+const mapToStateToProps = (state) => ({
+  user: state.user.user,
+  info: state.room.room,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapToStateToProps, mapDispatchToProps)(StudySession);
