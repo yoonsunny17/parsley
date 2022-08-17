@@ -1,6 +1,20 @@
 import React from "react";
 
 function Notification({ notiArr, uncheckedCnt, onClick }) {
+  const calcTimePassed = (date) => {
+    const minutePassed = parseInt(
+      (new Date().getTime() - new Date(date).getTime()) / (1000 * 60)
+    );
+    let timePassed;
+    if (minutePassed >= 1440) {
+      timePassed = parseInt(minutePassed / 1440) + "일 전";
+    } else if (minutePassed >= 60) {
+      timePassed = parseInt(minutePassed / 60) + "시간 전";
+    } else {
+      timePassed = parseInt(minutePassed) + "분 전";
+    }
+    return timePassed;
+  };
   return (
     <div className="dropdown">
       <label tabIndex="0" className="cursor-pointer" onClick={onClick}>
@@ -24,10 +38,7 @@ function Notification({ notiArr, uncheckedCnt, onClick }) {
         )}
         {notiArr.length > 0 &&
           notiArr.map((noti, idx) => {
-            const timePassed = parseInt(
-              (new Date().getTime() - new Date(noti.date).getTime()) /
-                (1000 * 60)
-            );
+            const timePassed = calcTimePassed(noti.date);
             return (
               <>
                 <hr />
@@ -49,7 +60,7 @@ function Notification({ notiArr, uncheckedCnt, onClick }) {
                   </div>
                   <div className="text-end self-center">
                     {/* TODO: 시간 계산 */}
-                    {timePassed}분 전
+                    {timePassed}
                   </div>
                 </div>
               </>
