@@ -59,6 +59,9 @@
 
 <br/>
 <br/>
+
+* [버전 상세](https://a604-parsley.notion.site/3325d9a0886a459fb79e967c08a3d33c)
+
 <br/>
 
 ## 💡 기획
@@ -83,8 +86,6 @@
 
 * [Sequence 다이어그램](https://a604-parsley.notion.site/Sequence-Diagram-ce431b5725674fc49cd0928150390bc9)
 
-* [도감](https://a604-parsley.notion.site/9175fa6fd77e47e8ad7a9c9007baced7)
-
 * [아키텍처](https://a604-parsley.notion.site/60c50827fbd74758bae5b2ec53b5251b)
 
 
@@ -93,21 +94,13 @@
 
 ## 🌳 기능 설명
 
-* [서비스 가이드](https://a604-parsley.notion.site/41bc2ed396ed4509a9d586e1ee4f17c1)
+* [서비스 이용 가이드](https://a604-parsley.notion.site/41bc2ed396ed4509a9d586e1ee4f17c1)
 
 <details>
 <summary>메인 페이지</summary>
 <div markdown="1">
 
-* 회원가입 및 로그인
-    * 카카오 로그인 하는 움짤 -> 옆에 drawer 바뀌는 것까지 보여주기
-    * 설명으로 로그인 성공하면 자신의 랭킹도 확인할 수 있다고 적기
-* 방 목록
-    * 메인페이지에서 인덱스 탭 누르면서 나의 방, 관심 방 보여주고, '더보기' 눌러서 전체 리스트 보여주는 움짤
-* 방 검색
-    * 메인 페이지 상단에서 검색해서 검색 내용 보여주는 움짤
-* 알림
-    * 알림 함 누르면 0으로 줄어듦 + 전체 삭제하면 다 없어지는 움짤
+![image](/uploads/bff7475db6d9ed0cb30e45e1661e039d/image.png)
 
 </div>
 </details>
@@ -116,12 +109,8 @@
 <summary>농장 페이지</summary>
 <div markdown="1">
 
-* 허브 심기
-    * 허브 심는 과정 움짤
-    * 시간 흐르는 기준 설명 적어주기
-    * 심으면 알림 올라간다 설명 적어주기
-* 허브 수확하기
-    * 허브 수확하는 과정 움짤 + 도감에 차는 것
+![image](/uploads/44e1a89aace476a1f14d25cf70f48aec/image.png)
+> [농장 상세 정보](https://www.notion.so/a604-parsley/9175fa6fd77e47e8ad7a9c9007baced7)
 
 </div>
 </details>
@@ -130,19 +119,7 @@
 <summary>스터디룸 페이지</summary>
 <div markdown="1">
 
-* 스터디 생성하기
-    * 스터디 생성하는 과정 움짤
-* 스터디 참가하기
-    * 농부왕 및 공부왕 움짤 -> 공부 하고 오면 시간 늘어나서 등수 바뀌어있음?
-    * 손꾸락
-        * 스터디 참가하면서 캠 전환 + 채팅 움짤
-    * 얼구리
-        * 화면 공유 움짤 + 화면 배치 전환
-* 스터디 수정 및 삭제하기
-    * 수정하고 삭제하는 과정
-    * 호스트만 가능하다고 설명
-* 스터디 탈퇴하기
-    * 호스트가 아닐 때, 탈퇴하는 과정
+![image](/uploads/396be0190635fa89dcaa9c0ab314819a/image.png)
 
 </div>
 </details>
@@ -151,16 +128,7 @@
 <summary>마이 페이지</summary>
 <div markdown="1">
 
-* 내 정보 조회 및 수정
-    * 수정하는 움짤(프로필 변경도,,ㅎㅎ)
-* D-day 설정
-    * d-day 설정하는 과정
-* 오늘의 목표
-    * 목표 설정하는 과정
-    * 공부 한번 시작하면 못바꾼다고 설명적어주기
-* 오늘의 공부량 및 주간 공부량
-    * 오늘 공부한 그 화면 보여주기(캡쳐)
-    * 주간 공부량 (캡쳐)
+![image](/uploads/e3a08c95705919798980d045f97ccafa/image.png)
 
 </div>
 </details>
@@ -170,19 +138,16 @@
 ## 🖥 역할 분담
 
 |이름|역할|
-|---|---|
-|마유선| - ER 다이어그램, Entity 설계, API 설계 <br/> - API 구현(농장 게임, 알림) <br/> - 랭킹 시퀀스 <br/> - 산출물 관리|
-|이동희| - 로고 디자인 <br/> - 목업 <br/> - 컴포넌트 구현(랭킹, 404 에러)|
-|전윤선| - 목업 <br/> - OpenVidu <br/> - Three.js <br/> - 컴포넌트 구현(농장 게임, 스터디룸, 메인페이지, 알림, 스터디룸 리스트)|
-|정윤영| - 와이어프레임 설계 <br/> - ER 다이어그램, Entity 설계, API 설계 <br/> - API 구현(스터디룸, 유저 스터디룸, 학습내역) <br/> - 산출물 관리|
-|조혜은| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(스터디룸, 랭킹) <br/> - 서버 구축 <br/> - 컴포넌트 구현(마이페이지, 사이드바)|
-|한상우| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(회원 정보) <br/> - OAuth + JWT <br/> - 캐시 서버 구축|
+|:---:|---|
+|마유선 <br/> (BE)| - ER 다이어그램, Entity 설계, API 설계 <br/> - API 구현(농장 게임, 알림) <br/> - 랭킹 시퀀스 <br/> - 산출물 관리 <br/> - FrontEnd/BackEnd 연동(농장페이지, 랭킹)|
+|이동희 <br/> (FE)| - 로고 디자인 <br/> - 목업 <br/> - 컴포넌트 구현(랭킹, 404 에러)|
+|전윤선 <br/> (FE)| - 목업 <br/> - OpenVidu <br/> - Three.js <br/> - 컴포넌트 구현(농장 게임, 스터디룸, 메인페이지, 알림, 스터디룸 리스트) <br/> - FrontEnd/BackEnd 연동(농장페이지)|
+|정윤영 <br/> (BE)| - 와이어프레임 설계 <br/> - ER 다이어그램, Entity 설계, API 설계 <br/> - API 구현(스터디룸, 유저 스터디룸, 학습내역) <br/> - 산출물 관리 <br/> - FrontEnd/BackEnd 연동(마이페이지)|
+|조혜은 <br/> (BE)| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(스터디룸, 랭킹) <br/> - 서버 구축 <br/> - 컴포넌트 구현(마이페이지, 사이드바) <br/> - FrontEnd/BackEnd 연동(메인페이지, 스터디룸 페이지, 알림)|
+|한상우 <br/> (BE)| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(회원 정보) <br/> - OAuth + JWT <br/> - 캐시 서버 구축 <br/> - FrontEnd/BackEnd 연동(회원정보, 마이페이지)|
 
-## 📚 ETC? 산출물?
+## 📚 산출물
 
-* UCC
-* 발표 자료
-    * 중간 발표
-    * 최종 발표
-* 포팅 매뉴얼
-* 기술 블로그
+* [UCC](https://a604-parsley.notion.site/UCC-79df0b8fc3c04031b54d5bc7f0482694)
+* [포팅 매뉴얼](https://a604-parsley.notion.site/22d57485f3c1473294bffe7e794fdf12)
+* [기술 블로그](https://a604-parsley.notion.site/04e2d358448b4a56b07f777e8a675ed8)
