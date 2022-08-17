@@ -5,7 +5,6 @@ import Button from "../atoms/Button";
 import HashTags from "../molecules/HashTags";
 import Navbar from "../organisms/Navbar";
 import { useForm } from "react-hook-form";
-import { useForm } from "react-hook-form";
 
 const initialValue = {
   name: "",
