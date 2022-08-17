@@ -66,16 +66,18 @@ function MyDday() {
     });
 
     return (
-        <div className="rounded-2xl w-full md:w-[32%] shadow px-8 py-5">
+        <div className="rounded-2xl w-full md:w-[32%] shadow p-8 flex flex-col justify-between">
             <div>
-                <div className="my-2 font-bold">
-                    {moment().format("YYYY. M. D (ddd)")}
+                <div>
+                    <div className="my-2 font-bold text-lg">
+                        {moment().format("YYYY. M. D (ddd)")}
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <div className="my-6 text-2xl font-bold">
-                    <h3 className="text-base">{text}</h3>
+                <div>
+                    <div className="my-6 text-2xl font-bold">
+                        <h3 className="text-base">{text}</h3>
+                    </div>
                 </div>
             </div>
             <div className="flex justify-end mt-[65px]">
