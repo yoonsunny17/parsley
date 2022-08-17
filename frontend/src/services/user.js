@@ -19,12 +19,29 @@ export const userApi = createApi({
             },
         }),
         updateUser: builder.mutation({
-            query: ({ user }) => {
+            query: (user) => {
                 return {
                     url: `/user/update`,
                     method: "POST",
                     body: user,
                 };
+            },
+            async onQueryStarted(
+                newUser,
+                { dispatch, getState, queryFulfilled }
+            ) {
+                try {
+                    await queryFulfilled;
+                    const user = getState().user.user;
+                    dispatch(
+                        setUser({
+                            ...user,
+                            ...newUser,
+                        })
+                    );
+                } catch (err) {
+                    console.log(err);
+                }
             },
         }),
         deleteUser: builder.mutation({

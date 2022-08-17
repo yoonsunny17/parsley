@@ -70,10 +70,6 @@ function TodayStudyTime() {
         }
     }
 
-    // console.log(MORNING);
-    // console.log(AFTERNOON);
-    // console.log(NIGHT);
-
     return (
         <div className="rounded-2xl shadow px-8 py-5 w-full lg:w-2/3 md:w-[100%]">
             <div className="text-xl font-bold">오늘의 공부 기록</div>

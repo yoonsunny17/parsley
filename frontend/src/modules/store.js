@@ -33,11 +33,11 @@ const reducers = combineReducers({
 });
 
 const persistedReducer = persistReducer(
-  {
-    key: "root",
-    storage,
-  },
-  reducers
+    {
+        key: "root",
+        storage,
+    },
+    reducers
 );
 
 export const store = configureStore({

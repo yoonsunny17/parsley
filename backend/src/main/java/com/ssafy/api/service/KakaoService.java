@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,13 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class KakaoService {
 
+    @Value("${kakao.client.id}")
+    private String kakaoClientId;
+    @Value("${kakao.client.secret}")
+    private String kakaoClientSecret;
+    @Value("${kakao.redirect.uri}")
+    private String kakaoRedirectUri;
+
     public String getKakaoEmail(String code) {
         RestTemplate restTemplate = new RestTemplate();
 
@@ -23,9 +31,9 @@ public class KakaoService {
         MultiValueMap<String, String> tokenRequestBody = new LinkedMultiValueMap<>(); // http 요청 바디 만들기
         tokenRequestBody.add("grant_type", "authorization_code");
         tokenRequestBody.add("code", code);
-        tokenRequestBody.add("client_id", "c363c1414c4795051bf51aea0b37c03d");
-        tokenRequestBody.add("client_secret", "6VKJcXSj18I1tc7Gho56LaMnjnqwPtBl");
-        tokenRequestBody.add("redirect_uri", "http://localhost:3000/login");
+        tokenRequestBody.add("client_id", kakaoClientId);
+        tokenRequestBody.add("client_secret", kakaoClientSecret);
+        tokenRequestBody.add("redirect_uri", kakaoRedirectUri);
 
         HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenRequestBody,
                 tokenRequestHeader);

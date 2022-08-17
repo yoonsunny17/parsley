@@ -1,7 +1,9 @@
 package com.ssafy.api.response.userRoom;
 
+import com.ssafy.api.response.room.RoomUserRes;
 import com.ssafy.db.entity.Mode;
 import com.ssafy.db.entity.Room;
+import com.ssafy.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,6 +14,9 @@ public class UserRoomRes {
 
     @ApiModelProperty(name = "방 ID", example = "123")
     Long id;
+
+    @ApiModelProperty(name = "호스트 정보")
+    RoomUserRes hostUser;
 
     @ApiModelProperty(name = "방 이름", example = "coding_with_me")
     String name;
@@ -39,6 +44,7 @@ public class UserRoomRes {
         UserRoomRes res = new UserRoomRes();
 
         res.setId(room.getId());
+        res.setHostUser(room.getHostUser());
         res.setName(room.getName());
         res.setImageUrl(room.getImageUrl());
         res.setDescription(room.getDescription());
@@ -47,5 +53,9 @@ public class UserRoomRes {
         res.setPublic(room.isPublic());
 
         return res;
+    }
+
+    public void setHostUser(User hostUser){
+        this.hostUser = RoomUserRes.of(hostUser);
     }
 }
