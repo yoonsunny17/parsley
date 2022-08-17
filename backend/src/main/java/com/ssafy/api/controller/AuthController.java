@@ -114,12 +114,24 @@ public class AuthController {
             accessToken = bearer.split(" ")[1];
         }
         Cookie[] cookies = request.getCookies();
-        for (Cookie c : cookies) {
-            if ("accessToken".equals(c.getName())) {
-                accessToken = c.getValue();
-            } else if ("refreshToken".equals(c.getName())) {
-                refreshToken = c.getValue();
+        if(cookies != null) {
+            for (Cookie c : cookies) {
+                if ("accessToken".equals(c.getName())) {
+                    accessToken = c.getValue();
+                } else if ("refreshToken".equals(c.getName())) {
+                    refreshToken = c.getValue();
+                }
             }
+
+            Cookie accessCookie = new Cookie("accessToken", null);
+            accessCookie.setMaxAge(0);
+            accessCookie.setPath("/");
+            response.addCookie(accessCookie);
+
+            Cookie refreshCookie = new Cookie("refreshToken", null);
+            refreshCookie.setMaxAge(0);
+            refreshCookie.setPath("/");
+            response.addCookie(refreshCookie);
         }
 
 //        Long userId = Long.parseLong((String) jwtService.getUserInfo(refreshToken).get("id"));
@@ -129,16 +141,6 @@ public class AuthController {
 //            // cache server에서 token들 삭제
 //            redisService.deleteTokens(kakaoEmail);
 //        }
-
-        Cookie accessCookie = new Cookie("accessToken", null);
-        accessCookie.setMaxAge(0);
-        accessCookie.setPath("/");
-        response.addCookie(accessCookie);
-
-        Cookie refreshCookie = new Cookie("refreshToken", null);
-        refreshCookie.setMaxAge(0);
-        refreshCookie.setPath("/");
-        response.addCookie(refreshCookie);
 
         return ResponseEntity.status(200).body(AuthRes.of(200, "Success", null, true, 0L));
     }
