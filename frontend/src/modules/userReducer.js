@@ -14,7 +14,6 @@ const initialState = {
         currentSley: 0,
         currentBookPoint: 0,
     },
-    // user: null,
 };
 
 const reducers = {

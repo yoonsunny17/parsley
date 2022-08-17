@@ -22,9 +22,9 @@ function TodayStudy(args) {
     const [percent, setPercent] = useState();
     const [hour, setHour] = useState(0);
     const [min, SetMin] = useState(0);
-    const [targetHour, setTargetHour] = useState();
-    const [targetMin, setTargetMin] = useState();
-    const [targetTime, setTargetTime] = useState();
+    const [targetHour, setTargetHour] = useState(0);
+    const [targetMin, setTargetMin] = useState(0);
+    const [targetTime, setTargetTime] = useState(0);
 
     useEffect(() => {
         if (!targetTime) {
