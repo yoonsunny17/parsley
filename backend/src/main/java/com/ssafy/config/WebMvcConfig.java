@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
             "/auth/login",
             "/auth/logout",
             "/auth/refresh",
-            "/room",
+            "/room/**",
             "/rank/nongbu",
             "/error",
             "/swagger-ui",
@@ -37,7 +37,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns(EXCLUDE_PATHS);
+                .excludePathPatterns(EXCLUDE_PATHS)
+                .addPathPatterns("/room/create")
+                .addPathPatterns("/room/*/update")
+                .addPathPatterns("/room/*/delete")
+                .addPathPatterns("/room/*/check")
+                .addPathPatterns("/room/*/log");
     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
