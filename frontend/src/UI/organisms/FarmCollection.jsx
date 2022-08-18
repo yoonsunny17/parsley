@@ -29,7 +29,7 @@ function FarmCollection() {
           alt="avatar"
         />
         <div className="font-semibold text-sm mt-3">
-          {user.herbBookName} &nbsp; [{user.herbBookType}] <br />
+          {user.herbBookName} &nbsp; {user.herbBookType} <br />
           <span className="font-semibold text-xs">
             {user.herbBookDescription}
           </span>
