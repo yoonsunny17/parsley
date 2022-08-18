@@ -6,10 +6,6 @@ const initialState = {
   itemFertilizerId: 1,
   itemWaterId: 1,
   herbBook: [],
-  profileName: "프로필을 선택해주세요",
-  profileDescription: "",
-  profileUrl:
-    "https://cdn-icons.flaticon.com/png/512/3985/premium/3985429.png?token=exp=1660664614~hmac=e3e32aa3474f593e8eec87bd6ab56b48",
 };
 
 const reducers = {
@@ -24,14 +20,6 @@ const reducers = {
   },
   setWater: (state, { payload: itemWaterId }) => {
     state.itemWaterId = itemWaterId;
-  },
-  setProfile: (
-    state,
-    { payload: { profileName, profileDescription, profileUrl } }
-  ) => {
-    state.profileName = profileName;
-    state.profileDescription = profileDescription;
-    state.profileUrl = profileUrl;
   },
   setHerbBook: (state, { payload: herbBook }) => {
     state.herbBook = herbBook;

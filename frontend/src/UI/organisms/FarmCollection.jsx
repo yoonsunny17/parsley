@@ -7,7 +7,6 @@ import { useGetAllHerbBooksQuery } from "../../services/farm";
 import { useSelector } from "react-redux";
 
 function FarmCollection() {
-  const user = useSelector((state) => state.user.user);
   //   const { data: getCollection } = useGetCollectionQuery(
   //     {},
   //     { refetchOnMountOrArgChange: true }
@@ -20,11 +19,10 @@ function FarmCollection() {
   // const { data: herbBooks } = useGetAllHerbBooksQuery();
 
   const herbBook = useSelector((state) => state.farm.herbBook);
+  console.log("우오ㅘ프로필바꾸자");
+  console.log(herbBook);
+  const user = useSelector((state) => state.user.user);
 
-  const herbname = "프로틴 중독 파슬리";
-  const grade = "희귀";
-  const description =
-    "근육으로 똘똘 뭉친 파슬리이다... 먹으면 막강해질지도... ?";
   // const isOpened = "16";
   let isOpendNumb = 0; // 지금까지 모은 도감 캐릭터 개수 (중복 빼고)
   for (let i = 0; i < herbBook.length; i++) {
@@ -47,17 +45,14 @@ function FarmCollection() {
         <img
           className="inline-block mt-3 mb-3 mr-4 h-16 w-16 rounded-full ring-2 ring-sub1"
           // src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-          src={profileImg}
+          src={user.herbBookImageUrl}
           alt="avatar"
         />
-        {/* <HerbItemAvatar
-          imgUrl={
-            "https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-          }
-        /> */}
         <div className="font-semibold text-sm mt-3">
-          {herbname} [{grade}] <br />
-          <span className="font-semibold text-xs">{description}</span>
+          {user.herbBookName} &nbsp; [{user.herbBookType}] <br />
+          <span className="font-semibold text-xs">
+            {user.herbBookDescription}
+          </span>
         </div>
       </div>
       {/* // TODO: 농장페이지 도감 컴포넌트 */}

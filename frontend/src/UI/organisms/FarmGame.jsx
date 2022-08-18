@@ -36,7 +36,13 @@ function FarmGame(props) {
   );
   const [addHerbBook] = useAddHerbBookMutation();
 
-  const day = 32;
+  const today = new Date();
+  const regDate = new Date(user.regDate);
+  const togetherDays = parseInt(
+    (today.getDate() - regDate.getDate() + 1000 * 60 * 60 * 9) /
+      (1000 * 60 * 60 * 24) +
+      1
+  );
 
   const clickToEmpty = () => {
     setIsEmpty((current) => !current);
@@ -101,7 +107,7 @@ function FarmGame(props) {
     <div className="rounded-2xl w-full h-auto mb-4 md:w-2/3 md:mb-0 shadow px-8 py-5">
       <div className="flex justify-between">
         <div className="text-lg font-bold mb-2">
-          허브의 주인이 되신지 {user?.regDate}일 째!
+          허브의 주인이 되신지 {togetherDays}일 째!
         </div>
         <div className="text-base font-bold">{`${currentSley} 슬리`}</div>
       </div>
