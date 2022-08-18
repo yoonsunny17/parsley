@@ -55,10 +55,18 @@ public class UserRes {
         res.setName(user.getName());
         res.setRegDate(user.getRegDate());
         res.setDescription(user.getDescription());
-        res.setHerbBookName(user.getProfileHerb().getName());
-        res.setHerbBookType(user.getProfileHerb().getHerbType().toString());
-        res.setHerbBookDescription(user.getProfileHerb().getDescription());
-        res.setHerbBookImageUrl(user.getProfileHerb().getImageUrl());
+        if(user.getProfileHerb() == null){
+            res.setHerbBookName("프로필을 설정해보세요");
+            res.setHerbBookType("");
+            res.setHerbBookDescription("");
+            res.setHerbBookImageUrl("https://cdn-icons-png.flaticon.com/512/847/847969.png");
+        } else{
+            res.setHerbBookName(user.getProfileHerb().getName());
+            res.setHerbBookType("[" + user.getProfileHerb().getHerbType().toString() + "]");
+            res.setHerbBookDescription(user.getProfileHerb().getDescription());
+            res.setHerbBookImageUrl(user.getProfileHerb().getImageUrl());
+        }
+
         res.setDDay(user.getDDay());
         res.setCurrentSley(user.getCurrentSley());
         res.setCurrentBookPoint(user.getCurrentBookPoint());
