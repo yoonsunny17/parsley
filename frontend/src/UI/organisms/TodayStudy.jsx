@@ -24,9 +24,6 @@ function TodayStudy(args) {
   const [targetTime, setTargetTime] = useState(0);
   const [studyTime, setStudyTime] = useState(0);
 
-  console.log("percent: " + percent);
-  console.log("target time: " + targetTime);
-
   useEffect(() => {
     setStudyTime(weekly[dayOfWeek]?.hour * 60);
     setTargetTime(goal?.targetTime);

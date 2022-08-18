@@ -53,9 +53,6 @@ export const roomApi = createApi({
       }),
       async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
         await queryFulfilled;
-        console.log("===============");
-        console.log("로그 잘 들어가요!!!");
-        console.log("===============");
       },
     }),
   }),

@@ -16,7 +16,6 @@ function ViewAllStudyRooms() {
     setActiveIndex(index);
   };
 
-  console.log(getAllRooms);
   return (
     <div>
       <Navbar />

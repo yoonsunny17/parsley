@@ -33,12 +33,7 @@ export const userApi = createApi({
         try {
           await queryFulfilled;
           const user = getState().user.user;
-          console.log("========== Before =========");
-          console.log(user);
 
-          const newResult = { ...user, ...newUser };
-          console.log("========== After =========");
-          console.log(newResult);
           dispatch(
             setUser({
               ...user,

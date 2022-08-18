@@ -5,7 +5,6 @@ import { useUpdateUserMutation } from "../../services/user";
 
 function MyProfile() {
   const user = useSelector((state) => state.user.user);
-  console.log(user);
   const today = new Date();
   const regDate = new Date(user?.regDate);
   const togetherDays = parseInt(

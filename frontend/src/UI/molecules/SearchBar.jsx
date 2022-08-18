@@ -44,7 +44,6 @@ function SearchBar() {
               e.preventDefault();
               history.push(`/room/search/${search}`);
               setSearch("");
-              console.log(search);
             }}
             onKeyPress={searchEnter}
           >

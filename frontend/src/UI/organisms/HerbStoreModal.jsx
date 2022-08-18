@@ -24,14 +24,11 @@ function HerbStoreModal({ showModal, handleModal, clickCancel }) {
     parseInt(allItems?.itemWaters[waterId - 1].sley);
 
   const [possibility, setPosibility] = useState(true);
-  console.log(user);
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(user);
-    console.log("현재 슬리: " + user?.currentSley);
     if (user?.currentSley >= totalSley) {
       setPosibility(true);
-      console.log("구매가능!!!" + possibility);
       await addHerb({ herb: herbInfo, totalSley });
       handleModal();
       if (!showModal) {
@@ -39,7 +36,6 @@ function HerbStoreModal({ showModal, handleModal, clickCancel }) {
       }
     } else {
       setPosibility(false);
-      console.log("구매불가능!!!" + possibility);
     }
   };
 

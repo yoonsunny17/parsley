@@ -67,10 +67,6 @@ function StudyInfo() {
 
   const handleEnter = (e) => e.key === "Enter" && e.preventDefault();
 
-  const onClickEdit = () => {
-    console.log(newRoomInfo);
-  };
-
   // TODO: 비밀번호 있는 방인 경우 처리
   const handleJoinRoom = async () => {
     if (isLogin) {
