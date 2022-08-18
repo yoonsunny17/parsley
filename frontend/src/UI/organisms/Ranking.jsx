@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useGetNongbuRankingQuery } from "../../services/ranking";
+import { BiMedal } from "react-icons/bi";
 
 function Ranking() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -13,7 +14,7 @@ function Ranking() {
   const [point, setPoint] = useState(10000);
 
   console.log(getNongbuRankings);
-  const color = ["#D5A11E", "#A3A3A3", "#CD7F32"];
+  const color = ["gold", "silver", "bronze"];
 
   function topRank() {
     let array = [];
@@ -23,7 +24,7 @@ function Ranking() {
         array.push(
           <li key={i} className="flex items-center justify-between mb-2">
             <span className="w-16 inline-block text-center">
-              <i className={`bx bx-medal text-[${color[i]}] text-3xl`}></i>
+              <BiMedal className={`bx bx-medal text-${color[i]} text-3xl`} />
             </span>
             <span className="w-2/5 text-start truncate">
               {length <= i ? "--" : getNongbuRankings?.topRank[i].name}

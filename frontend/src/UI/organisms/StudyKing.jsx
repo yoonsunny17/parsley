@@ -5,12 +5,13 @@ import {
   useGetGongbuRankingByRoomIdQuery,
   useGetNongbuRankingByRoomIdQuery,
 } from "../../services/ranking";
+import { BiMedal } from "react-icons/bi";
 
 function StudyKing() {
   const user = useSelector((state) => state.user.user);
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const color = ["#D5A11E", "#A3A3A3", "#CD7F32"];
+  const color = ["gold", "silver", "bronze"];
   const params = useParams();
   const { data: getGongbuRankingsByRoomId } = useGetGongbuRankingByRoomIdQuery(
     params.id,
@@ -89,9 +90,9 @@ function StudyKing() {
                     >
                       <td>
                         {idx < 3 ? (
-                          <i
-                            className={`bx bx-medal text-[${color[idx]}] text-3xl`}
-                          ></i>
+                          <BiMedal
+                            className={`bx bx-medal text-${color[idx]} text-3xl`}
+                          />
                         ) : (
                           idx
                         )}
@@ -127,9 +128,9 @@ function StudyKing() {
                     >
                       <td>
                         {idx < 3 ? (
-                          <i
-                            className={`bx bx-medal text-[${color[idx]}] text-3xl`}
-                          ></i>
+                          <BiMedal
+                            className={`bx bx-medal text-${color[idx]} text-3xl`}
+                          />
                         ) : (
                           idx
                         )}
