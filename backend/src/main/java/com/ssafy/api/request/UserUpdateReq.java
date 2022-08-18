@@ -14,7 +14,7 @@ public class UserUpdateReq {
     private String name;
     @ApiModelProperty(name = "상태 메세지", example = "두껍아 두껍아 헌집줄게 밥을 다오")
     private String description;
-    @ApiModelProperty(name = "프로필 이미지", example = "https://via.placeholder.com/150/")
-    private String profileImgUrl;
+    @ApiModelProperty(name = "프로필용 도감 아이디", example = "32")
+    private int herbBookId;
 
 }

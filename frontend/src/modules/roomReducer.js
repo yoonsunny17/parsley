@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 // room: {
 //             id: null,
@@ -27,6 +28,9 @@ export const roomSlice = createSlice({
     name: "room",
     initialState,
     reducers,
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => initialState);
+    },
 });
 
 export const { setRoom } = roomSlice.actions;

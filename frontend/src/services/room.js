@@ -45,18 +45,19 @@ export const roomApi = createApi({
         body: rest,
       }),
     }), // 스터디룸 추가 (한번도 참여 이력 없을 경우)
-
-    // getSearchList: builder.query({
-    //   query: (word) => {
-    //     const { word } = word;
-    //     console.log("word: ", word);
-    //     return {
-    //       url: `/room/search?search_word=`,
-    //       params: { word },
-    //     };
-    //   },
-    //   //   query: () => `/room/search?search_word=`,
-    // }),
+    addStudyLog: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/room/${id}/log`,
+        method: "POST",
+        body: { status },
+      }),
+      async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
+        await queryFulfilled;
+        console.log("===============");
+        console.log("로그 잘 들어가요!!!");
+        console.log("===============");
+      },
+    }),
   }),
 });
 
@@ -67,5 +68,5 @@ export const {
   useUpdateRoomMutation,
   useDeleteRoomMutation,
   useGetStudySessionQuery,
-  useGetSearchListQuery,
+  useAddStudyLogMutation,
 } = roomApi;

@@ -25,6 +25,9 @@ module.exports = {
                 widget: "#25262D",
                 bg: "#FEFEFE",
                 heart: "#F35757",
+                gold: "#D5A11E",
+                silver: "#A3A3A3",
+                bronze: "#CD7F32",
             },
             fontFamily: {
                 logo: ["Titan One", "cursive"],
@@ -33,5 +36,5 @@ module.exports = {
             },
         },
     },
-    plugins: [require("daisyui")],
+    plugins: [require("daisyui"), require("tailwind-scrollbar-hide")],
 };

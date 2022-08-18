@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 const initialState = {
     isLogin: false,
@@ -14,6 +15,10 @@ const initialState = {
         currentSley: 0,
         currentBookPoint: 0,
         interestRooms: [],
+        herbBookName: "",
+        herbBookType: "",
+        herbBookDescription: "",
+        herbBookImageUrl: "",
     },
 };
 
@@ -39,6 +44,9 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers,
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => initialState);
+    },
 });
 
 export const { login, logout, setToken, setUserId, setUser } =

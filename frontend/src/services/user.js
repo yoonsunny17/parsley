@@ -11,7 +11,6 @@ export const userApi = createApi({
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {
                     const result = await queryFulfilled;
-                    console.log(result.data.userInfo);
                     dispatch(setUser(result.data.userInfo));
                 } catch (err) {
                     console.log(err);

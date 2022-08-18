@@ -2,6 +2,8 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserUpdateReq;
 import com.ssafy.common.util.UserUtil;
+import com.ssafy.db.entity.HerbBook;
+import com.ssafy.db.repository.HerbBookRepository;
 import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +23,9 @@ import java.util.List;
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private HerbBookRepository herbBookRepository;
 
 	@Autowired
 	private UserUtil userUtil;
@@ -51,9 +56,10 @@ public class UserService {
 
 	@Transactional
 	public void updateUser(User user, UserUpdateReq userInfo) {
+		HerbBook herbBook = herbBookRepository.findByHerbBookId(userInfo.getHerbBookId());
 		user.setName(userInfo.getName());
 		user.setDescription(userInfo.getDescription());
-		user.setProfileImgUrl(userInfo.getProfileImgUrl());
+		user.setProfileHerb(herbBook);
 	}
 
 	public boolean existsByName(String name, Long userId) {

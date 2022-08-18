@@ -51,10 +51,7 @@ export const userRoomApi = createApi({
                             (member) => member.id !== user.id
                         ),
                     };
-                    console.log(room);
                     dispatch(setRoom(newRoom));
-                    console.log(newRoom);
-                    console.log(getState().room.room);
                     dispatch(roomApi.util.invalidateTags(["Room"]));
                 } catch (err) {
                     console.log(err);
