@@ -24,10 +24,7 @@ export const userRoomApi = createApi({
                         ...room,
                         members: [...room.members, user],
                     };
-                    console.log(room);
                     dispatch(setRoom(newRoom));
-                    console.log(newRoom);
-                    console.log(getState().room.room);
                     dispatch(roomApi.util.invalidateTags(["Room"]));
                 } catch (err) {
                     console.log(err);
@@ -63,7 +60,30 @@ export const userRoomApi = createApi({
                 }
             },
         }),
+        addLikeRoom: builder.mutation({
+            query: (roomId) => {
+                return {
+                    url: `/user/like/add`,
+                    method: "POST",
+                    body: { roomId },
+                };
+            },
+        }),
+        deleteLikeRoom: builder.mutation({
+            query: (roomId) => {
+                return {
+                    url: `/user/like/delete`,
+                    method: "POST",
+                    body: { roomId },
+                };
+            },
+        }),
     }),
 });
 
-export const { useJoinRoomMutation, useWithdrawRoomMutation } = userRoomApi;
+export const {
+    useJoinRoomMutation,
+    useWithdrawRoomMutation,
+    useAddLikeRoomMutation,
+    useDeleteLikeRoomMutation,
+} = userRoomApi;
