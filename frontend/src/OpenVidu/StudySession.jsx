@@ -26,12 +26,12 @@ import Button from "../UI/atoms/Button";
 import Swal from "sweetalert2";
 import Navbar from "../UI/organisms/Navbar";
 
-const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+// const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 // 배포할때 이걸로!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_URL;
-// const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SECRET;
+const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_URL;
+const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SECRET;
 
 const footerBtn = "20";
 const NavBtn = "25";
@@ -795,10 +795,7 @@ class StudySession extends Component {
                 {this.state.mode === 0 ? (
                   <div className="flex flex-col">
                     {/* <div id="video-container" className="w-3/4"> */}
-                    <div
-                      id="video-container"
-                      className="w-[calc-94% / 2] m-[1%] flex flex-wrap col-span-1"
-                    >
+                    <div className="video-container w-[calc-94% / 2] m-[1%] flex flex-wrap col-span-1">
                       {/* // TODO: 화면 넘어가는것을 carousel?? pagination?? 구현해야 할 것 같음 */}
                       {/* 잇츠 미,, 작게보이는 나,,, 가장 왼쪽에 배치했어*/}
                       {this.state.publisher !== undefined ? (
