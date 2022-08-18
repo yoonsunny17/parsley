@@ -13,6 +13,7 @@ const initialState = {
         dDay: null,
         currentSley: 0,
         currentBookPoint: 0,
+        interestRooms: [],
     },
 };
 
