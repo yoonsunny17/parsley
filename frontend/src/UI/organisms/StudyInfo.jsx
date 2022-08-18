@@ -89,8 +89,6 @@ function StudyInfo() {
       setTimeout(() => {
         window.location.reload();
       }, 1500);
-    } else if (isLogin && !data?.roomInfo.isPublic) {
-      handlePassword();
     } else {
       Toast.fire({
         icon: "info",
@@ -99,34 +97,34 @@ function StudyInfo() {
     }
   };
 
-  // 로그인은 되어있는 사용자인데, 아직 한번도 참가한 적이 없다면?
-  // 1. 비밀번호를 눌러주세요
-  // 2-1. 비밀번호를 옳게 눌렀다면? 나의 스터디에 추가되었습니다
-  // 2-2. 비밀번호를 틀렸다면? 다시 입력해 주세요
+  //   // 로그인은 되어있는 사용자인데, 아직 한번도 참가한 적이 없다면?
+  //   // 1. 비밀번호를 눌러주세요
+  //   // 2-1. 비밀번호를 옳게 눌렀다면? 나의 스터디에 추가되었습니다
+  //   // 2-2. 비밀번호를 틀렸다면? 다시 입력해 주세요
 
-  const handlePassword = async () => {
-    const { value: password } = await Swal.fire({
-      title: "비밀번호를 입력해 주세요",
-      input: "password",
-      inputLabel: "Password",
-      inputPlaceholder: "password",
-    });
-    if (password === data?.roomInfo.password) {
-      await joinRoom(params.id);
-      Toast.fire({
-        icon: "success",
-        title: "나의 스터디에 추가되었습니다.",
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-    } else {
-      Toast.fire({
-        icon: "info",
-        title: "로그인이 필요합니다.",
-      });
-    }
-  };
+  //   const handlePassword = async () => {
+  //     const { value: password } = await Swal.fire({
+  //       title: "비밀번호를 입력해 주세요",
+  //       input: "password",
+  //       inputLabel: "Password",
+  //       inputPlaceholder: "password",
+  //     });
+  //     if (password === data?.roomInfo.password) {
+  //       await joinRoom(params.id);
+  //       Toast.fire({
+  //         icon: "success",
+  //         title: "나의 스터디에 추가되었습니다.",
+  //       });
+  //       setTimeout(() => {
+  //         window.location.reload();
+  //       }, 1500);
+  //     } else {
+  //       Toast.fire({
+  //         icon: "info",
+  //         title: "로그인이 필요합니다.",
+  //       });
+  //     }
+  //   };
 
   const handleWithdrawRoom = () => {
     Swal.fire({
@@ -250,6 +248,12 @@ function StudyInfo() {
               </div>
             </div>
             <div className="text-sm flex">
+              <div className="mr-4 text-extra3 min-w-max">모드</div>
+              <span className="font-light text-extra5">
+                {room?.mode === 0 ? "손꾸락" : "얼구리"}
+              </span>
+            </div>
+            <div className="text-sm flex">
               <div className="mr-4 min-w-max text-extra3">인원</div>
               <span className="font-light text-extra5">
                 {room?.members.length} / {room?.maxPopulation} 명
@@ -273,108 +277,6 @@ function StudyInfo() {
               <Link to={`/room/session/${params.id}`}>
                 <Button text={"입장하기"} />
               </Link>
-              <button className="color-delay rounded-full text-sm bg-main hover:bg-sub2 text-font3">
-                <label
-                  htmlFor="editSession"
-                  className="cursor-pointer px-4 py-2"
-                >
-                  수정하기
-                </label>
-              </button>
-              <input
-                type="checkbox"
-                id="editSession"
-                className="modal-toggle"
-              />
-              <div className="modal">
-                <div className="modal-box">
-                  <div className="flex justify-between">
-                    <div className="text-lg font-bold mb-3">
-                      <span className="flex items-center">
-                        방 정보 수정
-                        <span className="ml-2 text-xl">
-                          <BiEditAlt />
-                        </span>
-                      </span>
-                    </div>
-                    <button>
-                      <label
-                        htmlFor="editSession"
-                        className="cursor-pointer px-2 py-2"
-                      >
-                        <MdClose />
-                      </label>
-                    </button>
-                  </div>
-                  {/* <div className="mt-3">
-                    <div>방 제목: {room?.name}</div>
-                    <div>최대 인원: {room?.maxPopulation}</div>
-                    <div>소개</div>
-                    <div>{room?.description}</div>
-                    <div>모드: {room?.mode === 0 ? "손꾸락" : "얼구리"}</div>
-                    <div>공개 여부: {room?.isPublic ? "공개" : "비공개"}</div>
-                  </div> */}
-
-                  <div className="modal-action">
-                    {/* // TODO: 적용하기, 취소, 닫기 버튼 만들기 */}
-                    <button className="cursor-pointer px-2 py-2">
-                      수정하기
-                    </button>
-                    <form onSubmit={handleSubmit} onKeyPress={handleEnter}>
-                      <div>방 제목</div>
-                      <input
-                        type="text"
-                        onChange={handleChange}
-                        name="name"
-                        value={newRoomInfo?.name}
-                      />
-                      {/* <div>최대 인원</div>
-                      <input
-                        type="text"
-                        onChange={handleChange}
-                        name="maxPopulation"
-                        value={newRoomInfo?.maxPopulation}
-                      /> */}
-                      <div>스터디룸 소개</div>
-                      <textarea
-                        type="text"
-                        onChange={handleChange}
-                        name="description"
-                        value={newRoomInfo?.description}
-                      />
-                      {/* <div>모드</div>
-                      <input
-                        type="text"
-                        onChange={handleChange}
-                        name="mode"
-                        value={newRoomInfo?.mode}
-                      /> */}
-                      {/* <div>공개 여부</div>
-                      <input
-                        type="boolean"
-                        onChange={handleChange}
-                        name="isPublic"
-                        value={newRoomInfo?.isPublic}
-                      /> */}
-                      <button
-                        type="submit"
-                        onClick={onClickEdit}
-                        className="cursor-pointer px-2 py-2"
-                      >
-                        수정 완료
-                      </button>
-                    </form>
-                    <button className="cursor-pointer px-2 py-2">
-                      방 삭제하기
-                    </button>
-
-                    <div className="modal-action">
-                      {/* // TODO: 적용하기, 취소, 닫기 버튼 만들기 */}
-                      {/* <Link to={`/room/${params.id}/update`}> */}
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           ) : (
             <div className="flex gap-2">
