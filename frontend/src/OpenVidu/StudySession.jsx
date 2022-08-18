@@ -34,7 +34,7 @@ const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 // const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SECRET;
 
 const footerBtn = "20";
-const NavBtn = "24";
+const NavBtn = "25";
 
 let localUser = new UserModel();
 
@@ -45,7 +45,7 @@ class StudySession extends Component {
     // console.log("======= 현재 참여한 사람/세션 정보 =========");
     // console.log(this.props);
 
-    console.log("들어왔냐!!!!");
+    console.log("PROPS 들어왔냐!!!!");
     console.log(this.props);
     console.log(this.props.addStudyLog);
 
@@ -688,6 +688,9 @@ class StudySession extends Component {
   render() {
     const messages = this.state.messages;
     const myUserName = this.state.myUserName;
+    // const members = this.state.membersArr;
+    // console.log("왜안나와????????????????");
+    // console.log(members);
 
     return (
       <div className="text-extra5">
@@ -772,9 +775,13 @@ class StudySession extends Component {
                 </label>
                 <div className="messageBox dropdown-content menu mt-[10px] shadow-lg bg-white overflow-hidden rounded-box w-[260px] absolute top-[35px] right-[-118px] pb-1">
                   <div className="m-4">
-                    <div>현재 참여한 사람</div>
+                    <div>스터디룸 참가자</div>
                     <hr />
-                    <div className="text-sm">(나) {this.state.myUserName}</div>
+                    {this.state.membersArr.map((member, idx) => (
+                      <div className="text-sm my-[2px]" key={idx}>
+                        {member.name}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -933,7 +940,6 @@ class StudySession extends Component {
                       console.log(this.state.isDivided);
                     }}
                   >
-                    {/* // FIXME: 일단은 푸터에 넣어놓고,, 시간되면 바꾸기 */}
                     <BiWindows size={footerBtn} />
                   </button>
                   {/* 얼구리 모드인 경우에만 화면공유 활성화 */}
