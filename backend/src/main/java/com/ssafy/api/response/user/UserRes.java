@@ -22,8 +22,17 @@ public class UserRes {
     @ApiModelProperty(name = "유저 설명", example = "화이팅")
     String description;
 
-    @ApiModelProperty(name = "프로필 사진", example = "https://via.placeholder.com/150/")
-    String profileImgUrl;
+    @ApiModelProperty(name = "프로필 허브 이름", example = "https://via.placeholder.com/150/")
+    String herbBookName;
+
+    @ApiModelProperty(name = "프로필 허브 타입", example = "RARE")
+    String herbBookType;
+
+    @ApiModelProperty(name = "프로필 허브 소개", example = "모두함께 PARSLEY!")
+    String herbBookDescription;
+
+    @ApiModelProperty(name = "프로필 허브 이미지url", example = "https://via.placeholder.com/150/")
+    String herbBookImageUrl;
 
     @ApiModelProperty(name = "D-DAY", example = "2022-08-12")
     LocalDate dDay;
@@ -40,7 +49,10 @@ public class UserRes {
         res.setName(user.getName());
         res.setRegDate(user.getRegDate());
         res.setDescription(user.getDescription());
-        res.setProfileImgUrl(user.getProfileImgUrl());
+        res.setHerbBookName(user.getProfileHerb().getName());
+        res.setHerbBookType(user.getProfileHerb().getHerbType().toString());
+        res.setHerbBookDescription(user.getProfileHerb().getDescription());
+        res.setHerbBookImageUrl(user.getProfileHerb().getImageUrl());
         res.setDDay(user.getDDay());
         res.setCurrentSley(user.getCurrentSley());
         res.setCurrentBookPoint(user.getCurrentBookPoint());
