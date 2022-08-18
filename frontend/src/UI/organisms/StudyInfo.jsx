@@ -19,14 +19,15 @@ import { BiEditAlt } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 
 function StudyInfo() {
+    const dispatch = useDispatch();
+    const params = useParams();
+
     const isLogin = useSelector((state) => state.user.isLogin);
     const user = useSelector((state) => state.user.user);
     const room = useSelector((state) => state.room.room);
     const [like, setLike] = useState(false);
     const [edit, setEdit] = useState(false);
 
-    const dispatch = useDispatch();
-    const params = useParams();
     const { data, isLoading: isGetRoomLoading } = useGetRoomQuery(params.id, {
         refetchOnMountOrArgChange: true,
     });
@@ -126,6 +127,7 @@ function StudyInfo() {
     const handleAddLikeRoom = async () => {
         if (isLogin) {
             await addLikeRoom(params.id);
+            setLike(true);
             Toast.fire({
                 icon: "success",
                 title: "관심 스터디에 추가되었습니다.",
@@ -141,6 +143,7 @@ function StudyInfo() {
     const handleDeleteLikeRoom = async () => {
         if (isLogin) {
             await deleteLikeRoom(params.id);
+            setLike(false);
             Toast.fire({
                 icon: "success",
                 title: "관심 스터디에서 제거되었습니다.",
@@ -153,21 +156,28 @@ function StudyInfo() {
         }
     };
 
-    useEffect(() => {
-        if (!isGetRoomLoading) {
-            dispatch(setRoom(data?.roomInfo));
-        }
-    });
-
     const copyLink = () => {
         navigator.clipboard.writeText(
-            `https://i7a604.p.ssafy.io/room/${params.id}`
+            `${process.env.REACT_APP_APP_URL}/room/${params.id}`
         );
         Toast.fire({
             icon: "success",
             title: "링크가 복사되었습니다!",
         });
     };
+
+    useEffect(() => {
+        setLike(user?.interestRooms.find((item) => item.id === room?.id));
+        if (!isGetRoomLoading) {
+            dispatch(setRoom(data?.roomInfo));
+        }
+    }, [
+        user?.interestRooms,
+        isGetRoomLoading,
+        room?.id,
+        dispatch,
+        data?.roomInfo,
+    ]);
 
     return (
         <div className="container flex flex-wrap gap-10">

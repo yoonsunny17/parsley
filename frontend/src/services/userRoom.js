@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithReAuth } from ".";
 import { setRoom } from "../modules/roomReducer";
+import { setUser } from "../modules/userReducer";
 import { roomApi } from "./room";
 
 export const userRoomApi = createApi({
@@ -68,6 +69,20 @@ export const userRoomApi = createApi({
                     body: { roomId },
                 };
             },
+            async onQueryStarted(_, { dispatch, getState, queryFulFilled }) {
+                try {
+                    await queryFulFilled;
+                    const user = getState().user.user;
+                    const newRoom = getState().room.room;
+                    const newUser = {
+                        ...user,
+                        interestRooms: [...user.interestRooms, newRoom],
+                    };
+                    dispatch(setUser(newUser));
+                } catch (err) {
+                    console.log(err);
+                }
+            },
         }),
         deleteLikeRoom: builder.mutation({
             query: (roomId) => {
@@ -76,6 +91,22 @@ export const userRoomApi = createApi({
                     method: "POST",
                     body: { roomId },
                 };
+            },
+            async onQueryStarted(_, { dispatch, getState, queryFulFilled }) {
+                try {
+                    await queryFulFilled;
+                    const user = getState().user.user;
+                    const deleteRoom = getState().room.room;
+                    const newUser = {
+                        ...user,
+                        interestRooms: user.interestRooms.filter(
+                            (room) => room.id !== deleteRoom.id
+                        ),
+                    };
+                    dispatch(setUser(newUser));
+                } catch (err) {
+                    console.log(err);
+                }
             },
         }),
     }),
