@@ -7,7 +7,8 @@ import {
 } from "../../services/notification";
 import Button from "../atoms/Button";
 import Notification from "../molecules/Notification";
-import SearchBar from "../molecules/SearchBar";
+// import SearchBarTest from "../molecules/SearchBarTest";
+// import SearchBar from "../molecules/SearchBar";
 
 function Navbar() {
   const isLogin = useSelector((state) => state.user.isLogin);
