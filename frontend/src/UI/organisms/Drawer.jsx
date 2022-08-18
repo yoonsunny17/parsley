@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import DdayWidget from "../molecules/DdayWidget";
-import StudyWidget from "../molecules/StudyWidget";
 import Button from "../atoms/Button";
 import { useSelector } from "react-redux";
 import { useLazyLogoutQuery } from "../../services/auth";
 import { KAKAO_AUTH_URL } from "../../services";
 import { Link, useNavigate } from "react-router-dom";
-// import CalendarWidget from "../molecules/Calendar";
 import Calendar from "react-calendar";
 import "./Calendar.css";
 import { persistor } from "../..";

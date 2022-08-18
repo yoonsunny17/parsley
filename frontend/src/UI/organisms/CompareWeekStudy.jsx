@@ -4,8 +4,6 @@ import { useSelector } from "react-redux/es/exports";
 function CompareWeekStudy() {
     const lastWeek = useSelector((state) => state.study.lastWeek);
     const thisWeek = useSelector((state) => state.study.weekly);
-    // console.log(lastWeek);
-    // console.log(thisWeek[1].hour);
 
     const [thisAvgTime, setThisAvgTime] = useState(0);
     const [lastAvgTime, setLastAvgTime] = useState(0);
@@ -31,49 +29,50 @@ function CompareWeekStudy() {
     });
 
     return (
-        <div className="rounded-2xl w-full md:w-[32%] shadow px-8 py-5">
-            <div className="text-base font-semibold">
-                <i className="text-xl font-bold"></i>
-                <span className="">주간 공부량 비교</span>
+        <div className="rounded-2xl w-full lg:w-[32%] shadow px-8 py-5 mb-5">
+            <div className="text-base">
+                <i className="text-xl"></i>
+                <span className="font-semibold">주간 공부량 비교</span>
                 <p className="text-sm mt-3">
                     이번주 평균 공부량이 지난주보다{" "}
                     <span className="font-bold">{text}</span>
                 </p>{" "}
             </div>
-            <hr />
-            <div className="mt-4">
-                <div className="flex justify-between items-center">
-                    <div className="flex font-bold text-[24px] items-center gap-[5px]">
-                        {lastAvgTime}{" "}
-                        <span className="text-[12px] mt-[2px] text-[#979797]">
-                            시간/일
-                        </span>
+            <div className="flex items-center w-full">
+                <div className="w-full py-12">
+                    <div className="flex justify-between items-center">
+                        <div className="flex font-bold text-lg items-center gap-[5px]">
+                            {lastAvgTime}{" "}
+                            <span className="text-[12px] mt-[2px] text-[#979797]">
+                                시간/일
+                            </span>
+                        </div>
+                        <div className="flex font-bold text-[12px] items-center gap-[5px] text-[#979797]">
+                            지난 주
+                        </div>
                     </div>
-                    <div className="flex font-bold text-[12px] mt-[35px] items-center gap-[5px] text-[#979797]">
-                        지난 주
+                    <progress
+                        className="progress progress-success w-full h-[16px]"
+                        value={lastHourPerMinute}
+                        max="100"
+                    ></progress>
+                    <div className="flex justify-between items-center">
+                        <div className="flex font-bold text-lg mt-[10px] items-center gap-[5px]">
+                            {thisAvgTime}{" "}
+                            <span className="text-[12px] mt-[5px] text-[#979797]">
+                                시간/일
+                            </span>
+                        </div>
+                        <div className="flex font-bold text-[12px] mt-[10px] items-center gap-[5px] text-[#979797]">
+                            이번 주
+                        </div>
                     </div>
+                    <progress
+                        className="progress progress-success w-full h-[16px]"
+                        value={thisHourPerMinute}
+                        max="100"
+                    ></progress>
                 </div>
-                <progress
-                    className="progress progress-success w-full h-[16px]"
-                    value={lastHourPerMinute}
-                    max="100"
-                ></progress>
-                <div className="flex justify-between items-center">
-                    <div className="flex font-bold text-[24px] mt-[10px] items-center gap-[5px]">
-                        {thisAvgTime}{" "}
-                        <span className="text-[12px] mt-[5px] text-[#979797]">
-                            시간/일
-                        </span>
-                    </div>
-                    <div className="flex font-bold text-[12px] mt-[10px] items-center gap-[5px] text-[#979797]">
-                        이번 주
-                    </div>
-                </div>
-                <progress
-                    className="progress progress-success w-full h-[16px]"
-                    value={thisHourPerMinute}
-                    max="100"
-                ></progress>
             </div>
         </div>
     );

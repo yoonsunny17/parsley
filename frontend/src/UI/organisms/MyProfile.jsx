@@ -96,7 +96,7 @@ function MyProfile() {
                                 슬리 / 도감 포인트
                             </p>
                             <span className="text-base">
-                                {user?.currentBookPoint} Sley /{" "}
+                                {user?.currentSley} Sley /{" "}
                                 {user?.currentBookPoint} P
                             </span>
                         </div>
@@ -116,8 +116,8 @@ function MyProfile() {
                             </button>
                             <button
                                 disabled={
-                                    user?.name.length === 0 &&
-                                    user?.description.length === 0
+                                    user?.name?.length === 0 &&
+                                    user?.description?.length === 0
                                         ? true
                                         : false
                                 }

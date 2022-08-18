@@ -16,6 +16,10 @@ import HerbStoreModal from "./HerbStoreModal";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 
+import HerbComponentLoad1 from "../atoms/HerbComponentLoad1";
+import HerbComponentLoad2 from "../atoms/HerbComponentLoad2";
+import HerbComponentLoad3 from "../atoms/HerbComponentLoad3";
+
 function FarmGame(props) {
     const dispatch = useDispatch();
     const [currentSley, setCurrentSley] = useState(0);
@@ -37,8 +41,6 @@ function FarmGame(props) {
             1
     );
 
-    console.log(getAllHerbs);
-
     const clickCancel = () => {
         dispatch(setSeed(1));
         dispatch(setFertilizer(1));
@@ -48,8 +50,6 @@ function FarmGame(props) {
     const onSubmit = async (e, id) => {
         e.preventDefault();
         const alertInfo = await addHerbBook({ herbId: id }).unwrap();
-        // console.log("알림창 :");
-        // console.log(alertInfo);
         Swal.fire({
             width: 350,
             title: "[" + alertInfo.herbName + "]",
@@ -64,10 +64,11 @@ function FarmGame(props) {
             imageWidth: 50,
             imageHeight: 50,
             imageAlt: "Herb Collection Image",
+        }).then((res) => {
+            if (res.isConfirmed) {
+                window.location.reload();
+            }
         });
-        setTimeout(() => {
-            window.location.reload();
-        }, 1500);
     };
 
     const calcTime = (seconds) => {
@@ -89,6 +90,13 @@ function FarmGame(props) {
         }
     };
 
+    const timeRatioForGrowth = (idx) => {
+        const herb = getAllHerbs?.herbs.find(
+            (herb) => herb.position === idx + 1
+        );
+        return herb.leftTime / herb.growthTime;
+    };
+
     useEffect(() => {
         setCurrentSley(user?.currentSley);
     }, [user?.currentSley]);
@@ -102,36 +110,48 @@ function FarmGame(props) {
                 </div>
                 <div className="text-base font-bold">{`${currentSley} 슬리`}</div>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 m-5">
+            <div className="grid grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-10 m-5">
                 {herbCardList.map(function (item, idx) {
                     return (
                         <div key={item.id}>
-                            <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center">
+                            <div className="shadow rounded-xl w-full h-[250px] mb-2 flex items-center justify-center relative">
+                                {getAllHerbs?.herbs.find(
+                                    (herb) => herb.position === idx + 1
+                                )?.leftTime >= 0 ? (
+                                    <div>
+                                        <button
+                                            type="submit"
+                                            onClick={(e) =>
+                                                onSubmit(
+                                                    e,
+                                                    getAllHerbs?.herbs.find(
+                                                        (herb) =>
+                                                            herb.position ===
+                                                            idx + 1
+                                                    ).herbId
+                                                )
+                                            }
+                                            className="color-delay rounded-full px-4 py-2 text-xs bg-main hover:bg-sub2 text-font3 absolute top-3 right-4"
+                                        >
+                                            수확하기
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div></div>
+                                )}
                                 {/* Modal Click Button */}
                                 {getAllHerbs &&
                                 getAllHerbs?.herbs.find(
                                     (herb) => herb.position === idx + 1
                                 ) ? (
                                     <div>
-                                        {() => {
-                                            const herb =
-                                                getAllHerbs?.herbs.find(
-                                                    (herb) =>
-                                                        herb.position ===
-                                                        idx + 1
-                                                );
-                                            const isGrowth =
-                                                herb.leftTime /
-                                                    herb.growthTime <
-                                                0;
-                                            console.log(
-                                                herb.leftTime / herb.growthTime
-                                            );
-                                            if (isGrowth) {
-                                            } else {
-                                                // return <HerbComponent3 />
-                                            }
-                                        }}
+                                        {timeRatioForGrowth(idx) >= 0 ? (
+                                            <HerbComponentLoad3 />
+                                        ) : timeRatioForGrowth(idx) > -0.5 ? (
+                                            <HerbComponentLoad2 />
+                                        ) : (
+                                            <HerbComponentLoad1 />
+                                        )}
                                     </div>
                                 ) : (
                                     <label
@@ -156,30 +176,6 @@ function FarmGame(props) {
                                                 (herb) =>
                                                     herb.position === idx + 1
                                             ).leftTime
-                                        )}
-                                        {getAllHerbs?.herbs.find(
-                                            (herb) => herb.position === idx + 1
-                                        ).leftTime >= 0 ? (
-                                            <div>
-                                                <button
-                                                    type="submit"
-                                                    onClick={(e) =>
-                                                        onSubmit(
-                                                            e,
-                                                            getAllHerbs?.herbs.find(
-                                                                (herb) =>
-                                                                    herb.position ===
-                                                                    idx + 1
-                                                            ).herbId
-                                                        )
-                                                    }
-                                                    className="color-delay rounded-full px-4 py-2 text-sm font-semibold bg-main hover:bg-sub2 text-font3"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <div></div>
                                         )}
                                     </div>
                                 ) : (
