@@ -10,11 +10,6 @@ import { setFertilizer, setSeed, setWater } from "../../modules/farmReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 function HerbStoreModal({ clickCancel }) {
-  // initialization;
-
-  const { data: allItems } = useGetAllItemsQuery();
-  console.log(allItems);
-  const [addHerb] = useAddHerbMutation();
   const dispatch = useDispatch();
   const seedId = useSelector((state) => state?.farm.itemSeedId);
   const fertilizerId = useSelector((state) => state?.farm.itemFertilizerId);
@@ -22,17 +17,20 @@ function HerbStoreModal({ clickCancel }) {
 
   const herbInfo = useSelector((state) => state?.farm);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    console.log(herbInfo);
-    await addHerb(herbInfo).unwrap();
-    clickCancel();
-  };
+  const { data: allItems } = useGetAllItemsQuery();
+  console.log(allItems);
+  const [addHerb] = useAddHerbMutation();
 
   const totalSley =
     parseInt(allItems?.itemSeeds[seedId - 1].sley) +
     parseInt(allItems?.itemFertilizers[fertilizerId - 1].sley) +
     parseInt(allItems?.itemWaters[waterId - 1].sley);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log(herbInfo);
+    await addHerb({ herb: herbInfo, totalSley });
+  };
 
   return (
     <>
@@ -165,17 +163,18 @@ function HerbStoreModal({ clickCancel }) {
               >
                 초기화 <i className="bx bx-revision"></i>
               </button>
-              <button
+              {/* <button
                 className=" color-delay rounded-full text-sm font-semibold bg-main hover:bg-sub2 text-font3"
                 onClick={onSubmit}
+              > */}
+              <label
+                htmlFor="my-modal-3"
+                className="cursor-pointer px-4 py-2 color-delay rounded-full text-sm font-semibold bg-main hover:bg-sub2 text-font3"
+                onClick={onSubmit}
               >
-                <label
-                  htmlFor="my-modal-3"
-                  className="cursor-pointer px-4 py-2"
-                >
-                  선택 완료
-                </label>
-              </button>
+                선택 완료
+              </label>
+              {/* </button> */}
             </div>
           </div>
         </div>
@@ -183,5 +182,10 @@ function HerbStoreModal({ clickCancel }) {
     </>
   );
 }
+
+// () => {
+//                   onSubmit();
+//                   clickCancel();
+//                 }
 
 export default HerbStoreModal;

@@ -17,7 +17,9 @@ function FarmCollection() {
   //     { refetchOnMountOrArgChange: true }
   //   );
 
-  const { data: herbBooks } = useGetAllHerbBooksQuery();
+  // const { data: herbBooks } = useGetAllHerbBooksQuery();
+
+  const herbBook = useSelector((state) => state.farm.herbBook);
 
   const herbname = "프로틴 중독 파슬리";
   const grade = "희귀";
@@ -25,8 +27,8 @@ function FarmCollection() {
     "근육으로 똘똘 뭉친 파슬리이다... 먹으면 막강해질지도... ?";
   // const isOpened = "16";
   let isOpendNumb = 0; // 지금까지 모은 도감 캐릭터 개수 (중복 빼고)
-  for (let i = 0; i < herbBooks?.userHerbBooks.length; i++) {
-    if (herbBooks?.userHerbBooks[i].count > 0) {
+  for (let i = 0; i < herbBook.length; i++) {
+    if (herbBook[i].count > 0) {
       isOpendNumb += 1;
     }
   }
@@ -60,11 +62,11 @@ function FarmCollection() {
       </div>
       {/* // TODO: 농장페이지 도감 컴포넌트 */}
       <div className="text-sm font-semibold my-8">
-        파슬리 도감 [ {isOpendNumb} / 32 ]
+        파슬리 도감 [ {isOpendNumb} / {herbBook.length} ]
       </div>
       <div className="">
         <div className="grid grid-cols-4 md:grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
-          {herbBooks?.userHerbBooks.map((info, idx) => {
+          {herbBook.map((info, idx) => {
             return (
               <FarmCollectionAvartarInfo
                 count={info.count}

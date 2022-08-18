@@ -5,6 +5,7 @@ const initialState = {
   itemSeedId: 1,
   itemFertilizerId: 1,
   itemWaterId: 1,
+  herbBook: [],
   profileName: "프로필을 선택해주세요",
   profileDescription: "",
   profileUrl:
@@ -32,6 +33,9 @@ const reducers = {
     state.profileDescription = profileDescription;
     state.profileUrl = profileUrl;
   },
+  setHerbBook: (state, { payload: herbBook }) => {
+    state.herbBook = herbBook;
+  },
 };
 
 export const farmSlice = createSlice({
@@ -40,7 +44,13 @@ export const farmSlice = createSlice({
   reducers,
 });
 
-export const { setPosition, setSeed, setFertilizer, setWater, setProfile } =
-  farmSlice.actions;
+export const {
+  setPosition,
+  setSeed,
+  setFertilizer,
+  setWater,
+  setProfile,
+  setHerbBook,
+} = farmSlice.actions;
 
 export default farmSlice.reducer;

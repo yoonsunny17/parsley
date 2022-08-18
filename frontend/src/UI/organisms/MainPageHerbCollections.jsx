@@ -7,9 +7,14 @@ import MainHerbAvatarInfo from "./MainHerbAvatarInfo";
 import { useGetAllHerbBooksQuery } from "../../services/farm";
 
 function Collections() {
-  const { data: herbBooks } = useGetAllHerbBooksQuery();
+  const { data } = useGetAllHerbBooksQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
   const herbname = "프로틴 중독 파슬리";
   const user = useSelector((state) => state.user.user);
+  const herbBook = useSelector((state) => state.farm.herbBook);
+
   return (
     <div className="w-full mb-5 rounded-3xl bg-white drop-shadow px-6 py-5 lg:w-2/3 lg:mb-0">
       <header className="flex justify-between items-center">
@@ -28,7 +33,7 @@ function Collections() {
           <div className="my-3 font-semibold">{herbname}</div>
         </div>
         <div className="px-4 pt-8 md:px-10 w-full grid grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-x-1 gap-y-5 md:gap-x-5 lg:px-0 lg:mx-1 lg:pt-4 lg:gap-y-3">
-          {herbBooks?.userHerbBooks.map((info, idx) => {
+          {herbBook.map((info, idx) => {
             return (
               <MainHerbAvatarInfo
                 count={info.count}
