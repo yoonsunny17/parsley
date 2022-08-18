@@ -17,6 +17,7 @@ function MyProfile() {
   const initialValue = {
     name: user ? user.name : "",
     description: user ? user.description : "",
+    herbBookId: user ? user.herbBookId : null,
   };
 
   const [newUser, setNewUser] = useState(initialValue);
