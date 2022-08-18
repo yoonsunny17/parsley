@@ -1,11 +1,14 @@
 package com.ssafy.api.response.user;
 
+import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @ApiModel("UserResponse")
@@ -43,6 +46,9 @@ public class UserRes {
     @ApiModelProperty(name = "현재 보유 도감 포인트", example = "9500")
     long currentBookPoint;
 
+    @ApiModelProperty(name = "관심 방 리스트")
+    List<Room> interestRooms;
+
     public static UserRes of (User user) {
         UserRes res = new UserRes();
         res.setId(user.getId());
@@ -56,6 +62,10 @@ public class UserRes {
         res.setDDay(user.getDDay());
         res.setCurrentSley(user.getCurrentSley());
         res.setCurrentBookPoint(user.getCurrentBookPoint());
+
+        List<Room> interestRooms = new ArrayList<>(user.getInterestRooms());
+        res.setInterestRooms(interestRooms);
+
         return res;
     }
 }

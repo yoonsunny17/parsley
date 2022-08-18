@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   useAddHerbBookMutation,
   useGetAllHerbsQuery,
-  useUpdateHerbInfoQuery,
 } from "../../services/farm";
 import {
   setFertilizer,
@@ -23,21 +22,27 @@ import { useEffect } from "react";
 import Swal from "sweetalert2";
 
 function FarmGame(props) {
+  const dispatch = useDispatch();
+  const [currentSley, setCurrentSley] = useState(0);
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [isPending, startTransition] = useTransition();
+
+  const user = useSelector((state) => state.user.user);
   const isLogin = useSelector((state) => state.user.isLogin);
+
   const { data: getAllHerbs } = useGetAllHerbsQuery(
     {},
     { skip: !isLogin, refetchOnMountOrArgChange: true }
   );
-
   const [addHerbBook] = useAddHerbBookMutation();
 
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
-
-  const day = 32;
-
-  const [isPending, startTransition] = useTransition();
-  const [isEmpty, setIsEmpty] = useState(true);
+  const today = new Date();
+  const regDate = new Date(user.regDate);
+  const togetherDays = parseInt(
+    (today.getDate() - regDate.getDate() + 1000 * 60 * 60 * 9) /
+      (1000 * 60 * 60 * 24) +
+      1
+  );
 
   const clickToEmpty = () => {
     setIsEmpty((current) => !current);
@@ -52,21 +57,26 @@ function FarmGame(props) {
   const onSubmit = async (e, id) => {
     e.preventDefault();
     const alertInfo = await addHerbBook({ herbId: id }).unwrap();
-    console.log("알림창 :" + alertInfo);
+    console.log("알림창 :");
+    console.log(alertInfo);
     Swal.fire({
       width: 350,
-      title: "[" + alertInfo.name + "] 수확 완료",
+      title: "[" + alertInfo.herbName + "]",
       text:
         " + " +
         [alertInfo.addSley] +
-        "슬리<br/>+ " +
+        "슬리 " +
+        " + " +
         [alertInfo.addPoint] +
         "포인트 ",
-      imageUrl: [alertInfo.imageUrl], // 시간 되면 여기 사진 다른걸로 바꾸기
+      imageUrl: [alertInfo.herbImageUrl], // 시간 되면 여기 사진 다른걸로 바꾸기
       imageWidth: 50,
       imageHeight: 50,
       imageAlt: "Herb Collection Image",
     });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
   };
 
   const calcTime = (seconds) => {
@@ -77,9 +87,9 @@ function FarmGame(props) {
     min = parseInt((seconds % 3600) / 60);
     sec = seconds % 60;
 
-    if (hour.toString().length == 1) hour = "0" + hour;
-    if (min.toString().length == 1) min = "0" + min;
-    if (sec.toString().length == 1) sec = "0" + sec;
+    if (hour.toString().length === 1) hour = "0" + hour;
+    if (min.toString().length === 1) min = "0" + min;
+    if (sec.toString().length === 1) sec = "0" + sec;
 
     if (temp < 0) {
       return "- " + hour + ":" + min + ":" + sec;
@@ -88,14 +98,18 @@ function FarmGame(props) {
     }
   };
 
+  useEffect(() => {
+    setCurrentSley(user?.currentSley);
+  }, [user?.currentSley]);
+
   return (
     // height는 고정으로 가는 것이 맞는것 같기도?
     <div className="rounded-2xl w-full h-auto mb-4 md:w-2/3 md:mb-0 shadow px-8 py-5">
       <div className="flex justify-between">
         <div className="text-lg font-bold mb-2">
-          허브의 주인이 되신지 {day}일 째!
+          허브의 주인이 되신지 {togetherDays}일 째!
         </div>
-        <div className="text-base font-bold">{`${user?.currentSley} 슬리`}</div>
+        <div className="text-base font-bold">{`${currentSley} 슬리`}</div>
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 m-5">
         {herbCardList.map(function (item, idx) {

@@ -1,7 +1,6 @@
 // 농장 페이지 우측에 있는 도감 컴포넌트의 아바타 atomic components
 import React from "react";
 import Swal from "sweetalert2";
-import { setProfille } from "../../modules/farmReducer";
 import { useUpdateUserMutation } from "../../services/user";
 import { Toast } from "../../util/common";
 
@@ -38,18 +37,21 @@ function FarmCollectionAvartarInfo({ count, herbBook }) {
             }).then(async (res) => {
               console.log("대표 프로필 설정하기");
               // TODO: 대표 프로필 설정 버튼
-              // const newProfile = {
-              //     profileName: herbBook.name,
-              //     profileDescription: herbBook.description,
-              //     profileUrl: herbBook.imageUrl,
-              // }
-              // const result = await updateUser().unwrap();
-              // if (result && res.isConfirmed) {
-              //   Toast.fire({
-              //     icon: "success",
-              //     title: "대표 프로필 설정 완료"
-              //   })
-              // }
+              if (res.isConfirmed) {
+                const newUser = {
+                  herbBookName: herbBook.name,
+                  herbBookType: herbBook.herbType,
+                  herbBookDescription: herbBook.description,
+                  herbBookImageUrl: herbBook.imageUrl,
+                };
+                const result = await updateUser(newUser).unwrap();
+                if (result) {
+                  Toast.fire({
+                    icon: "success",
+                    title: "대표 프로필 설정 완료",
+                  });
+                }
+              }
             });
           }}
         />

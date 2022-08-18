@@ -34,7 +34,7 @@ function StudyRoomItem({
                         {mode === 0 ? " 손꾸락" : " 얼구리"}
                     </span>
                     <span>
-                        {hostUser.id === user.id && (
+                        {hostUser?.id === user?.id && (
                             <FaCrown className="text-lg text-yellow-300" />
                         )}
                     </span>

@@ -40,8 +40,8 @@ function Drawer({ children }) {
           <div className="p-10 overflow-y-auto w-[380px] bg-bg rounded-tl-3xl rounded-bl-3xl">
             <div className="flex justify-between text-sub1">
               {/* <i className="bx bxs-user-circle text-5xl"></i> */}
-              <div class="avatar">
-                <div class="w-14 h-14 rounded-full ring-2 ring-sub1">
+              <div className="avatar">
+                <div className="w-14 h-14 rounded-full ring-2 ring-sub1">
                   <img src="http://img.danawa.com/prod_img/500000/415/369/img/16369415_1.jpg?_v=20220210153136" />
                 </div>
               </div>
@@ -81,7 +81,7 @@ function Drawer({ children }) {
                 </a>
                 <img
                   className="w-8"
-                  src="https://cdn-icons.flaticon.com/png/512/1892/premium/1892747.png?token=exp=1660790463~hmac=105e1d5eb2c8175fd33763ed71cade06"
+                  src="https://cdn-icons.flaticon.com/png/512/1892/premium/1892747.png?token=exp=1660805530~hmac=4008b0c61e74c40afeca5d1e72cbe0d0"
                   alt=""
                 />
               </div>

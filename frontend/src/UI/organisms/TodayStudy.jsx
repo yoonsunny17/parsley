@@ -28,7 +28,7 @@ function TodayStudy(args) {
 
     useEffect(() => {
         if (!targetTime) {
-            setTargetTime(goal.targetTime);
+            setTargetTime(goal?.targetTime);
             setTargetHour((targetTime / 60).toFixed(0));
             setTargetMin(targetTime % 60);
         }
