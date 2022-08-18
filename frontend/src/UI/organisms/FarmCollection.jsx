@@ -1,38 +1,18 @@
-import React, { useState } from "react";
-import HerbItemAvatar from "../atoms/HerbItemAvatar";
+import React from "react";
 import FarmCollectionAvartarInfo from "../molecules/FarmCollectionAvartarInfo";
-import Button from "../atoms/Button";
-import herbCollectionList from "../molecules/HerbCollectionList";
-import { useGetAllHerbBooksQuery } from "../../services/farm";
 import { useSelector } from "react-redux";
 
 function FarmCollection() {
+  const herbBook = useSelector((state) => state.farm.herbBook);
   const user = useSelector((state) => state.user.user);
-  //   const { data: getCollection } = useGetCollectionQuery(
-  //     {},
-  //     { refetchOnMountOrArgChange: true }
-  //   );
-  //   const { data: getHerbs } = useGetHerbsQuery(
-  //     {},
-  //     { refetchOnMountOrArgChange: true }
-  //   );
 
-  const { data: herbBooks } = useGetAllHerbBooksQuery();
-
-  const herbname = "프로틴 중독 파슬리";
-  const grade = "희귀";
-  const description =
-    "근육으로 똘똘 뭉친 파슬리이다... 먹으면 막강해질지도... ?";
   // const isOpened = "16";
   let isOpendNumb = 0; // 지금까지 모은 도감 캐릭터 개수 (중복 빼고)
-  for (let i = 0; i < herbBooks?.userHerbBooks.length; i++) {
-    if (herbBooks?.userHerbBooks[i].count > 0) {
+  for (let i = 0; i < herbBook.length; i++) {
+    if (herbBook[i].count > 0) {
       isOpendNumb += 1;
     }
   }
-  console.log(isOpendNumb);
-
-  const profileImg = herbCollectionList[16].imgUrl;
 
   return (
     // FIXME: device width sm이하로 갔을 때 도감 collapse 적용 할까말까 ??????
@@ -45,26 +25,23 @@ function FarmCollection() {
         <img
           className="inline-block mt-3 mb-3 mr-4 h-16 w-16 rounded-full ring-2 ring-sub1"
           // src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-          src={profileImg}
+          src={user.herbBookImageUrl}
           alt="avatar"
         />
-        {/* <HerbItemAvatar
-          imgUrl={
-            "https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-          }
-        /> */}
         <div className="font-semibold text-sm mt-3">
-          {herbname} [{grade}] <br />
-          <span className="font-semibold text-xs">{description}</span>
+          {user.herbBookName} &nbsp; [{user.herbBookType}] <br />
+          <span className="font-semibold text-xs">
+            {user.herbBookDescription}
+          </span>
         </div>
       </div>
       {/* // TODO: 농장페이지 도감 컴포넌트 */}
       <div className="text-sm font-semibold my-8">
-        파슬리 도감 [ {isOpendNumb} / 32 ]
+        파슬리 도감 [ {isOpendNumb} / {herbBook.length} ]
       </div>
       <div className="">
         <div className="grid grid-cols-4 md:grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
-          {herbBooks?.userHerbBooks.map((info, idx) => {
+          {herbBook.map((info, idx) => {
             return (
               <FarmCollectionAvartarInfo
                 count={info.count}
