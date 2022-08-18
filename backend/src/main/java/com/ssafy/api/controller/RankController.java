@@ -63,14 +63,14 @@ public class RankController {
             User user = userService.getUserByUserId(
                     Long.parseLong(value.replace("user:", "")));
 
-            topRank.add(RankInfoRes.of(user.getName(), topUser.getScore(), idx++));
+            topRank.add(RankInfoRes.of(user.getName(), null, topUser.getScore(), idx++));
         }
 
         // 나의 rank 정보 저장
         RankInfoRes myRank = null;
         Long userId = jwtService.getUserId();
         if (userId == null) { // 로그인하지 않은 경우
-            myRank = RankInfoRes.of("guest", null, null);
+            myRank = RankInfoRes.of("guest", null, null, null);
         } else { // 로그인한 경우
             Long ranking = rankService.getMyRankByUserId(userId);
             User user = userService.getUserByUserId(userId);
@@ -78,7 +78,7 @@ public class RankController {
             if (ranking != null) {
                 ranking = ranking <= 1000 ? ranking : -1;
             }
-            myRank = RankInfoRes.of(user.getName(), (double) user.getCurrentBookPoint(), ranking);
+            myRank = RankInfoRes.of(user.getName(), null, (double) user.getCurrentBookPoint(), ranking);
         }
 
         return ResponseEntity.status(200).body(
@@ -111,10 +111,10 @@ public class RankController {
         for (int i = 0; i < members.size(); i++) {
             User user = members.get(i);
             topRank.add(RankInfoRes.of(
-                    user.getName(), (double) user.getCurrentBookPoint(), i + 1L));
+                    user.getName(), user.getDescription(), (double) user.getCurrentBookPoint(), i + 1L));
 
             if (userId != null && userId.equals(user.getId())) {
-                myRank = RankInfoRes.of(user.getName(), (double) user.getCurrentBookPoint(), (long) i);
+                myRank = RankInfoRes.of(user.getName(), user.getDescription(), (double) user.getCurrentBookPoint(), (long) i);
             }
         }
 
@@ -150,10 +150,10 @@ public class RankController {
             List<Long> weeklyStudyTime = studyService.getWeeklyStudyTime(user.getId());
             long totalTime = weeklyStudyTime.stream().mapToLong(Long::longValue).sum();
 
-            topRank.add(RankInfoRes.of(user.getName(), (double) totalTime, (long) i));
+            topRank.add(RankInfoRes.of(user.getName(), user.getDescription(), (double) totalTime, (long) i));
 
             if (userId != null && userId.equals(user.getId())) {
-                myRank = RankInfoRes.of(user.getName(), (double) user.getCurrentBookPoint(), (long) i);
+                myRank = RankInfoRes.of(user.getName(), user.getDescription(), (double) user.getCurrentBookPoint(), (long) i);
             }
         }
         topRank.sort((a, b) -> (int) (b.getScore() - a.getScore()));

@@ -1,13 +1,14 @@
 // 농장 페이지 우측에 있는 도감 컴포넌트의 아바타 atomic components
 import React from "react";
 import Swal from "sweetalert2";
-import { setProfille } from "../../modules/farmReducer";
+import { useSelector } from "react-redux";
 import { useUpdateUserMutation } from "../../services/user";
 import { Toast } from "../../util/common";
 
 // isOptained, info: { name, imgUrl, grade, description },
 function FarmCollectionAvartarInfo({ count, herbBook }) {
   const [updateUser] = useUpdateUserMutation();
+  const user = useSelector((state) => state.user.user);
 
   return (
     <div>
@@ -36,20 +37,25 @@ function FarmCollectionAvartarInfo({ count, herbBook }) {
               confirmButtonText: "대표 프로필 설정",
               cancelButtonText: "닫기",
             }).then(async (res) => {
-              console.log("대표 프로필 설정하기");
               // TODO: 대표 프로필 설정 버튼
-              // const newProfile = {
-              //     profileName: herbBook.name,
-              //     profileDescription: herbBook.description,
-              //     profileUrl: herbBook.imageUrl,
-              // }
-              // const result = await updateUser().unwrap();
-              // if (result && res.isConfirmed) {
-              //   Toast.fire({
-              //     icon: "success",
-              //     title: "대표 프로필 설정 완료"
-              //   })
-              // }
+              if (res.isConfirmed) {
+                const newUser = {
+                  name: user?.name,
+                  description: user?.description,
+                  herbBookName: herbBook.name,
+                  herbBookType: herbBook.herbType,
+                  herbBookDescription: herbBook.description,
+                  herbBookImageUrl: herbBook.imageUrl,
+                  herbBookId: herbBook.id,
+                };
+                const result = await updateUser(newUser).unwrap();
+                if (result) {
+                  Toast.fire({
+                    icon: "success",
+                    title: "대표 프로필 설정 완료",
+                  });
+                }
+              }
             });
           }}
         />

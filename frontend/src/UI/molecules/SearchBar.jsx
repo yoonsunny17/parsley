@@ -1,21 +1,29 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGetSearchListQuery } from "../../services/room";
 import { history } from "../../modules/store";
 
 function SearchBar() {
-    const [isOpen, setIsOpen] = useState(false);
-    const toggleSearch = () => {
-        setIsOpen((current) => !current);
-    };
+  const navigate = useNavigate();
 
-    const searchEnter = (e) => {
-        if (e.key === "Enter") {
-            isEnter();
-        }
-    };
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleSearch = () => {
+    setIsOpen((current) => !current);
+  };
 
-    const isEnter = () => {
-        console.log("hello");
-    };
+  const searchEnter = (e) => {
+    if (e.key === "Enter") {
+      isEnter();
+    }
+  };
+
+  const isEnter = () => {
+    console.log("hello");
+  };
+
+  const onSubmit = async (data) => {
+    navigate(`/room/search?word=`);
+  };
 
   const [search, setSearch] = useState("");
 
@@ -36,8 +44,8 @@ function SearchBar() {
               e.preventDefault();
               history.push(`/room/search/${search}`);
               setSearch("");
-              console.log(search);
             }}
+            onKeyPress={searchEnter}
           >
             <input
               value={search}

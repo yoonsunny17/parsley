@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useGetRoomQuery } from "../../services/room";
+import { useGetRoomQuery, useUpdateRoomMutation } from "../../services/room";
 import {
+  useAddLikeRoomMutation,
+  useDeleteLikeRoomMutation,
   useJoinRoomMutation,
   useWithdrawRoomMutation,
 } from "../../services/userRoom";
@@ -13,20 +15,57 @@ import { Toast } from "../../util/common";
 import { setRoom } from "../../modules/roomReducer";
 import { useEffect } from "react";
 
+import { BiEditAlt } from "react-icons/bi";
+import { MdClose } from "react-icons/md";
+
 function StudyInfo() {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const params = useParams();
+
   const isLogin = useSelector((state) => state.user.isLogin);
   const user = useSelector((state) => state.user.user);
   const room = useSelector((state) => state.room.room);
   const [like, setLike] = useState(false);
+  const [edit, setEdit] = useState(false);
 
-  const dispatch = useDispatch();
-  const params = useParams();
   const { data, isLoading: isGetRoomLoading } = useGetRoomQuery(params.id, {
     refetchOnMountOrArgChange: true,
   });
   const [joinRoom] = useJoinRoomMutation();
   const [withdrawRoom] = useWithdrawRoomMutation();
+  const [addLikeRoom] = useAddLikeRoomMutation();
+  const [deleteLikeRoom] = useDeleteLikeRoomMutation();
+
+  const onCancel = () => {
+    setEdit(false);
+  }; // 취소 버튼 누르면 편집 취소
+
+  const initialValue = {
+    id: room?.id,
+    name: room?.name,
+    // maxPopulation: room?.maxPopulation,
+    description: room?.description,
+    // mode: room?.mode,
+    isPublic: room?.public,
+  };
+
+  const [newRoomInfo, setNewRoomInfo] = useState(initialValue);
+  const [updateInfo] = useUpdateRoomMutation();
+
+  const handleChange = ({ target }) => {
+    setNewRoomInfo((prev) => ({
+      ...prev,
+      [target.name]: target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await updateInfo(newRoomInfo);
+    setEdit(false);
+  };
+
+  const handleEnter = (e) => e.key === "Enter" && e.preventDefault();
 
   // TODO: 비밀번호 있는 방인 경우 처리
   const handleJoinRoom = async () => {
@@ -46,11 +85,6 @@ function StudyInfo() {
       setTimeout(() => {
         window.location.reload();
       }, 1500);
-      // if (isJoinRoomSuccess) {
-      //     refetch();
-
-      //     window.location.reload();
-      // }
     } else {
       Toast.fire({
         icon: "info",
@@ -58,6 +92,35 @@ function StudyInfo() {
       });
     }
   };
+
+  //   // 로그인은 되어있는 사용자인데, 아직 한번도 참가한 적이 없다면?
+  //   // 1. 비밀번호를 눌러주세요
+  //   // 2-1. 비밀번호를 옳게 눌렀다면? 나의 스터디에 추가되었습니다
+  //   // 2-2. 비밀번호를 틀렸다면? 다시 입력해 주세요
+
+  //   const handlePassword = async () => {
+  //     const { value: password } = await Swal.fire({
+  //       title: "비밀번호를 입력해 주세요",
+  //       input: "password",
+  //       inputLabel: "Password",
+  //       inputPlaceholder: "password",
+  //     });
+  //     if (password === data?.roomInfo.password) {
+  //       await joinRoom(params.id);
+  //       Toast.fire({
+  //         icon: "success",
+  //         title: "나의 스터디에 추가되었습니다.",
+  //       });
+  //       setTimeout(() => {
+  //         window.location.reload();
+  //       }, 1500);
+  //     } else {
+  //       Toast.fire({
+  //         icon: "info",
+  //         title: "로그인이 필요합니다.",
+  //       });
+  //     }
+  //   };
 
   const handleWithdrawRoom = () => {
     Swal.fire({
@@ -84,15 +147,41 @@ function StudyInfo() {
     });
   };
 
-  useEffect(() => {
-    if (!isGetRoomLoading) {
-      dispatch(setRoom(data?.roomInfo));
+  const handleAddLikeRoom = async () => {
+    if (isLogin) {
+      await addLikeRoom(params.id);
+      setLike(true);
+      Toast.fire({
+        icon: "success",
+        title: "관심 스터디에 추가되었습니다.",
+      });
+    } else {
+      Toast.fire({
+        icon: "info",
+        title: "로그인이 필요합니다.",
+      });
     }
-  });
+  };
+
+  const handleDeleteLikeRoom = async () => {
+    if (isLogin) {
+      await deleteLikeRoom(params.id);
+      setLike(false);
+      Toast.fire({
+        icon: "success",
+        title: "관심 스터디에서 제거되었습니다.",
+      });
+    } else {
+      Toast.fire({
+        icon: "info",
+        title: "로그인이 필요합니다.",
+      });
+    }
+  };
 
   const copyLink = () => {
     navigator.clipboard.writeText(
-      `https://i7a604.p.ssafy.io/room/${params.id}`
+      `${process.env.REACT_APP_APP_URL}/room/${params.id}`
     );
     Toast.fire({
       icon: "success",
@@ -100,68 +189,80 @@ function StudyInfo() {
     });
   };
 
-    return (
-        <div className="container flex flex-wrap gap-10">
-            {/* 스터디 이미지 */}
-            <div className="w-full lg:w-[30%] flex justify-center">
-                <div className="w-[20%] p-[20%] lg:w-full aspect-square overflow-hidden relative rounded-2xl shadow border-4 border-sub1">
-                    <img
-                        alt="스터디 이미지"
-                        src={room?.imageUrl}
-                        className="absolute top-0 left-0 w-full h-full object-cover"
-                    />
-                </div>
+  useEffect(() => {
+    setLike(user?.interestRooms.find((item) => item.id === room?.id));
+    if (!isGetRoomLoading) {
+      dispatch(setRoom(data?.roomInfo));
+    }
+  }, [
+    user?.interestRooms,
+    isGetRoomLoading,
+    room?.id,
+    dispatch,
+    data?.roomInfo,
+  ]);
+
+  return (
+    <div className="container flex flex-wrap gap-10">
+      {/* 스터디 이미지 */}
+      <div className="w-full lg:w-[30%] flex justify-center">
+        <div className="w-[20%] p-[20%] lg:w-full aspect-square overflow-hidden relative rounded-2xl shadow border-4 border-sub1">
+          <img
+            alt="스터디 이미지"
+            src={room?.imageUrl}
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+        </div>
+      </div>
+      {/* 스터디 상세 정보 */}
+      <div className="flex flex-col justify-between gap-4 min-h-min w-full px-2 lg:w-7/12 lg:px-0">
+        {/* Header: 이름 + 태그 */}
+        <div className="flex flex-col gap-4">
+          <div>
+            <div className="text-2xl font-semibold">{room?.name}</div>
+            {room?.hashtags.length > 0 && (
+              <div className="flex gap-2 mt-2">
+                {room?.hashtags.map((hashtag, idx) => {
+                  return (
+                    <span
+                      key={`tag-${idx}`}
+                      className="text-sm bg-sub1 text-font3 rounded-[10px] px-2 py-1"
+                    >
+                      {`# ${hashtag}`}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          {/* Content: 상세 정보 */}
+          <div className="flex flex-col gap-2">
+            <div className="text-sm flex">
+              <div className="mr-4 text-extra3">방장</div>
+              <div className="font-light text-extra5">
+                {room?.hostUser.name}
+              </div>
             </div>
-            {/* 스터디 상세 정보 */}
-            <div className="flex flex-col justify-between gap-4 min-h-min w-full px-2 lg:w-7/12 lg:px-0">
-                {/* Header: 이름 + 태그 */}
-                <div className="flex flex-col gap-4">
-                    <div>
-                        <div className="text-2xl font-semibold">
-                            {room?.name}
-                        </div>
-                        {room?.hashtags.length > 0 && (
-                            <div className="flex gap-2 mt-2">
-                                {room?.hashtags.map((hashtag, idx) => {
-                                    return (
-                                        <span
-                                            key={`tag-${idx}`}
-                                            className="text-sm bg-sub1 text-font3 rounded-[10px] px-2 py-1"
-                                        >
-                                            {`# ${hashtag}`}
-                                        </span>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
-                    {/* Content: 상세 정보 */}
-                    <div className="flex flex-col gap-2">
-                        <div className="text-sm flex">
-                            <div className="mr-4 text-extra3">방장</div>
-                            <div className="font-light text-extra5">
-                                {room?.hostUser.name}
-                            </div>
-                        </div>
-                        <div className="text-sm flex">
-                            <div className="mr-4 min-w-max text-extra3">
-                                인원
-                            </div>
-                            <span className="font-light text-extra5">
-                                {room?.members.length} / {room?.maxPopulation}{" "}
-                                명
-                            </span>
-                        </div>
-                        <div className="text-sm flex">
-                            <div className="mr-4 min-w-max text-extra3">
-                                소개
-                            </div>
-                            <div className="text-sm font-light text-extra5">
-                                {room?.description}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div className="text-sm flex">
+              <div className="mr-4 text-extra3 min-w-max">모드</div>
+              <span className="font-light text-extra5">
+                {room?.mode === 0 ? "손꾸락" : "얼구리"}
+              </span>
+            </div>
+            <div className="text-sm flex">
+              <div className="mr-4 min-w-max text-extra3">인원</div>
+              <span className="font-light text-extra5">
+                {room?.members.length} / {room?.maxPopulation} 명
+              </span>
+            </div>
+            <div className="text-sm flex">
+              <div className="mr-4 min-w-max text-extra3">소개</div>
+              <div className="text-sm font-light text-extra5">
+                {room?.description}
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Footer: 참가 버튼 */}
         <div className="flex items-center gap-4">
@@ -172,49 +273,6 @@ function StudyInfo() {
               <Link to={`/room/session/${params.id}`}>
                 <Button text={"입장하기"} />
               </Link>
-              {/* // FIXME: 설정 버튼 다른 디자인으로 바꿀것! */}
-              <button className="color-delay rounded-full text-sm bg-main hover:bg-sub2 text-font3">
-                <label
-                  htmlFor="editSession"
-                  className="cursor-pointer px-4 py-2"
-                >
-                  수정하기
-                </label>
-              </button>
-              <input
-                type="checkbox"
-                id="editSession"
-                className="modal-toggle"
-              />
-              <div className="modal">
-                <div className="modal-box">
-                  <div className="flex justify-between">
-                    <div className="text-lg font-bold mb-3">방 정보 수정</div>
-                    <button>
-                      <label
-                        htmlFor="editSession"
-                        className="cursor-pointer px-2 py-2"
-                      >
-                        닫기
-                      </label>
-                    </button>
-                  </div>
-
-                  <div>방 제목</div>
-                  <div>최대 인원</div>
-                  <div>소개</div>
-                  <div>비공개/공개 여부: 비번도 바꿀수있나?</div>
-                  <div className="modal-action">
-                    {/* // TODO: 적용하기, 취소, 닫기 버튼 만들기 */}
-                    <button className="cursor-pointer px-2 py-2">
-                      수정하기
-                    </button>
-                    <button className="cursor-pointer px-2 py-2">
-                      방 삭제하기
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           ) : (
             <div className="flex gap-2">
@@ -238,19 +296,25 @@ function StudyInfo() {
             </div>
           )}
 
-                              {/* 클립보드 */}
+          {/* 클립보드 */}
           <button onClick={copyLink} className="text-font1 rounded-[50px]">
-                                    <i className="bx text-3xl bx-link"></i>
-                              </button>
+            <i className="bx text-3xl bx-link"></i>
+          </button>
 
           {/* 좋아요 */}
           {!like && (
-            <button className="text-heart rounded-[50px]">
+            <button
+              className="text-heart rounded-[50px]"
+              onClick={handleAddLikeRoom}
+            >
               <i className="bx text-3xl bx-heart"></i>
             </button>
           )}
           {like && (
-            <button className="text-heart rounded-[50px]">
+            <button
+              className="text-heart rounded-[50px]"
+              onClick={handleDeleteLikeRoom}
+            >
               <i className="bx text-3xl bxs-heart"></i>
             </button>
           )}

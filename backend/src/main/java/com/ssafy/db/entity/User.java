@@ -30,12 +30,15 @@ public class User implements Serializable {
     private String name;
     private LocalDate regDate;
     private String description;
-    private String profileImgUrl;
     private LocalDate dDay;
 
     private long currentSley;
     private long currentBookPoint;
     private boolean isWithdrawn;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "herb_book_id")
+    private HerbBook profileHerb;
 
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

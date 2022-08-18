@@ -42,9 +42,14 @@
   /* padding-bottom: 30px; */
 }
 
+.video-container--finger {
+  width: calc(80% / 2);
+}
+
 .video-container {
   /* margin-bottom: 20px; */
   display: flex;
+  width: 45%;
   justify-content: center;
   flex-wrap: wrap;
 }

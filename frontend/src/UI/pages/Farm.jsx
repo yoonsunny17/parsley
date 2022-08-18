@@ -1,8 +1,13 @@
+import { useGetAllHerbBooksQuery } from "../../services/farm";
 import FarmCollection from "../organisms/FarmCollection";
 import FarmGame from "../organisms/FarmGame";
 import Navbar from "../organisms/Navbar";
 
 function Farm() {
+  const { data } = useGetAllHerbBooksQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
   return (
     <div className="text-font1 h-100">
       <Navbar />

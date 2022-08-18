@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import StudyRoomItem from "../../UI/molecules/StudyRoomItem";
 import Navbar from "../organisms/Navbar";
+import { useGetAllRoomsQuery } from "../../services/room";
 
 function ViewAllStudyRooms() {
+  const { data: getAllRooms } = useGetAllRoomsQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
   const [activeIndex, setActiveIndex] = useState(0);
 
   const tabClickHandler = (index) => {
@@ -13,12 +19,26 @@ function ViewAllStudyRooms() {
   return (
     <div>
       <Navbar />
-      <div className="text-font1 font-bold text-2xl mt-5">
-        '파슬리' 검색결과
+      {/* <div className="text-font1 font-bold text-2xl my-5">전체 스터디룸</div> */}
+      <div className="text-font1 font-bold text-2xl mt-5">전체 스터디룸</div>
+      {/* <div className="shadow rounded-2xl px-6 py-8 md:px-10 w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-5 md:gap-x-5"> */}
+      <div className="px-6 py-8 md:px-10 w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-5 md:gap-x-5">
+        {/* 전체 검색 결과 */}
+        {getAllRooms?.roomsInfo.length === 0 ? (
+          <div>스터디가 없어요</div>
+        ) : (
+          getAllRooms?.roomsInfo.slice(0, 8).map((room, idx) => {
+            return (
+              <Link to={`/room/${room.id}`} key={`room-${idx}`}>
+                <StudyRoomItem info={room} key={idx} />
+              </Link>
+            );
+          })
+        )}
       </div>
 
       {/* 손꾸락 스터디룸 검색결과 */}
-      <div className="text-font1 font-semibold text-xl mt-12">
+      {/* <div className="text-font1 font-semibold text-xl mt-12">
         손꾸락 스터디룸
       </div>
 
@@ -30,10 +50,9 @@ function ViewAllStudyRooms() {
             </Link>
           );
         })}
-      </div>
-
+      </div> */}
       {/* 얼구리 컴퓨터 검색결과 */}
-      <div className="text-font1 font-semibold text-xl mt-14">
+      {/* <div className="text-font1 font-semibold text-xl mt-14">
         얼구리 컴퓨터 스터디룸
       </div>
 
@@ -45,7 +64,7 @@ function ViewAllStudyRooms() {
             </Link>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 }
