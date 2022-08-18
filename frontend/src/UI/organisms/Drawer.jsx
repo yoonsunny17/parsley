@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import DdayWidget from "../molecules/DdayWidget";
 import StudyWidget from "../molecules/StudyWidget";
@@ -7,10 +7,15 @@ import { useSelector } from "react-redux";
 import { useLazyLogoutQuery } from "../../services/auth";
 import { KAKAO_AUTH_URL } from "../../services";
 import { Link, useNavigate } from "react-router-dom";
+// import CalendarWidget from "../molecules/Calendar";
+import Calendar from "react-calendar";
+import "./Calendar.css";
 
 function Drawer({ children }) {
   const isLogin = useSelector((state) => state.user.isLogin);
-  const user = useSelector((state) => state.user.user);
+  const { name, dday, currentSley, currentBookPoint } = useSelector(
+    (state) => state.user.user
+  );
   const [logout] = useLazyLogoutQuery();
   const navigate = useNavigate();
 
@@ -23,6 +28,7 @@ function Drawer({ children }) {
     window.location.href = KAKAO_AUTH_URL;
   };
 
+  const [value, onChange] = useState(new Date());
   return (
     <div className="text-font1 drawer drawer-end font-sans">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -33,16 +39,21 @@ function Drawer({ children }) {
         {isLogin && (
           <div className="p-10 overflow-y-auto w-[380px] bg-bg rounded-tl-3xl rounded-bl-3xl">
             <div className="flex justify-between text-sub1">
-              <i className="bx bxs-user-circle text-5xl"></i>
+              {/* <i className="bx bxs-user-circle text-5xl"></i> */}
+              <div className="avatar">
+                <div className="w-14 h-14 rounded-full ring-2 ring-sub1">
+                  <img src="http://img.danawa.com/prod_img/500000/415/369/img/16369415_1.jpg?_v=20220210153136" />
+                </div>
+              </div>
               <div className="text-font5 font-normal text-base mb-6">
-                <span className="flex justify-end font-semibold">{`${user?.currentSley} 슬리`}</span>
-                <span className="flex justify-end font-semibold">{`${user?.currentBookPoint} 포인트`}</span>
+                <span className="flex justify-end font-semibold">{`${currentSley} 슬리`}</span>
+                <span className="flex justify-end font-semibold">{`${currentBookPoint} 포인트`}</span>
               </div>
             </div>
 
             <div className="text-font1 font-bold mt-3 mb-6">
               <div className="text-lg">
-                <span className="text-lg">{user?.name} 님</span>
+                <span className="text-lg">{name} 님</span>
                 <br />
                 항상 잘 하고 있어요!
               </div>
@@ -57,7 +68,23 @@ function Drawer({ children }) {
             {/* ========위젯========= */}
             <div className="flex flex-col gap-5">
               <DdayWidget />
-              <StudyWidget />
+              {/* <StudyWidget /> */}
+              <div className="w-100 items-center justify-between p-6 shadow rounded-3xl">
+                <Calendar onChange={onChange} value={value} locale="en-EN" />
+              </div>
+              <div className="flex items-end justify-end">
+                <a
+                  href="https://a604-parsley.notion.site/41bc2ed396ed4509a9d586e1ee4f17c1"
+                  target="_blank"
+                >
+                  서비스 이용 가이드
+                </a>
+                <img
+                  className="w-8"
+                  src="https://cdn-icons.flaticon.com/png/512/1892/premium/1892747.png?token=exp=1660805530~hmac=4008b0c61e74c40afeca5d1e72cbe0d0"
+                  alt=""
+                />
+              </div>
             </div>
           </div>
         )}

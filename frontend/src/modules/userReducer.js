@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+<<<<<<< frontend/src/modules/userReducer.js
   isLogin: false,
   token: null,
   userId: null,
@@ -13,6 +14,7 @@ const initialState = {
     dDay: null,
     currentSley: 0,
     currentBookPoint: 0,
+    interestRooms: [],
     herbBookName: "",
     herbBookType: "",
     herbBookDescription: "",
