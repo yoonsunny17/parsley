@@ -8,7 +8,6 @@ import KakaoLogin from "./UI/pages/KakaoLogin";
 import StudyRoomInfo from "./UI/pages/StudyRoomInfo";
 import SearchStudyRooms from "./UI/pages/SearchStudyRooms";
 import Farm from "./UI/pages/Farm";
-import TestCode from "./UI/organisms/TestCode";
 import StudySession from "./OpenVidu/StudySession";
 
 function App() {

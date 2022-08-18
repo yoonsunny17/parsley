@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import kakao_oauth from "../../assets/kakao_login_large_narrow.png";
 import DdayWidget from "../molecules/DdayWidget";
 import StudyWidget from "../molecules/StudyWidget";
@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 import { useLazyLogoutQuery } from "../../services/auth";
 import { KAKAO_AUTH_URL } from "../../services";
 import { Link, useNavigate } from "react-router-dom";
+// import CalendarWidget from "../molecules/Calendar";
+import Calendar from "react-calendar";
+import "./Calendar.css";
 
 function Drawer({ children }) {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -23,6 +26,7 @@ function Drawer({ children }) {
     window.location.href = KAKAO_AUTH_URL;
   };
 
+  const [value, onChange] = useState(new Date());
   return (
     <div className="text-font1 drawer drawer-end font-sans">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -57,7 +61,10 @@ function Drawer({ children }) {
             {/* ========위젯========= */}
             <div className="flex flex-col gap-5">
               <DdayWidget />
-              <StudyWidget />
+              {/* <StudyWidget /> */}
+              <div className="w-100 items-center justify-between p-6 shadow rounded-3xl">
+                <Calendar onChange={onChange} value={value} locale="en-EN" />
+              </div>
             </div>
           </div>
         )}
