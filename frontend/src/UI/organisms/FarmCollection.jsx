@@ -1,26 +1,9 @@
-import React, { useState } from "react";
-import HerbItemAvatar from "../atoms/HerbItemAvatar";
+import React from "react";
 import FarmCollectionAvartarInfo from "../molecules/FarmCollectionAvartarInfo";
-import Button from "../atoms/Button";
-import herbCollectionList from "../molecules/HerbCollectionList";
-import { useGetAllHerbBooksQuery } from "../../services/farm";
 import { useSelector } from "react-redux";
 
 function FarmCollection() {
-  //   const { data: getCollection } = useGetCollectionQuery(
-  //     {},
-  //     { refetchOnMountOrArgChange: true }
-  //   );
-  //   const { data: getHerbs } = useGetHerbsQuery(
-  //     {},
-  //     { refetchOnMountOrArgChange: true }
-  //   );
-
-  // const { data: herbBooks } = useGetAllHerbBooksQuery();
-
   const herbBook = useSelector((state) => state.farm.herbBook);
-  console.log("우오ㅘ프로필바꾸자");
-  console.log(herbBook);
   const user = useSelector((state) => state.user.user);
 
   // const isOpened = "16";
@@ -30,9 +13,6 @@ function FarmCollection() {
       isOpendNumb += 1;
     }
   }
-  console.log(isOpendNumb);
-
-  const profileImg = herbCollectionList[16].imgUrl;
 
   return (
     // FIXME: device width sm이하로 갔을 때 도감 collapse 적용 할까말까 ??????
