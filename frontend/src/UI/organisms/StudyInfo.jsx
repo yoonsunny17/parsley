@@ -73,7 +73,7 @@ function StudyInfo() {
 
   // TODO: 비밀번호 있는 방인 경우 처리
   const handleJoinRoom = async () => {
-    if (isLogin && data?.roomInfo.isPublic) {
+    if (isLogin) {
       if (data?.roomInfo.members.length === data?.roomInfo.maxPopulation) {
         Toast.fire({
           icon: "error",
