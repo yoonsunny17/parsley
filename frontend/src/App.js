@@ -29,7 +29,8 @@ function App() {
             <Route path="/room/session/:roomId" element={<StudySession />} />
             {/* <Route path="room/session/:roomId" element={<CheckForSession />} /> */}
 
-            <Route path="/search" element={<SearchStudyRooms />} />
+            {/* <Route path="/search" element={<SearchStudyRooms />} /> */}
+            <Route path="/room/search/:word" element={<SearchStudyRooms />} />
             <Route path="/farm" element={<Farm />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
