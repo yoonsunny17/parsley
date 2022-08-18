@@ -26,8 +26,6 @@ function StudyKing() {
     }
   );
 
-  // console.log(getGongbuRankingsByRoomId?.topRank);
-
   const tabClickHandler = (index) => {
     setActiveIndex(index);
   };

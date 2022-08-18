@@ -10,12 +10,6 @@ function Ranking() {
     { refetchOnMountOrArgChange: true }
   );
 
-  const [rank, setRank] = useState(999);
-  const [point, setPoint] = useState(10000);
-
-  console.log(getNongbuRankings);
-  const color = ["gold", "silver", "bronze"];
-
   function topRank() {
     let array = [];
     if (getNongbuRankings) {

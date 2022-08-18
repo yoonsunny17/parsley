@@ -42,31 +42,13 @@ class StudySession extends Component {
   constructor(props) {
     super(props);
 
-    // console.log("======= 현재 참여한 사람/세션 정보 =========");
-    // console.log(this.props);
-
-    console.log("PROPS 들어왔냐!!!!");
-    console.log(this.props);
-    console.log(this.props.addStudyLog);
-
-    // console.log(this.props.info);
-    // console.log(this.props.info.hostUser);
-    // console.log(this.props.info.name);
-    // console.log("========= 참여 멤버는 누구?? ===============");
-    // console.log(this.props.info.members);
-
     const membersArr = this.props.info.members;
-    // console.log("현재 여기 스터디방 참가 되어있는 사람은 ????");
-    // console.log(membersArr);
 
     // const [members, setMembers] = useState([])
     // for (let i = 0; i < membersArr.length; i++) {
-    //   console.log(membersArr[i].name);
     //   setMembers((prev), ...)
     // }
     const roomId = String(this.props.info.id);
-    // console.log("ddddddddddddddd");
-    // console.log(roomId);
 
     this.state = {
       mySessionName: this.props.info.name,
@@ -271,8 +253,6 @@ class StudySession extends Component {
       this.setState({
         status: true,
       });
-      console.log("공부 끝났어용!!!!!!!!!!!");
-      console.log(this.state.status);
     } else {
       this.props.addStudyLog({
         id: this.state.mySessionId,
@@ -281,8 +261,6 @@ class StudySession extends Component {
       this.setState({
         status: false,
       });
-      console.log("공부 시작했어용!!!!!!!!!");
-      console.log(this.state.status);
     }
   }
 
@@ -371,8 +349,6 @@ class StudySession extends Component {
         // --- 3) Specify the actions when events take place in the session ---
 
         mySession.on("connectionCreated", (event) => {
-          // console.log("========= connection =========");
-          // console.log(event.connection);
           var connection = event.connection;
           var connections = this.state.connections;
           var connectionUser = this.state.connectionUser;
@@ -406,9 +382,6 @@ class StudySession extends Component {
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
-
-          // console.log("실시간 참여자 누구인지 보고싶어요!!!!!!!!!!!!!!!!!!");
-          // console.log(subscribers);
 
           // Update the state with the new subscribers
           this.setState({
@@ -544,9 +517,6 @@ class StudySession extends Component {
         });
       }
     );
-
-    console.log("++++++++++++++++++++++++++++++++++++++");
-    console.log(this.state);
   };
 
   // 화면공유 시작 (react code ref)
@@ -689,8 +659,6 @@ class StudySession extends Component {
     const messages = this.state.messages;
     const myUserName = this.state.myUserName;
     // const members = this.state.membersArr;
-    // console.log("왜안나와????????????????");
-    // console.log(members);
 
     return (
       <div className="text-extra5">
@@ -934,7 +902,6 @@ class StudySession extends Component {
                   <button
                     onClick={() => {
                       this.setState({ isDivided: !this.state.isDivided });
-                      console.log(this.state.isDivided);
                     }}
                   >
                     <BiWindows size={footerBtn} />
