@@ -7,7 +7,7 @@ import {
 } from "../../services/notification";
 import Button from "../atoms/Button";
 import Notification from "../molecules/Notification";
-import SearchBarTest from "../molecules/SearchBarTest";
+// import SearchBarTest from "../molecules/SearchBarTest";
 // import SearchBar from "../molecules/SearchBar";
 
 function Navbar() {
@@ -45,7 +45,7 @@ function Navbar() {
         )}
 
         {/* Search Bar */}
-        <SearchBarTest />
+        {/* <SearchBarTest /> */}
         {/* <SearchBar /> */}
         {/* Menu Button */}
         <label htmlFor="my-drawer-4" className="drawer-button cursor-pointer">
