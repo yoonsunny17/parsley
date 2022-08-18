@@ -132,7 +132,9 @@ function HerbStoreModal({ showModal, handleModal, clickCancel }) {
             {/* 아이템 선택 목록 a.k.a. 구매목록! */}
             {/* // TODO: 화면 WIDTH 좁아졌을 때 구매목록 어떻게 처리할지 ?? */}
             <div className="shadow rounded-xl w-[300px] h-auto my-3 ml-10 py-3">
-              <p className="text-xs text-right mx-3">{user.currentSley} 슬리</p>
+              <p className="text-xs text-right mx-3">
+                보유 슬리 : {user.currentSley}
+              </p>
               <p className="text-lg mt-4 font-semibold text-center">
                 구매 목록
               </p>
