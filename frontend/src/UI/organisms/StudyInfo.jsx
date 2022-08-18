@@ -89,8 +89,6 @@ function StudyInfo() {
       setTimeout(() => {
         window.location.reload();
       }, 1500);
-    } else if (isLogin && !data?.roomInfo.isPublic) {
-      handlePassword();
     } else {
       Toast.fire({
         icon: "info",
@@ -99,34 +97,34 @@ function StudyInfo() {
     }
   };
 
-  // 로그인은 되어있는 사용자인데, 아직 한번도 참가한 적이 없다면?
-  // 1. 비밀번호를 눌러주세요
-  // 2-1. 비밀번호를 옳게 눌렀다면? 나의 스터디에 추가되었습니다
-  // 2-2. 비밀번호를 틀렸다면? 다시 입력해 주세요
+  //   // 로그인은 되어있는 사용자인데, 아직 한번도 참가한 적이 없다면?
+  //   // 1. 비밀번호를 눌러주세요
+  //   // 2-1. 비밀번호를 옳게 눌렀다면? 나의 스터디에 추가되었습니다
+  //   // 2-2. 비밀번호를 틀렸다면? 다시 입력해 주세요
 
-  const handlePassword = async () => {
-    const { value: password } = await Swal.fire({
-      title: "비밀번호를 입력해 주세요",
-      input: "password",
-      inputLabel: "Password",
-      inputPlaceholder: "password",
-    });
-    if (password === data?.roomInfo.password) {
-      await joinRoom(params.id);
-      Toast.fire({
-        icon: "success",
-        title: "나의 스터디에 추가되었습니다.",
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-    } else {
-      Toast.fire({
-        icon: "info",
-        title: "로그인이 필요합니다.",
-      });
-    }
-  };
+  //   const handlePassword = async () => {
+  //     const { value: password } = await Swal.fire({
+  //       title: "비밀번호를 입력해 주세요",
+  //       input: "password",
+  //       inputLabel: "Password",
+  //       inputPlaceholder: "password",
+  //     });
+  //     if (password === data?.roomInfo.password) {
+  //       await joinRoom(params.id);
+  //       Toast.fire({
+  //         icon: "success",
+  //         title: "나의 스터디에 추가되었습니다.",
+  //       });
+  //       setTimeout(() => {
+  //         window.location.reload();
+  //       }, 1500);
+  //     } else {
+  //       Toast.fire({
+  //         icon: "info",
+  //         title: "로그인이 필요합니다.",
+  //       });
+  //     }
+  //   };
 
   const handleWithdrawRoom = () => {
     Swal.fire({
