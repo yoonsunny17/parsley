@@ -936,9 +936,12 @@ class StudySession extends Component {
                     {/* // FIXME: 일단은 푸터에 넣어놓고,, 시간되면 바꾸기 */}
                     <BiWindows size={footerBtn} />
                   </button>
-                  <div className="cursor-pointer" onClick={this.screenShare}>
-                    <TbScreenShare size={footerBtn} />
-                  </div>
+                  {/* 얼구리 모드인 경우에만 화면공유 활성화 */}
+                  {this.state.mode === 1 && (
+                    <div className="cursor-pointer" onClick={this.screenShare}>
+                      <TbScreenShare size={footerBtn} />
+                    </div>
+                  )}
                   {/* mic on/off */}
 
                   {this.state.audiostate ? (
