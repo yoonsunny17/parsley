@@ -4,10 +4,10 @@ import React, { Component, createRef } from "react";
 import "./StudySession.css";
 import UserVideoComponent from "./UserVideoComponent";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import UserModel from "./models/user-model";
-
+import { useAddStudyLogMutation } from "../services/room";
+import { roomApi } from "../services/room";
 // chat function
 import Messages from "./Chat/Messages";
 // mic on/off, video on/off, screen share, chat popper, exit, group members
@@ -18,7 +18,7 @@ import {
   BsCameraVideoOffFill,
   BsChatDots,
 } from "react-icons/bs";
-import { TbScreenShare } from "react-icons/tb";
+import { TbScreenShare, TbUserExclamation } from "react-icons/tb";
 import { MdExitToApp } from "react-icons/md";
 import { BiGroup, BiWindows } from "react-icons/bi";
 
@@ -29,6 +29,7 @@ import Navbar from "../UI/organisms/Navbar";
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
+// 배포할때 이걸로!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_URL;
 // const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SECRET;
 
@@ -41,18 +42,22 @@ class StudySession extends Component {
   constructor(props) {
     super(props);
 
-    console.log("======= 현재 참여한 사람/세션 정보 =========");
-    console.log(this.props);
+    // console.log("======= 현재 참여한 사람/세션 정보 =========");
+    // console.log(this.props);
 
-    console.log(this.props.info);
-    console.log(this.props.info.hostUser);
-    console.log(this.props.info.name);
-    console.log("========= 참여 멤버는 누구?? ===============");
+    console.log("들어왔냐!!!!");
+    console.log(this.props);
+    console.log(this.props.addStudyLog);
+
+    // console.log(this.props.info);
+    // console.log(this.props.info.hostUser);
+    // console.log(this.props.info.name);
+    // console.log("========= 참여 멤버는 누구?? ===============");
     // console.log(this.props.info.members);
 
     const membersArr = this.props.info.members;
-    console.log("현재 여기 스터디방 참가 되어있는 사람은 ????");
-    console.log(membersArr);
+    // console.log("현재 여기 스터디방 참가 되어있는 사람은 ????");
+    // console.log(membersArr);
 
     // const [members, setMembers] = useState([])
     // for (let i = 0; i < membersArr.length; i++) {
@@ -60,8 +65,8 @@ class StudySession extends Component {
     //   setMembers((prev), ...)
     // }
     const roomId = String(this.props.info.id);
-    console.log("ddddddddddddddd");
-    console.log(roomId);
+    // console.log("ddddddddddddddd");
+    // console.log(roomId);
 
     this.state = {
       mySessionName: this.props.info.name,
@@ -98,6 +103,8 @@ class StudySession extends Component {
       leaved: false,
       // 화면 분할 모드인가요?
       isDivided: false,
+      // 현재 상태는?
+      status: true, // 나갈때 다시 true로
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -117,6 +124,8 @@ class StudySession extends Component {
     this.screenShare = this.screenShare.bind(this);
     // 참여한 멤버 확인하기
     this.sessionOnline = this.sessionOnline.bind(this);
+    // 현재 스터디방 참여 상태 확인
+    this.handleSessionStatus = this.handleSessionStatus.bind(this);
   }
 
   sessionOnline = () => {
@@ -245,25 +254,35 @@ class StudySession extends Component {
     });
   }
 
-  // // screen share onclick mode
-  // screenShare(e) {
-  //   navigator.mediaDevices
-  //     .getDisplayMedia({ audio: true, video: true })
-  //     .then(function (stream) {
-  //       //success
-  //       console.log(stream);
-  //       this.changeScreen(); // 화면 전환
-  //     })
-  //     .catch(function (e) {
-  //       //error;
-  //     });
-  // }
-
   changeScreen(stream) {
     if (this.state.mainStreamManager !== stream) {
       this.setState({
         mainStreamManager: stream,
       });
+    }
+  }
+
+  handleSessionStatus() {
+    if (this.state.status === false) {
+      this.props.addStudyLog({
+        id: this.state.mySessionId,
+        status: this.state.status,
+      });
+      this.setState({
+        status: true,
+      });
+      console.log("공부 끝났어용!!!!!!!!!!!");
+      console.log(this.state.status);
+    } else {
+      this.props.addStudyLog({
+        id: this.state.mySessionId,
+        status: this.state.status,
+      });
+      this.setState({
+        status: false,
+      });
+      console.log("공부 시작했어용!!!!!!!!!");
+      console.log(this.state.status);
     }
   }
 
@@ -328,13 +347,17 @@ class StudySession extends Component {
     }
   }
 
-  joinSession() {
+  joinSession = async () => {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
     this.OVScreen = new OpenVidu();
 
     // --- 2) Init a session ---
+    console.log("===============");
+    console.log("입장합니다~~~~~~");
+    await this.handleSessionStatus();
+    console.log("===============");
 
     this.setState(
       {
@@ -348,11 +371,12 @@ class StudySession extends Component {
         // --- 3) Specify the actions when events take place in the session ---
 
         mySession.on("connectionCreated", (event) => {
-          console.log("========= connection =========");
-          console.log(event.connection);
+          // console.log("========= connection =========");
+          // console.log(event.connection);
           var connection = event.connection;
           var connections = this.state.connections;
           var connectionUser = this.state.connectionUser;
+
           connections.push(connection);
 
           var userId = connection.connectionId;
@@ -383,8 +407,8 @@ class StudySession extends Component {
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
 
-          console.log("실시간 참여자 누구인지 보고싶어요!!!!!!!!!!!!!!!!!!");
-          console.log(subscribers);
+          // console.log("실시간 참여자 누구인지 보고싶어요!!!!!!!!!!!!!!!!!!");
+          // console.log(subscribers);
 
           // Update the state with the new subscribers
           this.setState({
@@ -523,7 +547,7 @@ class StudySession extends Component {
 
     console.log("++++++++++++++++++++++++++++++++++++++");
     console.log(this.state);
-  }
+  };
 
   // 화면공유 시작 (react code ref)
   screenShare() {
@@ -574,11 +598,13 @@ class StudySession extends Component {
     this.state.session.signal(signalOptions);
   }
 
-  leaveSession() {
+  leaveSession = async () => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     const mySession = this.state.session;
     const sessionScreen = this.state.sessionScreen;
+
+    await this.handleSessionStatus();
 
     if (mySession) {
       mySession.disconnect();
@@ -611,15 +637,15 @@ class StudySession extends Component {
       audioallowed: true,
       //
       host: {},
-      // isHost: false, // host인 경우만 가능한 권한 부여 (수정, 삭제)
       connectionUser: [],
       connections: [],
       connectionId: "",
       leaved: false,
       // 화면 분할 모드인가요?
       isDivided: false,
+      status: true, // 나갈때 다시 false로
     });
-  }
+  };
 
   async switchCamera() {
     try {
@@ -680,11 +706,6 @@ class StudySession extends Component {
                 >
                   [{this.state.mySessionName}] 방에 참여하셨어요
                 </div>
-                {/* <img
-                className=""
-                src="https://images.unsplash.com/photo-1551772413-6c1b7dc18548?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                alt="PARSLEY"
-              /> */}
                 <img
                   className="w-1/3 m-6"
                   src="https://doodleipsum.com/700/flat?i=d9b7afd47e72690f4113cb5795b3ba52"
@@ -742,7 +763,7 @@ class StudySession extends Component {
                 PARSLEY
               </button>
               <div className="dropdown">
-                <label tabindex="0">
+                <label tabIndex="0">
                   <BiGroup
                     onClick={this.sessionOnline}
                     className="mx-2 my-2 cursor-pointer"
@@ -1157,8 +1178,8 @@ const mapToStateToProps = (state) => ({
   info: state.room.room,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
+const mapDispatchToProps = {
+  addStudyLog: roomApi.endpoints.addStudyLog.initiate,
 };
 
 export default connect(mapToStateToProps, mapDispatchToProps)(StudySession);

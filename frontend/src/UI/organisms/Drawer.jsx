@@ -16,19 +16,19 @@ function Drawer({ children }) {
     const [logout] = useLazyLogoutQuery();
     const navigate = useNavigate();
 
-    const purge = async () => {
-        await persistor.purge();
-    };
+  const purge = async () => {
+    await persistor.purge();
+  };
 
-    const logoutHandler = async () => {
-        await logout();
-        await setTimeout(() => purge(), 200);
-        navigate("/");
-    };
+  const logoutHandler = async () => {
+    await logout();
+    await setTimeout(() => purge(), 200);
+    navigate("/");
+  };
 
-    const loginHandler = () => {
-        window.location.href = KAKAO_AUTH_URL;
-    };
+  const loginHandler = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
 
     const [value, onChange] = useState(new Date());
     return (
@@ -119,8 +119,11 @@ function Drawer({ children }) {
                     </div>
                 )}
             </div>
-        </div>
-    );
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default Drawer;
