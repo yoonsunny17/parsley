@@ -124,6 +124,8 @@ function StudyInfo() {
 
   const handleWithdrawRoom = () => {
     Swal.fire({
+      cancelButtonColor: "#686767",
+      confirmButtonColor: "#628D54",
       title: "정말로 탈퇴하실건가요?",
       width: 450,
       text: "한 번 나가면 돌이킬 수 없어요!",
@@ -135,6 +137,8 @@ function StudyInfo() {
       const result = await withdrawRoom(params.id).unwrap();
       if (result && res.isConfirmed) {
         Swal.fire({
+          cancelButtonColor: "#686767",
+          confirmButtonColor: "#628D54",
           icon: "info",
           title: "다른 스터디룸에서 만나요!",
           text: "오늘도 화이팅 :)",

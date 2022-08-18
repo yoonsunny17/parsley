@@ -16,6 +16,8 @@ function MainHerbAvatarInfo({ count, herbBook }) {
           onClick={() => {
             Swal.fire({
               width: 380,
+              cancelButtonColor: "#686767",
+              confirmButtonColor: "#628D54",
               title: [herbBook.name],
               text: "[" + [herbBook.herbType] + "] " + [herbBook.description],
               imageUrl: [herbBook.imageUrl], // 시간 되면 여기 사진 다른걸로 바꾸기
@@ -35,6 +37,8 @@ function MainHerbAvatarInfo({ count, herbBook }) {
           onClick={() => {
             Swal.fire({
               width: 380,
+              cancelButtonColor: "#686767",
+              confirmButtonColor: "#628D54",
               icon: "error",
               title: "Oops...",
               text: "아직 획득하지 못했어요!",

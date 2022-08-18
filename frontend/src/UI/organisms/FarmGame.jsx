@@ -52,6 +52,8 @@ function FarmGame(props) {
     const alertInfo = await addHerbBook({ herbId: id }).unwrap();
     Swal.fire({
       width: 350,
+      cancelButtonColor: "#686767",
+      confirmButtonColor: "#628D54",
       title: "[" + alertInfo.herbName + "]",
       html:
         " + " +

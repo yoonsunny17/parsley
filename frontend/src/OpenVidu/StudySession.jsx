@@ -117,6 +117,8 @@ class StudySession extends Component {
   // Exit button 눌렀을 때; 정말 나가시겠습니까? alert 띄워주기
   exitSessionAlert = () => {
     Swal.fire({
+      cancelButtonColor: "#686767",
+      confirmButtonColor: "#628D54",
       title: "스터디룸을 떠나실건가요?",
       showCancelButton: true,
       confirmButtonText: "더 공부하자!",
@@ -124,6 +126,8 @@ class StudySession extends Component {
     }).then((result) => {
       if (result.isDismissed) {
         Swal.fire({
+          cancelButtonColor: "#686767",
+          confirmButtonColor: "#628D54",
           icon: "success",
           title: "파슬리가 응원할게요!",
           text: "오늘도 화이팅 :)",
@@ -137,15 +141,17 @@ class StudySession extends Component {
   onClickLogo = () => {
     Swal.fire({
       title: "스터디룸을 떠나실건가요?",
+      cancelButtonColor: "#686767",
+      confirmButtonColor: "#628D54",
       showCancelButton: true,
       confirmButtonText: "더 공부하자!",
       cancelButtonText: "그만할래",
       width: 400,
       padding: "3em",
-      color: "#716add",
+      color: "#628D54",
       background: "#fff",
       backdrop: `
-        rgba(0,0,123,0.4)
+        rgba(98,141,84,0.4)
         url("https://c.tenor.com/rI_0O_9AJ5sAAAAi/nyan-cat-poptart-cat.gif")
         left top
         no-repeat
@@ -153,6 +159,8 @@ class StudySession extends Component {
     }).then((result) => {
       if (result.isDismissed) {
         Swal.fire({
+          cancelButtonColor: "#686767",
+          confirmButtonColor: "#628D54",
           icon: "success",
           title: "파슬리가 응원할게요!",
           text: "오늘도 화이팅 :)",
