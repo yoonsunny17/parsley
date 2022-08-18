@@ -43,6 +43,7 @@ function FarmCollectionAvartarInfo({ count, herbBook }) {
                   herbBookType: herbBook.herbType,
                   herbBookDescription: herbBook.description,
                   herbBookImageUrl: herbBook.imageUrl,
+                  herbBookId: herbBook.id,
                 };
                 const result = await updateUser(newUser).unwrap();
                 if (result) {
