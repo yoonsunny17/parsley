@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 const initialState = {
     weekly: [],
@@ -19,6 +20,9 @@ export const studySlice = createSlice({
     name: "study",
     initialState,
     reducers,
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => initialState);
+    },
 });
 
 export const { setWeekly, setLastWeek } = studySlice.actions;
