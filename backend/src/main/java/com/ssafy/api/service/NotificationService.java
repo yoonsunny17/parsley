@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -39,6 +41,11 @@ public class NotificationService {
                 resNotifications.add(notification);
             }
         }
+        Collections.sort(resNotifications, new Comparator<Notification>(){
+            public int compare(Notification o1, Notification o2){
+                return (int)(o2.getId() - o1.getId());
+            }
+        });
         return resNotifications;
     }
 

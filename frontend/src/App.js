@@ -8,8 +8,8 @@ import KakaoLogin from "./UI/pages/KakaoLogin";
 import StudyRoomInfo from "./UI/pages/StudyRoomInfo";
 import SearchStudyRooms from "./UI/pages/SearchStudyRooms";
 import Farm from "./UI/pages/Farm";
-import TestCode from "./UI/organisms/TestCode";
 import StudySession from "./OpenVidu/StudySession";
+import ViewAllStudyRooms from "./UI/pages/ViewAllStudyRooms";
 
 function App() {
   return (
@@ -21,6 +21,7 @@ function App() {
             <Route path="/me" element={<MyPage />} />
             <Route path="/login" element={<KakaoLogin />} />
 
+            <Route path="/room" element={<ViewAllStudyRooms />} />
             <Route path="/room">
               <Route path=":id" element={<StudyRoomInfo />} />
             </Route>
