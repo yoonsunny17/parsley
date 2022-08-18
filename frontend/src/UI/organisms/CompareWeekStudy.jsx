@@ -25,6 +25,8 @@ function CompareWeekStudy() {
     }
     if (thisAvgTime < lastAvgTime) {
       setText("줄었습니다.");
+    } else {
+      setText("늘었습니다.");
     }
   });
 

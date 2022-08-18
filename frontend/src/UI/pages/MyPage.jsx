@@ -20,7 +20,7 @@ function MyPage() {
           <MyDday />
         </div>
         <div className="flex flex-wrap justify-between w-full">
-          {/* <TodayStudy /> */}
+          <TodayStudy />
           <TodayStudyTime />
         </div>
         <div className="flex flex-wrap justify-between w-full">
