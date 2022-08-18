@@ -14,9 +14,7 @@ import { persistor } from "../..";
 
 function Drawer({ children }) {
     const isLogin = useSelector((state) => state.user.isLogin);
-    const { name, dday, currentSley, currentBookPoint } = useSelector(
-        (state) => state.user.user
-    );
+    const user = useSelector((state) => state.user.user);
     const [logout] = useLazyLogoutQuery();
     const navigate = useNavigate();
 
@@ -52,14 +50,14 @@ function Drawer({ children }) {
                                 </div>
                             </div>
                             <div className="text-font5 font-normal text-base mb-6">
-                                <span className="flex justify-end font-semibold">{`${currentSley} 슬리`}</span>
-                                <span className="flex justify-end font-semibold">{`${currentBookPoint} 포인트`}</span>
+                                <span className="flex justify-end font-semibold">{`${user?.currentSley} 슬리`}</span>
+                                <span className="flex justify-end font-semibold">{`${user?.currentBookPoint} 포인트`}</span>
                             </div>
                         </div>
 
                         <div className="text-font1 font-bold mt-3 mb-6">
                             <div className="text-lg">
-                                <span className="text-lg">{name} 님</span>
+                                <span className="text-lg">{user?.name} 님</span>
                                 <br />
                                 항상 잘 하고 있어요!
                             </div>
@@ -78,7 +76,7 @@ function Drawer({ children }) {
                             <div className="w-100 items-center justify-between p-6 shadow rounded-3xl">
                                 <Calendar
                                     onChange={onChange}
-                                    value={value}
+                                    value={user?.value}
                                     locale="en-EN"
                                 />
                             </div>
@@ -89,11 +87,11 @@ function Drawer({ children }) {
                                 >
                                     서비스 이용 가이드
                                 </a>
-                                <img
+                                {/* <img
                                     className="w-8"
                                     src="https://cdn-icons.flaticon.com/png/512/1892/premium/1892747.png?token=exp=1660805530~hmac=4008b0c61e74c40afeca5d1e72cbe0d0"
                                     alt=""
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>

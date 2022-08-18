@@ -3,57 +3,57 @@ import FarmCollectionAvartarInfo from "../molecules/FarmCollectionAvartarInfo";
 import { useSelector } from "react-redux";
 
 function FarmCollection() {
-  const herbBook = useSelector((state) => state.farm.herbBook);
-  const user = useSelector((state) => state.user.user);
+    const herbBook = useSelector((state) => state.farm.herbBook);
+    const user = useSelector((state) => state.user.user);
 
-  // const isOpened = "16";
-  let isOpendNumb = 0; // 지금까지 모은 도감 캐릭터 개수 (중복 빼고)
-  for (let i = 0; i < herbBook.length; i++) {
-    if (herbBook[i].count > 0) {
-      isOpendNumb += 1;
+    // const isOpened = "16";
+    let isOpendNumb = 0; // 지금까지 모은 도감 캐릭터 개수 (중복 빼고)
+    for (let i = 0; i < herbBook.length; i++) {
+        if (herbBook[i].count > 0) {
+            isOpendNumb += 1;
+        }
     }
-  }
 
-  return (
-    // FIXME: device width sm이하로 갔을 때 도감 collapse 적용 할까말까 ??????
-    // <div className="px-[30px] py-[35px] w-[30%] bg-white rounded-[30px] drop-shadow-[4px_4px_20px_rgba(0,0,0,0.1)]"></div>
-    <div className="w-full md:w-[32%] rounded-2xl bg-white drop-shadow px-4 py-5 lg:px-8 lg:py-5">
-      <div className="text-lg font-bold mb-2">{user?.name} 님의 도감</div>
-      {/* <button className="grid items-center text-sm h-full">edit</button> */}
-      <div className="flex my-6">
-        {/* // TODO: 대표 프로필 AVATAR 크기는 좀 크게 할까 ? */}
-        <img
-          className="inline-block mt-3 mb-3 mr-4 h-16 w-16 rounded-full ring-2 ring-sub1"
-          // src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-          src={user.herbBookImageUrl}
-          alt="avatar"
-        />
-        <div className="font-semibold text-sm mt-3">
-          {user.herbBookName} &nbsp; {user.herbBookType} <br />
-          <span className="font-semibold text-xs">
-            {user.herbBookDescription}
-          </span>
+    return (
+        // FIXME: device width sm이하로 갔을 때 도감 collapse 적용 할까말까 ??????
+        // <div className="px-[30px] py-[35px] w-[30%] bg-white rounded-[30px] drop-shadow-[4px_4px_20px_rgba(0,0,0,0.1)]"></div>
+        <div className="w-full md:w-[32%] rounded-2xl bg-white drop-shadow px-4 py-5 lg:px-8 lg:py-5">
+            <div className="text-lg font-bold mb-2">{user?.name} 님의 도감</div>
+            {/* <button className="grid items-center text-sm h-full">edit</button> */}
+            <div className="flex my-6">
+                {/* // TODO: 대표 프로필 AVATAR 크기는 좀 크게 할까 ? */}
+                <img
+                    className="inline-block mt-3 mb-3 mr-4 h-16 w-16 rounded-full ring-2 ring-sub1"
+                    // src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+                    src={user?.herbBookImageUrl}
+                    alt="avatar"
+                />
+                <div className="font-semibold text-sm mt-3">
+                    {user?.herbBookName} &nbsp; {user?.herbBookType} <br />
+                    <span className="font-semibold text-xs">
+                        {user?.herbBookDescription}
+                    </span>
+                </div>
+            </div>
+            {/* // TODO: 농장페이지 도감 컴포넌트 */}
+            <div className="text-sm font-semibold my-8">
+                파슬리 도감 [ {isOpendNumb} / {herbBook.length} ]
+            </div>
+            <div className="">
+                <div className="grid grid-cols-4 md:grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
+                    {herbBook.map((info, idx) => {
+                        return (
+                            <FarmCollectionAvartarInfo
+                                count={info.count}
+                                herbBook={info.herbBook}
+                                key={idx}
+                            />
+                        );
+                    })}
+                </div>
+            </div>
         </div>
-      </div>
-      {/* // TODO: 농장페이지 도감 컴포넌트 */}
-      <div className="text-sm font-semibold my-8">
-        파슬리 도감 [ {isOpendNumb} / {herbBook.length} ]
-      </div>
-      <div className="">
-        <div className="grid grid-cols-4 md:grid-cols-3 px-[2px] lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-3">
-          {herbBook.map((info, idx) => {
-            return (
-              <FarmCollectionAvartarInfo
-                count={info.count}
-                herbBook={info.herbBook}
-                key={idx}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 // // collection data
