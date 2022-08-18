@@ -17,9 +17,7 @@ function TodayStudy(args) {
         { refetchOnMountOrArgChange: true }
     );
 
-    let timePercent = 0;
-
-    const [percent, setPercent] = useState();
+    const [percent, setPercent] = useState(0);
     const [hour, setHour] = useState(0);
     const [min, SetMin] = useState(0);
     const [targetHour, setTargetHour] = useState(0);
@@ -27,17 +25,11 @@ function TodayStudy(args) {
     const [targetTime, setTargetTime] = useState(0);
 
     useEffect(() => {
-        if (!targetTime) {
-            setTargetTime(goal?.targetTime);
-            setTargetHour((targetTime / 60).toFixed(0));
-            setTargetMin(targetTime % 60);
-        }
-        timePercent = Math.floor((studyTime / targetTime) * 100);
-        if (isNaN(timePercent)) {
-            setPercent("0");
-        } else {
-            setPercent(timePercent);
-        }
+        setTargetTime(goal?.targetTime);
+        setTargetHour((goal?.targetTime / 60).toFixed(0));
+        setTargetMin(goal?.targetTime % 60);
+
+        setPercent(Math.floor((studyTime / targetTime) * 100));
     }, [targetTime]);
 
     const changeHour = (e) => {
@@ -60,13 +52,7 @@ function TodayStudy(args) {
         setTargetHour(hour);
         setTargetMin(min);
         setTargetTime(parseInt(hour) * 60 + parseInt(min));
-        timePercent = Math.floor((studyTime / targetTime) * 100);
-        if (isNaN(timePercent)) {
-            setPercent("0");
-        } else {
-            setPercent(timePercent);
-        }
-        console.log(percent);
+        setPercent(Math.floor((studyTime / targetTime) * 100));
         handleModal();
     };
 
@@ -152,8 +138,8 @@ function TodayStudy(args) {
                     <p className="text-font1 text-[20px]">{percent}%</p>
                 </div>
                 <div>
-                    {hour === "" ? null : <span>{targetHour}시간</span>}
-                    {min === "" ? null : <span>{targetMin}분</span>}
+                    {hour === "" ? null : <span>{targetHour} 시간&nbsp;</span>}
+                    {min === "" ? null : <span>{targetMin} 분</span>}
                 </div>
             </div>
         </div>

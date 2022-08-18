@@ -9,7 +9,6 @@ const initialState = {
 const reducers = {
     setWeekly: (state, { payload: weekly }) => {
         state.weekly = weekly;
-        // console.log(actions);
     },
     setLastWeek: (state, { payload: lastWeek }) => {
         state.lastWeek = lastWeek;

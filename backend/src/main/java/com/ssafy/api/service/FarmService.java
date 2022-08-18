@@ -180,7 +180,7 @@ public class FarmService {
 
             int leftTime = (int)studyTime(herb.getStartDate(), (long)herb.getGrowthTime(), user.getDailyStudyLogs());
             res.setLeftTime(leftTime);
-
+            res.setGrowthTime(herb.getGrowthTime());
             list.add(res);
         }
 

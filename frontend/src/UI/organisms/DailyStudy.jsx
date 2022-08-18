@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { useSelector } from "react-redux/es/exports";
 import {
     LineChart,
@@ -8,7 +8,6 @@ import {
     CartesianGrid,
     Tooltip,
     Legend,
-    ResponsiveContainer,
 } from "recharts";
 
 function DailyStudy() {
@@ -25,9 +24,9 @@ function DailyStudy() {
     }
 
     return (
-        <div className="rounded-2xl shadow px-8 py-5 w-full lg:w-2/3 md:w-[100%]">
+        <div className="rounded-2xl shadow px-8 py-5 w-full lg:w-2/3 mb-4">
             <div className="font-semibold text-base">요일별 공부량</div>
-            <div className="">
+            <div className="mt-2">
                 <span className="font-bold text-sm">
                     {sortData[6]?.day}요일
                 </span>
