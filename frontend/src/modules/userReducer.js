@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-<<<<<<< frontend/src/modules/userReducer.js
   isLogin: false,
   token: null,
   userId: null,

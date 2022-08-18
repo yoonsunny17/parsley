@@ -37,18 +37,20 @@ function FarmCollectionAvartarInfo({ count, herbBook }) {
             }).then(async (res) => {
               console.log("대표 프로필 설정하기");
               // TODO: 대표 프로필 설정 버튼
-              const newUser = {
-                herbBookName: herbBook.name,
-                herbBookType: herbBook.herbType,
-                herbBookDescription: herbBook.description,
-                herbBookImageUrl: herbBook.imageUrl,
-              };
-              const result = await updateUser(newUser).unwrap();
-              if (result && res.isConfirmed) {
-                Toast.fire({
-                  icon: "success",
-                  title: "대표 프로필 설정 완료",
-                });
+              if (res.isConfirmed) {
+                const newUser = {
+                  herbBookName: herbBook.name,
+                  herbBookType: herbBook.herbType,
+                  herbBookDescription: herbBook.description,
+                  herbBookImageUrl: herbBook.imageUrl,
+                };
+                const result = await updateUser(newUser).unwrap();
+                if (result) {
+                  Toast.fire({
+                    icon: "success",
+                    title: "대표 프로필 설정 완료",
+                  });
+                }
               }
             });
           }}
