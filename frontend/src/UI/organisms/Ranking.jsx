@@ -24,7 +24,13 @@ function Ranking() {
         array.push(
           <li key={i} className="flex items-center justify-between mb-2">
             <span className="w-16 inline-block text-center">
-              <BiMedal className={`bx bx-medal text-${color[i]} text-3xl`} />
+              {i === 0 ? (
+                <BiMedal className={`bx bx-medal text-gold text-3xl`} />
+              ) : i === 1 ? (
+                <BiMedal className={`bx bx-medal text-silver text-3xl`} />
+              ) : i === 2 ? (
+                <BiMedal className={`bx bx-medal text-bronze text-3xl`} />
+              ) : null}
             </span>
             <span className="w-2/5 text-start truncate">
               {length <= i ? "--" : getNongbuRankings?.topRank[i].name}
