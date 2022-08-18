@@ -39,7 +39,12 @@ function Drawer({ children }) {
         {isLogin && (
           <div className="p-10 overflow-y-auto w-[380px] bg-bg rounded-tl-3xl rounded-bl-3xl">
             <div className="flex justify-between text-sub1">
-              <i className="bx bxs-user-circle text-5xl"></i>
+              {/* <i className="bx bxs-user-circle text-5xl"></i> */}
+              <div class="avatar">
+                <div class="w-14 h-14 rounded-full ring-2 ring-sub1">
+                  <img src="http://img.danawa.com/prod_img/500000/415/369/img/16369415_1.jpg?_v=20220210153136" />
+                </div>
+              </div>
               <div className="text-font5 font-normal text-base mb-6">
                 <span className="flex justify-end font-semibold">{`${currentSley} 슬리`}</span>
                 <span className="flex justify-end font-semibold">{`${currentBookPoint} 포인트`}</span>
