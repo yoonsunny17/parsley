@@ -44,7 +44,7 @@ function Drawer({ children }) {
               {/* <i className="bx bxs-user-circle text-5xl"></i> */}
               <div className="avatar">
                 <div className="w-14 h-14 rounded-full ring-2 ring-sub1">
-                  <img src="http://img.danawa.com/prod_img/500000/415/369/img/16369415_1.jpg?_v=20220210153136" />
+                  <img src={user?.herbBookImageUrl} alt="avatar" />
                 </div>
               </div>
               <div className="text-font5 font-normal text-base mb-6">
@@ -85,11 +85,11 @@ function Drawer({ children }) {
                 >
                   서비스 이용 가이드
                 </a>
-                {/* <img
-                                    className="w-8"
-                                    src="https://cdn-icons.flaticon.com/png/512/1892/premium/1892747.png?token=exp=1660805530~hmac=4008b0c61e74c40afeca5d1e72cbe0d0"
-                                    alt=""
-                                /> */}
+                <img
+                  className="w-8"
+                  src="https://cdn-icons-png.flaticon.com/512/2837/2837145.png"
+                  alt=""
+                />
               </div>
             </div>
           </div>
