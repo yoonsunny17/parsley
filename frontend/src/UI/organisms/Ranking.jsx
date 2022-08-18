@@ -53,7 +53,7 @@ function Ranking() {
         {topRank()}
         <li className="flex items-center justify-between mb-2"></li>
         <li className="flex items-center justify-between mt-4">
-          {getNongbuRankings?.myRank.name === "guest" ? (
+          {!isLogin ? (
             <div className="flex justify-center w-full">
               회원가입 후 등수를 알아보세요
             </div>
