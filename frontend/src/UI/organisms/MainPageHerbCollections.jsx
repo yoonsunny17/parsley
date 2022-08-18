@@ -7,9 +7,10 @@ import MainHerbAvatarInfo from "./MainHerbAvatarInfo";
 import { useGetAllHerbBooksQuery } from "../../services/farm";
 
 function Collections() {
+  const isLogin = useSelector((state) => state.user.isLogin);
   const { data } = useGetAllHerbBooksQuery(
     {},
-    { refetchOnMountOrArgChange: true }
+    { skip: !isLogin, refetchOnMountOrArgChange: true }
   );
   const herbname = "프로틴 중독 파슬리";
   const user = useSelector((state) => state.user.user);
