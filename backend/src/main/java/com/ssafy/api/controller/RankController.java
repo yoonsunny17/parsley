@@ -148,7 +148,10 @@ public class RankController {
         for (int i = 0; i < members.size(); i++) {
             User user = members.get(i);
             List<Long> weeklyStudyTime = studyService.getWeeklyStudyTime(user.getId());
-            long totalTime = weeklyStudyTime.stream().mapToLong(Long::longValue).sum();
+            long totalTime = 0;
+            if (weeklyStudyTime != null) {
+                totalTime = weeklyStudyTime.stream().mapToLong(Long::longValue).sum();
+            }
 
             topRank.add(RankInfoRes.of(user.getName(), user.getDescription(), (double) totalTime, (long) i));
 
