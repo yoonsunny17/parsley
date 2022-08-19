@@ -150,5 +150,5 @@
 ## 📚 산출물
 
 * [UCC](https://a604-parsley.notion.site/UCC-79df0b8fc3c04031b54d5bc7f0482694)
-* [포팅 매뉴얼](https://a604-parsley.notion.site/22d57485f3c1473294bffe7e794fdf12)
+* [포팅 매뉴얼](https://a604-parsley.notion.site/812f688f107241cfbdb23477b7230e75?v=b360c39e96de47b299f263b29effe916)
 * [기술 블로그](https://a604-parsley.notion.site/04e2d358448b4a56b07f777e8a675ed8)
