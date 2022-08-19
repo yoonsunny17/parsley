@@ -1,0 +1,76 @@
+.stream-container {
+  padding: 0;
+}
+
+.messagesChatClass {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  margin-bottom: 15px;
+  background-color: rgb(241, 241, 57);
+  min-height: 30px;
+}
+
+.messagesEntireChatClass {
+  display: flex;
+  justify-content: flex-end;
+  /* align-items: flex-end; */
+  width: 70%;
+  /* margin-right: 30%; */
+  word-wrap: break-word;
+}
+
+.messagesChatClassOpp {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-bottom: 15px;
+  background-color: white;
+  min-height: 30px;
+}
+
+.messagesEntireChatClassOpp {
+  width: 70%;
+  margin-right: 30%;
+  word-wrap: break-word;
+}
+
+/* 위에 작게 보이는 곳 */
+.stream-container {
+  width: calc(100% / 4);
+  /* padding-top: 10px; */
+  /* padding-bottom: 30px; */
+}
+
+.video-container--finger {
+  width: calc(80% / 2);
+}
+
+.video-container {
+  /* margin-bottom: 20px; */
+  display: flex;
+
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#main-video-divided {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 80%;
+  height: auto;
+}
+
+#main-video-onescreen {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+}
+
+.main-video-division {
+  display: flex;
+  width: calc(96% / 2);
+  margin: 1%;
+}

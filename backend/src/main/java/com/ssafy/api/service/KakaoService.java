@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,13 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class KakaoService {
 
+    @Value("${kakao.client.id}")
+    private String kakaoClientId;
+    @Value("${kakao.client.secret}")
+    private String kakaoClientSecret;
+    @Value("${kakao.redirect.uri}")
+    private String kakaoRedirectUri;
+
     public String getKakaoEmail(String code) {
         RestTemplate restTemplate = new RestTemplate();
 
@@ -23,9 +31,9 @@ public class KakaoService {
         MultiValueMap<String, String> tokenRequestBody = new LinkedMultiValueMap<>(); // http 요청 바디 만들기
         tokenRequestBody.add("grant_type", "authorization_code");
         tokenRequestBody.add("code", code);
-        tokenRequestBody.add("client_id", "c363c1414c4795051bf51aea0b37c03d");
-        tokenRequestBody.add("client_secret", "6VKJcXSj18I1tc7Gho56LaMnjnqwPtBl");
-        tokenRequestBody.add("redirect_uri", "http://localhost:8080//api/v1/auth/kakao");
+        tokenRequestBody.add("client_id", kakaoClientId);
+        tokenRequestBody.add("client_secret", kakaoClientSecret);
+        tokenRequestBody.add("redirect_uri", kakaoRedirectUri);
 
         HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenRequestBody,
                 tokenRequestHeader);
@@ -36,13 +44,31 @@ public class KakaoService {
                 tokenRequest,
                 String.class
         );
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(tokenResponse.getBody());
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        JSONObject kakao_account = (JSONObject) jsonObject.get("kakao_account");
+
+        // 4. 토큰 전달 받음
+        JSONObject jsonObject = new JSONObject(tokenResponse.getBody());
+
+        String access_token = jsonObject.getString("access_token");
+        String refresh_token = jsonObject.getString("refresh_token");
+        Integer expires_in = (Integer) jsonObject.get("expires_in");
+        Integer refresh_token_expires_in = (Integer) jsonObject.get("refresh_token_expires_in");
+        String token_type = jsonObject.getString("token_type");
+
+        // 5. 토큰으로 카카오 API 호출 (카카오 서버에서 토큰 유효성 확인후 사용자 데이터 받아옴)
+        HttpHeaders apiRequestHeader = new HttpHeaders();
+        apiRequestHeader.add("Authorization", "Bearer " + access_token);
+        apiRequestHeader.add("Content-type", "application/x-www-form-urlencoded;charset=utf8");
+        HttpEntity<HttpHeaders> apiRequest = new HttpEntity<>(apiRequestHeader);
+
+        HttpEntity<String> apiResponse = restTemplate.exchange( // 토큰과 함께 api를 호출한다.
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                apiRequest,
+                String.class
+        );
+
+        JSONObject jsonObject2 = new JSONObject(apiResponse.getBody());
+        JSONObject kakao_account = (JSONObject) jsonObject2.get("kakao_account");
         String email = kakao_account.getString("email");
 
         return email;
