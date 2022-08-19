@@ -10,7 +10,7 @@
 * 빌드 및 배포
     * [EC2에 OpenVidu 배포하기](/exec/build_release/EC2에_OpenVidu_배포하기.pdf)
     * [EC2에 배포 및 HTTPS 적용](/exec/build_release/EC2에_배포_및_HTTPS_적용.pdf)
-    * [빌드하기](exec/build_release/빌드하기.pdf)
+    * [빌드하기](/exec/build_release/빌드하기.pdf)
 
 * 외부 서비스
     * [S3에 이미지 저장하기](/exec/external_service/S3에_이미지_저장하기.pdf)
