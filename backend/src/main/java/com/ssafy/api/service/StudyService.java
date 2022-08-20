@@ -67,6 +67,7 @@ public class StudyService {
         return dailyGoal;
     }
 
+    @Transactional
     //현재 데이터 확인용으로 초단위로 가져옴 -> 추후 /60 해줄 예정
     public List<Long> getWeeklyStudyTime(Long userId){
 
@@ -82,21 +83,28 @@ public class StudyService {
             List<DailyStudyLog> dayLog = dailyStudyRepository.findWeeklyByUserId(user.getId(), targetDate);
 
             Long time = 0L;
-            if(dayLog.size()%2 == 1){
-                return null;
-            }
+            int j = 0;
+            while(j < dayLog.size()){
+                if(dayLog.get(j+1).isStatus()){
+                    dailyStudyRepository.delete(dayLog.get(j));
+                    j += 1;
+                    continue;
+                }
 
-            for(int j=0; j< dayLog.size(); j+=2){
                 LocalDateTime tLog = dayLog.get(j).getTime();
                 LocalDateTime fLog = dayLog.get(j+1).getTime();
                 Duration duration = Duration.between(tLog, fLog);
                 time += duration.getSeconds();
+                j += 2;
+
             }
+
             week.add(time);
         }
         return week;
     }
 
+    @Transactional
     public Long getLastWeekTime(Long userId){
         User user = userRepository.findByUserId(userId);
 
@@ -108,13 +116,24 @@ public class StudyService {
             LocalDate targetDate = LocalDate.from(LocalDateTime.now().minusDays(i).minusWeeks(1));
             List<DailyStudyLog> dayLog = dailyStudyRepository.findWeeklyByUserId(user.getId(), targetDate);
 
+
             Long time = 0L;
-            for(int j=0; j< dayLog.size(); j+=2){
+            int j = 0;
+            while(j < dayLog.size()){
+                if(dayLog.get(j+1).isStatus()){
+                    dailyStudyRepository.delete(dayLog.get(j));
+                    j += 1;
+                    continue;
+                }
+
                 LocalDateTime tLog = dayLog.get(j).getTime();
                 LocalDateTime fLog = dayLog.get(j+1).getTime();
                 Duration duration = Duration.between(tLog, fLog);
                 time += duration.getSeconds();
+                j += 2;
+
             }
+
             totalTime += time;
         }
         return totalTime;
