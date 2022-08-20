@@ -15,6 +15,7 @@ import { userRoomApi } from "../services/userRoom";
 import roomReducer from "./roomReducer";
 import { farmApi } from "../services/farm";
 import { rankingApi } from "../services/ranking";
+import notificationReducer from "./notificationReducer";
 export const history = createBrowserHistory();
 
 const reducers = combineReducers({
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   study: studyReducer,
   room: roomReducer,
   farm: farmReducer,
+  notification: notificationReducer,
   [roomApi.reducerPath]: roomApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
@@ -33,11 +35,11 @@ const reducers = combineReducers({
 });
 
 const persistedReducer = persistReducer(
-    {
-        key: "root",
-        storage,
-    },
-    reducers
+  {
+    key: "root",
+    storage,
+  },
+  reducers
 );
 
 export const store = configureStore({
