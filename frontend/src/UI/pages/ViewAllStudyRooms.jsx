@@ -27,7 +27,7 @@ function ViewAllStudyRooms() {
         {getAllRooms?.roomsInfo.length === 0 ? (
           <div>스터디가 없어요</div>
         ) : (
-          getAllRooms?.roomsInfo.slice(0, 8).map((room, idx) => {
+          getAllRooms?.roomsInfo.map((room, idx) => {
             return (
               <Link to={`/room/${room.id}`} key={`room-${idx}`}>
                 <StudyRoomItem info={room} key={idx} />
