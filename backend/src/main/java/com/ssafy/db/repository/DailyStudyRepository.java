@@ -22,4 +22,8 @@ public class DailyStudyRepository {
         String sql = "select * from daily_study_log l where date(l.time) = ? and user_id = ?";
         return em.createNativeQuery(sql, DailyStudyLog.class).setParameter(1, targetDate).setParameter(2, userId).getResultList();
     }
+
+    public void delete(DailyStudyLog dailyStudyLog){
+        em.remove((dailyStudyLog));
+    }
 }
