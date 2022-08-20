@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { setNotificationCnt } from "../../modules/notificationReducer";
 import {
   useGetNotificationCntQuery,
   useReadNotificationMutation,
@@ -11,6 +12,7 @@ import Notification from "../molecules/Notification";
 import SearchBar from "../molecules/SearchBar";
 
 function Navbar() {
+  const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.user.isLogin);
   const { data } = useGetNotificationCntQuery(
     {},
@@ -18,10 +20,12 @@ function Navbar() {
   );
   const [readNotification] = useReadNotificationMutation();
   const [notiArr, setNotiArr] = useState([]);
-
+  const notiCnt = useSelector((state) => state.notification.notificationCnt);
+  console.log("알림 개수: " + notiCnt);
   const clickAlarm = async () => {
     const result = await readNotification().unwrap();
     setNotiArr(result?.notifications);
+    dispatch(setNotificationCnt(0));
   };
 
   return (
@@ -44,7 +48,7 @@ function Navbar() {
             <Notification
               onClick={clickAlarm}
               notiArr={notiArr}
-              uncheckedCnt={data?.uncheckCnt}
+              uncheckedCnt={notiCnt}
             />
           </div>
         )}
