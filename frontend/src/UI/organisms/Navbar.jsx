@@ -8,7 +8,7 @@ import {
 import Button from "../atoms/Button";
 import Notification from "../molecules/Notification";
 // import SearchBarTest from "../molecules/SearchBarTest";
-import SearchBar from "../molecules/SearchBar";
+// import SearchBar from "../molecules/SearchBar";
 
 function Navbar() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -50,7 +50,7 @@ function Navbar() {
         )}
 
         {/* Search Bar */}
-        <SearchBar />
+        {/* <SearchBar /> */}
         {/* Menu Button */}
         <label htmlFor="my-drawer-4" className="drawer-button cursor-pointer">
           <i className="bx bx-menu text-4xl"></i>
