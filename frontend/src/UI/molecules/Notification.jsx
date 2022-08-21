@@ -3,7 +3,8 @@ import React from "react";
 function Notification({ notiArr, uncheckedCnt, onClick }) {
   const calcTimePassed = (date) => {
     const minutePassed = parseInt(
-      (new Date().getTime() - new Date(date).getTime()) / (1000 * 60)
+      (new Date().getTime() - new Date(date).getTime() - 1000 * 60 * 60 * 9) /
+        (1000 * 60)
     );
     let timePassed;
     if (minutePassed >= 1440) {
@@ -55,7 +56,7 @@ function Notification({ notiArr, uncheckedCnt, onClick }) {
                   </div>
                   <div className="w-7/18 text-start self-center">
                     {noti.content.includes("심기")
-                      ? "-" + noti.value
+                      ? "" + noti.value
                       : "+" + noti.value}
                   </div>
                   <div className="w-7/12 text-start self-center">
