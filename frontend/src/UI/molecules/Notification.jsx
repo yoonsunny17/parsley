@@ -55,7 +55,7 @@ function Notification({ notiArr, uncheckedCnt, onClick }) {
                   </div>
                   <div className="w-7/18 text-start self-center">
                     {noti.content.includes("심기")
-                      ? "-" + noti.value
+                      ? "" + noti.value
                       : "+" + noti.value}
                   </div>
                   <div className="w-7/12 text-start self-center">
