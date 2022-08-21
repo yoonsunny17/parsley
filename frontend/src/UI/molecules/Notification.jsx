@@ -3,7 +3,8 @@ import React from "react";
 function Notification({ notiArr, uncheckedCnt, onClick }) {
   const calcTimePassed = (date) => {
     const minutePassed = parseInt(
-      (new Date().getTime() - new Date(date).getTime()) / (1000 * 60)
+      (new Date().getTime() - new Date(date).getTime() - 1000 * 60 * 60 * 9) /
+        (1000 * 60)
     );
     let timePassed;
     if (minutePassed >= 1440) {
