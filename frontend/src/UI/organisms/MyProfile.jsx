@@ -59,7 +59,7 @@ function MyProfile() {
       >
         <div className="flex gap-8 w-full">
           <img
-            className="inline-block h-32 w-32 rounded-full ring-4 ring-main"
+            className="inline-block h-32 w-32 rounded-full ring-2 ring-sub1"
             src={user?.herbBookImageUrl}
             alt="profileImg"
           />
