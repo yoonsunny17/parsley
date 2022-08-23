@@ -34,12 +34,23 @@ function FarmGame(props) {
   const [addHerbBook] = useAddHerbBookMutation();
 
   const today = new Date();
-  const regDate = new Date(user?.regDate);
-  const togetherDays = parseInt(
-    (today.getDate() - regDate.getDate() + 1000 * 60 * 60 * 9) /
-      (1000 * 60 * 60 * 24) +
-      1
+  const realToday = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
   );
+  const regDate = new Date(user?.regDate);
+  // const togetherDays = parseInt(
+  //   (today.getDate() - regDate.getDate() + 1000 * 60 * 60 * 9) /
+  //     (1000 * 60 * 60 * 24) +
+  //     1
+  // );
+
+  const togetherDays =
+    parseInt(
+      (realToday.getTime() - regDate.getTime() + 1000 * 60 * 60 * 9) /
+        (1000 * 60 * 60 * 24)
+    ) + 1;
 
   const [showModal, setShowMdoal] = React.useState(false);
   const handleModal = () => {
