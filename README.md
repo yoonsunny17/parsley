@@ -1,5 +1,8 @@
-# PARSLEY🌿 
-#### 여러분은 모두 PARSLEY 서비스 내의 PLAYERS 입니다.
+# 🌿 PARSLEY
+
+### Gamification 기반 온라인 스터디 서비스
+
+여러분은 모두 **PARSLEY** 서비스 내 **PLAYERS** 입니다.
 
 <br/>
 
@@ -12,25 +15,6 @@
 |마유선|이동희|전윤선|정윤영|조혜은|한상우|
 |BackEnd|FrontEnd|FrontEnd|BackEnd|BackEnd|BackEnd|
 
-<br/>
-
-## 🛠 TOOL
-##### Communitcation
-<img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
-<img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
-<img src="https://img.shields.io/badge/mattermost-0058CC?style=for-the-badge&logo=mattermost&logoColor=white">
-<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
-
-<br/>
-
-##### Development
-<img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
-<img src="https://img.shields.io/badge/intellij-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
-<img src="https://img.shields.io/badge/mysql_workbench-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
-<img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-
-
-<br/>
 <br/>
 
 ## 🛠 기술 스택
@@ -47,7 +31,6 @@
 
 <br/>
 
-
 ##### BackEnd
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
@@ -59,46 +42,83 @@
 <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
 
 <br/>
+
+##### Communitcation Tool
+<img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
+<img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
+<img src="https://img.shields.io/badge/mattermost-0058CC?style=for-the-badge&logo=mattermost&logoColor=white">
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+
 <br/>
 
-* [버전 상세](https://a604-parsley.notion.site/3325d9a0886a459fb79e967c08a3d33c)
+##### Development Tool
+<img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
+<img src="https://img.shields.io/badge/intellij-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
+<img src="https://img.shields.io/badge/mysql_workbench-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+
+
+<br/>
+<br/>
+
+[※ 상세 버전](https://a604-parsley.notion.site/3325d9a0886a459fb79e967c08a3d33c)
 
 <br/>
 
 ## 💡 기획
 
-* 리포트 기획서
-![image](/uploads/a9c6edf67c3f1bb43fdd84f41869e674/image.png)
+##### 원페이지 기획서
+![Untitled](/uploads/b13adc9da368cf5444183ff997cf3cf3/image.png)
 
-* 기능 마인드맵
-![Untitled](/uploads/9f93c8263bd26a6af3878fb7132f31be/Untitled.png)
+##### 기능 마인드맵
+![Untitled](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/82462a1b-ed23-45ac-8c07-8a9bfc8b2659/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220904%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220904T075043Z&X-Amz-Expires=86400&X-Amz-Signature=0fc8737142b2dfc4966ca0088100f36c20b97af275757247a08e4b32b1f89f7e&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
 
-## ✏ 설계
+<br/>
+
+
+## 📚 산출물
+
+##### 설계 산출물
 
 * [기능 명세서](https://a604-parsley.notion.site/c1d021a1eb0e4e1b815d84f3db48521d)
-
-* [목업](https://a604-parsley.notion.site/eccbc66413734cf99c264947e7ec7904)
 
 * [ER 다이어그램](https://a604-parsley.notion.site/ER-Diagram-ac1c1b88f7b44aa1a75591a35b422879)
 
 * [Entity 설계](https://a604-parsley.notion.site/Entity-a56eb88b48a34b358529adf3cab73b1b)
 
-* [API 명세](https://a604-parsley.notion.site/API-0b2794a89678471eac820288255f8929)
+* [API 명세서](https://a604-parsley.notion.site/API-0b2794a89678471eac820288255f8929)
 
 * [Sequence 다이어그램](https://a604-parsley.notion.site/Sequence-Diagram-ce431b5725674fc49cd0928150390bc9)
 
 * [아키텍처](https://a604-parsley.notion.site/60c50827fbd74758bae5b2ec53b5251b)
 
+##### 디자인 산출물
+
+* [와이어프레임](https://a604-parsley.notion.site/7c2ad150f99240f2a5782e1962cf0b8d)
+
+* [컬러 팔레트](https://a604-parsley.notion.site/16927504342c436eafaca6391040e0ae)
+
+* [목업](https://a604-parsley.notion.site/eccbc66413734cf99c264947e7ec7904)
+
 
 <br/>
 
-
-## 🌳 기능 설명
+## 🌿 서비스
 
 * [서비스 이용 가이드](https://a604-parsley.notion.site/41bc2ed396ed4509a9d586e1ee4f17c1)
 
+* [서비스 소개 UCC](https://a604-parsley.notion.site/UCC-79df0b8fc3c04031b54d5bc7f0482694)
+
+* [포팅 매뉴얼](https://a604-parsley.notion.site/812f688f107241cfbdb23477b7230e75?v=b360c39e96de47b299f263b29effe916)
+
+* [기술 블로그](https://a604-parsley.notion.site/04e2d358448b4a56b07f777e8a675ed8)
+
+<br/>
+
+## 🌳 기능 설명
+
 <details>
-<summary>메인 페이지</summary>
+<summary>&nbsp;메인 페이지</summary>
 <div markdown="1">
 
 ![image](/uploads/bff7475db6d9ed0cb30e45e1661e039d/image.png)
@@ -107,7 +127,7 @@
 </details>
 
 <details>
-<summary>농장 페이지</summary>
+<summary>&nbsp;농장 페이지</summary>
 <div markdown="1">
 
 ![image](/uploads/44e1a89aace476a1f14d25cf70f48aec/image.png)
@@ -117,7 +137,7 @@
 </details>
 
 <details>
-<summary>스터디룸 페이지</summary>
+<summary>&nbsp;스터디룸 페이지</summary>
 <div markdown="1">
 
 ![image](/uploads/396be0190635fa89dcaa9c0ab314819a/image.png)
@@ -126,7 +146,7 @@
 </details>
 
 <details>
-<summary>마이 페이지</summary>
+<summary>&nbsp;마이 페이지</summary>
 <div markdown="1">
 
 ![image](/uploads/e3a08c95705919798980d045f97ccafa/image.png)
@@ -147,8 +167,5 @@
 |조혜은 <br/> (BE)| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(스터디룸, 랭킹) <br/> - 서버 구축 <br/> - 컴포넌트 구현(마이페이지, 사이드바) <br/> - FrontEnd/BackEnd 연동(메인페이지, 스터디룸 페이지, 알림)|
 |한상우 <br/> (BE)| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(회원 정보) <br/> - OAuth + JWT <br/> - 캐시 서버 구축 <br/> - FrontEnd/BackEnd 연동(회원정보, 마이페이지)|
 
-## 📚 산출물
+<br/>
 
-* [UCC](https://a604-parsley.notion.site/UCC-79df0b8fc3c04031b54d5bc7f0482694)
-* [포팅 매뉴얼](https://a604-parsley.notion.site/812f688f107241cfbdb23477b7230e75?v=b360c39e96de47b299f263b29effe916)
-* [기술 블로그](https://a604-parsley.notion.site/04e2d358448b4a56b07f777e8a675ed8)
