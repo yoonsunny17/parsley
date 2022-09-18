@@ -68,11 +68,11 @@
 ## 💡 기획
 
 ##### 원페이지 기획서
-![Untitled](/uploads/b13adc9da368cf5444183ff997cf3cf3/image.png)
+![[Untitled](/uploads/b13adc9da368cf5444183ff997cf3cf3/image.png)](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A604/uploads/b13adc9da368cf5444183ff997cf3cf3/image.png)
 
-##### 기능 마인드맵
+<!-- ##### 기능 마인드맵
 ![Untitled](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/82462a1b-ed23-45ac-8c07-8a9bfc8b2659/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220904%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220904T075043Z&X-Amz-Expires=86400&X-Amz-Signature=0fc8737142b2dfc4966ca0088100f36c20b97af275757247a08e4b32b1f89f7e&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
-
+ -->
 <br/>
 
 
