@@ -11,7 +11,7 @@
 > 추가적인 내용은 팀 노션을 확인해주세요. &nbsp;  <a href="https://a604-parsley.notion.site/PARSLEY-ddbf2ca01542404296b51103309eff9e"><img src="https://img.shields.io/badge/team_notion-628D54?style=for-the-badge&logo=notion&logoColor=white"></a>
 
 |![image](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A604/uploads/0feb6879cc7eaa9cf9ae9b2b642de95a/image.png)|![image](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A604/uploads/f9f26f52ef993875f8de897a996bf20a/image.png)|![image](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A604/uploads/94ee0f65fa1c3cf5da672607d19a52c4/image.png)|![image](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A604/uploads/fe7fdcffda57f33fdeb57a745177c4c0/image.png)|![image](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A604/uploads/eca0fac44096ffc6447ee79aa7d0a07a/image.png)|
-|:---:|:---:|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|:---:|
 |마유선|전윤선|정윤영|조혜은|한상우|
 |BackEnd|FrontEnd|BackEnd|BackEnd|BackEnd|
 
