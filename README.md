@@ -162,10 +162,9 @@
 |이름|역할|
 |:---:|---|
 |마유선 <br/> (BE)| - ER 다이어그램, Entity 설계, API 설계 <br/> - API 구현(농장 게임, 알림) <br/> - 랭킹 시퀀스 <br/> - 산출물 관리 <br/> - FrontEnd/BackEnd 연동(농장페이지, 랭킹)|
-|이동희 <br/> (FE)| - 로고 디자인 <br/> - 목업 <br/> - 컴포넌트 구현(랭킹, 404 에러)|
 |전윤선 <br/> (FE)| - 목업 <br/> - OpenVidu <br/> - Three.js <br/> - 컴포넌트 구현(농장 게임, 스터디룸, 메인페이지, 알림, 스터디룸 리스트) <br/> - FrontEnd/BackEnd 연동(농장페이지)|
 |정윤영 <br/> (BE)| - 와이어프레임 설계 <br/> - ER 다이어그램, Entity 설계, API 설계 <br/> - API 구현(스터디룸, 유저 스터디룸, 학습내역) <br/> - 산출물 관리 <br/> - FrontEnd/BackEnd 연동(마이페이지)|
-|조혜은 <br/> (BE)| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(스터디룸, 랭킹) <br/> - 서버 구축 <br/> - 컴포넌트 구현(마이페이지, 사이드바) <br/> - FrontEnd/BackEnd 연동(메인페이지, 스터디룸 페이지, 알림)|
+|조혜은 <br/> (BE)| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(스터디룸, 랭킹) <br/> - 서버 구축 <br/> - 컴포넌트 구현(랭킹, 마이페이지, 사이드바) <br/> - FrontEnd/BackEnd 연동(메인페이지, 스터디룸 페이지, 알림)|
 |한상우 <br/> (BE)| - OAuth 및 랭킹 시퀀스 다이어그램 <br/> - API 구현(회원 정보) <br/> - OAuth + JWT <br/> - 캐시 서버 구축 <br/> - FrontEnd/BackEnd 연동(회원정보, 마이페이지)|
 
 <br/>
