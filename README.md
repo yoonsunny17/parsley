@@ -72,7 +72,9 @@
 ## 💡 기획
 
 ##### 원페이지 기획서
-![image](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A604/uploads/b13adc9da368cf5444183ff997cf3cf3/image.png)
+
+![image](./profile/onepage.png)
+
 <!-- ![[Untitled](/uploads/b13adc9da368cf5444183ff997cf3cf3/image.png)](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A604/uploads/b13adc9da368cf5444183ff997cf3cf3/image.png) -->
 
 <!-- ##### 기능 마인드맵
